@@ -3,6 +3,7 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
+REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I$(INC_DIR) -g
@@ -18,13 +19,13 @@ OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
 all: $(NAME)
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+$(REQUIRED_DIRS):
+	@mkdir -p $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ_DIR) $(OBJ)
+$(NAME): $(REQUIRED_DIRS) $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
