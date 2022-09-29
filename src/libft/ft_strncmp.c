@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/29 11:08:28 by gmachado         ###   ########.fr       */
+/*   Created: 2022/04/06 03:09:00 by gmachado          #+#    #+#             */
+/*   Updated: 2022/09/29 11:12:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	miniprompt(void)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	*prompt;
-
-	while (1)
+	if (n == 0)
+		return (0);
+	while (--n != 0 && *s1 == *(unsigned char *)s2
+		&& *(unsigned char *)s1 != '\0')
 	{
-		prompt = readline("minishell>");
-		if (!prompt || !ft_strncmp(NULL, "exit", 4))
-			break ;
-		free(prompt);
+		s1++;
+		s2++;
 	}
-	free(prompt);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
