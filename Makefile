@@ -42,4 +42,7 @@ norm:
 	@clear
 	@norminette src/* include/* | grep Error || true
 
+leaks:
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell
+
 .PHONY: all clean fclean re install
