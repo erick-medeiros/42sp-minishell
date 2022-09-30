@@ -52,8 +52,8 @@ Mkfile.old
 dkms.conf
 
 # bear
-compile_commands.json
-.cache/*
+*.cache
+*compile_commands.json
 
 # minishell
 minishell
