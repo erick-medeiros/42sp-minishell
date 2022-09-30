@@ -12,8 +12,11 @@ CC = cc
 RM = rm -fr
 
 FILES = main.c
-FILES += prompt.c
 FILES += libft/ft_strncmp.c
+FILES += libft/ft_math.c
+FILES += libft/ft_strlen.c
+FILES += prompt/prompt.c
+FILES += prompt/here_doc.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/29 10:47:52 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/09/30 11:01:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,24 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <unistd.h>
+
+# include "libft.h"
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+# define TRUE 1
+# define FALSE 0
+
+# define PROMPT_TEXT "minishell> "
+# define HERE_DOC_TEXT "here_doc> "
 
 void	miniprompt(void);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		command_is_equal(char *cmd, char *str);
+int		here_doc(char	*limiter);
 
 #endif
