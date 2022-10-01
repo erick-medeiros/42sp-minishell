@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/30 13:35:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/01 13:01:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,56 @@ int	command_is_equal(char *cmd, char *str)
 	return (FALSE);
 }
 
-// read fd returned in here_doc
-void	temp_function(int fd)
+int	command_ends_with(char *cmd, char c)
 {
-	char	buff[100];
+	int	index;
+
+	if (cmd == NULL)
+		return (FALSE);
+	index = ft_strlen(cmd) - 1;
+	if (index < 0)
+		return (FALSE);
+	if (cmd[index] == c)
+		return (TRUE);
+	return (FALSE);
+}
+
+char	*get_content_fd(int fd)
+{
+	char	buffer[100];
 	int		i;
+	int		bytes;
+	char	*tmp;
+	char	*content;
 
 	i = -1;
 	while (++i < 100)
-		buff[i] = '\0';
-	read(fd, buff, 100);
-	write(STDOUT, buff, 100);
-	write(STDOUT, "\n", 1);
+		buffer[i] = '\0';
+	content = ft_strjoin("", "");
+	while (TRUE)
+	{
+		bytes = read(fd, buffer, 100);
+		if (bytes <= 0)
+			break ;
+		tmp = content;
+		content = ft_strjoin(tmp, buffer);
+		free(tmp);
+	}
+	return (content);
+}
+
+// debug return heredoc and endsinpipe
+void	temp_function(int fd, char *prompt, int debug)
+{
+	char	*content;
+
+	content = get_content_fd(fd);
+	if (debug == 1)
+		printf("%s\n", content);
+	else
+		printf("exec: %s %s\n", prompt, content);
+	free(content);
+	close(fd);
 }
 
 void	miniprompt(void)
@@ -43,15 +81,21 @@ void	miniprompt(void)
 
 	while (1)
 	{
-		prompt = readline(PROMPT_TEXT);
+		prompt = readline(PROMPT_STRING);
 		if (!prompt || command_is_equal(prompt, "exit"))
 			break ;
 		if (command_is_equal(prompt, "here_doc"))
 		{
 			fd = here_doc("EOF");
-			temp_function(fd);
-			close(fd);
+			temp_function(fd, prompt, 1);
 		}
+		else if (command_ends_with(prompt, '|'))
+		{
+			fd = ends_in_pipe();
+			temp_function(fd, prompt, 2);
+		}
+		else
+			printf("exec: %s\n", prompt);
 		free(prompt);
 	}
 	free(prompt);

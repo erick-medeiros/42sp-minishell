@@ -15,8 +15,10 @@ FILES = main.c
 FILES += libft/ft_strncmp.c
 FILES += libft/ft_math.c
 FILES += libft/ft_strlen.c
+FILES += libft/ft_strjoin.c
 FILES += prompt/prompt.c
 FILES += prompt/here_doc.c
+FILES += prompt/ends_in_pipe.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -49,4 +51,4 @@ norm:
 leaks:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell
 
-.PHONY: all clean fclean re install
+.PHONY: all clean fclean re install norm leaks
