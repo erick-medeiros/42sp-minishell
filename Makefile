@@ -51,4 +51,10 @@ norm:
 leaks:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell
 
-.PHONY: all clean fclean re install norm leaks
+compile_tests: re
+	make re -C tests/unitary/
+
+unit_tests:
+	./tests/unitary/run_test.out
+
+.PHONY: all clean fclean re install norm leaks compile_tests unit_tests

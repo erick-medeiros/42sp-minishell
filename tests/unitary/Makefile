@@ -8,9 +8,11 @@ MINISHELL = $(MINISHELL_DIR)minishell
 
 CFLAGS = -IUnity -I$(MIN_INC_DIR)
 LIBFLAGS = -lreadline
+RM = rm -fr
 
 FILES = main.c
 FILES += Unity/unity.c
+FILES += prompt.c
 
 OBJS = $(FILES:.c=.o)
 
@@ -28,11 +30,10 @@ $(MINISHELL):
 	make -C $(MINISHELL_DIR)
 
 clean:
-	rm -fr Unity/unity.o
-	rm -fr main.o
+	$(RM) $(OBJS)
 
 fclean:	clean
-	rm -fr $(NAME)
+	$(RM) $(NAME)
 
 re:	fclean all
 
