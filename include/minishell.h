@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/29 23:07:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/02 14:20:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ t_node	*find_node_by_content(t_node *list, void *content,
 t_node	*remove_node(t_node *current, void (*del_node)(void *));
 int		remove_node_by_content(t_node **lst, void *content,
 			void (*del_node)(void *), int (*cmp_content)(void *, void *));
+
+// Cleanup functions
+void	clear_list(t_node *lst, void (*del_node)(void *));
+void	del_ptr_content(void *content);
 
 // Libft functions
 char	*ft_strdup(const char *s);
