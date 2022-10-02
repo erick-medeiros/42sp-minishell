@@ -33,9 +33,9 @@ void	miniprompt(void);
 
 // List-related functions
 int		add_node(t_node **lst, void *content);
-int		change_node_content(t_node *list, void *old_content,
+int		change_node_content(t_node *lst, void *old_content,
 			void *new_content, int (*cmp_content)(void *, void *));
-t_node	*find_node_by_content(t_node *list, void *content,
+t_node	*find_node_by_content(t_node *lst, void *content,
 			int (*cmp_content)(void *, void *));
 t_node	*remove_node(t_node *current, void (*del_node)(void *));
 int		remove_node_by_content(t_node **lst, void *content,

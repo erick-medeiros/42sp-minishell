@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:31:47 by gmachado          #+#    #+#             */
-/*   Updated: 2022/09/30 09:42:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/02 11:50:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ int	add_node(t_node **lst, void *content)
 	t_node	*new_node;
 	t_node	*current;
 
+	if (!lst)
+		return (ERR_NOT_FOUND);
 	new_node = malloc(sizeof(*new_node));
 	if (!new_node)
 		return (ERR_ALLOC);
 	new_node->content = content;
 	new_node->next = NULL;
-	if (!lst)
-		return (ERR_NOT_FOUND);
+
 	if (!(*lst))
 	{
 		*lst = new_node;
@@ -36,28 +37,28 @@ int	add_node(t_node **lst, void *content)
 	return (OK);
 }
 
-t_node	*find_node_by_content(t_node *list, void *content,
+t_node	*find_node_by_content(t_node *lst, void *content,
 	int (*cmp_content)(void *, void *))
 {
-	if (!list || !cmp_content)
+	if (!lst || !cmp_content)
 		return (NULL);
-	while (list)
+	while (lst)
 	{
-		if (cmp_content(content, list->content) == 0)
-			return (list);
-		list = list->next;
+		if (cmp_content(content, lst->content) == 0)
+			return (lst);
+		lst = lst->next;
 	}
 	return (NULL);
 }
 
-int	change_node_content(t_node *list, void *old_content,
+int	change_node_content(t_node *lst, void *old_content,
 	void *new_content, int (*cmp_content)(void *, void *))
 {
 	t_node	*found;
 
-	if (!list || !cmp_content)
+	if (!lst || !cmp_content)
 		return (ERR_NOT_FOUND);
-	found = find_node_by_content(list, old_content, cmp_content);
+	found = find_node_by_content(lst, old_content, cmp_content);
 	if (!found)
 		return (ERR_NOT_FOUND);
 	found->content = new_content;
