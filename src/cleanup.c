@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 02:11:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/03 21:01:51 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/02 11:12:13 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	del_ptr_content(void *content)
 {
-	int	len;
+	free(content);
+}
 
-	len = 0;
-	while (s[len] != '\0')
-		len++;
-	return (len);
+void clear_list(t_node *lst, void (*del_node)(void *))
+{
+	t_node	*tmp;
+
+	while (lst)
+	{
+		del_node(lst->content);
+		tmp = lst;
+		lst = lst->next;
+		free(tmp);
+	}
 }

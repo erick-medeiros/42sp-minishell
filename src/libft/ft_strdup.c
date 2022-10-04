@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 02:11:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/03 21:01:51 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/04/07 21:45:57 by gmachado          #+#    #+#             */
+/*   Updated: 2022/09/29 23:00:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+char	*ft_strdup(const char *s)
 {
-	int	len;
+	size_t	len_s;
+	char	*copy;
 
-	len = 0;
-	while (s[len] != '\0')
-		len++;
-	return (len);
+	len_s = ft_strlen(s) + 1;
+	copy = malloc(len_s * sizeof(char));
+	if (copy == NULL)
+		return (NULL);
+	ft_strlcpy(copy, s, len_s);
+	return (copy);
 }

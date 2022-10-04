@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/05 02:11:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/03 21:01:51 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/04/06 17:10:34 by gmachado          #+#    #+#             */
+/*   Updated: 2022/09/29 23:02:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	int	len;
+	const char	*src_start;
 
-	len = 0;
-	while (s[len] != '\0')
-		len++;
-	return (len);
+	src_start = src;
+	if (size != 0)
+	{
+		while (--size > 0 && *src != '\0')
+			*dst++ = *src++;
+		*dst = '\0';
+	}
+	while (*src != '\0')
+		src++;
+	return (src - src_start);
 }
