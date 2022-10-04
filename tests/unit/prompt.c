@@ -41,12 +41,10 @@ void test_function_here_doc(void) {
 	char *write_line2;
 	pid_t pid;
 	int fd;
-	int fd_devnull;
 
 	write_line1 = "42";
 	write_line2 = "sp";
 	expected = "42\nsp\n";
-	fd_devnull = open("/dev/null", O_WRONLY);
 	if (pipe(pipefd_std) == -1)
 		TEST_IGNORE_MESSAGE("Error pipe");
 	if (pipe(pipefd_expected) == -1)
@@ -55,19 +53,20 @@ void test_function_here_doc(void) {
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE("Error fork");
 	if (pid == 0) {
-		close(pipefd_std[1]);
-		close(pipefd_expected[0]);
+		int fd_devnull = open("/dev/null", O_WRONLY);
 		dup2(pipefd_std[0], STDIN);
 		dup2(fd_devnull, STDOUT);
 		dup2(fd_devnull, STDERR);
-		close(pipefd_std[0]);
 		close(fd_devnull);
+		close(pipefd_std[0]);
+		close(pipefd_std[1]);
+		close(pipefd_expected[0]);
 		fd = here_doc("EOF");
 		content = get_content_fd(fd);
 		write(pipefd_expected[1], content, strlen(content));
+		close(pipefd_expected[1]);
 		exit(0);
 	} else {
-		close(fd_devnull);
 		close(pipefd_std[0]);
 		close(pipefd_expected[1]);
 		write(pipefd_std[1], write_line1, strlen(write_line1));
