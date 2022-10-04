@@ -6,7 +6,8 @@ MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
 MIN_INC_DIR = $(MINISHELL_DIR)include/
 MINISHELL = $(MINISHELL_DIR)minishell
 
-CFLAGS = -IUnity -I$(MIN_INC_DIR) -g
+CFLAGS = -Wall -Wextra -Werror
+CFLAGS += -IUnity -I$(MIN_INC_DIR) -g
 LIBFLAGS = -lreadline
 RM = rm -fr
 
