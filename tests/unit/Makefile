@@ -5,6 +5,8 @@ MIN_SRC_DIR = $(MINISHELL_DIR)src/
 MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
 MIN_INC_DIR = $(MINISHELL_DIR)include/
 MINISHELL = $(MINISHELL_DIR)minishell
+OBJ_DIR = obj/
+REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -IUnity -I$(MIN_INC_DIR) -g
@@ -16,14 +18,17 @@ FILES += Unity/unity.c
 FILES += prompt.c
 FILES += list_test.c
 
-OBJS = $(FILES:.c=.o)
+OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
 all: $(NAME)
 
-%.o: %.c
+$(REQUIRED_DIRS):
+	@mkdir -p $@
+
+$(OBJ_DIR)%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(MINISHELL) $(OBJS)
+$(NAME): $(REQUIRED_DIRS) $(MINISHELL) $(OBJS)
 	gcc $(CFLAGS) $(OBJS) \
 	$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o)) \
 	-o $(NAME) $(LIBFLAGS)
