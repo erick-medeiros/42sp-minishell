@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:16:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/01 12:47:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:53:57 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void	child_here_doc(int pipefd[2], char *limiter)
 		if (!line || command_is_equal(line, limiter))
 			break ;
 		write(pipefd[1], line, ft_strlen(line));
+		write(pipefd[1], "\n", 1);
 		free(line);
 	}
 	free(line);

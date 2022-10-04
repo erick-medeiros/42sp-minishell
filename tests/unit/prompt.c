@@ -37,11 +37,15 @@ void test_function_here_doc(void) {
 	int pipefd_std[2];
 	char *content;
 	char *expected;
+	char *write_line1;
+	char *write_line2;
 	pid_t pid;
 	int fd;
 	int fd_devnull;
 
-	expected = "oi";
+	write_line1 = "42";
+	write_line2 = "sp";
+	expected = "42\nsp\n";
 	fd_devnull = open("/dev/null", O_WRONLY);
 	if (pipe(pipefd_std) == -1)
 		TEST_IGNORE_MESSAGE("Error pipe");
@@ -66,7 +70,9 @@ void test_function_here_doc(void) {
 		close(fd_devnull);
 		close(pipefd_std[0]);
 		close(pipefd_expected[1]);
-		write(pipefd_std[1], expected, strlen(expected));
+		write(pipefd_std[1], write_line1, strlen(write_line1));
+		write(pipefd_std[1], "\n", 1);
+		write(pipefd_std[1], write_line2, strlen(write_line2));
 		write(pipefd_std[1], "\n", 1);
 		write(pipefd_std[1], "EOF", 3);
 		close(pipefd_std[1]);

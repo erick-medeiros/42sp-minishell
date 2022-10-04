@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/01 13:01:05 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:57:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	temp_function(int fd, char *prompt, int debug)
 
 	content = get_content_fd(fd);
 	if (debug == 1)
-		printf("%s\n", content);
+		printf("%s", content);
 	else
 		printf("exec: %s %s\n", prompt, content);
 	free(content);
