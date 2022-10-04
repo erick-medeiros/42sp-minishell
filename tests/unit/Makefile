@@ -6,13 +6,14 @@ MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
 MIN_INC_DIR = $(MINISHELL_DIR)include/
 MINISHELL = $(MINISHELL_DIR)minishell
 
-CFLAGS = -IUnity -I$(MIN_INC_DIR)
+CFLAGS = -IUnity -I$(MIN_INC_DIR) -g
 LIBFLAGS = -lreadline
 RM = rm -fr
 
 FILES = main.c
 FILES += Unity/unity.c
 FILES += prompt.c
+FILES += list_test.c
 
 OBJS = $(FILES:.c=.o)
 

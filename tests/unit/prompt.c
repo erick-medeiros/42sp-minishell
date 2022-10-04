@@ -1,4 +1,5 @@
-#include "unit_tests.h"
+#include "Unity/unity.h"
+#include "minishell.h"
 #include <unistd.h>
 
 void test_function_command_is_equal(void) {
@@ -28,4 +29,10 @@ void test_function_get_content_fd(void) {
 	close(pipefd[0]);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
 	free(content);
+}
+
+void file_prompt(void) {
+	RUN_TEST(test_function_command_is_equal);
+	RUN_TEST(test_function_command_ends_with);
+	RUN_TEST(test_function_get_content_fd);
 }

@@ -1,4 +1,8 @@
-#include "unit_tests.h"
+#include "Unity/unity.h"
+#include "minishell.h"
+
+void file_list_test(void);
+void file_prompt(void);
 
 void setUp(void) {}
 
@@ -6,8 +10,7 @@ void tearDown(void) {}
 
 int main() {
 	UNITY_BEGIN();
-	RUN_TEST(test_function_command_is_equal);
-	RUN_TEST(test_function_command_ends_with);
-	RUN_TEST(test_function_get_content_fd);
+	file_prompt();
+	file_list_test();
 	return UNITY_END();
 }
