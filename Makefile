@@ -3,7 +3,7 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
-REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/
+REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I$(INC_DIR) -g
@@ -18,6 +18,8 @@ FILES += libft/ft_strlen.c
 FILES += libft/ft_strjoin.c
 FILES += libft/ft_strdup.c
 FILES += libft/ft_strlcpy.c
+FILES += list/cleanup.c
+FILES += list/list.c
 FILES += prompt/prompt.c
 FILES += prompt/here_doc.c
 FILES += prompt/ends_in_pipe.c

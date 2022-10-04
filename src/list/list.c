@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:31:47 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/02 11:50:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/03 21:06:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	add_node(t_node **lst, void *content)
 		return (ERR_ALLOC);
 	new_node->content = content;
 	new_node->next = NULL;
-
 	if (!(*lst))
 	{
 		*lst = new_node;
