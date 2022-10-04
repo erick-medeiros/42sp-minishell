@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 19:11:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/01 12:48:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/04 12:26:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	child_ends_in_pipe(int pipefd[2])
 		write(pipefd[1], line, ft_strlen(line));
 		if (!command_ends_with(line, '|'))
 			break ;
+		write(pipefd[1], " ", 1);
 		free(line);
 	}
 	free(line);
