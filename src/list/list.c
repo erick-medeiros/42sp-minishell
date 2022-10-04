@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:31:47 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/03 21:06:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/03 21:23:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	change_node_content(t_node *lst, void *old_content,
 	found = find_node_by_content(lst, old_content, cmp_content);
 	if (!found)
 		return (ERR_NOT_FOUND);
+	free(found->content);
 	found->content = new_content;
 	return (OK);
 }
