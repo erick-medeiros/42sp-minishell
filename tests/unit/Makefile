@@ -31,6 +31,9 @@ $(NAME): $(MINISHELL) $(OBJS)
 $(MINISHELL):
 	make -C $(MINISHELL_DIR)
 
+reminishell:
+	make re -C $(MINISHELL_DIR)
+
 clean:
 	$(RM) $(OBJS)
 
@@ -39,4 +42,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re minishell
+.PHONY: all clean fclean re reminishell
