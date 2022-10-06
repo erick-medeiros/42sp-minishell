@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/03 21:03:43 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:04:03 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>
 
 # include "libft.h"
 
@@ -68,5 +69,13 @@ int		command_ends_with(char *cmd, char c);
 char	*get_content_fd(int fd);
 int		here_doc(char	*limiter);
 int		ends_in_pipe(void);
+
+// Builtins
+
+void	builtins(char *prompt);
+void	builtin_echo(char *option, char *string);
+void	builtin_cd(char *path);
+void	builtin_pwd(void);
+void	builtin_exit(void);
 
 #endif

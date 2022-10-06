@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/01 13:01:05 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:04:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	miniprompt(void)
 			temp_function(fd, prompt, 2);
 		}
 		else
-			printf("exec: %s\n", prompt);
+			builtins(prompt);
 		free(prompt);
 	}
 	free(prompt);

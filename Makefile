@@ -3,7 +3,7 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
-REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/
+REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/ obj/builtins/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I$(INC_DIR) -g
@@ -25,6 +25,11 @@ FILES += list/list.c
 FILES += prompt/prompt.c
 FILES += prompt/here_doc.c
 FILES += prompt/ends_in_pipe.c
+FILES += builtins/builtins.c
+FILES += builtins/echo.c
+FILES += builtins/cd.c
+FILES += builtins/pwd.c
+FILES += builtins/exit.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
