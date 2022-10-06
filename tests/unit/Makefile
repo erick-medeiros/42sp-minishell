@@ -12,6 +12,8 @@ RM = rm -fr
 
 FILES = main.c
 FILES += Unity/unity.c
+FILES += Unity/unity_fixture.c
+FILES += Unity/unity_memory.c
 FILES += prompt.c
 FILES += list_test.c
 

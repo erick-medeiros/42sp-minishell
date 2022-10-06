@@ -1,14 +1,19 @@
-#include "Unity/unity.h"
-#include "minishell.h"
+#include "unit_tests.h"
 #include <unistd.h>
 
-void test_function_command_is_equal(void) {
+TEST_GROUP(test_prompt);
+
+TEST_SETUP(test_prompt) {}
+
+TEST_TEAR_DOWN(test_prompt) {}
+
+TEST(test_prompt, command_is_equal) {
 	TEST_ASSERT_TRUE(command_is_equal("exit", "exit"));
 	TEST_ASSERT_FALSE(command_is_equal("exita", "exit"));
 	TEST_ASSERT_FALSE(command_is_equal("exi", "exit"));
 }
 
-void test_function_command_ends_with(void) {
+TEST(test_prompt, command_ends_with) {
 	TEST_ASSERT_TRUE(command_ends_with("cmd |", '|'));
 	TEST_ASSERT_TRUE(command_ends_with("|", '|'));
 	TEST_ASSERT_FALSE(command_ends_with("cmd", '|'));
@@ -16,7 +21,7 @@ void test_function_command_ends_with(void) {
 	TEST_ASSERT_FALSE(command_ends_with(NULL, '|'));
 }
 
-void test_function_get_content_fd(void) {
+TEST(test_prompt, get_content_fd) {
 	const char *expected = "test";
 	char *content;
 	int pipefd[2];
@@ -31,8 +36,9 @@ void test_function_get_content_fd(void) {
 	free(content);
 }
 
-void file_prompt(void) {
-	RUN_TEST(test_function_command_is_equal);
-	RUN_TEST(test_function_command_ends_with);
-	RUN_TEST(test_function_get_content_fd);
+TEST_GROUP_RUNNER(test_prompt)
+{
+    RUN_TEST_CASE(test_prompt, command_is_equal);
+    RUN_TEST_CASE(test_prompt, command_ends_with);
+    RUN_TEST_CASE(test_prompt, get_content_fd);
 }

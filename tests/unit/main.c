@@ -1,16 +1,10 @@
-#include "Unity/unity.h"
-#include "minishell.h"
+#include "unit_tests.h"
 
-void file_list_test(void);
-void file_prompt(void);
+static void runAllTests(void) {
+	RUN_TEST_GROUP(test_prompt);
+	RUN_TEST_GROUP(test_list);
+}
 
-void setUp(void) {}
-
-void tearDown(void) {}
-
-int main() {
-	UNITY_BEGIN();
-	file_prompt();
-	file_list_test();
-	return UNITY_END();
+int main(int argc, const char *argv[]) {
+	return UnityMain(argc, argv, runAllTests);
 }

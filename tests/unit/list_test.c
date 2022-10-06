@@ -1,5 +1,10 @@
-#include "Unity/unity.h"
-#include "minishell.h"
+#include "unit_tests.h"
+
+TEST_GROUP(test_list);
+
+TEST_SETUP(test_list) {}
+
+TEST_TEAR_DOWN(test_list) {}
 
 t_node *lst;
 int *content1;
@@ -25,7 +30,7 @@ int cmp_int(void *a, void *b) {
 	return (0);
 }
 
-void test_create_int_list(void) {
+TEST(test_list, create_int_list) {
 	alloc_list();
 	add_node(&lst, content1);
 	add_node(&lst, content2);
@@ -36,7 +41,7 @@ void test_create_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void test_find_node_by_content_int_list(void) {
+TEST(test_list, find_node_by_content_int_list) {
 	int test_val;
 	t_node *cmp_result;
 
@@ -57,7 +62,7 @@ void test_find_node_by_content_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void test_remove_last_node_int_list(void) {
+TEST(test_list, remove_last_node_int_list) {
 	int test_val;
 
 	alloc_list();
@@ -71,7 +76,7 @@ void test_remove_last_node_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void test_remove_first_node_int_list(void) {
+TEST(test_list, remove_first_node_int_list) {
 	int test_val;
 
 	alloc_list();
@@ -85,7 +90,7 @@ void test_remove_first_node_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void test_remove_mid_node_int_list(void) {
+TEST(test_list, remove_mid_node_int_list) {
 	int test_val;
 
 	alloc_list();
@@ -101,7 +106,7 @@ void test_remove_mid_node_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void test_change_node_content_int_list(void) {
+TEST(test_list, change_node_content_int_list) {
 	int test_val;
 	int *new_content;
 
@@ -118,11 +123,11 @@ void test_change_node_content_int_list(void) {
 	clear_list(lst, del_ptr_content);
 }
 
-void file_list_test(void) {
-	RUN_TEST(test_create_int_list);
-	RUN_TEST(test_find_node_by_content_int_list);
-	RUN_TEST(test_remove_last_node_int_list);
-	RUN_TEST(test_remove_first_node_int_list);
-	RUN_TEST(test_remove_mid_node_int_list);
-	RUN_TEST(test_change_node_content_int_list);
+TEST_GROUP_RUNNER(test_list) {
+	RUN_TEST_CASE(test_list, create_int_list);
+	RUN_TEST_CASE(test_list, find_node_by_content_int_list);
+	RUN_TEST_CASE(test_list, remove_last_node_int_list);
+	RUN_TEST_CASE(test_list, remove_first_node_int_list);
+	RUN_TEST_CASE(test_list, remove_mid_node_int_list);
+	RUN_TEST_CASE(test_list, change_node_content_int_list);
 }
