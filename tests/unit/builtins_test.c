@@ -68,7 +68,41 @@ void test_builtin_cd(void) {
 	}
 }
 
+void test_builtin_pwd(void) {
+	char *current_dir;
+	char *content;
+	pid_t pid;
+	int pipefd[2];
+	int status;
+
+	current_dir = ut_exec_pwd();
+	if (pipe(pipefd) == -1)
+		TEST_IGNORE_MESSAGE("Error pipe");
+	pid = fork();
+	if (pid < 0)
+		TEST_IGNORE_MESSAGE("Error fork");
+	else if (pid == 0) {
+		ut_stds_devnull();
+		dup2(pipefd[1], STDOUT);
+		ut_close_pipefd(pipefd);
+		builtin_pwd();
+		free(current_dir);
+		exit(0);
+	} else {
+		close(pipefd[1]);
+		wait(&status);
+		if (status != 0)
+			TEST_IGNORE_MESSAGE("Error in child process");
+		content = get_content_fd(pipefd[0]);
+		TEST_ASSERT_EQUAL_STRING(current_dir, content);
+		free(content);
+		free(current_dir);
+		close(pipefd[0]);
+	}
+}
+
 void file_builtins_test(void) {
 	RUN_TEST(test_builtin_echo);
 	RUN_TEST(test_builtin_cd);
+	RUN_TEST(test_builtin_pwd);
 }
