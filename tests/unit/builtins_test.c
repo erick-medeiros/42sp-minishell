@@ -18,11 +18,9 @@ void test_builtin_echo(void) {
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE("Error fork");
 	else if (pid == 0) {
-		int fd_devnull = open("/dev/null", O_WRONLY);
-		dup2(fd_devnull, STDIN);
+		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
-		dup2(fd_devnull, STDERR);
-		close(fd_devnull);
+		ut_close_pipefd(pipefd);
 		builtin_echo("", "echo");
 		builtin_echo("-n", "echo");
 		exit(0);
@@ -37,40 +35,36 @@ void test_builtin_echo(void) {
 }
 
 void test_builtin_cd(void) {
-	int pipefd[2];
 	pid_t pid;
 	char *expected;
 	char *content;
 	char *current_dir;
 	int status;
+	int len;
 
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
+	current_dir = ut_exec_pwd();
+	len = strlen(current_dir) + strlen("./Unity\n") + 1;
+	content = ut_mmap(len);
 	pid = fork();
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE("Error fork");
 	else if (pid == 0) {
 		ut_stds_devnull();
 		builtin_cd("./Unity");
-		current_dir = ut_exec_pwd();
-		write(pipefd[1], current_dir, strlen(current_dir));
-		ut_close_pipefd(pipefd);
+		char *new_dir = ut_exec_pwd();
+		strncpy(content, new_dir, len);
+		free(new_dir);
 		free(current_dir);
 		exit(0);
 	} else {
-		close(pipefd[1]);
 		wait(&status);
 		if (status != 0)
 			TEST_IGNORE_MESSAGE("Error child process");
-		current_dir = ut_exec_pwd();
 		current_dir[strlen(current_dir) - 1] = '\0';
 		expected = ft_strjoin(current_dir, "/Unity\n");
-		content = get_content_fd(pipefd[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
-		free(content);
 		free(current_dir);
 		free(expected);
-		close(pipefd[0]);
 	}
 }
 
