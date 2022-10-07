@@ -101,8 +101,32 @@ void test_builtin_pwd(void) {
 	}
 }
 
+void test_builtin_exit(void) {
+	pid_t pid;
+	int status;
+	int expected;
+
+	expected = 0;
+	pid = fork();
+	if (pid < 0)
+		TEST_IGNORE_MESSAGE("Error fork");
+	else if (pid == 0) {
+		ut_stds_devnull();
+		builtin_exit();
+		exit(1);
+	} else {
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status)) {
+			status = WEXITSTATUS(status);
+			TEST_ASSERT_EQUAL_INT(expected, status);
+		} else
+			TEST_IGNORE_MESSAGE("Error in child process");
+	}
+}
+
 void file_builtins_test(void) {
 	RUN_TEST(test_builtin_echo);
 	RUN_TEST(test_builtin_cd);
 	RUN_TEST(test_builtin_pwd);
+	RUN_TEST(test_builtin_exit);
 }
