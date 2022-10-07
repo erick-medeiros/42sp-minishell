@@ -32,7 +32,7 @@ void test_function_get_content_fd(void) {
 	free(content);
 }
 
-void test_function_here_doc(void) {
+void test_here_doc(void) {
 	int pipefd_expected[2];
 	int pipefd_std[2];
 	char *content;
@@ -52,7 +52,7 @@ void test_function_here_doc(void) {
 	pid = fork();
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE("Error fork");
-	if (pid == 0) {
+	else if (pid == 0) {
 		int fd_devnull = open("/dev/null", O_WRONLY);
 		dup2(pipefd_std[0], STDIN);
 		dup2(fd_devnull, STDOUT);
@@ -64,6 +64,7 @@ void test_function_here_doc(void) {
 		fd = here_doc("EOF");
 		content = get_content_fd(fd);
 		write(pipefd_expected[1], content, strlen(content));
+		free(content);
 		close(pipefd_expected[1]);
 		exit(0);
 	} else {
@@ -78,11 +79,12 @@ void test_function_here_doc(void) {
 		wait(NULL);
 		content = get_content_fd(pipefd_expected[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
+		free(content);
 		close(pipefd_expected[0]);
 	}
 }
 
-void test_function_ends_in_pipe(void) {
+void test_ends_in_pipe(void) {
 	int pipefd_expected[2];
 	int pipefd_std[2];
 	char *content;
@@ -102,7 +104,7 @@ void test_function_ends_in_pipe(void) {
 	pid = fork();
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE("Error fork");
-	if (pid == 0) {
+	else if (pid == 0) {
 		int fd_devnull = open("/dev/null", O_WRONLY);
 		dup2(pipefd_std[0], STDIN);
 		dup2(fd_devnull, STDOUT);
@@ -115,6 +117,7 @@ void test_function_ends_in_pipe(void) {
 		content = get_content_fd(fd);
 		write(pipefd_expected[1], content, strlen(content));
 		close(pipefd_expected[1]);
+		free(content);
 		exit(0);
 	} else {
 		close(pipefd_std[0]);
@@ -127,6 +130,7 @@ void test_function_ends_in_pipe(void) {
 		wait(NULL);
 		content = get_content_fd(pipefd_expected[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
+		free(content);
 		close(pipefd_expected[0]);
 	}
 }
@@ -135,6 +139,6 @@ void file_prompt(void) {
 	RUN_TEST(test_function_command_is_equal);
 	RUN_TEST(test_function_command_ends_with);
 	RUN_TEST(test_function_get_content_fd);
-	RUN_TEST(test_function_here_doc);
-	RUN_TEST(test_function_ends_in_pipe);
+	RUN_TEST(test_here_doc);
+	RUN_TEST(test_ends_in_pipe);
 }
