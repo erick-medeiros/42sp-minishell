@@ -17,6 +17,7 @@ FILES = main.c
 FILES += Unity/unity.c
 FILES += prompt.c
 FILES += list_test.c
+FILES += builtins_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
