@@ -15,7 +15,7 @@ RM = rm -fr
 
 FILES = main.c
 FILES += Unity/unity.c
-FILES += prompt.c
+FILES += prompt_test.c
 FILES += list_test.c
 FILES += builtins_test.c
 
