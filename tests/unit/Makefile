@@ -40,6 +40,7 @@ $(MINISHELL):
 
 reminishell:
 	make re -C $(MINISHELL_DIR)
+	make re
 
 clean:
 	$(RM) $(OBJS)
