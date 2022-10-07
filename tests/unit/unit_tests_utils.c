@@ -46,5 +46,7 @@ char *ut_exec_pwd(void) {
 void *ut_mmap(size_t len) {
 	int prot = PROT_READ | PROT_WRITE;
 	int flags = MAP_SHARED | MAP_ANON;
-	return (mmap(NULL, len, prot, flags, 0, 0));
+	void *ptr = mmap(NULL, len, prot, flags, 0, 0);
+	memset(ptr, 0, len);
+	return (ptr);
 }
