@@ -135,7 +135,7 @@ void test_ends_in_pipe(void) {
 	}
 }
 
-void file_prompt(void) {
+void file_prompt_test(void) {
 	RUN_TEST(test_function_command_is_equal);
 	RUN_TEST(test_function_command_ends_with);
 	RUN_TEST(test_function_get_content_fd);
