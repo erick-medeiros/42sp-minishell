@@ -55,5 +55,8 @@ dkms.conf
 *.cache
 *compile_commands.json
 
+# logs
+*.log
+
 # minishell
 minishell
