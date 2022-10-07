@@ -50,6 +50,13 @@ fclean:	clean
 re:	fclean all
 
 leaks:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=../readline.supp ./$(NAME)
+	valgrind \
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--suppressions=../readline.supp \
+		--track-fds=yes \
+		--trace-children=yes \
+		--track-origins=yes \
+		./$(NAME)
 
 .PHONY: all clean fclean re reminishell leaks
