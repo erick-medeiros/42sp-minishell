@@ -1,5 +1,6 @@
 #include "Unity/unity.h"
 #include "minishell.h"
+#include <sys/mman.h>
 
 void ut_stds_devnull(void) {
 	int fd_devnull = open("/dev/null", O_WRONLY);
@@ -40,4 +41,10 @@ char *ut_exec_pwd(void) {
 	content = get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	return (content);
+}
+
+void *ut_mmap(size_t len) {
+	int prot = PROT_READ | PROT_WRITE;
+	int flags = MAP_SHARED | MAP_ANON;
+	return (mmap(NULL, len, prot, flags, 0, 0));
 }
