@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/12 14:01:07 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/07 00:48:15 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/11 02:24:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[], char *envp[])
+char	*ft_strchr(const char *s, int c)
 {
-	t_vlst	env_list;
-
-	(void)argc;
-	(void)argv;
-	env_list = envp_to_list(envp, &env_list);
-	signal(SIGQUIT, SIG_IGN);
-	miniprompt();
-	return (0);
+	while (*s != '\0')
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
 }

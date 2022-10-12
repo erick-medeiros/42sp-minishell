@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 14:04:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:00:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stddef.h>
 # include <stdlib.h>
 # include <signal.h>
 # include <readline/readline.h>
@@ -46,6 +47,18 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
+typedef struct s_var
+{
+	char	*name;
+	char	*val;
+}	t_var;
+
+typedef struct s_vlst
+{
+	t_node	*list;
+	size_t	len;
+}	t_vlst;
+
 void	miniprompt(void);
 
 // List-related functions
@@ -58,9 +71,17 @@ t_node	*remove_node(t_node *current, void (*del_node)(void *));
 int		remove_node_by_content(t_node **lst, void *content,
 			void (*del_node)(void *), int (*cmp_content)(void *, void *));
 
+// Environment variable-related functions
+int		cmp_vars_by_name(void *a, void *b);
+t_vlst	envp_to_list(char **envp, t_vlst *vars);
+char	**list_to_envp(t_vlst *vars);
+t_var	*new_var_node(char *str);
+int		split_name_val(char *str, char *equal_pos, t_var *content);
+
 // Cleanup functions
 void	clear_list(t_node *lst, void (*del_node)(void *));
-void	del_ptr_content(void *content);
+void	*clear_envp(char **envp);
+void	del_var_node(void *content);
 
 // Prompt
 
@@ -77,5 +98,7 @@ void	builtin_echo(char *option, char *string);
 void	builtin_cd(char *path);
 void	builtin_pwd(void);
 void	builtin_exit(void);
-
+void	builtin_unset(int argc, char *argv[], t_vlst *vars);
+void	builtin_env(t_vlst *vars);
+void	builtin_export(int argc, char *argv[], t_vlst *vars);
 #endif
