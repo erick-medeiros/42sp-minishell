@@ -8,4 +8,7 @@
 #include "Unity/unity_fixture.h"
 #include "minishell.h"
 
+void test_file_list(void);
+void test_file_prompt(void);
+
 #endif

@@ -1,10 +1,9 @@
 #include "unit_tests.h"
 
-static void runAllTests(void) {
-	RUN_TEST_GROUP(test_prompt);
-	RUN_TEST_GROUP(test_list);
-}
+int main(void) {
+	UNITY_BEGIN();
+	test_file_prompt();
+	test_file_list();
+	return UNITY_END();
 
-int main(int argc, const char *argv[]) {
-	return UnityMain(argc, argv, runAllTests);
 }

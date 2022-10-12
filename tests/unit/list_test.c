@@ -1,11 +1,5 @@
 #include "unit_tests.h"
 
-TEST_GROUP(test_list);
-
-TEST_SETUP(test_list) {}
-
-TEST_TEAR_DOWN(test_list) {}
-
 t_node *lst;
 int *content1;
 int *content2;
@@ -30,7 +24,7 @@ int cmp_int(void *a, void *b) {
 	return (0);
 }
 
-TEST(test_list, create_int_list) {
+void test_create_int_list(void) {
 	alloc_list();
 	add_node(&lst, content1);
 	add_node(&lst, content2);
@@ -38,10 +32,10 @@ TEST(test_list, create_int_list) {
 	TEST_ASSERT_EQUAL_INT(*(int *)lst->next->content, *content2);
 	TEST_ASSERT_EQUAL_INT(*(int *)lst->content, 1);
 	TEST_ASSERT_EQUAL_INT(*(int *)lst->next->content, 2);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST(test_list, find_node_by_content_int_list) {
+void test_find_node_by_content_int_list(void) {
 	int test_val;
 	t_node *cmp_result;
 
@@ -59,54 +53,54 @@ TEST(test_list, find_node_by_content_int_list) {
 	TEST_ASSERT_EQUAL_PTR(cmp_result, lst->next);
 	cmp_result = find_node_by_content(lst, NULL, cmp_int);
 	TEST_ASSERT_EQUAL_PTR(cmp_result, NULL);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST(test_list, remove_last_node_int_list) {
+void test_remove_last_node_int_list(void) {
 	int test_val;
 
 	alloc_list();
 	add_node(&lst, content1);
 	add_node(&lst, content2);
-	test_val = remove_node_by_content(&lst, content2, del_ptr_content, cmp_int);
+	test_val = remove_node_by_content(&lst, content2, free, cmp_int);
 	TEST_ASSERT_EQUAL_INT(test_val, OK);
 	TEST_ASSERT_NOT_EQUAL(lst, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->content, content1);
 	TEST_ASSERT_EQUAL_PTR(lst->next, NULL);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST(test_list, remove_first_node_int_list) {
+void test_remove_first_node_int_list(void) {
 	int test_val;
 
 	alloc_list();
 	add_node(&lst, content1);
 	add_node(&lst, content2);
-	test_val = remove_node_by_content(&lst, content1, del_ptr_content, cmp_int);
+	test_val = remove_node_by_content(&lst, content1, free, cmp_int);
 	TEST_ASSERT_EQUAL_INT(test_val, OK);
 	TEST_ASSERT_NOT_EQUAL(lst, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->content, content2);
 	TEST_ASSERT_EQUAL_PTR(lst->next, NULL);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST(test_list, remove_mid_node_int_list) {
+void test_remove_mid_node_int_list(void) {
 	int test_val;
 
 	alloc_list();
 	add_node(&lst, content1);
 	add_node(&lst, NULL);
 	add_node(&lst, content2);
-	test_val = remove_node_by_content(&lst, NULL, del_ptr_content, cmp_int);
+	test_val = remove_node_by_content(&lst, NULL, free, cmp_int);
 	TEST_ASSERT_EQUAL_INT(test_val, OK);
 	TEST_ASSERT_NOT_EQUAL(lst, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->content, content1);
 	TEST_ASSERT_NOT_EQUAL(lst->next, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->next->content, content2);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST(test_list, change_node_content_int_list) {
+void test_change_node_content_int_list(void) {
 	int test_val;
 	int *new_content;
 
@@ -120,14 +114,14 @@ TEST(test_list, change_node_content_int_list) {
 	TEST_ASSERT_EQUAL_PTR(lst->content, content1);
 	TEST_ASSERT_NOT_EQUAL(lst->next, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->next->content, new_content);
-	clear_list(lst, del_ptr_content);
+	clear_list(lst, free);
 }
 
-TEST_GROUP_RUNNER(test_list) {
-	RUN_TEST_CASE(test_list, create_int_list);
-	RUN_TEST_CASE(test_list, find_node_by_content_int_list);
-	RUN_TEST_CASE(test_list, remove_last_node_int_list);
-	RUN_TEST_CASE(test_list, remove_first_node_int_list);
-	RUN_TEST_CASE(test_list, remove_mid_node_int_list);
-	RUN_TEST_CASE(test_list, change_node_content_int_list);
+void test_file_list(void) {
+	RUN_TEST(test_create_int_list);
+	RUN_TEST(test_find_node_by_content_int_list);
+	RUN_TEST(test_remove_last_node_int_list);
+	RUN_TEST(test_remove_first_node_int_list);
+	RUN_TEST(test_remove_mid_node_int_list);
+	RUN_TEST(test_change_node_content_int_list);
 }
