@@ -15,8 +15,10 @@ RM = rm -fr
 
 FILES = main.c
 FILES += Unity/unity.c
-FILES += prompt.c
+FILES += unit_tests_utils.c
+FILES += prompt_test.c
 FILES += list_test.c
+FILES += builtins_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -38,6 +40,7 @@ $(MINISHELL):
 
 reminishell:
 	make re -C $(MINISHELL_DIR)
+	make re
 
 clean:
 	$(RM) $(OBJS)
@@ -47,4 +50,13 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re reminishell
+leaks:
+	valgrind \
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--suppressions=../readline.supp \
+		--track-fds=yes \
+		--track-origins=yes \
+		./$(NAME)
+
+.PHONY: all clean fclean re reminishell leaks
