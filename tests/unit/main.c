@@ -1,9 +1,18 @@
 #include "unit_tests.h"
 
-int main(void) {
+void file_list_test(void);
+void file_prompt_test(void);
+void file_builtins_test(void);
+
+void setUp(void) {}
+
+void tearDown(void) {}
+
+int main() {
 	UNITY_BEGIN();
-	test_file_prompt();
-	test_file_list();
+	file_prompt_test();
+	file_list_test();
+	file_builtins_test();
 	return UNITY_END();
 
 }
