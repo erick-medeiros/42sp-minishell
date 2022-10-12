@@ -117,7 +117,7 @@ void test_change_node_content_int_list(void) {
 	clear_list(lst, free);
 }
 
-void test_file_list(void) {
+void file_list_test(void) {
 	RUN_TEST(test_create_int_list);
 	RUN_TEST(test_find_node_by_content_int_list);
 	RUN_TEST(test_remove_last_node_int_list);
