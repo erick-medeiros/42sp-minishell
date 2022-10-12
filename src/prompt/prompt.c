@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/01 13:01:05 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:22:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	temp_function(int fd, char *prompt, int debug)
 
 	content = get_content_fd(fd);
 	if (debug == 1)
-		printf("%s\n", content);
+		printf("%s", content);
 	else
 		printf("exec: %s %s\n", prompt, content);
 	free(content);
@@ -95,7 +95,7 @@ void	miniprompt(void)
 			temp_function(fd, prompt, 2);
 		}
 		else
-			printf("exec: %s\n", prompt);
+			builtins(prompt);
 		free(prompt);
 	}
 	free(prompt);

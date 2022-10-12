@@ -3,7 +3,7 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
-REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/
+REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/ obj/builtins/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I$(INC_DIR) -g
@@ -18,11 +18,18 @@ FILES += libft/ft_strlen.c
 FILES += libft/ft_strjoin.c
 FILES += libft/ft_strdup.c
 FILES += libft/ft_strlcpy.c
+FILES += libft/ft_substr.c
+FILES += libft/ft_split.c
 FILES += list/cleanup.c
 FILES += list/list.c
 FILES += prompt/prompt.c
 FILES += prompt/here_doc.c
 FILES += prompt/ends_in_pipe.c
+FILES += builtins/builtins.c
+FILES += builtins/echo.c
+FILES += builtins/cd.c
+FILES += builtins/pwd.c
+FILES += builtins/exit.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -56,9 +63,9 @@ leaks:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell
 
 compile_tests: re
-	make re -C tests/unitary/
+	make re -C tests/unit/
 
 unit_tests:
-	./tests/unitary/run_test.out
+	./tests/unit/run_test.out
 
 .PHONY: all clean fclean re install norm leaks compile_tests unit_tests

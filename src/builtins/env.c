@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/12 14:01:07 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/11 02:39:54 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/12 19:36:00 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	builtin_env(t_vlst *vars)
 {
-	t_vlst	env_list;
+	char	**envp;
 
-	(void)argc;
-	(void)argv;
-	env_list = envp_to_list(envp, &env_list);
-	signal(SIGQUIT, SIG_IGN);
-	miniprompt();
-	return (0);
+	envp = list_to_envp(vars);
+	while (envp)
+		printf("%s\n", *envp++);
+	clear_envp(envp);
 }

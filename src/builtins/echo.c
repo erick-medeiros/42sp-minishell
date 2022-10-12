@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/12 14:01:07 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/06 11:53:37 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/06 13:38:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+void	builtin_echo(char *option, char *string)
 {
-	t_vlst	env_list;
-
-	(void)argc;
-	(void)argv;
-	env_list = envp_to_list(envp, &env_list);
-	signal(SIGQUIT, SIG_IGN);
-	miniprompt();
-	return (0);
+	write(STDOUT, string, ft_strlen(string));
+	if (command_is_equal(option, "-n") == FALSE)
+		write(STDOUT, "\n", 1);
 }
