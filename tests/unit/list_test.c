@@ -103,12 +103,15 @@ void test_remove_mid_node_int_list(void) {
 void test_change_node_content_int_list(void) {
 	int test_val;
 	int *new_content;
+	t_node_funcs	funcs;
 
+	funcs.clear = del_var_node;
+	funcs.cmp = cmp_int;
 	alloc_list();
 	new_content = malloc(sizeof(*new_content));
 	add_node(&lst, content1);
 	add_node(&lst, content2);
-	test_val = change_node_content(lst, content2, new_content, cmp_int);
+	test_val = change_node_content(lst, content2, new_content, &funcs);
 	TEST_ASSERT_EQUAL_INT(test_val, OK);
 	TEST_ASSERT_NOT_EQUAL(lst, NULL);
 	TEST_ASSERT_EQUAL_PTR(lst->content, content1);
