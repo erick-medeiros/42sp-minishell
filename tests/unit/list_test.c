@@ -105,7 +105,7 @@ void test_change_node_content_int_list(void) {
 	int *new_content;
 	t_node_funcs	funcs;
 
-	funcs.clear = del_var_node;
+	funcs.clear = free;
 	funcs.cmp = cmp_int;
 	alloc_list();
 	new_content = malloc(sizeof(*new_content));
