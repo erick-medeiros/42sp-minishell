@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/12 14:00:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/13 23:03:30 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,16 @@ typedef struct s_vlst
 	size_t	len;
 }	t_vlst;
 
-void	miniprompt(void);
+typedef struct s_node_funcs
+{
+	void	(*clear)(void *content);
+	int		(*cmp)(void *, void *);
+}	t_node_funcs;
 
 // List-related functions
 int		add_node(t_node **lst, void *content);
-int		change_node_content(t_node *lst, void *old_content,
-			void *new_content, int (*cmp_content)(void *, void *));
+int	change_node_content(t_node *lst, void *old_content,
+	void *new_content, t_node_funcs *funcs);
 t_node	*find_node_by_content(t_node *lst, void *content,
 			int (*cmp_content)(void *, void *));
 t_node	*remove_node(t_node *current, void (*del_node)(void *));
@@ -73,32 +77,37 @@ int		remove_node_by_content(t_node **lst, void *content,
 
 // Environment variable-related functions
 int		cmp_vars_by_name(void *a, void *b);
-t_vlst	envp_to_list(char **envp, t_vlst *vars);
-char	**list_to_envp(t_vlst *vars);
-t_var	*new_var_node(char *str);
+void	envp_to_list(char **envp, t_vlst *vars);
+char	**list_to_envp(t_vlst *vars, int quote);
+t_var	*new_var_node_from_name_val(char *name, char *val);
+t_var	*new_var_node_from_str(char *str);
 int		split_name_val(char *str, char *equal_pos, t_var *content);
+int		update_var(t_vlst *vars, t_var *content);
 
 // Cleanup functions
-void	clear_list(t_node *lst, void (*del_node)(void *));
 void	*clear_envp(char **envp);
+void	clear_list(t_node *lst, void (*del_node)(void *));
 void	del_var_node(void *content);
 
 // Prompt
 
-int		command_is_equal(char *cmd, char *str);
 int		command_ends_with(char *cmd, char c);
+int		command_is_equal(char *cmd, char *str);
+int		ends_in_pipe(void);
 char	*get_content_fd(int fd);
 int		here_doc(char	*limiter);
-int		ends_in_pipe(void);
+void	miniprompt(t_vlst *vars);
 
 // Builtins
 
-void	builtins(char *prompt);
+void	builtins(char *prompt, t_vlst *vars);
+void	builtin_cd(char *path, t_vlst *vars);
 void	builtin_echo(char *option, char *string);
-void	builtin_cd(char *path);
-void	builtin_pwd(void);
-void	builtin_exit(void);
-void	builtin_unset(int argc, char *argv[], t_vlst *vars);
 void	builtin_env(t_vlst *vars);
+void	builtin_exit(void);
 void	builtin_export(int argc, char *argv[], t_vlst *vars);
+void	builtin_pwd(void);
+void	builtin_unset(int argc, char *argv[], t_vlst *vars);
+char	*get_pwd(void);
+
 #endif

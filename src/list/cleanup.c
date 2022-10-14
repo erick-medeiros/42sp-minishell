@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/12 13:53:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/13 01:32:36 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	clear_list(t_node *lst, void (*del_node)(void *))
 
 void	*clear_envp(char **envp)
 {
-	char	*tmp;
+	char	**tmp;
 
 	if (!envp)
 		return (NULL);
-	tmp = *envp;
-	while (tmp)
+	tmp = envp;
+	while (*tmp)
 	{
-		free(tmp);
+		free(*tmp);
 		tmp++;
 	}
 	free(envp);

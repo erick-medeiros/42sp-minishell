@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:31:47 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/03 21:23:14 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/13 23:15:57 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ t_node	*find_node_by_content(t_node *lst, void *content,
 }
 
 int	change_node_content(t_node *lst, void *old_content,
-	void *new_content, int (*cmp_content)(void *, void *))
+	void *new_content, t_node_funcs *funcs)
 {
 	t_node	*found;
 
-	if (!lst || !cmp_content)
+	if (!lst || !funcs->cmp)
 		return (ERR_NOT_FOUND);
-	found = find_node_by_content(lst, old_content, cmp_content);
+	found = find_node_by_content(lst, old_content, funcs->cmp);
 	if (!found)
 		return (ERR_NOT_FOUND);
-	free(found->content);
+	funcs->clear(found->content);
 	found->content = new_content;
 	return (OK);
 }

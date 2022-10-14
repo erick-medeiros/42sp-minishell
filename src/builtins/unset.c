@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 01:10:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/12 12:04:33 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/13 22:15:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	builtin_unset(int argc, char *argv[], t_vlst *vars)
 		return ;
 	while (--argc > 0)
 	{
-		content = new_var_node(argv[argc]);
-		removed = remove_node_by_content(&(vars->list), &content,
+		content = new_var_node_from_name_val(argv[argc], "");
+		removed = remove_node_by_content(&(vars->list), content,
 				del_var_node, cmp_vars_by_name);
 		if (removed == OK)
 			vars->len--;

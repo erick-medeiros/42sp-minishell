@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 02:39:54 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/13 14:18:29 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/14 00:42:35 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/14 00:46:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	builtin_env(t_vlst *vars)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	**envp;
-	char	**tmp;
-
-	envp = list_to_envp(vars, 0);
-	tmp = envp;
-	while (*envp)
-		printf("%s\n", *envp++);
-	clear_envp(tmp);
+	while (*s1 == *s2 && *s1 != '\0')
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
