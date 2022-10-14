@@ -60,3 +60,6 @@ dkms.conf
 
 # minishell
 minishell
+
+# gdb
+.gdb_history
