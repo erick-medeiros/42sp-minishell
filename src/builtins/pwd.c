@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:56 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 14:06:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:38:58 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ void	builtin_pwd(void)
 {
 	char	*retptr;
 
+	retptr = get_pwd();
+	if (retptr == NULL)
+		return ;
+	write(STDOUT, retptr, ft_strlen(retptr));
+	write(STDOUT, "\n", 1);
+	free(retptr);
+}
+
+char	*get_pwd(void)
+{
+	char	*retptr;
+
 	retptr = getcwd(NULL, 1024);
 	if (retptr == NULL)
 	{
@@ -26,8 +38,7 @@ void	builtin_pwd(void)
 			printf("Error: path max buffer\n");
 		else if (errno == ENOMEM)
 			printf("Error: memory cannot be allocated\n");
+		return (NULL);
 	}
-	write(STDOUT, retptr, ft_strlen(retptr));
-	write(STDOUT, "\n", 1);
-	free(retptr);
+	return (retptr);
 }

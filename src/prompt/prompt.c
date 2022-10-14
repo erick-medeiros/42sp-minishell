@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 14:22:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:41:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	temp_function(int fd, char *prompt, int debug)
 	close(fd);
 }
 
-void	miniprompt(void)
+void	miniprompt(t_vlst *vars)
 {
 	char	*prompt;
 	int		fd;
@@ -95,7 +95,7 @@ void	miniprompt(void)
 			temp_function(fd, prompt, 2);
 		}
 		else
-			builtins(prompt);
+			builtins(prompt, vars);
 		free(prompt);
 	}
 	free(prompt);

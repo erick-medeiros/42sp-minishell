@@ -15,6 +15,7 @@ FILES = main.c
 FILES += libft/ft_math.c
 FILES += libft/ft_split.c
 FILES += libft/ft_strchr.c
+FILES += libft/ft_strcmp.c
 FILES += libft/ft_strdup.c
 FILES += libft/ft_strjoin.c
 FILES += libft/ft_strlcpy.c
@@ -22,7 +23,8 @@ FILES += libft/ft_strlen.c
 FILES += libft/ft_strncmp.c
 FILES += libft/ft_substr.c
 FILES += list/cleanup.c
-FILES += list/environment.c
+FILES += list/env_conv.c
+FILES += list/env_utils.c
 FILES += list/list.c
 FILES += prompt/ends_in_pipe.c
 FILES += prompt/here_doc.c
@@ -50,7 +52,7 @@ $(NAME): $(REQUIRED_DIRS) $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ_DIR)*
 
 fclean: clean
 	$(RM) $(NAME)
