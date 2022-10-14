@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/13 23:03:30 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/14 01:48:17 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ typedef struct s_node_funcs
 
 // List-related functions
 int		add_node(t_node **lst, void *content);
-int	change_node_content(t_node *lst, void *old_content,
-	void *new_content, t_node_funcs *funcs);
+int		change_node_content(t_node *lst, void *old_content,
+			void *new_content, t_node_funcs *funcs);
 t_node	*find_node_by_content(t_node *lst, void *content,
 			int (*cmp_content)(void *, void *));
 t_node	*remove_node(t_node *current, void (*del_node)(void *));

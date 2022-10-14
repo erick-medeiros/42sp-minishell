@@ -6,17 +6,17 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/14 01:11:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/14 01:47:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stddef.h>
 
-static void	change_or_create_var(t_vlst *vars, char *str);
-static void	print_sorted_vars(t_vlst *vars, char *prefix);
-static size_t	partition(char** envp, size_t start_idx, size_t end_idx);
-static void	quicksort(char** envp, size_t start_idx, size_t end_idx);
+static void		change_or_create_var(t_vlst *vars, char *str);
+static void		print_sorted_vars(t_vlst *vars, char *prefix);
+static size_t	partition(char **envp, size_t start_idx, size_t end_idx);
+static void		quicksort(char **envp, size_t start_idx, size_t end_idx);
 
 // TODO: sanitize args
 void	builtin_export(int argc, char *argv[], t_vlst *vars)
@@ -67,7 +67,7 @@ static void	change_or_create_var(t_vlst *vars, char *str)
 	}
 }
 
-static size_t	partition(char** envp, size_t start_idx, size_t end_idx)
+static size_t	partition(char **envp, size_t start_idx, size_t end_idx)
 {
 	char	*pivot;
 	char	*tmp;
@@ -94,7 +94,7 @@ static size_t	partition(char** envp, size_t start_idx, size_t end_idx)
 	return (i);
 }
 
-static void	quicksort(char** envp, size_t start_idx, size_t end_idx)
+static void	quicksort(char **envp, size_t start_idx, size_t end_idx)
 {
 	size_t	pivot_idx;
 

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 00:03:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/13 23:15:38 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/14 01:47:49 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	update_var(t_vlst *vars, t_var *content)
 	funcs.clear = del_var_node;
 	funcs.cmp = cmp_vars_by_name;
 	if (!vars || !content)
-			return (ERR_NOT_FOUND);
+		return (ERR_NOT_FOUND);
 	if (change_node_content(vars->list, content,
 			content, &funcs))
 	{
