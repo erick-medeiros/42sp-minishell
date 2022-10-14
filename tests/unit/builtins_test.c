@@ -41,7 +41,10 @@ void test_builtin_cd(void) {
 	char *current_dir;
 	int status;
 	int len;
+	t_vlst vars;
 
+	vars.list = NULL;
+	vars.len = 0;
 	current_dir = ut_exec_pwd();
 	len = strlen(current_dir) + strlen("./Unity\n") + 1;
 	content = ut_mmap(len);
@@ -50,11 +53,12 @@ void test_builtin_cd(void) {
 		TEST_IGNORE_MESSAGE("Error fork");
 	else if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd("./Unity", NULL);
+		builtin_cd("./Unity", &vars);
 		char *new_dir = ut_exec_pwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);
 		free(current_dir);
+		clear_list(vars.list, del_var_node);
 		exit(0);
 	} else {
 		wait(&status);
