@@ -6,11 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/13 13:41:25 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:12:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <readline/history.h>
 
 int	command_is_equal(char *cmd, char *str)
 {
@@ -96,6 +97,7 @@ void	miniprompt(t_vlst *vars)
 		}
 		else
 			builtins(prompt, vars);
+		add_history(prompt);
 		free(prompt);
 	}
 	free(prompt);
