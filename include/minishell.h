@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 14:04:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:42:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <errno.h>
 
 # include "libft.h"
+
+#include "architecture.h"
 
 # define STDIN 0
 # define STDOUT 1
@@ -46,7 +48,7 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
-void	miniprompt(void);
+void	miniprompt(t_minishell *minishell);
 
 // List-related functions
 int		add_node(t_node **lst, void *content);

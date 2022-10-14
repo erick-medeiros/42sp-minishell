@@ -6,10 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 14:22:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/14 20:00:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "architecture.h"
 #include "minishell.h"
 
 int	command_is_equal(char *cmd, char *str)
@@ -74,28 +75,59 @@ void	temp_function(int fd, char *prompt, int debug)
 	close(fd);
 }
 
-void	miniprompt(void)
+void	temp_function2(char *prompt)
+{
+	char	**list;
+	int		i;
+
+	list = ft_split_cmd(prompt, ' ');
+	i = 0;
+	while (list && list[i])
+	{
+		printf("%s ", list[i]);
+		++i;
+	}
+	printf("\n");
+}
+
+void	debug_token(t_minishell *minishell)
+{
+	t_node	*current;
+
+	current = minishell->token_list;
+	while (current)
+	{
+		printf("%s\n", (char *)current->content);
+		current = current->next;
+	}
+}
+
+void	miniprompt(t_minishell *minishell)
 {
 	char	*prompt;
-	int		fd;
+	// int		fd;
 
 	while (1)
 	{
 		prompt = readline(PROMPT_STRING);
-		if (!prompt || command_is_equal(prompt, "exit"))
-			break ;
-		if (command_is_equal(prompt, "here_doc"))
-		{
-			fd = here_doc("EOF");
-			temp_function(fd, prompt, 1);
-		}
-		else if (command_ends_with(prompt, '|'))
-		{
-			fd = ends_in_pipe();
-			temp_function(fd, prompt, 2);
-		}
-		else
-			builtins(prompt);
+		minishell->token_list = lexer(prompt);
+		//debug_token(minishell);
+		parser(minishell);
+		executor(minishell);
+		// if (!prompt || command_is_equal(prompt, "exit"))
+		// 	break ;
+		// if (command_is_equal(prompt, "here_doc"))
+		// {
+		// 	fd = here_doc("EOF");
+		// 	temp_function(fd, prompt, 1);
+		// }
+		// else if (command_ends_with(prompt, '|'))
+		// {
+		// 	fd = ends_in_pipe();
+		// 	temp_function(fd, prompt, 2);
+		// }
+		// else
+		// 	builtins(prompt);
 		free(prompt);
 	}
 	free(prompt);

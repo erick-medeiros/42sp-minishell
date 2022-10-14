@@ -3,7 +3,6 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
-REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/ obj/builtins/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -I$(INC_DIR) -g
@@ -20,6 +19,7 @@ FILES += libft/ft_strdup.c
 FILES += libft/ft_strlcpy.c
 FILES += libft/ft_substr.c
 FILES += libft/ft_split.c
+FILES += libft/ft_split_cmd.c
 FILES += list/cleanup.c
 FILES += list/list.c
 FILES += prompt/prompt.c
@@ -30,8 +30,23 @@ FILES += builtins/echo.c
 FILES += builtins/cd.c
 FILES += builtins/pwd.c
 FILES += builtins/exit.c
+FILES += lexer/lexer.c
+FILES += parser/parser.c
+FILES += expansor/expansor.c
+FILES += executor/executor.c
+
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
+
+REQUIRED_DIRS = obj/
+REQUIRED_DIRS += obj/libft/
+REQUIRED_DIRS += obj/prompt/
+REQUIRED_DIRS += obj/list/
+REQUIRED_DIRS += obj/builtins/
+REQUIRED_DIRS += obj/lexer/
+REQUIRED_DIRS += obj/parser/
+REQUIRED_DIRS += obj/expansor/
+REQUIRED_DIRS += obj/executor/
 
 all: $(NAME)
 

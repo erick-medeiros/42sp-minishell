@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 19:59:49 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/14 20:00:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char **envp)
+t_node	*lexer(char *prompt)
 {
-	t_minishell minishell;
+	char	**cmd;
+	// size_t	len;
+	size_t	i;
+	t_node *list;
 
-	(void) argc;
-	(void) argv;
-	minishell.envp = envp;
-	signal(SIGQUIT, SIG_IGN);
-	miniprompt(&minishell);
-	return (0);
+	// len = ft_split_cmd_count(prompt, ' ');
+	cmd = ft_split_cmd(prompt, ' ');
+	list = NULL;
+	i = 0;
+	while (cmd[i])
+	{
+		add_node(&list, ft_strdup(cmd[i]));
+		free(cmd[i]);
+		++i;
+	}
+	free(cmd);
+	return (list);
 }
