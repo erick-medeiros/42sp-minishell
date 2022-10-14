@@ -5,6 +5,8 @@ MIN_SRC_DIR = $(MINISHELL_DIR)src/
 MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
 MIN_INC_DIR = $(MINISHELL_DIR)include/
 MINISHELL = $(MINISHELL_DIR)minishell
+MIN_SRC_FILES=$(filter-out $(MIN_SRC_DIR)main.c, $(wildcard $(MIN_SRC_DIR)*/*.c $(MIN_SRC_DIR)*.c))
+MIN_OBJ_FILES=$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o))
 OBJ_DIR = obj/
 REQUIRED_DIRS = obj/ obj/Unity/
 
@@ -19,6 +21,7 @@ FILES += unit_tests_utils.c
 FILES += prompt_test.c
 FILES += list_test.c
 FILES += builtins_test.c
+FILES += environment_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -30,20 +33,20 @@ $(REQUIRED_DIRS):
 $(OBJ_DIR)%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(REQUIRED_DIRS) $(MINISHELL) $(OBJS)
+$(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(MINISHELL)
+	make -C $(MINISHELL_DIR)
 	gcc $(CFLAGS) $(OBJS) \
 	$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o)) \
 	-o $(NAME) $(LIBFLAGS)
 
-$(MINISHELL):
-	make -C $(MINISHELL_DIR)
+
 
 reminishell:
 	make re -C $(MINISHELL_DIR)
 	make re
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJ)
 
 fclean:	clean
 	$(RM) $(NAME)

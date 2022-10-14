@@ -50,7 +50,7 @@ void test_builtin_cd(void) {
 		TEST_IGNORE_MESSAGE("Error fork");
 	else if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd("./Unity");
+		builtin_cd("./Unity", NULL);
 		char *new_dir = ut_exec_pwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);
