@@ -6,17 +6,17 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 19:42:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:31:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ARCHITECTURE_H
 # define ARCHITECTURE_H
 
-#include <stddef.h>
-#include <sys/types.h>
+# include <stddef.h>
+# include <sys/types.h>
 
-typedef struct s_node t_node;
+typedef struct s_node	t_node;
 
 enum e_logical_operator {
 	LOGICAL_COMMAND,

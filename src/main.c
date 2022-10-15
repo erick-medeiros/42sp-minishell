@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 19:59:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:32:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int argc, char *argv[], char **envp)
 {
-	t_minishell minishell;
+	t_minishell	minishell;
 
 	(void) argc;
 	(void) argv;

@@ -6,7 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/13 10:12:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:40:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void	expansor(void)
+{
+	printf("%s", "");
+}

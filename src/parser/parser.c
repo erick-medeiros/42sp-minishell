@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 19:54:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:40:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ enum e_steps {
 
 t_node	*main_pipeline(t_minishell *minishell)
 {
-	t_node	*list;
-	t_node	*token;
-	t_command *cmd;
-	int	steps;
+	t_node		*list;
+	t_node		*token;
+	t_command	*cmd;
+	int			steps;
 
 	list = NULL;
 	token = minishell->token_list;

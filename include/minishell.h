@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 19:42:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:30:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@
 # include <errno.h>
 
 # include "libft.h"
-
-#include "architecture.h"
+# include "architecture.h"
 
 # define STDIN 0
 # define STDOUT 1

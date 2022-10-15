@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 20:00:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:39:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,32 +102,37 @@ void	debug_token(t_minishell *minishell)
 	}
 }
 
+void	temp_call(char *prompt)
+{
+	int		fd;
+
+	if (command_is_equal(prompt, "here_doc"))
+	{
+		fd = here_doc("EOF");
+		temp_function(fd, prompt, 1);
+	}
+	else if (command_ends_with(prompt, '|'))
+	{
+		fd = ends_in_pipe();
+		temp_function(fd, prompt, 2);
+	}
+	else
+		builtins(prompt);
+}
+
 void	miniprompt(t_minishell *minishell)
 {
 	char	*prompt;
-	// int		fd;
 
 	while (1)
 	{
 		prompt = readline(PROMPT_STRING);
+		if (!prompt || command_is_equal(prompt, "exit"))
+			break ;
 		minishell->token_list = lexer(prompt);
-		//debug_token(minishell);
+		debug_token(minishell);
 		parser(minishell);
 		executor(minishell);
-		// if (!prompt || command_is_equal(prompt, "exit"))
-		// 	break ;
-		// if (command_is_equal(prompt, "here_doc"))
-		// {
-		// 	fd = here_doc("EOF");
-		// 	temp_function(fd, prompt, 1);
-		// }
-		// else if (command_ends_with(prompt, '|'))
-		// {
-		// 	fd = ends_in_pipe();
-		// 	temp_function(fd, prompt, 2);
-		// }
-		// else
-		// 	builtins(prompt);
 		free(prompt);
 	}
 	free(prompt);
