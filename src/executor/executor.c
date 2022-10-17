@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/15 15:44:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:38:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@
 void	execute_commands(t_minishell *minishell, t_node *commands);
 void	child_process(t_minishell *minishell, t_command *command);
 
-static char	*get_runpath(char **envp, char *cmd_exec)
-{
-	char	*runpath;
+	/*
+	char **envp,
 	char	**paths;
 	char	*temp;
 	int		i;
@@ -54,6 +53,12 @@ static char	*get_runpath(char **envp, char *cmd_exec)
 		free(runpath);
 		paths++;
 	}
+	*/
+
+static char	*get_runpath(char *cmd_exec)
+{
+	char	*runpath;
+
 	runpath = ft_strjoin("/usr/bin/", cmd_exec);
 	if (access(runpath, F_OK | X_OK) == 0)
 		return (ft_strdup(runpath));
@@ -76,6 +81,38 @@ void	executor(t_minishell *minishell)
 	}
 }
 
+void	free_command(void *content)
+{
+	t_command	*cmd;
+	int			i;
+
+	cmd = (t_command *) content;
+	i = 0;
+	while (cmd->args && cmd->args[i])
+	{
+		free(cmd->args[i]);
+		++i;
+	}
+	free(cmd->args);
+	free(cmd->pathname);
+	free(cmd);
+}
+
+void	free_minishell(t_minishell *minishell)
+{
+	int	i;
+
+	i = 0;
+	while (minishell->command_table && minishell->command_table[i])
+	{
+		clear_list(minishell->command_table[i]->commands, free_command);
+		free(minishell->command_table[i]);
+		++i;
+	}
+	free(minishell->command_table);
+	clear_list(minishell->token_list, free);
+}
+
 void	execute_commands(t_minishell *minishell, t_node *commands)
 {
 	t_node		*node;
@@ -85,6 +122,11 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 	while (node)
 	{
 		cmd = (t_command *) node->content;
+		if (ft_strncmp(cmd->args[0], "exit", 4) == 0)
+		{
+			free_minishell(minishell);
+			builtin_exit();
+		}
 		cmd->pid = fork();
 		if (cmd->pid < 0)
 			write(STDERR, "Error", 5);
@@ -110,9 +152,12 @@ void	child_process(t_minishell *minishell, t_command *command)
 {
 	char	*new_runpath;
 
-	new_runpath = get_runpath(minishell->envp, command->pathname);
+	new_runpath = get_runpath(command->pathname);
 	if (new_runpath == NULL)
+	{
+		free_minishell(minishell);
 		exit(0);
+	}
 	if (execve(new_runpath, command->args, minishell->envp) == -1)
 		write(STDERR, "Error", 5);
 }

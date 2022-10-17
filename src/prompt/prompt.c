@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/15 15:39:11 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:44:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,13 +127,12 @@ void	miniprompt(t_minishell *minishell)
 	while (1)
 	{
 		prompt = readline(PROMPT_STRING);
-		if (!prompt || command_is_equal(prompt, "exit"))
+		if (!prompt)
 			break ;
 		minishell->token_list = lexer(prompt);
-		debug_token(minishell);
+		free(prompt);
 		parser(minishell);
 		executor(minishell);
-		free(prompt);
+		free_minishell(minishell);
 	}
-	free(prompt);
 }

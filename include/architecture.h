@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/15 15:31:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:18:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,6 @@ typedef struct s_minishell
 t_node	*lexer(char *prompt);
 void	parser(t_minishell *minishell);
 void	executor(t_minishell *minishell);
+void	free_minishell(t_minishell *minishell);
 
 #endif

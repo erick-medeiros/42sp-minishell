@@ -6,11 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/15 15:40:05 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/17 19:14:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "architecture.h"
+#include "libft.h"
 #include "minishell.h"
 #include <stdlib.h>
 
@@ -46,17 +47,20 @@ t_node	*main_pipeline(t_minishell *minishell)
 		if (steps == PARSER_STEP_PATH)
 		{
 			cmd = malloc(sizeof(t_command));
-			cmd->pathname = (char *)token->content;
-			cmd->args = malloc(sizeof(char *) * 1);
-			cmd->args[0] = NULL;
+			cmd->pathname = ft_strdup((char *)token->content);
+			cmd->args = malloc(sizeof(char *) * 2);
+			cmd->args[0] = ft_strdup(cmd->pathname);
+			cmd->args[1] = NULL;
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)
 		{
+			free(cmd->args[0]);
+			free(cmd->args[1]);
 			free(cmd->args);
 			cmd->args = malloc(sizeof(char *) * 3);
-			cmd->args[0] = cmd->pathname;
-			cmd->args[1] = (char *)token->content;
+			cmd->args[0] = ft_strdup(cmd->pathname);
+			cmd->args[1] = ft_strdup((char *)token->content);
 			cmd->args[2] = NULL;
 		}
 		token = token->next;
