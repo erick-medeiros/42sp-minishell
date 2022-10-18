@@ -1,12 +1,17 @@
 NAME = run.out
 MINISHELL = ../../minishell
+REQUIRED_DIRS = logs
+OBJ = get_next_line.o main_leak_test.o
 
 all: $(NAME)
+
+$(REQUIRED_DIRS):
+	@mkdir -p $@
 
 %.o: %.c
 	cc -c $< -o $@
 
-$(NAME): $(MINISHELL) get_next_line.o main_leak_test.o
+$(NAME): $(REQUIRED_DIRS) $(MINISHELL) $(OBJ)
 	cc *.o -o $(NAME)
 
 clean:
