@@ -6,8 +6,9 @@ SRC_DIR = src/
 REQUIRED_DIRS = obj/ obj/libft/ obj/prompt/ obj/list/ obj/builtins/
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -I$(INC_DIR) -g
+CFLAGS += -I$(INC_DIR)
 LIBFLAGS = -lreadline
+DEBUGFLAGS = -g
 CC = cc
 RM = rm -fr
 
@@ -46,10 +47,10 @@ $(REQUIRED_DIRS):
 	@mkdir -p $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c $< -o $@
 
 $(NAME): $(REQUIRED_DIRS) $(OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
+	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
 	$(RM) $(OBJ_DIR)*
