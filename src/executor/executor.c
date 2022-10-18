@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 13:49:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:21:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	executor(t_minishell *minishell)
 	t_node		*node;
 	t_pipeline	*pipeline;
 
-	node = minishell->command_table;
+	node = minishell->pipelines;
 	while (node)
 	{
 		pipeline = (t_pipeline *) node->content;
-		if (pipeline->logical_operator == LOGICAL_MAIN)
+		if (pipeline->operator == OPERATOR_MAIN)
 			execute_commands(minishell, pipeline->commands);
 		node = node->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 13:49:14 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:25:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	parser(t_minishell *minishell)
 	list = NULL;
 	pipeline = malloc(sizeof(t_pipeline));
 	pipeline->commands = main_pipeline(minishell);
-	pipeline->logical_operator = LOGICAL_MAIN;
+	pipeline->operator = OPERATOR_MAIN;
 	add_node(&list, pipeline);
-	minishell->command_table = list;
+	minishell->pipelines = list;
 }
 
 enum e_steps {

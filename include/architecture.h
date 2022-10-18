@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 11:33:36 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:23:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 typedef struct s_node	t_node;
 
-enum e_logical_operator {
-	LOGICAL_MAIN,
-	LOGICAL_PRIORITY,
-	LOGICAL_AND,
-	LOGICAL_OR
+enum e_operators {
+	OPERATOR_MAIN,
+	OPERATOR_PRIORITY,
+	OPERATOR_AND,
+	OPERATOR_OR
 };
 
 typedef struct s_command
@@ -38,16 +38,16 @@ typedef struct s_command
 
 typedef struct s_pipeline
 {
-	t_node	*commands;
-	int		logical_operator;
+	enum e_operators	operator;
+	t_node				*commands;
 }	t_pipeline;
 
 typedef struct s_minishell
 {
-	t_node		*env_list;
-	t_node		*token_list;
-	t_node		*command_table;
-	char		**envp;
+	t_node	*env_list;
+	t_node	*token_list;
+	t_node	*pipelines;
+	char	**envp;
 }	t_minishell;
 
 t_node	*lexer(char *prompt);
