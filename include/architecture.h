@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/17 19:18:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 11:33:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 typedef struct s_node	t_node;
 
 enum e_logical_operator {
-	LOGICAL_COMMAND,
+	LOGICAL_MAIN,
+	LOGICAL_PRIORITY,
 	LOGICAL_AND,
 	LOGICAL_OR
 };
@@ -45,7 +46,7 @@ typedef struct s_minishell
 {
 	t_node		*env_list;
 	t_node		*token_list;
-	t_pipeline	**command_table;
+	t_node		*command_table;
 	char		**envp;
 }	t_minishell;
 

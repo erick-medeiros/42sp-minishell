@@ -34,6 +34,7 @@ FILES += lexer/lexer.c
 FILES += parser/parser.c
 FILES += expansor/expansor.c
 FILES += executor/executor.c
+FILES += free/free.c
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
@@ -47,6 +48,7 @@ REQUIRED_DIRS += obj/lexer/
 REQUIRED_DIRS += obj/parser/
 REQUIRED_DIRS += obj/expansor/
 REQUIRED_DIRS += obj/executor/
+REQUIRED_DIRS += obj/free/
 
 all: $(NAME)
 

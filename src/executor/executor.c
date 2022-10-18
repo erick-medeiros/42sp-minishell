@@ -6,14 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/17 19:38:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:49:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "architecture.h"
 #include "minishell.h"
-#include <stdio.h>
-#include <unistd.h>
 
 void	execute_commands(t_minishell *minishell, t_node *commands);
 void	child_process(t_minishell *minishell, t_command *command);
@@ -70,47 +67,17 @@ static char	*get_runpath(char *cmd_exec)
 
 void	executor(t_minishell *minishell)
 {
-	int	i;
+	t_node		*node;
+	t_pipeline	*pipeline;
 
-	i = 0;
-	while (minishell->command_table[i] != NULL)
+	node = minishell->command_table;
+	while (node)
 	{
-		if (minishell->command_table[i]->logical_operator == LOGICAL_COMMAND)
-			execute_commands(minishell, minishell->command_table[i]->commands);
-		++i;
+		pipeline = (t_pipeline *) node->content;
+		if (pipeline->logical_operator == LOGICAL_MAIN)
+			execute_commands(minishell, pipeline->commands);
+		node = node->next;
 	}
-}
-
-void	free_command(void *content)
-{
-	t_command	*cmd;
-	int			i;
-
-	cmd = (t_command *) content;
-	i = 0;
-	while (cmd->args && cmd->args[i])
-	{
-		free(cmd->args[i]);
-		++i;
-	}
-	free(cmd->args);
-	free(cmd->pathname);
-	free(cmd);
-}
-
-void	free_minishell(t_minishell *minishell)
-{
-	int	i;
-
-	i = 0;
-	while (minishell->command_table && minishell->command_table[i])
-	{
-		clear_list(minishell->command_table[i]->commands, free_command);
-		free(minishell->command_table[i]);
-		++i;
-	}
-	free(minishell->command_table);
-	clear_list(minishell->token_list, free);
 }
 
 void	execute_commands(t_minishell *minishell, t_node *commands)

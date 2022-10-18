@@ -6,11 +6,10 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/17 19:44:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:49:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "architecture.h"
 #include "minishell.h"
 
 int	command_is_equal(char *cmd, char *str)

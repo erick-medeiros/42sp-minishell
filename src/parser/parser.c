@@ -6,24 +6,25 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/17 19:14:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:49:14 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "architecture.h"
-#include "libft.h"
 #include "minishell.h"
-#include <stdlib.h>
 
 t_node	*main_pipeline(t_minishell *minishell);
 
 void	parser(t_minishell *minishell)
 {
-	minishell->command_table = malloc(sizeof(t_pipeline *) * 2);
-	minishell->command_table[0] = malloc(sizeof(t_pipeline));
-	minishell->command_table[0]->commands = main_pipeline(minishell);
-	minishell->command_table[0]->logical_operator = LOGICAL_COMMAND;
-	minishell->command_table[1] = NULL;
+	t_node		*list;
+	t_pipeline	*pipeline;
+
+	list = NULL;
+	pipeline = malloc(sizeof(t_pipeline));
+	pipeline->commands = main_pipeline(minishell);
+	pipeline->logical_operator = LOGICAL_MAIN;
+	add_node(&list, pipeline);
+	minishell->command_table = list;
 }
 
 enum e_steps {
