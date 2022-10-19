@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 01:48:17 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/19 12:00:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <errno.h>
 
 # include "libft.h"
+# include "architecture.h"
 
 # define STDIN 0
 # define STDOUT 1
@@ -40,30 +41,6 @@
 # define OK 0
 # define ERR_ALLOC 1
 # define ERR_NOT_FOUND 2
-
-typedef struct s_node
-{
-	void			*content;
-	struct s_node	*next;
-}	t_node;
-
-typedef struct s_var
-{
-	char	*name;
-	char	*val;
-}	t_var;
-
-typedef struct s_vlst
-{
-	t_node	*list;
-	size_t	len;
-}	t_vlst;
-
-typedef struct s_node_funcs
-{
-	void	(*clear)(void *content);
-	int		(*cmp)(void *, void *);
-}	t_node_funcs;
 
 // List-related functions
 int		add_node(t_node **lst, void *content);
@@ -96,7 +73,7 @@ int		command_is_equal(char *cmd, char *str);
 int		ends_in_pipe(void);
 char	*get_content_fd(int fd);
 int		here_doc(char	*limiter);
-void	miniprompt(t_vlst *vars);
+void	miniprompt(t_minishell *minishell);
 
 // Builtins
 

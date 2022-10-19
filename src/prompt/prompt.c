@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/14 18:12:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:56:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug.h"
 #include "minishell.h"
-#include <readline/history.h>
 
 int	command_is_equal(char *cmd, char *str)
 {
@@ -75,30 +75,56 @@ void	temp_function(int fd, char *prompt, int debug)
 	close(fd);
 }
 
-void	miniprompt(t_vlst *vars)
+
+void	temp_function2(char *prompt)
+{
+	char	**list;
+	int		i;
+
+	list = ft_split_cmd(prompt, ' ');
+	i = 0;
+	while (list && list[i])
+	{
+		printf("%s ", list[i]);
+		++i;
+	}
+	printf("\n");
+}
+
+void	temp_call(char *prompt, t_vlst *vars)
+{
+	int		fd;
+
+	if (command_is_equal(prompt, "here_doc"))
+	{
+		fd = here_doc("EOF");
+		temp_function(fd, prompt, 1);
+	}
+	else if (command_ends_with(prompt, '|'))
+	{
+		fd = ends_in_pipe();
+		temp_function(fd, prompt, 2);
+	}
+	else
+		builtins(prompt, vars);
+}
+
+void	miniprompt(t_minishell *minishell)
 {
 	char	*prompt;
-	int		fd;
 
 	while (1)
 	{
 		prompt = readline(PROMPT_STRING);
-		if (!prompt || command_is_equal(prompt, "exit"))
+		if (!prompt)
 			break ;
-		if (command_is_equal(prompt, "here_doc"))
-		{
-			fd = here_doc("EOF");
-			temp_function(fd, prompt, 1);
-		}
-		else if (command_ends_with(prompt, '|'))
-		{
-			fd = ends_in_pipe();
-			temp_function(fd, prompt, 2);
-		}
-		else
-			builtins(prompt, vars);
 		add_history(prompt);
+		minishell->token_list = lexer(prompt);
+		debug_token(minishell);
 		free(prompt);
+		parser(minishell);
+		executor(minishell);
+		free_minishell(minishell);
 	}
 	free(prompt);
 }
