@@ -5,12 +5,13 @@ OBJ_DIR = obj/
 SRC_DIR = src/
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -I$(INC_DIR) -g
+CFLAGS += -I$(INC_DIR) -Isrc/debug/ -g
 LIBFLAGS = -lreadline
 CC = cc
 RM = rm -fr
 
 FILES = main.c
+FILES += debug/debug.c
 FILES += libft/ft_strncmp.c
 FILES += libft/ft_math.c
 FILES += libft/ft_strlen.c
@@ -39,16 +40,10 @@ FILES += free/free.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
-REQUIRED_DIRS = obj/
-REQUIRED_DIRS += obj/libft/
-REQUIRED_DIRS += obj/prompt/
-REQUIRED_DIRS += obj/list/
-REQUIRED_DIRS += obj/builtins/
-REQUIRED_DIRS += obj/lexer/
-REQUIRED_DIRS += obj/parser/
-REQUIRED_DIRS += obj/expansor/
-REQUIRED_DIRS += obj/executor/
-REQUIRED_DIRS += obj/free/
+MODULES = libft/ prompt/ list/ builtins/ lexer/
+MODULES += parser/ expansor/ executor/ free/ debug/
+
+REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
 
 all: $(NAME)
 
