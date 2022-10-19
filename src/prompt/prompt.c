@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 11:56:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:34:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,49 +61,19 @@ char	*get_content_fd(int fd)
 	return (content);
 }
 
-// debug return heredoc and endsinpipe
-void	temp_function(int fd, char *prompt, int debug)
-{
-	char	*content;
-
-	content = get_content_fd(fd);
-	if (debug == 1)
-		printf("%s", content);
-	else
-		printf("exec: %s %s\n", prompt, content);
-	free(content);
-	close(fd);
-}
-
-
-void	temp_function2(char *prompt)
-{
-	char	**list;
-	int		i;
-
-	list = ft_split_cmd(prompt, ' ');
-	i = 0;
-	while (list && list[i])
-	{
-		printf("%s ", list[i]);
-		++i;
-	}
-	printf("\n");
-}
-
 void	temp_call(char *prompt, t_vlst *vars)
 {
-	int		fd;
+	int	fd;
 
 	if (command_is_equal(prompt, "here_doc"))
 	{
 		fd = here_doc("EOF");
-		temp_function(fd, prompt, 1);
+		debug_content_fd(fd, prompt, 1);
 	}
 	else if (command_ends_with(prompt, '|'))
 	{
 		fd = ends_in_pipe();
-		temp_function(fd, prompt, 2);
+		debug_content_fd(fd, prompt, 2);
 	}
 	else
 		builtins(prompt, vars);
