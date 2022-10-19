@@ -6,10 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 13:49:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:03:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "debug.h"
 #include "minishell.h"
 
 int	command_is_equal(char *cmd, char *str)
@@ -89,18 +90,6 @@ void	temp_function2(char *prompt)
 	printf("\n");
 }
 
-void	debug_token(t_minishell *minishell)
-{
-	t_node	*current;
-
-	current = minishell->token_list;
-	while (current)
-	{
-		printf("%s\n", (char *)current->content);
-		current = current->next;
-	}
-}
-
 void	temp_call(char *prompt)
 {
 	int		fd;
@@ -129,6 +118,7 @@ void	miniprompt(t_minishell *minishell)
 		if (!prompt)
 			break ;
 		minishell->token_list = lexer(prompt);
+		debug_token(minishell);
 		free(prompt);
 		parser(minishell);
 		executor(minishell);

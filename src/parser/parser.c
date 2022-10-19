@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 15:25:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/19 09:23:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,21 @@ enum e_steps {
 t_node	*main_pipeline(t_minishell *minishell)
 {
 	t_node		*list;
-	t_node		*token;
+	t_node		*node;
 	t_command	*cmd;
+	t_token		*token;
 	int			steps;
 
 	list = NULL;
-	token = minishell->token_list;
+	node = minishell->token_list;
 	steps = PARSER_STEP_PATH;
-	while (token)
+	while (node)
 	{
+		token = node->content;
 		if (steps == PARSER_STEP_PATH)
 		{
 			cmd = malloc(sizeof(t_command));
-			cmd->pathname = ft_strdup((char *)token->content);
+			cmd->pathname = ft_strdup(token->value);
 			cmd->args = malloc(sizeof(char *) * 2);
 			cmd->args[0] = ft_strdup(cmd->pathname);
 			cmd->args[1] = NULL;
@@ -61,10 +63,10 @@ t_node	*main_pipeline(t_minishell *minishell)
 			free(cmd->args);
 			cmd->args = malloc(sizeof(char *) * 3);
 			cmd->args[0] = ft_strdup(cmd->pathname);
-			cmd->args[1] = ft_strdup((char *)token->content);
+			cmd->args[1] = ft_strdup(token->value);
 			cmd->args[2] = NULL;
 		}
-		token = token->next;
+		node = node->next;
 	}
 	add_node(&list, cmd);
 	return (list);

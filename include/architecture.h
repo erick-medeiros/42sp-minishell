@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/18 15:23:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/18 20:49:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,22 @@ typedef struct s_minishell
 	t_node	*pipelines;
 	char	**envp;
 }	t_minishell;
+
+enum e_token {
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_INPUT,
+	TOKEN_OUTPUT,
+	TOKEN_APPEND,
+	TOKEN_SQUOTE,
+	TOKEN_DQUOTE
+};
+
+typedef struct s_token
+{
+	enum e_token	type;
+	char			*value;
+}	t_token;
 
 t_node	*lexer(char *prompt);
 void	parser(t_minishell *minishell);

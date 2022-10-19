@@ -12,6 +12,7 @@ RM = rm -fr
 
 FILES = main.c
 FILES += debug/debug.c
+FILES += libft/ft_strcmp.c
 FILES += libft/ft_strncmp.c
 FILES += libft/ft_math.c
 FILES += libft/ft_strlen.c
