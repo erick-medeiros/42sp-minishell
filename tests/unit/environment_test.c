@@ -1,7 +1,5 @@
+#include "Unity/unity.h"
 #include "minishell.h"
-#include "unit_tests.h"
-#include "unity.h"
-#include "unity_internals.h"
 
 void test_new_var_node_contains_equal(void) {
 	char *str;
@@ -43,7 +41,7 @@ void test_new_var_node_null_str(void) {
 void test_envp_to_list_one_str(void) {
 	char *str1 = "str1_name=str1_val";
 	char *envp[] = {str1, NULL};
-	t_vlst	vars;
+	t_vlst vars;
 
 	envp_to_list(envp, &vars);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list);
@@ -59,7 +57,7 @@ void test_envp_to_list_two_str(void) {
 	char *str1 = "str1_name=str1_val";
 	char *str2 = "str2_name=str2_val";
 	char *envp[] = {str1, str2, NULL};
-	t_vlst	vars;
+	t_vlst vars;
 
 	envp_to_list(envp, &vars);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list);
@@ -197,7 +195,6 @@ void test_list_to_envp_no_node_quoted(void) {
 	TEST_ASSERT_EQUAL_PTR(NULL, envp[0]);
 	clear_envp(envp);
 }
-
 
 void test_cmp_vars_by_name_a_is_null(void) {
 	t_var a;

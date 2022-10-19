@@ -1,4 +1,5 @@
-#include "unit_tests.h"
+#include "Unity/unity.h"
+#include "minishell.h"
 
 t_node *lst;
 int *content1;
@@ -103,7 +104,7 @@ void test_remove_mid_node_int_list(void) {
 void test_change_node_content_int_list(void) {
 	int test_val;
 	int *new_content;
-	t_node_funcs	funcs;
+	t_node_funcs funcs;
 
 	funcs.clear = free;
 	funcs.cmp = cmp_int;
