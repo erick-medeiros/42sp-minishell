@@ -17,6 +17,7 @@ FILES += libft/ft_math.c
 FILES += libft/ft_split.c
 FILES += libft/ft_split_cmd.c
 FILES += libft/ft_strchr.c
+FILES += libft/ft_strrchr.c
 FILES += libft/ft_strcmp.c
 FILES += libft/ft_strdup.c
 FILES += libft/ft_strjoin.c
