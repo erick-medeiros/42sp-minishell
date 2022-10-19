@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 12:00:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:48:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <errno.h>
 
 # include "libft.h"
-# include "architecture.h"
+# include "structs.h"
 
 # define STDIN 0
 # define STDOUT 1
@@ -65,6 +65,7 @@ int		update_var(t_vlst *vars, t_var *content);
 void	*clear_envp(char **envp);
 void	clear_list(t_node *lst, void (*del_node)(void *));
 void	del_var_node(void *content);
+void	free_minishell(t_minishell *minishell);
 
 // Prompt
 
@@ -86,5 +87,11 @@ void	builtin_export(int argc, char *argv[], t_vlst *vars);
 void	builtin_pwd(void);
 void	builtin_unset(int argc, char *argv[], t_vlst *vars);
 char	*get_pwd(void);
+
+// Commands
+
+t_node	*lexer(char *prompt);
+void	parser(t_minishell *minishell);
+void	executor(t_minishell *minishell);
 
 #endif

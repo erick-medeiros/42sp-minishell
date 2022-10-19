@@ -6,12 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 12:01:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:47:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ARCHITECTURE_H
-# define ARCHITECTURE_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # include <stddef.h>
 # include <sys/types.h>
@@ -87,10 +87,5 @@ typedef struct s_token
 	enum e_token	type;
 	char			*value;
 }	t_token;
-
-t_node	*lexer(char *prompt);
-void	parser(t_minishell *minishell);
-void	executor(t_minishell *minishell);
-void	free_minishell(t_minishell *minishell);
 
 #endif
