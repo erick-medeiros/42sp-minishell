@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 11:15:41 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/20 20:33:02 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_node	*lexer(char *prompt)
 
 	next_state = STATE_START;
 	while (next_state != STATE_COMPLETE && next_state != STATE_INCOMPLETE
-		&& next_state != STATE_INCOMPLETE)
+		&& next_state != STATE_INVALID)
 		next_state = get_next_state(*prompt++, &tokens, next_state);
 	if (next_state != STATE_COMPLETE)
 	{
@@ -35,6 +35,7 @@ t_node	*lexer(char *prompt)
 static t_lex_state	get_next_state(char ch, t_node **tokens, t_lex_state st)
 {
 	if (st == STATE_START)
+
 		return (handle_start_state(ch, tokens));
 	else if (st == STATE_WORD)
 		return (handle_word_state(ch, tokens));
