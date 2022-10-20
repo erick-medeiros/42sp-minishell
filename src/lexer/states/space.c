@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output.c                                           :+:      :+:    :+:   */
+/*   space.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 03:21:39 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/20 03:37:00 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/20 03:28:58 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/20 03:36:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_lex_state	handle_output_state(char next_ch, t_node **tokens)
+t_lex_state	handle_space_state(char next_ch, t_node **tokens)
 {
 	(void)tokens;
 	if (next_ch == '|')

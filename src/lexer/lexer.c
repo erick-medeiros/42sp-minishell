@@ -3,42 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 11:17:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 03:49:15 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
+
+static t_lex_state	get_next_state(char ch, t_node **tokens, t_lex_state st);
 
 t_node	*lexer(char *prompt)
 {
-	char	**cmd;
-	size_t	i;
-	t_node	*list;
-	t_token	*token;
+	t_node		*tokens;
+	t_lex_state	next_state;
 
-	cmd = ft_split_cmd(prompt, ' ');
-	list = NULL;
-	i = 0;
-	while (cmd[i])
+	next_state = STATE_START;
+	while (next_state != STATE_COMPLETE && next_state != STATE_INCOMPLETE)
 	{
-		token = malloc(sizeof(t_token));
-		token->value = ft_strdup(cmd[i]);
-		token->type = TOKEN_WORD;
-		if (ft_strcmp(token->value, "|") == 0)
-			token->type = TOKEN_PIPE;
-		else if (ft_strcmp(token->value, "<") == 0)
-			token->type = TOKEN_INPUT;
-		else if (ft_strcmp(token->value, ">") == 0)
-			token->type = TOKEN_OUTPUT;
-		else if (ft_strcmp(token->value, ">>") == 0)
-			token->type = TOKEN_APPEND;
-		add_node(&list, token);
-		free(cmd[i]);
-		++i;
+		next_state = get_next_state(*prompt++, &tokens, next_state);
 	}
-	free(cmd);
-	return (list);
+	return (tokens);
+}
+
+static t_lex_state	get_next_state(char ch, t_node **tokens, t_lex_state st)
+{
+	if (st == STATE_START)
+		return (handle_start_state(ch, tokens));
+	else if (st == STATE_WORD)
+		return (handle_word_state(ch, tokens));
+	else if (st == STATE_SPACE)
+		return (handle_space_state(ch, tokens));
+	else if (st == STATE_DQUOTE)
+		return (handle_dquote_state(ch, tokens));
+	else if (st == STATE_INPUT)
+		return (handle_input_state(ch, tokens));
+	else if (st == STATE_OUTPUT)
+		return (handle_output_state(ch, tokens));
+	else if (st == STATE_PIPE)
+		return (handle_pipe_state(ch, tokens));
+	else if (st == STATE_APPEND)
+		return (handle_append_state(ch, tokens));
+	else if (st == STATE_SQUOTE)
+		return (handle_squote_state(ch, tokens));
+	else
+		return (STATE_INVALID);
 }

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 02:58:59 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/20 03:39:24 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ typedef struct s_minishell
 	char	**envp;
 }	t_minishell;
 
-enum e_lex_state {
+typedef enum e_lex_state {
+	STATE_INVALID,
 	STATE_START,
 	STATE_WORD,
 	STATE_SPACE,
@@ -84,7 +85,7 @@ enum e_lex_state {
 	STATE_SQUOTE,
 	STATE_COMPLETE,
 	STATE_INCOMPLETE
-};
+}	t_lex_state;
 
 enum e_token {
 	TOKEN_WORD,
