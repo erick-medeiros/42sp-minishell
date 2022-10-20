@@ -12,16 +12,18 @@ REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -IUnity -I$(MIN_INC_DIR) -g
+CFLAGS += -I$(MIN_SRC_DIR)executor/
 LIBFLAGS = -lreadline
 RM = rm -fr
 
-FILES = main.c
+FILES = main_test.c
 FILES += Unity/unity.c
 FILES += unit_tests_utils.c
 FILES += prompt_test.c
 FILES += list_test.c
 FILES += builtins_test.c
 FILES += environment_test.c
+FILES += executor_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -39,14 +41,12 @@ $(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(MINISHELL)
 	$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o)) \
 	-o $(NAME) $(LIBFLAGS)
 
-
-
 reminishell:
 	make re -C $(MINISHELL_DIR)
 	make re
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJS)
 
 fclean:	clean
 	$(RM) $(NAME)
