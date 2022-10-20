@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 03:32:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:09:15 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int			update_var(t_vlst *vars, t_var *content);
 // Cleanup functions
 void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
+void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		free_minishell(t_minishell *minishell);
 
@@ -90,12 +91,11 @@ char		*get_pwd(void);
 
 // Commands
 
-void		parser(t_minishell *minishell);
 void		executor(t_minishell *minishell);
+void		parser(t_minishell *minishell);
 
 // Lexer
 
-t_node		*lexer(char *prompt);
 t_lex_state	handle_append_state(char next_ch, t_node **tokens);
 t_lex_state	handle_dquote_state(char next_ch, t_node **tokens);
 t_lex_state	handle_input_state(char next_ch, t_node **tokens);
@@ -105,5 +105,6 @@ t_lex_state	handle_space_state(char next_ch, t_node **tokens);
 t_lex_state	handle_squote_state(char next_ch, t_node **tokens);
 t_lex_state	handle_start_state(char next_ch, t_node **tokens);
 t_lex_state	handle_word_state(char next_ch, t_node **tokens);
+t_node		*lexer(char *prompt);
 
 #endif
