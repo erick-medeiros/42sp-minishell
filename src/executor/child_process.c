@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 12:26:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:06:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	child_process(t_minishell *minishell, t_command *command)
 	dup2(command->output, STDOUT);
 	if (!command->pathname)
 		exit_process(minishell, 127);
-	if (execve(command->pathname, command->args, minishell->envp) == -1)
+	if (execve(command->pathname, command->argv, minishell->envp) == -1)
 		exit_process(minishell, errno);
 	exit_process(minishell, 1);
 }

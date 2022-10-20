@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 12:11:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 18:48:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 # include <stddef.h>
 # include <sys/types.h>
+
+typedef enum e_bool {
+	FALSE,
+	TRUE
+}	t_bool;
 
 typedef struct s_node
 {
@@ -51,11 +56,13 @@ typedef struct s_command
 {
 	pid_t	pid;
 	char	*pathname;
-	char	**args;
+	int		argc;
+	char	**argv;
 	int		status;
 	int		input;
 	int		output;
 	char	**envp;
+	t_bool	isbuiltin;
 }	t_command;
 
 typedef struct s_pipeline

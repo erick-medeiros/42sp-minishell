@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:38:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 12:13:07 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:08:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	free_command(void *content)
 
 	cmd = (t_command *) content;
 	i = 0;
-	while (cmd->args && cmd->args[i])
+	while (cmd->argv && cmd->argv[i])
 	{
-		free(cmd->args[i]);
+		free(cmd->argv[i]);
 		++i;
 	}
-	free(cmd->args);
+	free(cmd->argv);
 	free(cmd->pathname);
 	free(cmd);
 }

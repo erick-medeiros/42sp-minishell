@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 10:31:14 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 18:43:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-# define TRUE 1
-# define FALSE 0
 
 # define PROMPT_STRING "minishell> "
 # define HEREDOC_STRING "here_doc> "
@@ -79,7 +76,7 @@ void	miniprompt(t_minishell *minishell);
 
 // Builtins
 
-void	builtins(char *prompt, t_vlst *vars);
+void	builtins(t_minishell *minishell, t_command *command);
 void	builtin_cd(char *path, t_vlst *vars);
 void	builtin_echo(char *option, char *string);
 void	builtin_env(t_vlst *vars);

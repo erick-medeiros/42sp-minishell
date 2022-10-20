@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:16:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 18:33:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:42:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,27 @@ void	debug_content_fd(int fd, char *prompt, int debug)
 		printf("exec: %s %s\n", prompt, content);
 	free(content);
 	close(fd);
+}
+
+void	debug_command(t_command *command)
+{
+	int	i;
+
+	printf("\n----------\n");
+	printf("debug command:\n\n");
+	printf("pid) %d\n", command->pid);
+	printf("pathname) %s\n", command->pathname);
+	printf("argc) %d\n", command->argc);
+	i = -1;
+	while (command->argv && command->argv[++i])
+		printf("argv%d) %s\n", i, command->argv[i]);
+	printf("argv%d) %s\n", i, command->argv[i]);
+	printf("status) %d\n", command->status);
+	printf("input) %d\n", command->input);
+	printf("output) %d\n", command->output);
+	if (command->isbuiltin)
+		printf("isbuiltin) yes\n");
+	else
+		printf("isbuiltin) no\n");
+	printf("----------\n\n");
 }

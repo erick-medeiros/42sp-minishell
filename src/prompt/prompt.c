@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 18:34:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:42:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*get_content_fd(int fd)
 	return (content);
 }
 
-void	temp_call(char *prompt, t_vlst *vars)
+void	temp_call(char *prompt)
 {
 	int	fd;
 
@@ -75,8 +75,6 @@ void	temp_call(char *prompt, t_vlst *vars)
 		fd = ends_in_pipe();
 		debug_content_fd(fd, prompt, 2);
 	}
-	else
-		builtins(prompt, vars);
 }
 
 void	miniprompt(t_minishell *minishell)
@@ -90,7 +88,6 @@ void	miniprompt(t_minishell *minishell)
 			break ;
 		add_history(prompt);
 		minishell->token_list = lexer(prompt);
-		debug_token(minishell);
 		free(prompt);
 		parser(minishell);
 		executor(minishell);

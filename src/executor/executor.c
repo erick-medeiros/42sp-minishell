@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 12:27:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 19:13:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,56 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 	while (node)
 	{
 		cmd = (t_command *) node->content;
-		if (ft_strncmp(cmd->args[0], "exit", 4) == 0)
-		{
-			free_minishell(minishell);
-			builtin_exit();
-		}
-		pathname = get_pathname(cmd->pathname, minishell->path_list);
-		free(cmd->pathname);
-		cmd->pathname = pathname;
-		cmd->pid = fork();
-		if (cmd->pid < 0)
-			write(STDERR, "Error", 5);
-		else if (cmd->pid == 0)
-			child_process(minishell, cmd);
+		if (cmd->isbuiltin)
+			builtins(minishell, cmd);
 		else
-			node = node->next;
+		{
+			pathname = get_pathname(cmd->pathname, minishell->path_list);
+			free(cmd->pathname);
+			cmd->pathname = pathname;
+			cmd->pid = fork();
+			if (cmd->pid < 0)
+				write(STDERR, "Error", 5);
+			else if (cmd->pid == 0)
+				child_process(minishell, cmd);
+		}
+		node = node->next;
 	}
 	node = commands;
 	while (node)
 	{
 		cmd = (t_command *) node->content;
-		waitpid(cmd->pid, &cmd->status, 0);
-		process_exit_status(cmd);
+		if (!cmd->isbuiltin)
+		{
+			waitpid(cmd->pid, &cmd->status, 0);
+			process_exit_status(cmd);
+		}
 		node = node->next;
+	}
+}
+
+void	builtins(t_minishell *minishell, t_command *command)
+{
+	if (command_is_equal(command->pathname, "echo"))
+	{
+		if (command->argc == 3 && command_is_equal(command->argv[1], "-n"))
+			builtin_echo("-n", command->argv[2]);
+		else if (command->argc == 2)
+			builtin_echo("", command->argv[1]);
+	}
+	else if (command_is_equal(command->pathname, "cd") && command->argc == 2)
+		builtin_cd(command->argv[1], &minishell->env_list);
+	else if (command_is_equal(command->pathname, "pwd"))
+		builtin_pwd();
+	else if (command_is_equal(command->pathname, "export"))
+		builtin_export(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "unset"))
+		builtin_unset(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "env"))
+		builtin_env(&minishell->env_list);
+	else if (command_is_equal(command->pathname, "exit"))
+	{
+		free_minishell(minishell);
+		builtin_exit();
 	}
 }

@@ -32,7 +32,6 @@ FILES += list/list.c
 FILES += prompt/ends_in_pipe.c
 FILES += prompt/here_doc.c
 FILES += prompt/prompt.c
-FILES += builtins/builtins.c
 FILES += builtins/cd.c
 FILES += builtins/echo.c
 FILES += builtins/env.c
