@@ -45,6 +45,7 @@ FILES += parser/parser.c
 FILES += expansor/expansor.c
 FILES += executor/executor.c
 FILES += executor/pathname.c
+FILES += executor/child_process.c
 FILES += free/free.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   architecture.h                                     :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 18:47:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 12:11:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_command
 	pid_t	pid;
 	char	*pathname;
 	char	**args;
-	int		exit_code;
+	int		status;
 	int		input;
 	int		output;
 	char	**envp;
@@ -70,6 +70,7 @@ typedef struct s_minishell
 	t_node	*token_list;
 	t_node	*pipelines;
 	char	**envp;
+	char	**path_list;
 }	t_minishell;
 
 enum e_token {

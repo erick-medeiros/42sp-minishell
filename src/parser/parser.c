@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 09:23:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 12:19:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ t_node	*main_pipeline(t_minishell *minishell)
 			cmd->args = malloc(sizeof(char *) * 2);
 			cmd->args[0] = ft_strdup(cmd->pathname);
 			cmd->args[1] = NULL;
+			cmd->input = STDIN;
+			cmd->output = STDOUT;
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)

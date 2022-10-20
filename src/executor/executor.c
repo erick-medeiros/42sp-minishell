@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 10:36:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 12:27:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include "executor_internals.h"
 
 void	execute_commands(t_minishell *minishell, t_node *commands);
-void	child_process(t_minishell *minishell, t_command *command);
 
 void	executor(t_minishell *minishell)
 {
 	t_node		*node;
 	t_pipeline	*pipeline;
 
+	minishell->path_list = get_paths(minishell->envp);
 	node = minishell->pipelines;
 	while (node)
 	{
@@ -35,6 +35,7 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 {
 	t_node		*node;
 	t_command	*cmd;
+	char		*pathname;
 
 	node = commands;
 	while (node)
@@ -45,6 +46,9 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 			free_minishell(minishell);
 			builtin_exit();
 		}
+		pathname = get_pathname(cmd->pathname, minishell->path_list);
+		free(cmd->pathname);
+		cmd->pathname = pathname;
 		cmd->pid = fork();
 		if (cmd->pid < 0)
 			write(STDERR, "Error", 5);
@@ -57,28 +61,8 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 	while (node)
 	{
 		cmd = (t_command *) node->content;
-		waitpid(cmd->pid, &cmd->exit_code, 0);
-		if (WIFEXITED(cmd->exit_code))
-			cmd->exit_code = WEXITSTATUS(cmd->exit_code);
-		if (cmd->exit_code != 0)
-			write(STDOUT, "Error", 5);
+		waitpid(cmd->pid, &cmd->status, 0);
+		process_exit_status(cmd);
 		node = node->next;
 	}
-}
-
-void	child_process(t_minishell *minishell, t_command *command)
-{
-	char	*pathname;
-	char	**path_list;
-
-	path_list = get_paths(minishell->envp);
-	pathname = get_pathname(command->pathname, path_list);
-	free_string_list(path_list);
-	if (pathname == NULL)
-	{
-		free_minishell(minishell);
-		exit(0);
-	}
-	if (execve(pathname, command->args, minishell->envp) == -1)
-		write(STDERR, "Error", 5);
 }
