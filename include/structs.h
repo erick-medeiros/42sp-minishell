@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   architecture.h                                     :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 18:47:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 02:58:59 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,20 @@ typedef struct s_minishell
 	t_node	*pipelines;
 	char	**envp;
 }	t_minishell;
+
+enum e_lex_state {
+	STATE_START,
+	STATE_WORD,
+	STATE_SPACE,
+	STATE_PIPE,
+	STATE_INPUT,
+	STATE_OUTPUT,
+	STATE_APPEND,
+	STATE_DQUOTE,
+	STATE_SQUOTE,
+	STATE_COMPLETE,
+	STATE_INCOMPLETE
+};
 
 enum e_token {
 	TOKEN_WORD,
