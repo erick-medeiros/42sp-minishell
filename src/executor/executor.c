@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 19:15:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 10:36:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,11 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 void	child_process(t_minishell *minishell, t_command *command)
 {
 	char	*pathname;
+	char	**path_list;
 
-	pathname = get_pathname(command->pathname, minishell->envp);
+	path_list = get_paths(minishell->envp);
+	pathname = get_pathname(command->pathname, path_list);
+	free_string_list(path_list);
 	if (pathname == NULL)
 	{
 		free_minishell(minishell);
