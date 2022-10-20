@@ -15,6 +15,7 @@ CFLAGS += -IUnity -I$(MIN_INC_DIR) -g
 CFLAGS += -I$(MIN_SRC_DIR)executor/
 LIBFLAGS = -lreadline
 RM = rm -fr
+FORMAT = clang-format -i
 
 FILES = main_test.c
 FILES += Unity/unity.c
@@ -33,6 +34,7 @@ $(REQUIRED_DIRS):
 	@mkdir -p $@
 
 $(OBJ_DIR)%.o: %.c
+	$(FORMAT) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(MINISHELL)

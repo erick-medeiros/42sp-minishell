@@ -3,6 +3,7 @@ MINISHELL = ../../minishell
 REQUIRED_DIRS = logs
 OBJ = get_next_line.o main_leak_test.o
 LIBFLAGS = -lbsd
+FORMAT = clang-format -i
 
 all: $(NAME)
 
@@ -10,6 +11,7 @@ $(REQUIRED_DIRS):
 	@mkdir -p $@
 
 %.o: %.c
+	$(FORMAT) $<
 	cc -g -c $< -o $@ $(LIBFLAGS)
 
 $(NAME): $(REQUIRED_DIRS) $(MINISHELL) $(OBJ)

@@ -74,7 +74,7 @@ fclean: clean
 re: fclean all
 
 install:
-	sudo apt-get install libreadline-dev
+	sudo apt install libreadline-dev clang-format
 
 norm:
 	@clear
