@@ -6,14 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/21 19:24:32 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 20:02:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor_internals.h"
-
-void	execute_commands(t_minishell *minishell, t_node *commands);
 
 void	executor(t_minishell *minishell)
 {
@@ -25,42 +23,48 @@ void	executor(t_minishell *minishell)
 	{
 		pipeline = (t_pipeline *) node->content;
 		if (pipeline->operator == OPERATOR_MAIN)
-			execute_commands(minishell, pipeline->commands);
+			pipeline_executor(minishell, pipeline->commands);
 		node = node->next;
 	}
 }
 
-void	execute_commands(t_minishell *minishell, t_node *commands)
+void	pipeline_executor(t_minishell *minishell, t_node *commands)
 {
-	t_node		*node;
-	t_command	*cmd;
+	t_node	*node;
 
 	node = commands;
 	while (node)
 	{
-		cmd = (t_command *) node->content;
-		if (cmd->isbuiltin)
-			builtins(minishell, cmd);
-		else
-		{
-			cmd->pid = fork();
-			if (cmd->pid < 0)
-				write(STDERR, "Error", 5);
-			else if (cmd->pid == 0)
-				child_process(minishell, cmd);
-		}
+		run_command(minishell, node->content);
 		node = node->next;
 	}
-	node = commands;
 	while (node)
 	{
-		cmd = (t_command *) node->content;
-		if (!cmd->isbuiltin)
-		{
-			waitpid(cmd->pid, &cmd->status, 0);
-			process_exit_status(cmd);
-		}
+		command_exit_status(node->content);
 		node = node->next;
+	}
+}
+
+void	run_command(t_minishell *minishell, t_command *command)
+{
+	if (command->isbuiltin)
+		builtins(minishell, command);
+	else
+	{
+		command->pid = fork();
+		if (command->pid < 0)
+			write(STDERR, "Error", 5);
+		else if (command->pid == 0)
+			child_process(minishell, command);
+	}
+}
+
+void	command_exit_status(t_command *command)
+{
+	if (!command->isbuiltin)
+	{
+		waitpid(command->pid, &command->status, 0);
+		process_exit_status(command);
 	}
 }
 
