@@ -6,12 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 19:57:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 19:29:57 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
+#include "parser_internals.h"
 
 t_node		*main_pipeline(t_minishell *minishell);
 t_bool		command_isbuiltin(char *arg0);
@@ -22,6 +23,7 @@ void	parser(t_minishell *minishell)
 	t_node		*list;
 	t_pipeline	*pipeline;
 
+	minishell->path_list = get_paths(minishell->envp);
 	list = NULL;
 	pipeline = malloc(sizeof(t_pipeline));
 	pipeline->commands = main_pipeline(minishell);
@@ -43,6 +45,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 	t_command	*cmd;
 	t_token		*token;
 	int			steps;
+	char		*tmp;
 
 	list = NULL;
 	node = minishell->token_list;
@@ -53,25 +56,29 @@ t_node	*main_pipeline(t_minishell *minishell)
 		if (steps == PARSER_STEP_PATH)
 		{
 			cmd = init_command();
-			cmd->pathname = ft_strdup(token->value);
+			cmd->isbuiltin = command_isbuiltin(token->value);
+			if (cmd->isbuiltin)
+				cmd->pathname = ft_strdup(token->value);
+			else
+				cmd->pathname = get_pathname(token->value, minishell->path_list);
 			cmd->argc = 1;
 			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-			cmd->argv[0] = ft_strdup(cmd->pathname);
+			cmd->argv[0] = ft_strdup(token->value);
 			cmd->argv[1] = NULL;
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)
 		{
+			tmp = ft_strdup(cmd->argv[0]);
 			free_string_list(cmd->argv);
 			cmd->argc = 2;
 			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-			cmd->argv[0] = ft_strdup(cmd->pathname);
+			cmd->argv[0] = tmp;
 			cmd->argv[1] = ft_strdup(token->value);
 			cmd->argv[2] = NULL;
 		}
 		node = node->next;
 	}
-	cmd->isbuiltin = command_isbuiltin(cmd->pathname);
 	add_node(&list, cmd);
 	return (list);
 }

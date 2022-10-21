@@ -1,6 +1,6 @@
 #include "Unity/unity.h"
-#include "executor_internals.h"
 #include "minishell.h"
+#include "parser_internals.h"
 #include "unit_tests_utils.h"
 #include <stdlib.h>
 
@@ -50,7 +50,7 @@ void test_function_get_pathname(void) {
 	free_string_list(path_list);
 }
 
-void file_executor_test(void) {
+void file_pathname_test(void) {
 	RUN_TEST(test_function_get_paths);
 	RUN_TEST(test_function_get_pathname);
 }

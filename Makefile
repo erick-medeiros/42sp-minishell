@@ -16,6 +16,7 @@ MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
 HEADERS = include/minishell.h include/structs.h
 HEADERS += src/executor/executor_internals.h
+HEADERS += src/parser/parser_internals.h
 
 FILES = main.c
 FILES += utils/cleanup.c utils/list.c utils/free.c

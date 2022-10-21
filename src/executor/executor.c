@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 19:13:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 19:24:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	executor(t_minishell *minishell)
 	t_node		*node;
 	t_pipeline	*pipeline;
 
-	minishell->path_list = get_paths(minishell->envp);
 	node = minishell->pipelines;
 	while (node)
 	{
@@ -35,7 +34,6 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 {
 	t_node		*node;
 	t_command	*cmd;
-	char		*pathname;
 
 	node = commands;
 	while (node)
@@ -45,9 +43,6 @@ void	execute_commands(t_minishell *minishell, t_node *commands)
 			builtins(minishell, cmd);
 		else
 		{
-			pathname = get_pathname(cmd->pathname, minishell->path_list);
-			free(cmd->pathname);
-			cmd->pathname = pathname;
 			cmd->pid = fork();
 			if (cmd->pid < 0)
 				write(STDERR, "Error", 5);
