@@ -14,28 +14,18 @@ SRC_DIR = src/
 OBJ_DIR = obj/
 MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
+HEADERS = include/minishell.h include/structs.h
+HEADERS += src/executor/executor_internals.h
+
 FILES = main.c
-FILES += utils/cleanup.c
-FILES += utils/list.c
-FILES += utils/free.c
-FILES += prompt/ends_in_pipe.c
-FILES += prompt/here_doc.c
-FILES += prompt/prompt.c
-FILES += builtins/cd.c
-FILES += builtins/echo.c
-FILES += builtins/env.c
-FILES += builtins/exit.c
-FILES += builtins/export.c
-FILES += builtins/pwd.c
-FILES += builtins/unset.c
+FILES += utils/cleanup.c utils/list.c utils/free.c
+FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
 FILES += lexer/lexer.c
-FILES += parser/parser.c
-FILES += expansor/expansor.c
-FILES += expansor/env_conv.c
-FILES += expansor/env_utils.c
-FILES += executor/executor.c
-FILES += executor/pathname.c
-FILES += executor/child_process.c
+FILES += expansor/expansor.c expansor/env_conv.c expansor/env_utils.c
+FILES += parser/parser.c parser/pathname.c
+FILES += builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c
+FILES += builtins/export.c builtins/pwd.c builtins/unset.c
+FILES += executor/executor.c executor/child_process.c
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
@@ -56,7 +46,7 @@ $(LIBFT):
 $(LIBDEBUG):
 	make -C debug
 
-$(NAME): $(REQUIRED_DIRS) $(OBJ) $(LIBFT) $(LIBDEBUG)
+$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) $(LIBFT) $(LIBDEBUG)
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBDEBUG) $(LIBFLAGS)
 
 clean:
