@@ -8,6 +8,7 @@ MINISHELL = $(MINISHELL_DIR)minishell
 
 LIBFT_DIR = $(MINISHELL_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
+LIBDEBUG = $(MINISHELL_DIR)debug/debug.a
 
 MIN_SRC_FILES=$(filter-out $(MIN_SRC_DIR)main.c, $(wildcard $(MIN_SRC_DIR)*/*.c $(MIN_SRC_DIR)*.c))
 MIN_OBJ_FILES=$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o))
@@ -16,7 +17,7 @@ REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS += -IUnity -I$(MIN_INC_DIR) -I$(LIBFT_DIR) -g
-CFLAGS += -I$(MIN_SRC_DIR)executor/
+CFLAGS += -I$($(MIN_SRC_DIR))debug -I$(MIN_SRC_DIR)executor/
 LIBFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
@@ -41,11 +42,11 @@ $(OBJ_DIR)%.o: %.c
 	$(FORMAT) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(MINISHELL)
+$(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(LIBDEBUG) $(MINISHELL)
 	make -C $(MINISHELL_DIR)
 	gcc $(CFLAGS) $(OBJS) \
 	$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o)) \
-	-o $(NAME) $(LIBFLAGS)
+	-o $(NAME) $(LIBDEBUG) $(LIBFLAGS)
 
 reminishell:
 	make re -C $(MINISHELL_DIR)
