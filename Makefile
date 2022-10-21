@@ -13,6 +13,9 @@ RM = rm -fr
 
 FILES = main.c
 FILES += debug/debug.c
+FILES += utils/cleanup.c
+FILES += utils/list.c
+FILES += utils/free.c
 FILES += libft/ft_math.c
 FILES += libft/ft_split.c
 FILES += libft/ft_split_cmd.c
@@ -25,10 +28,6 @@ FILES += libft/ft_strlcpy.c
 FILES += libft/ft_strlen.c
 FILES += libft/ft_strncmp.c
 FILES += libft/ft_substr.c
-FILES += list/cleanup.c
-FILES += list/env_conv.c
-FILES += list/env_utils.c
-FILES += list/list.c
 FILES += prompt/ends_in_pipe.c
 FILES += prompt/here_doc.c
 FILES += prompt/prompt.c
@@ -42,15 +41,16 @@ FILES += builtins/unset.c
 FILES += lexer/lexer.c
 FILES += parser/parser.c
 FILES += expansor/expansor.c
+FILES += expansor/env_conv.c
+FILES += expansor/env_utils.c
 FILES += executor/executor.c
 FILES += executor/pathname.c
 FILES += executor/child_process.c
-FILES += free/free.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
-MODULES = libft/ prompt/ list/ builtins/ lexer/
-MODULES += parser/ expansor/ executor/ free/ debug/
+MODULES = libft/ prompt/ builtins/ lexer/
+MODULES += parser/ expansor/ executor/ debug/ utils/
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
 
