@@ -3,10 +3,12 @@ NAME = minishell
 INC_DIR = include/
 OBJ_DIR = obj/
 SRC_DIR = src/
+LIBFT_DIR = libft/
+LIBFT = $(LIBFT_DIR)libft.a
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -I$(INC_DIR)
-LIBFLAGS = -lreadline
+CFLAGS += -I $(LIBFT_DIR) -I$(INC_DIR)
+LIBFLAGS = -L $(LIBFT_DIR) -lft -lreadline
 DEBUGFLAGS = -Isrc/debug/ -g
 CC = cc
 RM = rm -fr
@@ -16,18 +18,6 @@ FILES += debug/debug.c
 FILES += utils/cleanup.c
 FILES += utils/list.c
 FILES += utils/free.c
-FILES += libft/ft_math.c
-FILES += libft/ft_split.c
-FILES += libft/ft_split_cmd.c
-FILES += libft/ft_strchr.c
-FILES += libft/ft_strrchr.c
-FILES += libft/ft_strcmp.c
-FILES += libft/ft_strdup.c
-FILES += libft/ft_strjoin.c
-FILES += libft/ft_strlcpy.c
-FILES += libft/ft_strlen.c
-FILES += libft/ft_strncmp.c
-FILES += libft/ft_substr.c
 FILES += prompt/ends_in_pipe.c
 FILES += prompt/here_doc.c
 FILES += prompt/prompt.c
@@ -49,7 +39,7 @@ FILES += executor/child_process.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
-MODULES = libft/ prompt/ builtins/ lexer/
+MODULES = prompt/ builtins/ lexer/
 MODULES += parser/ expansor/ executor/ debug/ utils/
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
@@ -62,7 +52,10 @@ $(REQUIRED_DIRS):
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c $< -o $@
 
-$(NAME): $(REQUIRED_DIRS) $(OBJ)
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
+$(NAME): $(REQUIRED_DIRS) $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
@@ -78,7 +71,7 @@ install:
 
 norm:
 	@clear
-	@norminette src/* include/* | grep Error || true
+	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell

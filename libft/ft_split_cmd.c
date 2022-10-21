@@ -6,11 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:03:36 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/13 15:53:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:17:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 #define SINGLE_QUOTE 39
 #define DOUBLE_QUOTE 34

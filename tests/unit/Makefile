@@ -5,15 +5,19 @@ MIN_SRC_DIR = $(MINISHELL_DIR)src/
 MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
 MIN_INC_DIR = $(MINISHELL_DIR)include/
 MINISHELL = $(MINISHELL_DIR)minishell
+
+LIBFT_DIR = $(MINISHELL_DIR)libft/
+LIBFT = $(LIBFT_DIR)libft.a
+
 MIN_SRC_FILES=$(filter-out $(MIN_SRC_DIR)main.c, $(wildcard $(MIN_SRC_DIR)*/*.c $(MIN_SRC_DIR)*.c))
 MIN_OBJ_FILES=$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o))
 OBJ_DIR = obj/
 REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -IUnity -I$(MIN_INC_DIR) -g
+CFLAGS += -IUnity -I$(MIN_INC_DIR) -I$(LIBFT_DIR) -g
 CFLAGS += -I$(MIN_SRC_DIR)executor/
-LIBFLAGS = -lreadline
+LIBFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
 

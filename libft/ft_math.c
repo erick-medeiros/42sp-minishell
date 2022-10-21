@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_math.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/07 21:45:57 by gmachado          #+#    #+#             */
-/*   Updated: 2022/09/29 23:00:21 by gmachado         ###   ########.fr       */
+/*   Created: 2022/09/29 17:06:25 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:13 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_strdup(const char *s)
+int	ft_max(int number1, int number2)
 {
-	size_t	len_s;
-	char	*copy;
+	if (number1 > number2)
+		return (number1);
+	else
+		return (number2);
+}
 
-	len_s = ft_strlen(s) + 1;
-	copy = malloc(len_s * sizeof(char));
-	if (copy == NULL)
-		return (NULL);
-	ft_strlcpy(copy, s, len_s);
-	return (copy);
+int	ft_min(int number1, int number2)
+{
+	if (number1 < number2)
+		return (number1);
+	else
+		return (number2);
 }

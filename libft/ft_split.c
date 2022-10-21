@@ -6,11 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 13:41:46 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/06 13:57:38 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:17:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 size_t	ft_split_count(char const *s, char c)
 {

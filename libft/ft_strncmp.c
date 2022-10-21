@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_math.c                                          :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/29 17:06:25 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/29 17:11:25 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/04/06 03:09:00 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	ft_max(int number1, int number2)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	if (number1 > number2)
-		return (number1);
-	else
-		return (number2);
-}
-
-int	ft_min(int number1, int number2)
-{
-	if (number1 < number2)
-		return (number1);
-	else
-		return (number2);
+	if (n == 0)
+		return (0);
+	while (--n != 0 && *s1 == *(unsigned char *)s2
+		&& *(unsigned char *)s1 != '\0')
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

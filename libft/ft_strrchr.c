@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 00:48:15 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/11 02:24:05 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/19 19:03:12 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strrchr(const char *s, int c)
 {
-	while (*s != '\0')
+	unsigned char	*us;
+	unsigned char	uc;
+	int				i;
+
+	us = (unsigned char *) s;
+	uc = (unsigned char) c;
+	i = ft_strlen(s);
+	while (i >= 0)
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		if (us[i] == uc)
+			return ((char *) &us[i]);
+		i--;
 	}
-	if ((char)c == '\0')
-		return ((char *)s);
+	if (uc == '\0')
+		return ((char *) &us[i]);
 	return (NULL);
 }
