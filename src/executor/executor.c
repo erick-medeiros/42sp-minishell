@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/21 20:02:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 11:37:03 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	pipeline_executor(t_minishell *minishell, t_node *commands)
 		run_command(minishell, node->content);
 		node = node->next;
 	}
+	node = commands;
 	while (node)
 	{
 		command_exit_status(node->content);
