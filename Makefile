@@ -26,7 +26,7 @@ FILES += expansor/expansor.c expansor/env_conv.c expansor/env_utils.c
 FILES += parser/parser.c parser/pathname.c
 FILES += builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c
 FILES += builtins/export.c builtins/pwd.c builtins/unset.c
-FILES += executor/executor.c executor/pipeline.c executor/child_process.c
+FILES += executor/executor.c executor/pipeline.c executor/subshell.c
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
