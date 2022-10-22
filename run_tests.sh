@@ -11,7 +11,7 @@ make
 echo
 echo "(norm)"
 echo
-norminette src/* include/* | grep Error
+norminette include/ libft/ src/ | grep Error
 
 #-----leak
 
