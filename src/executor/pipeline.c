@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:36:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 16:50:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 17:25:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	open_pipes(t_pipeline *pipeline)
 	int	i;
 
 	pipeline->pipefds = NULL;
-	printf("count %d\n", pipeline->command_count);
 	if (pipeline->command_count == 1)
 		return ;
 	pipeline->pipefds = malloc(sizeof(int *) * pipeline->command_count);
