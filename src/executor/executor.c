@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 17:06:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:01:02 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
 void	run_command(t_minishell *minishell, t_pipeline *pipeline,
 			t_command *command)
 {
-	if (command->isbuiltin && command_is_equal(command->pathname, "exit"))
+	if (command->isbuiltin && !command->subshell)
+	{
 		builtins(minishell, command);
+		return ;
+	}
 	command->pid = fork();
 	if (command->pid < 0)
 		panic_error("executor: fork");
@@ -78,8 +81,11 @@ void	run_command(t_minishell *minishell, t_pipeline *pipeline,
 
 void	command_exit_status(t_command *command)
 {
-	waitpid(command->pid, &command->status, 0);
-	process_exit_status(command);
+	if (command->subshell)
+	{
+		waitpid(command->pid, &command->status, 0);
+		process_exit_status(command);
+	}
 }
 
 void	builtins(t_minishell *minishell, t_command *command)

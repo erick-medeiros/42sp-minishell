@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 15:09:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 17:34:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_command
 	int		number;
 	int		**pipefds;
 	char	**envp;
+	t_bool	subshell;
 	t_bool	isbuiltin;
 }	t_command;
 

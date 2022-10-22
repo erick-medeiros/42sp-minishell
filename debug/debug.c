@@ -54,5 +54,9 @@ void debug_command(t_command *command) {
     printf("isbuiltin) yes\n");
   else
     printf("isbuiltin) no\n");
+  if (command->subshell)
+    printf("subshell) yes\n");
+  else
+    printf("subshell) no\n");
   printf("----------\n\n");
 }

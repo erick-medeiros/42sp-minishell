@@ -6,17 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 17:07:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 17:50:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
 #include "parser_internals.h"
-
-t_node		*main_pipeline(t_minishell *minishell);
-t_bool		command_isbuiltin(char *arg0);
-t_command	*init_command(void);
 
 void	parser(t_minishell *minishell)
 {
@@ -58,7 +54,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 		if (steps == PARSER_STEP_PATH)
 		{
 			cmd->number = 0;
-			cmd->isbuiltin = command_isbuiltin(token->value);
+			cmd->isbuiltin = isbuiltin(token->value);
 			if (cmd->isbuiltin)
 				cmd->pathname = ft_strdup(token->value);
 			else
@@ -81,27 +77,9 @@ t_node	*main_pipeline(t_minishell *minishell)
 		}
 		node = node->next;
 	}
+	configure_builtin(cmd);
 	add_node(&list, cmd);
 	return (list);
-}
-
-t_bool	command_isbuiltin(char *arg0)
-{
-	if (ft_strcmp(arg0, "echo") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "cd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "pwd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "export") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "unset") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "env") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "exit") == 0)
-		return (TRUE);
-	return (FALSE);
 }
 
 t_command	*init_command(void)
@@ -119,5 +97,6 @@ t_command	*init_command(void)
 	command->number = 0;
 	command->pipefds = NULL;
 	command->isbuiltin = FALSE;
+	command->subshell = TRUE;
 	return (command);
 }
