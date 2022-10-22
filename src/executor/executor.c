@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 11:37:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 17:06:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,27 @@ void	executor(t_minishell *minishell)
 	{
 		pipeline = (t_pipeline *) node->content;
 		if (pipeline->operator == OPERATOR_MAIN)
-			pipeline_executor(minishell, pipeline->commands);
+			pipeline_executor(minishell, pipeline);
 		node = node->next;
 	}
 }
 
-void	pipeline_executor(t_minishell *minishell, t_node *commands)
+void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
 {
-	t_node	*node;
+	t_command	*command;
+	t_node		*node;
 
-	node = commands;
+	open_pipes(pipeline);
+	node = pipeline->commands;
 	while (node)
 	{
-		run_command(minishell, node->content);
+		command = (t_command *) node->content;
+		command->pipefds = pipeline->pipefds;
+		run_command(minishell, pipeline, command);
 		node = node->next;
 	}
-	node = commands;
+	close_pipes(pipeline);
+	node = pipeline->commands;
 	while (node)
 	{
 		command_exit_status(node->content);
@@ -46,27 +51,35 @@ void	pipeline_executor(t_minishell *minishell, t_node *commands)
 	}
 }
 
-void	run_command(t_minishell *minishell, t_command *command)
+void	run_command(t_minishell *minishell, t_pipeline *pipeline,
+			t_command *command)
 {
-	if (command->isbuiltin)
+	if (command->isbuiltin && command_is_equal(command->pathname, "exit"))
 		builtins(minishell, command);
-	else
+	command->pid = fork();
+	if (command->pid < 0)
+		panic_error("executor: fork");
+	else if (command->pid == 0)
 	{
-		command->pid = fork();
-		if (command->pid < 0)
-			write(STDERR, "Error", 5);
-		else if (command->pid == 0)
+		connect_pipes(pipeline, command);
+		command->input = dup(command->input);
+		command->output = dup(command->output);
+		close_pipes(pipeline);
+		if (command->isbuiltin)
+		{
+			child_process_io(minishell, command);
+			builtins(minishell, command);
+			exit_process(minishell, 0);
+		}
+		else
 			child_process(minishell, command);
 	}
 }
 
 void	command_exit_status(t_command *command)
 {
-	if (!command->isbuiltin)
-	{
-		waitpid(command->pid, &command->status, 0);
-		process_exit_status(command);
-	}
+	waitpid(command->pid, &command->status, 0);
+	process_exit_status(command);
 }
 
 void	builtins(t_minishell *minishell, t_command *command)
@@ -91,6 +104,7 @@ void	builtins(t_minishell *minishell, t_command *command)
 	else if (command_is_equal(command->pathname, "exit"))
 	{
 		free_minishell(minishell);
+		clear_list(minishell->env_list.list, del_var_node);
 		builtin_exit();
 	}
 }

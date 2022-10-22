@@ -39,6 +39,7 @@ void debug_command(t_command *command) {
 
   printf("\n----------\n");
   printf("debug command:\n\n");
+  printf("number) %d\n", command->number);
   printf("pid) %d\n", command->pid);
   printf("pathname) %s\n", command->pathname);
   printf("argc) %d\n", command->argc);

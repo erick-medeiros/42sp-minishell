@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 18:48:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 15:09:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ typedef struct s_node_funcs
 	int		(*cmp)(void *a, void *b);
 }	t_node_funcs;
 
-enum e_operators {
+typedef enum e_operator {
 	OPERATOR_MAIN,
 	OPERATOR_PRIORITY,
 	OPERATOR_AND,
 	OPERATOR_OR
-};
+}	t_operator;
 
 typedef struct s_command
 {
@@ -61,14 +61,18 @@ typedef struct s_command
 	int		status;
 	int		input;
 	int		output;
+	int		number;
+	int		**pipefds;
 	char	**envp;
 	t_bool	isbuiltin;
 }	t_command;
 
 typedef struct s_pipeline
 {
-	enum e_operators	operator;
-	t_node				*commands;
+	t_operator	operator;
+	t_node		*commands;
+	int			command_count;
+	int			**pipefds;
 }	t_pipeline;
 
 typedef struct s_minishell

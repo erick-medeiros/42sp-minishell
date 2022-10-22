@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/21 19:29:57 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 17:07:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	parser(t_minishell *minishell)
 	list = NULL;
 	pipeline = malloc(sizeof(t_pipeline));
 	pipeline->commands = main_pipeline(minishell);
+	pipeline->command_count = 1;
 	pipeline->operator = OPERATOR_MAIN;
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
@@ -50,12 +51,13 @@ t_node	*main_pipeline(t_minishell *minishell)
 	list = NULL;
 	node = minishell->token_list;
 	steps = PARSER_STEP_PATH;
+	cmd = init_command();
 	while (node)
 	{
 		token = node->content;
 		if (steps == PARSER_STEP_PATH)
 		{
-			cmd = init_command();
+			cmd->number = 0;
 			cmd->isbuiltin = command_isbuiltin(token->value);
 			if (cmd->isbuiltin)
 				cmd->pathname = ft_strdup(token->value);
@@ -114,6 +116,8 @@ t_command	*init_command(void)
 	command->output = STDOUT;
 	command->pid = 0;
 	command->status = 0;
+	command->number = 0;
+	command->pipefds = NULL;
 	command->isbuiltin = FALSE;
 	return (command);
 }

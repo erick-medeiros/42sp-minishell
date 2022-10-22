@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 19:06:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 16:29:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 
 void	child_process(t_minishell *minishell, t_command *command)
 {
-	if (command->input < 0 || command->output < 0)
-		exit_process(minishell, 1);
-	dup2(command->input, STDIN);
-	dup2(command->output, STDOUT);
+	child_process_io(minishell, command);
 	if (!command->pathname)
 		exit_process(minishell, 127);
 	if (execve(command->pathname, command->argv, minishell->envp) == -1)
@@ -26,9 +23,26 @@ void	child_process(t_minishell *minishell, t_command *command)
 	exit_process(minishell, 1);
 }
 
+void	child_process_io(t_minishell *minishell, t_command *command)
+{
+	if (command->input < 0 || command->output < 0)
+	{
+		if (command->input >= 0)
+			close(command->input);
+		if (command->output >= 0)
+			close(command->output);
+		exit_process(minishell, 1);
+	}
+	dup2(command->input, STDIN);
+	dup2(command->output, STDOUT);
+	close(command->input);
+	close(command->output);
+}
+
 void	exit_process(t_minishell *minishell, int status)
 {
 	free_minishell(minishell);
+	clear_list(minishell->env_list.list, del_var_node);
 	exit(status);
 }
 
