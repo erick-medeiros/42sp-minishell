@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 18:43:38 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/22 13:16:13 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,9 @@ char	*get_pwd(void);
 t_node	*lexer(char *prompt);
 void	parser(t_minishell *minishell);
 void	executor(t_minishell *minishell);
+
+// Error
+
+void	panic_error(char *msg);
 
 #endif
