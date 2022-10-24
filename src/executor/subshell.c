@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 13:03:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:06:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,4 @@ void	process_exit_status(t_command *command)
 {
 	if (WIFEXITED(command->status))
 		command->status = WEXITSTATUS(command->status);
-	if (command->status != 0)
-		strerror(command->status);
 }
