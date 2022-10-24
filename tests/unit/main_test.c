@@ -6,6 +6,7 @@ void file_prompt_test(void);
 void file_builtins_test(void);
 void file_environment_test(void);
 void file_pathname_test(void);
+void file_subshell_test(void);
 
 void setUp(void) {}
 
@@ -17,6 +18,7 @@ void run_all_test() {
 	file_builtins_test();
 	file_environment_test();
 	file_pathname_test();
+	file_subshell_test();
 }
 
 int main(int argc, char *argv[]) {
@@ -36,6 +38,8 @@ int main(int argc, char *argv[]) {
 			file_environment_test();
 		else if (strcmp("pathname", file) == 0)
 			file_pathname_test();
+		else if (strcmp("subshell", file) == 0)
+			file_subshell_test();
 	}
 
 	return UNITY_END();

@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 #define UT_ERR_ALLOC "Error allocation"
+#define UT_ERR_FORK "Error fork"
 
 void ut_stds_devnull(void);
 void ut_close_pipefd(int pipefd[2]);

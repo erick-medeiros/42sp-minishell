@@ -16,8 +16,7 @@ OBJ_DIR = obj/
 REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -IUnity -I$(MIN_INC_DIR) -I$(LIBFT_DIR) -g
-CFLAGS += -I$(MIN_SRC_DIR)debug -I$(MIN_SRC_DIR)executor/ -I$(MIN_SRC_DIR)parser/
+CFLAGS += -I$(LIBFT_DIR) -I$(MIN_INC_DIR) -I$(MIN_SRC_DIR)debug -g
 LIBFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
@@ -30,6 +29,7 @@ FILES += list_test.c
 FILES += builtins_test.c
 FILES += environment_test.c
 FILES += pathname_test.c
+FILES += subshell_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
@@ -39,7 +39,7 @@ $(REQUIRED_DIRS):
 	@mkdir -p $@
 
 $(OBJ_DIR)%.o: %.c
-	$(FORMAT) $<
+	@$(FORMAT) $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(LIBDEBUG) $(MINISHELL)
