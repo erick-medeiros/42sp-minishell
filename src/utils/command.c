@@ -6,11 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:55:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 20:22:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
 t_cmd	*new_command(void)
 {
@@ -43,4 +44,23 @@ void	destroy_command(t_cmd *command)
 	free(command->argv);
 	free(command->pathname);
 	free(command);
+}
+
+t_pipeline	*new_pipeline(t_operator operator)
+{
+	t_pipeline	*pipeline;
+
+	pipeline = malloc(sizeof(t_pipeline));
+	pipeline->command_count = 0;
+	pipeline->operator = operator;
+	pipeline->pipefds = NULL;
+	pipeline->commands = NULL;
+	return (pipeline);
+}
+
+void	destroy_pipeline(t_pipeline	*pipeline)
+{
+	if (pipeline->commands)
+		clear_list(pipeline->commands, (void (*)(void *))destroy_command);
+	free(pipeline);
 }
