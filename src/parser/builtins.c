@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 17:41:18 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 17:51:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:53:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_bool	isbuiltin(char *arg)
 	return (FALSE);
 }
 
-void	configure_builtin(t_command *command)
+void	configure_builtin(t_cmd *command)
 {
 	if (!command->isbuiltin)
 		return ;

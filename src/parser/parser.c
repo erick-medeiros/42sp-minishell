@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 13:00:05 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:53:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 {
 	t_node		*list;
 	t_node		*node;
-	t_command	*cmd;
+	t_cmd		*cmd;
 	t_token		*token;
 	int			steps;
 	char		*tmp;
@@ -64,7 +64,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 			steps = PARSER_STEP_END;
 		if (steps == PARSER_STEP_EXEC)
 		{
-			cmd = init_command();
+			cmd = new_command();
 			cmd->number = number++;
 			cmd->isbuiltin = isbuiltin(token->value);
 			if (cmd->isbuiltin)
@@ -100,22 +100,4 @@ t_node	*main_pipeline(t_minishell *minishell)
 	if (steps == PARSER_STEP_END)
 		add_node(&list, cmd);
 	return (list);
-}
-
-t_command	*init_command(void)
-{
-	t_command	*command;
-
-	command = malloc(sizeof(t_command));
-	command->pathname = NULL;
-	command->argc = 0;
-	command->argv = NULL;
-	command->input = STDIN;
-	command->output = STDOUT;
-	command->pid = 0;
-	command->status = 0;
-	command->number = 0;
-	command->isbuiltin = FALSE;
-	command->subshell = TRUE;
-	return (command);
 }

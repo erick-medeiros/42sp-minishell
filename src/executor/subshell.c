@@ -6,15 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:06:01 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:53:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor_internals.h"
 
-void	subshell(t_minishell *minishell, t_pipeline *pipeline,
-			t_command *command)
+void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 {
 	connect_pipes(pipeline, command);
 	command->pid = fork();
@@ -36,7 +35,7 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline,
 	}
 }
 
-void	child_process(t_minishell *minishell, t_command *command)
+void	child_process(t_minishell *minishell, t_cmd *command)
 {
 	if (!command->pathname)
 		exit_process(minishell, 127);
@@ -45,7 +44,7 @@ void	child_process(t_minishell *minishell, t_command *command)
 	exit_process(minishell, 1);
 }
 
-void	update_io(t_minishell *minishell, t_command *command)
+void	update_io(t_minishell *minishell, t_cmd *command)
 {
 	if (command->input < 0 || command->output < 0)
 	{
@@ -68,7 +67,7 @@ void	exit_process(t_minishell *minishell, int status)
 	exit(status);
 }
 
-void	process_exit_status(t_command *command)
+void	process_exit_status(t_cmd *command)
 {
 	if (WIFEXITED(command->status))
 		command->status = WEXITSTATUS(command->status);

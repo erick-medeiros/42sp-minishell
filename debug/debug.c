@@ -35,7 +35,7 @@ void debug_content_fd(int fd, char *prompt, int debug) {
   close(fd);
 }
 
-void debug_command(t_command *command) {
+void debug_command(t_cmd *command) {
   int i;
 
   printf("\n----------\n");

@@ -15,7 +15,7 @@ OBJ_DIR = obj/
 MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
 FILES = main.c
-FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c
+FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c utils/command.c
 FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
 FILES += lexer/lexer.c
 FILES += expansor/expansor.c expansor/env_conv.c expansor/env_utils.c

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:36:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 17:25:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:55:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	open_pipes(t_pipeline *pipeline)
 	}
 }
 
-void	connect_pipes(t_pipeline *pipeline, t_command *command)
+void	connect_pipes(t_pipeline *pipeline, t_cmd *command)
 {
 	if (pipeline->command_count == 1)
 	{

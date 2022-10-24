@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 13:16:13 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:52:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	miniprompt(t_minishell *minishell);
 
 // Builtins
 
-void	builtins(t_minishell *minishell, t_command *command);
+void	builtins(t_minishell *minishell, t_cmd *command);
 void	builtin_cd(char *path, t_vlst *vars);
 void	builtin_echo(char *option, char *string);
 void	builtin_env(t_vlst *vars);
@@ -91,6 +91,9 @@ char	*get_pwd(void);
 t_node	*lexer(char *prompt);
 void	parser(t_minishell *minishell);
 void	executor(t_minishell *minishell);
+
+t_cmd	*new_command(void);
+void	destroy_command(t_cmd *command);
 
 // Error
 

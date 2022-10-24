@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 10:43:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:51:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef enum e_operator {
 	OPERATOR_OR
 }	t_operator;
 
-typedef struct s_command
+typedef struct s_cmd
 {
 	pid_t	pid;
 	char	*pathname;
@@ -65,7 +65,7 @@ typedef struct s_command
 	char	**envp;
 	t_bool	subshell;
 	t_bool	isbuiltin;
-}	t_command;
+}	t_cmd;
 
 typedef struct s_pipeline
 {

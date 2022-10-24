@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 10:45:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:54:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,21 @@
 
 void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline);
 void	run_command(t_minishell *minishell, t_pipeline *pipeline,
-			t_command *command);
-void	command_exit_status(t_command *command);
+			t_cmd *command);
+void	command_exit_status(t_cmd *command);
 
 // Pipeline
 
 void	open_pipes(t_pipeline *pipeline);
-void	connect_pipes(t_pipeline *pipeline, t_command *command);
+void	connect_pipes(t_pipeline *pipeline, t_cmd *command);
 void	close_pipes(t_pipeline *pipeline);
 
 // Subshell
 
-void	subshell(t_minishell *minishell, t_pipeline *pipeline,
-			t_command *command);
-void	child_process(t_minishell *minishell, t_command *command);
-void	update_io(t_minishell *minishell, t_command *command);
+void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command);
+void	child_process(t_minishell *minishell, t_cmd *command);
+void	update_io(t_minishell *minishell, t_cmd *command);
 void	exit_process(t_minishell *minishell, int status);
-void	process_exit_status(t_command *command);
+void	process_exit_status(t_cmd *command);
 
 #endif
