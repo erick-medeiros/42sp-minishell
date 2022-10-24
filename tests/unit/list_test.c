@@ -121,11 +121,13 @@ void test_change_node_content_int_list(void) {
 	clear_list(lst, free);
 }
 
-void file_list_test(void) {
+int file_list_test(void) {
+	UNITY_BEGIN();
 	RUN_TEST(test_create_int_list);
 	RUN_TEST(test_find_node_by_content_int_list);
 	RUN_TEST(test_remove_last_node_int_list);
 	RUN_TEST(test_remove_first_node_int_list);
 	RUN_TEST(test_remove_mid_node_int_list);
 	RUN_TEST(test_change_node_content_int_list);
+	return UNITY_END();
 }

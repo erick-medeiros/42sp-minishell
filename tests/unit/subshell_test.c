@@ -47,4 +47,8 @@ void test_function_process_exit_status(void) {
 	}
 }
 
-void file_subshell_test() { RUN_TEST(test_function_process_exit_status); }
+int file_subshell_test() {
+	UNITY_BEGIN();
+	RUN_TEST(test_function_process_exit_status);
+	return UNITY_END();
+}

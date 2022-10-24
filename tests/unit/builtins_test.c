@@ -128,9 +128,11 @@ void test_builtin_exit(void) {
 	}
 }
 
-void file_builtins_test(void) {
+int file_builtins_test(void) {
+	UNITY_BEGIN();
 	RUN_TEST(test_builtin_echo);
 	RUN_TEST(test_builtin_cd);
 	RUN_TEST(test_builtin_pwd);
 	RUN_TEST(test_builtin_exit);
+	return UNITY_END();
 }

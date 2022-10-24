@@ -283,7 +283,8 @@ void test_cmp_vars_by_name_same_names(void) {
 	TEST_ASSERT_EQUAL_INT(0, result);
 }
 
-void file_environment_test(void) {
+int file_environment_test(void) {
+	UNITY_BEGIN();
 	RUN_TEST(test_new_var_node_contains_equal);
 	RUN_TEST(test_new_var_node_contains_no_equal);
 	RUN_TEST(test_new_var_node_null_str);
@@ -302,4 +303,5 @@ void file_environment_test(void) {
 	RUN_TEST(test_cmp_vars_by_name_a_is_longer);
 	RUN_TEST(test_cmp_vars_by_name_b_is_longer);
 	RUN_TEST(test_cmp_vars_by_name_same_names);
+	return UNITY_END();
 }
