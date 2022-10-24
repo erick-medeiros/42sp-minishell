@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 10:51:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:03:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 void	subshell(t_minishell *minishell, t_pipeline *pipeline,
 			t_command *command)
 {
+	connect_pipes(pipeline, command);
 	command->pid = fork();
 	if (command->pid < 0)
 		panic_error("executor: fork");
 	else if (command->pid == 0)
 	{
-		connect_pipes(pipeline, command);
 		command->input = dup(command->input);
 		command->output = dup(command->output);
 		close_pipes(pipeline);

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 11:11:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:00:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,26 @@ void	parser(t_minishell *minishell)
 {
 	t_node		*list;
 	t_pipeline	*pipeline;
+	t_node		*node;
 
 	minishell->path_list = get_paths(minishell->envp);
 	list = NULL;
 	pipeline = malloc(sizeof(t_pipeline));
 	pipeline->commands = main_pipeline(minishell);
-	pipeline->command_count = 1;
+	pipeline->command_count = 0;
+	node = pipeline->commands;
+	while (node)
+	{
+		pipeline->command_count++;
+		node = node->next;
+	}
 	pipeline->operator = OPERATOR_MAIN;
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
 }
 
 enum e_steps {
-	PARSER_STEP_PATH,
+	PARSER_STEP_EXEC,
 	PARSER_STEP_ARG,
 	PARSER_STEP_END
 };
@@ -43,17 +50,22 @@ t_node	*main_pipeline(t_minishell *minishell)
 	t_token		*token;
 	int			steps;
 	char		*tmp;
+	int			number;
 
 	list = NULL;
+	steps = PARSER_STEP_EXEC;
 	node = minishell->token_list;
-	steps = PARSER_STEP_PATH;
-	cmd = init_command();
+	cmd = NULL;
+	number = 0;
 	while (node)
 	{
 		token = node->content;
-		if (steps == PARSER_STEP_PATH)
+		if (token->type == TOKEN_PIPE)
+			steps = PARSER_STEP_END;
+		if (steps == PARSER_STEP_EXEC)
 		{
-			cmd->number = 0;
+			cmd = init_command();
+			cmd->number = number++;
 			cmd->isbuiltin = isbuiltin(token->value);
 			if (cmd->isbuiltin)
 				cmd->pathname = ft_strdup(token->value);
@@ -63,6 +75,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
 			cmd->argv[0] = ft_strdup(token->value);
 			cmd->argv[1] = NULL;
+			configure_builtin(cmd);
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)
@@ -75,10 +88,17 @@ t_node	*main_pipeline(t_minishell *minishell)
 			cmd->argv[1] = ft_strdup(token->value);
 			cmd->argv[2] = NULL;
 		}
+		else if (steps == PARSER_STEP_END)
+		{
+			add_node(&list, cmd);
+			steps = PARSER_STEP_EXEC;
+		}
 		node = node->next;
 	}
-	configure_builtin(cmd);
-	add_node(&list, cmd);
+	if (steps == PARSER_STEP_ARG)
+		steps = PARSER_STEP_END;
+	if (steps == PARSER_STEP_END)
+		add_node(&list, cmd);
 	return (list);
 }
 
