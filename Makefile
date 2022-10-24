@@ -14,10 +14,6 @@ SRC_DIR = src/
 OBJ_DIR = obj/
 MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
-HEADERS = include/minishell.h include/structs.h
-HEADERS += src/executor/executor_internals.h
-HEADERS += src/parser/parser_internals.h
-
 FILES = main.c
 FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c
 FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
@@ -30,6 +26,9 @@ FILES += executor/executor.c executor/pipeline.c executor/subshell.c
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
+
+FILES_INC = minishell.h structs.h executor_internals.h parser_internals.h
+HEADERS = $(addprefix include/, $(FILES_INC))
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
 
@@ -63,6 +62,7 @@ install:
 
 norm:
 	@clear
+	@echo "norminette include/ libft/ src/ | grep Error"
 	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
