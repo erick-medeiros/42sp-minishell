@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 18:01:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 10:46:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,13 @@ void	executor(t_minishell *minishell)
 
 void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
 {
-	t_command	*command;
 	t_node		*node;
 
 	open_pipes(pipeline);
 	node = pipeline->commands;
 	while (node)
 	{
-		command = (t_command *) node->content;
-		command->pipefds = pipeline->pipefds;
-		run_command(minishell, pipeline, command);
+		run_command(minishell, pipeline, node->content);
 		node = node->next;
 	}
 	close_pipes(pipeline);
@@ -55,28 +52,9 @@ void	run_command(t_minishell *minishell, t_pipeline *pipeline,
 			t_command *command)
 {
 	if (command->isbuiltin && !command->subshell)
-	{
 		builtins(minishell, command);
-		return ;
-	}
-	command->pid = fork();
-	if (command->pid < 0)
-		panic_error("executor: fork");
-	else if (command->pid == 0)
-	{
-		connect_pipes(pipeline, command);
-		command->input = dup(command->input);
-		command->output = dup(command->output);
-		close_pipes(pipeline);
-		if (command->isbuiltin)
-		{
-			child_process_io(minishell, command);
-			builtins(minishell, command);
-			exit_process(minishell, 0);
-		}
-		else
-			child_process(minishell, command);
-	}
+	else
+		subshell(minishell, pipeline, command);
 }
 
 void	command_exit_status(t_command *command)

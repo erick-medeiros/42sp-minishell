@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 17:50:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 11:11:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ t_command	*init_command(void)
 	command->pid = 0;
 	command->status = 0;
 	command->number = 0;
-	command->pipefds = NULL;
 	command->isbuiltin = FALSE;
 	command->subshell = TRUE;
 	return (command);

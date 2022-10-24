@@ -1,21 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   child_process.c                                    :+:      :+:    :+:   */
+/*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/22 16:29:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/24 10:51:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor_internals.h"
 
+void	subshell(t_minishell *minishell, t_pipeline *pipeline,
+			t_command *command)
+{
+	command->pid = fork();
+	if (command->pid < 0)
+		panic_error("executor: fork");
+	else if (command->pid == 0)
+	{
+		connect_pipes(pipeline, command);
+		command->input = dup(command->input);
+		command->output = dup(command->output);
+		close_pipes(pipeline);
+		update_io(minishell, command);
+		if (command->isbuiltin)
+		{
+			builtins(minishell, command);
+			exit_process(minishell, 0);
+		}
+		else
+			child_process(minishell, command);
+	}
+}
+
 void	child_process(t_minishell *minishell, t_command *command)
 {
-	child_process_io(minishell, command);
 	if (!command->pathname)
 		exit_process(minishell, 127);
 	if (execve(command->pathname, command->argv, minishell->envp) == -1)
@@ -23,7 +45,7 @@ void	child_process(t_minishell *minishell, t_command *command)
 	exit_process(minishell, 1);
 }
 
-void	child_process_io(t_minishell *minishell, t_command *command)
+void	update_io(t_minishell *minishell, t_command *command)
 {
 	if (command->input < 0 || command->output < 0)
 	{
