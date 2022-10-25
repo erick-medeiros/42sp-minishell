@@ -67,3 +67,8 @@ char **ut_fake_envp_path(void) {
 	fake_envp[1] = NULL;
 	return (fake_envp);
 }
+
+void ut_exit_status(int *status) {
+	if (WIFEXITED(*status))
+		*status = WEXITSTATUS(*status);
+}
