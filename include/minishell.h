@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 19:44:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 09:42:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	*clear_envp(char **envp);
 void	clear_list(t_node *lst, void (*del_node)(void *));
 void	del_var_node(void *content);
 void	free_minishell(t_minishell *minishell);
+void	destroy_minishell(t_minishell *minishell);
 void	free_string_list(char **str);
 
 // Prompt

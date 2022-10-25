@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:38:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 20:16:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 09:42:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ void	free_minishell(t_minishell *minishell)
 {
 	clear_list(minishell->pipelines, (void (*)(void *))destroy_pipeline);
 	clear_list(minishell->token_list, free_token);
+}
+
+void	destroy_minishell(t_minishell *minishell)
+{
+	free_minishell(minishell);
+	clear_list(minishell->env_list.list, del_var_node);
 	free_string_list(minishell->path_list);
 }
 

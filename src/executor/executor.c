@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:52:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 09:42:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,7 @@ void	builtins(t_minishell *minishell, t_cmd *command)
 		builtin_env(&minishell->env_list);
 	else if (command_is_equal(command->pathname, "exit"))
 	{
-		free_minishell(minishell);
-		clear_list(minishell->env_list.list, del_var_node);
+		destroy_minishell(minishell);
 		builtin_exit();
 	}
 }

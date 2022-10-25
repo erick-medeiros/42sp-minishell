@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:53:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 09:42:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ void	update_io(t_minishell *minishell, t_cmd *command)
 
 void	exit_process(t_minishell *minishell, int status)
 {
-	free_minishell(minishell);
-	clear_list(minishell->env_list.list, del_var_node);
+	destroy_minishell(minishell);
 	exit(status);
 }
 
