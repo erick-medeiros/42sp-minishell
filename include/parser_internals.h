@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 19:45:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 10:05:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "minishell.h"
 
-char		**get_paths(char *envp[]);
 char		*get_pathname(char *arg, char **path_list);
 t_node		*main_pipeline(t_minishell *minishell);
 

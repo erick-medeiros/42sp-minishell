@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 20:18:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 10:04:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	parser(t_minishell *minishell)
 	t_pipeline	*pipeline;
 	t_node		*node;
 
-	minishell->path_list = get_paths(minishell->envp);
 	list = NULL;
 	pipeline = new_pipeline(OPERATOR_MAIN);
 	pipeline->commands = main_pipeline(minishell);
