@@ -10,12 +10,13 @@ LIBFT_DIR = $(MINISHELL_DIR)libft/
 LIBFT = $(LIBFT_DIR)libft.a
 LIBDEBUG = $(MINISHELL_DIR)debug/debug.a
 
-MIN_SRC_FILES=$(filter-out $(MIN_SRC_DIR)main.c, $(wildcard $(MIN_SRC_DIR)*/*.c $(MIN_SRC_DIR)*.c))
-MIN_OBJ_FILES=$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o))
+MIN_SRC_FILES=$(wildcard $(MIN_SRC_DIR)*/*.c)
+MIN_OBJ_FILES=$(wildcard $(MIN_OBJ_DIR)*/*.o)
 OBJ_DIR = obj/
 REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
+# CFLAGS += -fsanitize=address
 CFLAGS += -I$(LIBFT_DIR) -I$(MIN_INC_DIR) -I$(MIN_SRC_DIR)debug -g
 LIBFLAGS = -L$(LIBFT_DIR) -lft -lreadline
 RM = rm -fr
@@ -44,16 +45,14 @@ $(OBJ_DIR)%.o: %.c
 
 $(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(LIBDEBUG) $(MINISHELL)
 	make -C $(MINISHELL_DIR)
-	gcc $(CFLAGS) $(OBJS) \
-	$(filter-out $(MIN_OBJ_DIR)main.o, $(wildcard $(MIN_OBJ_DIR)*/*.o $(MIN_OBJ_DIR)*.o)) \
-	-o $(NAME) $(LIBDEBUG) $(LIBFLAGS)
+	gcc $(CFLAGS) $(OBJS) $(MIN_OBJ_DIR)*/*.o -o $(NAME) $(LIBDEBUG) $(LIBFLAGS)
 
 reminishell:
 	make re -C $(MINISHELL_DIR)
 	make re
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_DIR)*
 
 fclean:	clean
 	$(RM) $(NAME)
