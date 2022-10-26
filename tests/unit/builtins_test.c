@@ -10,14 +10,12 @@ void test_builtin_echo(void) {
 	pid_t pid;
 	char *expected;
 	char *content;
+	int status;
 
 	expected = "echo\necho";
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	ut_pipe(pipefd);
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
@@ -26,7 +24,9 @@ void test_builtin_echo(void) {
 		exit(0);
 	} else {
 		close(pipefd[1]);
-		wait(NULL);
+		status = ut_wait();
+		if (status != 0)
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		content = get_content_fd(pipefd[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
@@ -68,12 +68,9 @@ void test_builtin_pwd(void) {
 	int pipefd[2];
 	int status;
 
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	ut_pipe(pipefd);
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
@@ -100,22 +97,15 @@ void test_builtin_exit(void) {
 	int status;
 	int expected;
 
-	expected = 0;
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		builtin_exit();
 		exit(1);
-	} else {
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status)) {
-			status = WEXITSTATUS(status);
-			TEST_ASSERT_EQUAL_INT(expected, status);
-		} else
-			TEST_IGNORE_MESSAGE("Error in child process");
 	}
+	expected = 0;
+	status = ut_wait();
+	TEST_ASSERT_EQUAL_INT(expected, status);
 }
 
 int file_builtins_test(void) {
