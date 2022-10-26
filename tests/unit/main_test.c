@@ -7,12 +7,14 @@ int file_builtins_test(void);
 int file_environment_test(void);
 int file_pathname_test(void);
 int file_subshell_test(void);
+int file_utils_test(void);
 
 void setUp(void) {}
 
 void tearDown(void) {}
 
 void run_all_test() {
+	file_utils_test();
 	file_prompt_test();
 	file_list_test();
 	file_builtins_test();
@@ -26,7 +28,9 @@ int main(int argc, char *argv[]) {
 		run_all_test();
 	else {
 		char *file = argv[1];
-		if (strcmp("list", file) == 0)
+		if (strcmp("utils", file) == 0)
+			return file_utils_test();
+		else if (strcmp("list", file) == 0)
 			return file_list_test();
 		else if (strcmp("prompt", file) == 0)
 			return file_prompt_test();

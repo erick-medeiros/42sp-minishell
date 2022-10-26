@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 20:22:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/26 15:54:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_cmd	*new_command(void)
 	command->pathname = NULL;
 	command->argc = 0;
 	command->argv = NULL;
+	command->envp = NULL;
 	command->input = STDIN;
 	command->output = STDOUT;
 	command->pid = 0;
