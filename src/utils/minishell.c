@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/25 18:50:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:45:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,15 @@ void	init_minishell(t_minishell *minishell, char **envp)
 void	free_minishell(t_minishell *minishell)
 {
 	if (minishell->pipelines)
+	{
 		clear_list(minishell->pipelines, (void (*)(void *))destroy_pipeline);
+		minishell->pipelines = NULL;
+	}
 	if (minishell->token_list)
+	{
 		clear_list(minishell->token_list, free_token);
+		minishell->token_list = NULL;
+	}
 }
 
 void	destroy_minishell(t_minishell *minishell)
