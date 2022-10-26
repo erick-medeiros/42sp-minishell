@@ -11,7 +11,7 @@
 
 void ut_stds_devnull(void);
 void ut_close_pipefd(int pipefd[2]);
-char *ut_exec_pwd(void);
+char *ut_getcwd();
 void *ut_mmap(size_t len);
 char **ut_fake_envp_path(void);
 void ut_exit_status(int *status);

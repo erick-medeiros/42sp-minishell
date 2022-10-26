@@ -41,33 +41,33 @@ void test_builtin_cd(void) {
 	int status;
 	int len;
 
-	expected = "/tmp\n";
+	expected = "/tmp";
 	len = strlen(expected) + 1;
 	content = ut_mmap(len);
 	pid = ut_fork();
 	if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd("/tmp", NULL);
-		char *new_dir = ut_exec_pwd();
+		builtin_cd(expected, NULL);
+		char *new_dir = ut_getcwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);
 		exit(0);
 	} else {
 		wait(&status);
 		if (status != 0)
-			TEST_IGNORE_MESSAGE("Error child process");
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 	}
 }
 
 void test_builtin_pwd(void) {
 	char *current_dir;
+	char *expected;
 	char *content;
 	pid_t pid;
 	int pipefd[2];
 	int status;
 
-	current_dir = ut_exec_pwd();
 	if (pipe(pipefd) == -1)
 		TEST_IGNORE_MESSAGE("Error pipe");
 	pid = fork();
@@ -78,16 +78,18 @@ void test_builtin_pwd(void) {
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
 		builtin_pwd();
-		free(current_dir);
 		exit(0);
 	} else {
 		close(pipefd[1]);
 		wait(&status);
 		if (status != 0)
-			TEST_IGNORE_MESSAGE("Error in child process");
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
+		current_dir = ut_getcwd();
 		content = get_content_fd(pipefd[0]);
-		TEST_ASSERT_EQUAL_STRING(current_dir, content);
+		expected = ft_strjoin(current_dir, "\n");
+		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
+		free(expected);
 		free(current_dir);
 		close(pipefd[0]);
 	}
