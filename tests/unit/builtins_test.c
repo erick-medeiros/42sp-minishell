@@ -38,37 +38,25 @@ void test_builtin_cd(void) {
 	pid_t pid;
 	char *expected;
 	char *content;
-	char *current_dir;
 	int status;
 	int len;
-	t_vlst vars;
 
-	vars.list = NULL;
-	vars.len = 0;
-	current_dir = ut_exec_pwd();
-	len = strlen(current_dir) + strlen("./Unity\n") + 1;
+	expected = "/tmp\n";
+	len = strlen(expected) + 1;
 	content = ut_mmap(len);
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd("./Unity", &vars);
+		builtin_cd("/tmp", NULL);
 		char *new_dir = ut_exec_pwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);
-		free(current_dir);
-		clear_list(vars.list, del_var_node);
 		exit(0);
 	} else {
 		wait(&status);
 		if (status != 0)
 			TEST_IGNORE_MESSAGE("Error child process");
-		current_dir[strlen(current_dir) - 1] = '\0';
-		expected = ft_strjoin(current_dir, "/Unity\n");
 		TEST_ASSERT_EQUAL_STRING(expected, content);
-		free(current_dir);
-		free(expected);
 	}
 }
 
