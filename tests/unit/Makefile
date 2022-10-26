@@ -62,7 +62,7 @@ fclean:	clean
 re:	fclean all
 
 leaks:
-	valgrind \
+	@valgrind \
 		--leak-check=full \
 		--show-leak-kinds=all \
 		--suppressions=../readline.supp \
