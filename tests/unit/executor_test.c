@@ -4,15 +4,9 @@
 #include "parser_internals.h"
 #include "structs.h"
 
-void test_function_open_pipes() {
-	t_pipeline *pipeline;
-	char *expected;
-	char *expected2;
-	char *content;
-	int fd;
-	int fd2;
+void test_open_pipes_no_open() {
+	t_pipeline *pipeline = new_pipeline(OPERATOR_MAIN);
 
-	pipeline = new_pipeline(OPERATOR_MAIN);
 	TEST_ASSERT_EQUAL(NULL, pipeline->pipefds);
 	pipeline->command_count = 0;
 	open_pipes(pipeline);
@@ -20,7 +14,15 @@ void test_function_open_pipes() {
 	pipeline->command_count = 1;
 	open_pipes(pipeline);
 	TEST_ASSERT_EQUAL(NULL, pipeline->pipefds);
-	//
+	destroy_pipeline(pipeline);
+}
+
+void test_open_pipes_one_pipe() {
+	t_pipeline *pipeline = new_pipeline(OPERATOR_MAIN);
+	char *expected;
+	int fd;
+	char *content;
+
 	pipeline->command_count = 2;
 	open_pipes(pipeline);
 	TEST_ASSERT_NOT_EQUAL(NULL, pipeline->pipefds);
@@ -32,7 +34,18 @@ void test_function_open_pipes() {
 	close(fd);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
 	free(content);
-	//
+	destroy_pipeline(pipeline);
+}
+
+void test_open_pipes_two_pipes() {
+	t_pipeline *pipeline = new_pipeline(OPERATOR_MAIN);
+	char *expected;
+	char *expected2;
+	char *content;
+	char *content2;
+	int fd;
+	int fd2;
+
 	pipeline->command_count = 3;
 	open_pipes(pipeline);
 	TEST_ASSERT_NOT_EQUAL(NULL, pipeline->pipefds);
@@ -44,27 +57,20 @@ void test_function_open_pipes() {
 	fd2 = dup(pipeline->pipefds[1][0]);
 	close_pipes(pipeline);
 	content = get_content_fd(fd);
+	content2 = get_content_fd(fd2);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
+	TEST_ASSERT_EQUAL_STRING(expected2, content2);
 	free(content);
-	content = get_content_fd(fd2);
-	TEST_ASSERT_EQUAL_STRING(expected2, content);
-	free(content);
-	//
+	free(content2);
 	close(fd);
 	close(fd2);
 	destroy_pipeline(pipeline);
 }
 
-int test_group_pipeline(void) {
-	UNITY_BEGIN();
-	RUN_TEST(test_function_open_pipes);
-	return (UNITY_END());
-}
-
 int file_executor_test(void) {
-	int status;
-	status = test_group_pipeline();
-	if (status)
-		return (status);
-	return (0);
+	UNITY_BEGIN(); // test function ~ open_pipes
+	RUN_TEST(test_open_pipes_no_open);
+	RUN_TEST(test_open_pipes_one_pipe);
+	RUN_TEST(test_open_pipes_two_pipes);
+	return UNITY_END();
 }
