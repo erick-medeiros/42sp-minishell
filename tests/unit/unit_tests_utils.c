@@ -77,3 +77,17 @@ void ut_pipe(int *pipefd) {
 	if (pipe(pipefd) == -1)
 		TEST_IGNORE_MESSAGE(UT_ERR_PIPE);
 }
+
+pid_t ut_fork() {
+	pid_t pid = fork();
+	if (pid < 0)
+		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
+	return (pid);
+}
+
+int ut_wait() {
+	int status;
+	wait(&status);
+	ut_exit_status(&status);
+	return (status);
+}

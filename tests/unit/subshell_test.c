@@ -4,6 +4,8 @@
 #include "parser_internals.h"
 #include "structs.h"
 #include "unit_tests_utils.h"
+#include <string.h>
+#include <unistd.h>
 
 void test_function_process_exit_status(void) {
 	t_cmd *cmd;
@@ -112,10 +114,46 @@ void test_function_update_io(void) {
 	}
 }
 
+void test_function_child_process(void) {
+	char *expected = "oi";
+	t_cmd *cmd = new_command();
+	t_minishell minishell;
+	int pipefd[2];
+
+	cmd->pathname = strdup("/usr/bin/echo");
+	cmd->argc = 3;
+	cmd->argv = malloc(sizeof(char *) * cmd->argc + 1);
+	cmd->argv[0] = strdup("echo");
+	cmd->argv[1] = strdup("-n");
+	cmd->argv[2] = strdup(expected);
+	cmd->argv[3] = NULL;
+	ut_pipe(pipefd);
+	pid_t pid = ut_fork();
+	if (pid == 0) {
+		dup2(pipefd[1], STDOUT);
+		ut_close_pipefd(pipefd);
+		init_minishell(&minishell, NULL);
+		child_process(&minishell, cmd);
+		destroy_command(cmd);
+		destroy_minishell(&minishell);
+	} else {
+		close(pipefd[1]);
+		int status = ut_wait();
+		if (status != 0)
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
+		char *content = get_content_fd(pipefd[0]);
+		TEST_ASSERT_EQUAL_STRING(expected, content);
+		free(content);
+		destroy_command(cmd);
+		close(pipefd[0]);
+	}
+}
+
 int file_subshell_test() {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_process_exit_status);
 	RUN_TEST(test_function_exit_process);
 	RUN_TEST(test_function_update_io);
+	RUN_TEST(test_function_child_process);
 	return UNITY_END();
 }
