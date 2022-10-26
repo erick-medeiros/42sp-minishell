@@ -8,6 +8,7 @@ int file_environment_test(void);
 int file_pathname_test(void);
 int file_subshell_test(void);
 int file_utils_test(void);
+int file_executor_test(void);
 
 void setUp(void) {}
 
@@ -21,6 +22,7 @@ void run_all_test() {
 	file_environment_test();
 	file_pathname_test();
 	file_subshell_test();
+	file_executor_test();
 }
 
 int main(int argc, char *argv[]) {
@@ -42,6 +44,8 @@ int main(int argc, char *argv[]) {
 			return file_pathname_test();
 		else if (strcmp("subshell", file) == 0)
 			return file_subshell_test();
+		else if (strcmp("executor", file) == 0)
+			file_executor_test();
 	}
 	return 0;
 }
