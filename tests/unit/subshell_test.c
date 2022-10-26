@@ -108,6 +108,7 @@ void test_function_update_io(void) {
 			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		char *content = get_content_fd(pipefd_out[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
+		free(content);
 		destroy_command(command);
 		destroy_minishell(&minishell);
 		close(pipefd_out[0]);
@@ -122,7 +123,7 @@ void test_function_child_process(void) {
 
 	cmd->pathname = strdup("/usr/bin/echo");
 	cmd->argc = 3;
-	cmd->argv = malloc(sizeof(char *) * cmd->argc + 1);
+	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
 	cmd->argv[0] = strdup("echo");
 	cmd->argv[1] = strdup("-n");
 	cmd->argv[2] = strdup(expected);
@@ -134,8 +135,7 @@ void test_function_child_process(void) {
 		ut_close_pipefd(pipefd);
 		init_minishell(&minishell, NULL);
 		child_process(&minishell, cmd);
-		destroy_command(cmd);
-		destroy_minishell(&minishell);
+		exit(1);
 	} else {
 		close(pipefd[1]);
 		int status = ut_wait();

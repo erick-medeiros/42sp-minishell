@@ -66,6 +66,13 @@ leaks:
 		--suppressions=../readline.supp \
 		--track-fds=yes \
 		--track-origins=yes \
+		--log-file=leak.log \
 		./$(NAME)
+
+debug_leak_log:
+	@echo "FDS>"
+	@cat leak.log | grep "FILE DESCRIPTORS" | cut -d ' ' -f2- | uniq | sort
+	@echo "LEAKS>"
+	@cat leak.log | grep "ERROR SUMMARY" | cut -d ' ' -f2- | uniq | sort
 
 .PHONY: all clean fclean re reminishell leaks
