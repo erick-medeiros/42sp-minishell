@@ -150,11 +150,11 @@ void test_builtin_pwd_overflow(void) {
 		exit(errno);
 	}
 	int status = ut_wait();
+	free(dir);
 	if (status == 0)
 		TEST_PASS();
 	else
 		TEST_IGNORE();
-	free(dir);
 }
 
 void test_builtin_exit(void) {
