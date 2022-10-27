@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 11:24:16 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:31:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		free_minishell(t_minishell *minishell);
+void		destroy_minishell(t_minishell *minishell);
 void		free_string_list(char **str);
 
 // Prompt
@@ -78,7 +79,7 @@ void		miniprompt(t_minishell *minishell);
 
 // Builtins
 
-void		builtins(t_minishell *minishell, t_command *command);
+void		builtins(t_minishell *minishell, t_cmd *command);
 void		builtin_cd(char *path, t_vlst *vars);
 void		builtin_echo(char *option, char *string);
 void		builtin_env(t_vlst *vars);
@@ -104,10 +105,31 @@ t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_skip_state(size_t idx, t_val_info *vi);
 t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
-int lexer(char *prompt, t_node **tokens, t_lex_state start_state);
-int	new_token(t_node **tokens, t_tok_type tok_type);
-int	new_token_with_val(t_node **tokens, t_tok_type tok_type, t_val_info *vi);
+int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
+int			new_token(t_node **tokens, t_tok_type tok_type);
+int			new_token_with_val(t_node **tokens, t_tok_type tok_type,
+				t_val_info *vi);
 t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st);
 t_lex_state	init_quote_value(size_t idx, t_val_info *vi, t_lex_state st);
+
+// Error
+
+void		panic_error(char *msg);
+
+// Minishell
+
+void		init_minishell(t_minishell *minishell, char **envp);
+
+// Error
+
+void		panic_error(char *msg);
+
+// Minishell
+
+void		init_minishell(t_minishell *minishell, char **envp);
+
+// Remove
+
+char		**get_paths(char *envp[]);
 
 #endif

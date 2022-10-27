@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 11:25:08 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:31:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ typedef enum e_lex_state {
 	STATE_WORD
 }	t_lex_state;
 
-enum e_operators {
+typedef enum e_operator {
 	OPERATOR_MAIN,
 	OPERATOR_PRIORITY,
 	OPERATOR_AND,
 	OPERATOR_OR
-};
+}	t_operator;
 
 typedef enum e_tok_type {
 	TOKEN_APPEND,
@@ -57,7 +57,7 @@ typedef enum e_tok_type {
 	TOKEN_WORD
 }	t_tok_type;
 
-typedef struct s_command
+typedef struct s_cmd
 {
 	pid_t	pid;
 	char	*pathname;
@@ -66,9 +66,11 @@ typedef struct s_command
 	int		status;
 	int		input;
 	int		output;
+	int		number;
 	char	**envp;
+	t_bool	subshell;
 	t_bool	isbuiltin;
-}	t_command;
+}	t_cmd;
 
 typedef struct s_node
 {
@@ -84,8 +86,10 @@ typedef struct s_node_funcs
 
 typedef struct s_pipeline
 {
-	enum e_operators	operator;
-	t_node				*commands;
+	t_operator	operator;
+	t_node		*commands;
+	int			command_count;
+	int			**pipefds;
 }	t_pipeline;
 
 typedef struct s_token
@@ -96,7 +100,7 @@ typedef struct s_token
 
 typedef struct s_val_info
 {
-	char *prompt;
+	char	*prompt;
 	size_t	start;
 	size_t	len;
 	int		active;

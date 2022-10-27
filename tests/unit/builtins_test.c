@@ -10,14 +10,12 @@ void test_builtin_echo(void) {
 	pid_t pid;
 	char *expected;
 	char *content;
+	int status;
 
 	expected = "echo\necho";
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	ut_pipe(pipefd);
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
@@ -26,7 +24,9 @@ void test_builtin_echo(void) {
 		exit(0);
 	} else {
 		close(pipefd[1]);
-		wait(NULL);
+		status = ut_wait();
+		if (status != 0)
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		content = get_content_fd(pipefd[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
@@ -38,71 +38,123 @@ void test_builtin_cd(void) {
 	pid_t pid;
 	char *expected;
 	char *content;
-	char *current_dir;
 	int status;
 	int len;
-	t_vlst vars;
 
-	vars.list = NULL;
-	vars.len = 0;
-	current_dir = ut_exec_pwd();
-	len = strlen(current_dir) + strlen("./Unity\n") + 1;
+	expected = "/tmp";
+	len = strlen(expected) + 1;
 	content = ut_mmap(len);
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd("./Unity", &vars);
-		char *new_dir = ut_exec_pwd();
+		builtin_cd(expected, NULL);
+		char *new_dir = ut_getcwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);
-		free(current_dir);
-		clear_list(vars.list, del_var_node);
 		exit(0);
 	} else {
 		wait(&status);
 		if (status != 0)
-			TEST_IGNORE_MESSAGE("Error child process");
-		current_dir[strlen(current_dir) - 1] = '\0';
-		expected = ft_strjoin(current_dir, "/Unity\n");
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
-		free(current_dir);
-		free(expected);
 	}
 }
 
 void test_builtin_pwd(void) {
 	char *current_dir;
+	char *expected;
 	char *content;
 	pid_t pid;
 	int pipefd[2];
 	int status;
 
-	current_dir = ut_exec_pwd();
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	ut_pipe(pipefd);
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
 		builtin_pwd();
-		free(current_dir);
 		exit(0);
 	} else {
 		close(pipefd[1]);
 		wait(&status);
 		if (status != 0)
-			TEST_IGNORE_MESSAGE("Error in child process");
+			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
+		current_dir = ut_getcwd();
 		content = get_content_fd(pipefd[0]);
-		TEST_ASSERT_EQUAL_STRING(current_dir, content);
+		expected = ft_strjoin(current_dir, "\n");
+		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
+		free(expected);
 		free(current_dir);
 		close(pipefd[0]);
 	}
+}
+
+static char *create_temp_dir_overflow() {
+	int overflow = PATH_MAX + 1;
+	char *str;
+	char *dir;
+	int i;
+	pid_t pid;
+
+	str = malloc(sizeof(char) * (overflow + 1));
+	memset(str, 'w', overflow);
+	str[overflow] = '\0';
+	i = -1;
+	while (str[++i])
+		if (!(i % 10))
+			str[i] = '/';
+	dir = ft_strjoin("/tmp/42sp/test_builtin_pwd_overflow", str);
+	dir[PATH_MAX] = '\0';
+	free(str);
+	pid = ut_fork();
+	if (pid == 0) {
+		char *const argv[] = {"mkdir", "-p", dir, NULL};
+		if (execv("/usr/bin/mkdir", argv) == -1)
+			exit(1);
+	}
+	wait(NULL);
+	return (dir);
+}
+
+static void cd_temp_dir_overflow(char *dir) {
+	int i = 0;
+	char **temp = ft_split(dir, '/');
+	while (temp[i]) {
+		char *cd;
+		if (i == 0)
+			cd = ft_strjoin("/", temp[i]);
+		else
+			cd = ft_strjoin("./", temp[i]);
+		chdir(cd);
+		free(cd);
+		++i;
+	}
+	free_string_list(temp);
+}
+
+void test_builtin_pwd_overflow(void) {
+	char *dir;
+	pid_t pid;
+
+	dir = create_temp_dir_overflow();
+	pid = ut_fork();
+	if (pid == 0) {
+		ut_stds_devnull();
+		cd_temp_dir_overflow(dir);
+		free(dir);
+		errno = 0;
+		builtin_pwd();
+		exit(errno);
+	}
+	int status = ut_wait();
+	free(dir);
+	if (status == 0)
+		TEST_PASS();
+	else
+		TEST_IGNORE();
 }
 
 void test_builtin_exit(void) {
@@ -110,27 +162,23 @@ void test_builtin_exit(void) {
 	int status;
 	int expected;
 
-	expected = 0;
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
+	pid = ut_fork();
+	if (pid == 0) {
 		ut_stds_devnull();
 		builtin_exit();
 		exit(1);
-	} else {
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status)) {
-			status = WEXITSTATUS(status);
-			TEST_ASSERT_EQUAL_INT(expected, status);
-		} else
-			TEST_IGNORE_MESSAGE("Error in child process");
 	}
+	expected = 0;
+	status = ut_wait();
+	TEST_ASSERT_EQUAL_INT(expected, status);
 }
 
-void file_builtins_test(void) {
+int file_builtins_test(void) {
+	UNITY_BEGIN();
 	RUN_TEST(test_builtin_echo);
 	RUN_TEST(test_builtin_cd);
 	RUN_TEST(test_builtin_pwd);
+	RUN_TEST(test_builtin_pwd_overflow);
 	RUN_TEST(test_builtin_exit);
+	return UNITY_END();
 }

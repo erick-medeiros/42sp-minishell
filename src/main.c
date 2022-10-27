@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 12:01:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 17:26:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,9 @@ int	main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
-	envp_to_list(envp, &minishell.env_list);
-	minishell.envp = envp;
+	init_minishell(&minishell, envp);
 	signal(SIGQUIT, SIG_IGN);
 	miniprompt(&minishell);
-	clear_list(minishell.env_list.list, del_var_node);
+	destroy_minishell(&minishell);
 	return (0);
 }

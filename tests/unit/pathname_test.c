@@ -50,7 +50,9 @@ void test_function_get_pathname(void) {
 	free_string_list(path_list);
 }
 
-void file_pathname_test(void) {
+int file_pathname_test(void) {
+	UNITY_BEGIN();
 	RUN_TEST(test_function_get_paths);
 	RUN_TEST(test_function_get_pathname);
+	return UNITY_END();
 }

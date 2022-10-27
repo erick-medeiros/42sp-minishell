@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "structs.h"
 
 void debug_token(t_minishell *minishell) {
   t_node *node;
@@ -34,11 +35,12 @@ void debug_content_fd(int fd, char *prompt, int debug) {
   close(fd);
 }
 
-void debug_command(t_command *command) {
+void debug_command(t_cmd *command) {
   int i;
 
   printf("\n----------\n");
   printf("debug command:\n\n");
+  printf("number) %d\n", command->number);
   printf("pid) %d\n", command->pid);
   printf("pathname) %s\n", command->pathname);
   printf("argc) %d\n", command->argc);
@@ -53,5 +55,26 @@ void debug_command(t_command *command) {
     printf("isbuiltin) yes\n");
   else
     printf("isbuiltin) no\n");
+  if (command->subshell)
+    printf("subshell) yes\n");
+  else
+    printf("subshell) no\n");
+  printf("----------\n\n");
+}
+
+void debug_pipeline_fds(t_pipeline *pipeline) {
+  int i;
+
+  printf("\n----------\n");
+  printf("debug pipeline fds:\n\n");
+  printf("number) %d\n", pipeline->command_count);
+  i = 0;
+  while (i < pipeline->command_count - 1) {
+    close(pipeline->pipefds[i][0]);
+    close(pipeline->pipefds[i][1]);
+    printf("pipefds[%d][0] = %d\n", i, pipeline->pipefds[i][0]);
+    printf("pipefds[%d][1] = %d\n", i, pipeline->pipefds[i][1]);
+    ++i;
+  }
   printf("----------\n\n");
 }

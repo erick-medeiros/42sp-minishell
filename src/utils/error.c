@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_internals.h                                 :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/21 19:31:20 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/22 13:01:34 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/22 14:25:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_INTERNALS_H
-# define PARSER_INTERNALS_H
+#include "minishell.h"
 
-# include "minishell.h"
-
-char	**get_paths(char *envp[]);
-char	*get_pathname(char *arg, char **path_list);
-
-#endif
+void	panic_error(char *msg)
+{
+	write(STDERR, msg, ft_strlen(msg));
+	write(STDERR, "\n", 1);
+	exit(1);
+}

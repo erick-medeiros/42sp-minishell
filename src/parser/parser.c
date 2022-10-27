@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/21 19:29:57 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/25 10:04:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 #include "structs.h"
 #include "parser_internals.h"
 
-t_node		*main_pipeline(t_minishell *minishell);
-t_bool		command_isbuiltin(char *arg0);
-t_command	*init_command(void);
-
 void	parser(t_minishell *minishell)
 {
 	t_node		*list;
 	t_pipeline	*pipeline;
+	t_node		*node;
 
-	minishell->path_list = get_paths(minishell->envp);
 	list = NULL;
-	pipeline = malloc(sizeof(t_pipeline));
+	pipeline = new_pipeline(OPERATOR_MAIN);
 	pipeline->commands = main_pipeline(minishell);
-	pipeline->operator = OPERATOR_MAIN;
+	pipeline->command_count = 0;
+	node = pipeline->commands;
+	while (node)
+	{
+		pipeline->command_count++;
+		node = node->next;
+	}
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
 }
 
 enum e_steps {
-	PARSER_STEP_PATH,
+	PARSER_STEP_EXEC,
 	PARSER_STEP_ARG,
 	PARSER_STEP_END
 };
@@ -42,21 +44,27 @@ t_node	*main_pipeline(t_minishell *minishell)
 {
 	t_node		*list;
 	t_node		*node;
-	t_command	*cmd;
+	t_cmd		*cmd;
 	t_token		*token;
 	int			steps;
 	char		*tmp;
+	int			number;
 
 	list = NULL;
+	steps = PARSER_STEP_EXEC;
 	node = minishell->token_list;
-	steps = PARSER_STEP_PATH;
+	cmd = NULL;
+	number = 0;
 	while (node)
 	{
 		token = node->content;
-		if (steps == PARSER_STEP_PATH)
+		if (token->type == TOKEN_PIPE)
+			steps = PARSER_STEP_END;
+		if (steps == PARSER_STEP_EXEC)
 		{
-			cmd = init_command();
-			cmd->isbuiltin = command_isbuiltin(token->value);
+			cmd = new_command();
+			cmd->number = number++;
+			cmd->isbuiltin = isbuiltin(token->value);
 			if (cmd->isbuiltin)
 				cmd->pathname = ft_strdup(token->value);
 			else
@@ -65,6 +73,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
 			cmd->argv[0] = ft_strdup(token->value);
 			cmd->argv[1] = NULL;
+			configure_builtin(cmd);
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)
@@ -77,43 +86,16 @@ t_node	*main_pipeline(t_minishell *minishell)
 			cmd->argv[1] = ft_strdup(token->value);
 			cmd->argv[2] = NULL;
 		}
+		else if (steps == PARSER_STEP_END)
+		{
+			add_node(&list, cmd);
+			steps = PARSER_STEP_EXEC;
+		}
 		node = node->next;
 	}
-	add_node(&list, cmd);
+	if (steps == PARSER_STEP_ARG)
+		steps = PARSER_STEP_END;
+	if (steps == PARSER_STEP_END)
+		add_node(&list, cmd);
 	return (list);
-}
-
-t_bool	command_isbuiltin(char *arg0)
-{
-	if (ft_strcmp(arg0, "echo") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "cd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "pwd") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "export") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "unset") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "env") == 0)
-		return (TRUE);
-	else if (ft_strcmp(arg0, "exit") == 0)
-		return (TRUE);
-	return (FALSE);
-}
-
-t_command	*init_command(void)
-{
-	t_command	*command;
-
-	command = malloc(sizeof(t_command));
-	command->pathname = NULL;
-	command->argc = 0;
-	command->argv = NULL;
-	command->input = STDIN;
-	command->output = STDOUT;
-	command->pid = 0;
-	command->status = 0;
-	command->isbuiltin = FALSE;
-	return (command);
 }
