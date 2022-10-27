@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/19 19:03:12 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 19:17:46 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/07 00:48:15 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	unsigned char	*us;
-	unsigned char	uc;
-	int				i;
-
-	us = (unsigned char *) s;
-	uc = (unsigned char) c;
-	i = ft_strlen(s);
-	while (i >= 0)
+	while (*s != '\0')
 	{
-		if (us[i] == uc)
-			return ((char *) &us[i]);
-		i--;
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
 	}
-	if (uc == '\0')
-		return ((char *) &us[i]);
+	if ((char)c == '\0')
+		return ((char *)s);
 	return (NULL);
 }

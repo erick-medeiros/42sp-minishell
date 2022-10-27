@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 02:52:07 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:24:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-# define TRUE 1
-# define FALSE 0
 
 # define PROMPT_STRING "minishell> "
 # define HEREDOC_STRING "here_doc> "
@@ -68,6 +65,7 @@ void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		free_minishell(t_minishell *minishell);
+void		free_string_list(char **str);
 
 // Prompt
 
@@ -80,7 +78,7 @@ void		miniprompt(t_minishell *minishell);
 
 // Builtins
 
-void		builtins(char *prompt, t_vlst *vars);
+void		builtins(t_minishell *minishell, t_command *command);
 void		builtin_cd(char *path, t_vlst *vars);
 void		builtin_echo(char *option, char *string);
 void		builtin_env(t_vlst *vars);

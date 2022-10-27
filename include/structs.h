@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 02:32:51 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:25:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 # include <stddef.h>
 # include <sys/types.h>
+
+typedef enum e_bool {
+	FALSE,
+	TRUE
+}	t_bool;
 
 typedef enum e_lex_state {
 	STATE_APPEND,
@@ -56,11 +61,13 @@ typedef struct s_command
 {
 	pid_t	pid;
 	char	*pathname;
-	char	**args;
-	int		exit_code;
+	int		argc;
+	char	**argv;
+	int		status;
 	int		input;
 	int		output;
 	char	**envp;
+	t_bool	isbuiltin;
 }	t_command;
 
 typedef struct s_node
@@ -113,6 +120,7 @@ typedef struct s_minishell
 	t_node	*token_list;
 	t_node	*pipelines;
 	char	**envp;
+	char	**path_list;
 }	t_minishell;
 
 #endif

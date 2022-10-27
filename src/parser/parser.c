@@ -6,19 +6,24 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 09:23:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/21 19:29:57 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
+#include "parser_internals.h"
 
-t_node	*main_pipeline(t_minishell *minishell);
+t_node		*main_pipeline(t_minishell *minishell);
+t_bool		command_isbuiltin(char *arg0);
+t_command	*init_command(void);
 
 void	parser(t_minishell *minishell)
 {
 	t_node		*list;
 	t_pipeline	*pipeline;
 
+	minishell->path_list = get_paths(minishell->envp);
 	list = NULL;
 	pipeline = malloc(sizeof(t_pipeline));
 	pipeline->commands = main_pipeline(minishell);
@@ -40,6 +45,7 @@ t_node	*main_pipeline(t_minishell *minishell)
 	t_command	*cmd;
 	t_token		*token;
 	int			steps;
+	char		*tmp;
 
 	list = NULL;
 	node = minishell->token_list;
@@ -49,25 +55,65 @@ t_node	*main_pipeline(t_minishell *minishell)
 		token = node->content;
 		if (steps == PARSER_STEP_PATH)
 		{
-			cmd = malloc(sizeof(t_command));
-			cmd->pathname = ft_strdup(token->value);
-			cmd->args = malloc(sizeof(char *) * 2);
-			cmd->args[0] = ft_strdup(cmd->pathname);
-			cmd->args[1] = NULL;
+			cmd = init_command();
+			cmd->isbuiltin = command_isbuiltin(token->value);
+			if (cmd->isbuiltin)
+				cmd->pathname = ft_strdup(token->value);
+			else
+				cmd->pathname = get_pathname(token->value, minishell->path_list);
+			cmd->argc = 1;
+			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+			cmd->argv[0] = ft_strdup(token->value);
+			cmd->argv[1] = NULL;
 			steps = PARSER_STEP_ARG;
 		}
 		else if (steps == PARSER_STEP_ARG)
 		{
-			free(cmd->args[0]);
-			free(cmd->args[1]);
-			free(cmd->args);
-			cmd->args = malloc(sizeof(char *) * 3);
-			cmd->args[0] = ft_strdup(cmd->pathname);
-			cmd->args[1] = ft_strdup(token->value);
-			cmd->args[2] = NULL;
+			tmp = ft_strdup(cmd->argv[0]);
+			free_string_list(cmd->argv);
+			cmd->argc = 2;
+			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+			cmd->argv[0] = tmp;
+			cmd->argv[1] = ft_strdup(token->value);
+			cmd->argv[2] = NULL;
 		}
 		node = node->next;
 	}
 	add_node(&list, cmd);
 	return (list);
+}
+
+t_bool	command_isbuiltin(char *arg0)
+{
+	if (ft_strcmp(arg0, "echo") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "cd") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "pwd") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "export") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "unset") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "env") == 0)
+		return (TRUE);
+	else if (ft_strcmp(arg0, "exit") == 0)
+		return (TRUE);
+	return (FALSE);
+}
+
+t_command	*init_command(void)
+{
+	t_command	*command;
+
+	command = malloc(sizeof(t_command));
+	command->pathname = NULL;
+	command->argc = 0;
+	command->argv = NULL;
+	command->input = STDIN;
+	command->output = STDOUT;
+	command->pid = 0;
+	command->status = 0;
+	command->isbuiltin = FALSE;
+	return (command);
 }

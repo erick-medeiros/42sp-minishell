@@ -6,13 +6,14 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:07:14 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 02:58:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:27:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdlib.h>
 # include <stddef.h>
 
 int		ft_isspace(char c);

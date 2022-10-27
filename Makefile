@@ -1,46 +1,26 @@
 NAME = minishell
 
-INC_DIR = include/
-OBJ_DIR = obj/
-SRC_DIR = src/
-
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -I$(INC_DIR)
-LIBFLAGS = -lreadline
-DEBUGFLAGS = -Isrc/debug/ -g
+CFLAGS += -Ilibft -Iinclude
+LIBFLAGS = -Llibft -lft -lreadline
+DEBUGFLAGS = -Idebug -g
 CC = cc
 RM = rm -fr
 
+LIBFT_DIR = libft/
+LIBFT = libft/libft.a
+LIBDEBUG = debug/debug.a
+SRC_DIR = src/
+OBJ_DIR = obj/
+MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
+
+HEADERS = include/minishell.h include/structs.h
+HEADERS += src/executor/executor_internals.h
+HEADERS += src/parser/parser_internals.h
+
 FILES = main.c
-FILES += debug/debug.c
-FILES += libft/ft_isspace.c
-FILES += libft/ft_math.c
-FILES += libft/ft_split.c
-FILES += libft/ft_split_cmd.c
-FILES += libft/ft_strchr.c
-FILES += libft/ft_strcmp.c
-FILES += libft/ft_strdup.c
-FILES += libft/ft_strjoin.c
-FILES += libft/ft_strlcpy.c
-FILES += libft/ft_strlen.c
-FILES += libft/ft_strncmp.c
-FILES += libft/ft_strrchr.c
-FILES += libft/ft_substr.c
-FILES += list/cleanup.c
-FILES += list/env_conv.c
-FILES += list/env_utils.c
-FILES += list/list.c
-FILES += prompt/ends_in_pipe.c
-FILES += prompt/here_doc.c
-FILES += prompt/prompt.c
-FILES += builtins/builtins.c
-FILES += builtins/cd.c
-FILES += builtins/echo.c
-FILES += builtins/env.c
-FILES += builtins/exit.c
-FILES += builtins/export.c
-FILES += builtins/pwd.c
-FILES += builtins/unset.c
+FILES += utils/cleanup.c utils/list.c utils/free.c
+FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
 FILES += lexer/lexer.c
 FILES += lexer/append.c
 FILES += lexer/double_quote.c
@@ -52,16 +32,14 @@ FILES += lexer/single_quote.c
 FILES += lexer/space.c
 FILES += lexer/start.c
 FILES += lexer/word.c
-FILES += parser/parser.c
-FILES += expansor/expansor.c
-FILES += executor/executor.c
-FILES += executor/pathname.c
-FILES += free/free.c
+FILES += expansor/expansor.c expansor/env_conv.c expansor/env_utils.c
+FILES += parser/parser.c parser/pathname.c
+FILES += builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c
+FILES += builtins/export.c builtins/pwd.c builtins/unset.c
+FILES += executor/executor.c executor/child_process.c
+
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
-
-MODULES = libft/ prompt/ list/ builtins/ lexer/
-MODULES += parser/ expansor/ executor/ free/ debug/
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
 
@@ -73,8 +51,14 @@ $(REQUIRED_DIRS):
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c $< -o $@
 
-$(NAME): $(REQUIRED_DIRS) $(OBJ)
-	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
+$(LIBDEBUG):
+	make -C debug
+
+$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) $(LIBFT) $(LIBDEBUG)
+	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBDEBUG) $(LIBFLAGS)
 
 clean:
 	$(RM) $(OBJ_DIR)*
@@ -85,11 +69,11 @@ fclean: clean
 re: fclean all
 
 install:
-	sudo apt-get install libreadline-dev
+	sudo apt install libreadline-dev clang-format
 
 norm:
 	@clear
-	@norminette src/* include/* | grep Error || true
+	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
 	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell

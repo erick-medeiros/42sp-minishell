@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/30 18:47:14 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/30 18:47:23 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/06 13:42:27 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	ls1;
-	size_t	ls2;
-	char	*s;
-	size_t	i;
+	char	*sub;
+	size_t	slen;
+	size_t	size;
 
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	ls1 = ft_strlen(s1);
-	ls2 = ft_strlen(s2);
-	s = (char *) malloc(sizeof(char) * (ls1 + ls2 + 1));
 	if (s == NULL)
 		return (NULL);
-	i = -1;
-	while (++i < ls1)
-		s[i] = s1[i];
-	i = -1;
-	while (++i < ls2)
-		s[i + ls1] = s2[i];
-	s[i + ls1] = '\0';
-	return (s);
+	slen = ft_strlen(s);
+	if (start > slen)
+		return (ft_strdup(""));
+	if (slen - start > len)
+		size = len + 1;
+	else
+		size = slen - start + 1;
+	sub = (char *) malloc(sizeof(char) * size);
+	if (sub == NULL)
+		return (NULL);
+	ft_strlcpy(sub, (s + start), size);
+	return (sub);
 }

@@ -1,29 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_math.c                                          :+:      :+:    :+:   */
+/*   parser_internals.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/29 17:06:25 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/09/29 17:11:25 by eandre-f         ###   ########.fr       */
+/*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/10/21 19:31:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef PARSER_INTERNALS_H
+# define PARSER_INTERNALS_H
 
-int	ft_max(int number1, int number2)
-{
-	if (number1 > number2)
-		return (number1);
-	else
-		return (number2);
-}
+# include "minishell.h"
 
-int	ft_min(int number1, int number2)
-{
-	if (number1 < number2)
-		return (number1);
-	else
-		return (number2);
-}
+char	**get_paths(char *envp[]);
+char	*get_pathname(char *arg, char **path_list);
+
+#endif

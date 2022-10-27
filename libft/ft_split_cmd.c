@@ -6,11 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:03:36 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/26 02:18:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:26:50 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 #define SINGLE_QUOTE 39
 #define DOUBLE_QUOTE 34

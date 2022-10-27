@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/06 03:09:00 by gmachado          #+#    #+#             */
-/*   Updated: 2022/09/29 11:12:54 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/14 00:42:35 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/21 17:17:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	if (n == 0)
-		return (0);
-	while (--n != 0 && *s1 == *(unsigned char *)s2
-		&& *(unsigned char *)s1 != '\0')
+	while (*s1 == *s2 && *s1 != '\0')
 	{
 		s1++;
 		s2++;

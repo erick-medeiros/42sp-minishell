@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:12:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 19:24:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/20 10:38:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,23 @@ char	**get_paths(char *envp[])
 	return (paths);
 }
 
-char	*get_pathname(char *arg, char *envp[])
+char	*get_pathname(char *arg, char **path_list)
 {
 	char	*pathname;
-	char	**paths;
 
-	paths = get_paths(envp);
-	if (ft_strrchr(arg, '/') != NULL)
+	if (ft_strrchr(arg, '/'))
 	{
 		if (access(arg, F_OK | X_OK) == 0)
 			return (ft_strdup(arg));
 		return (NULL);
 	}
-	while (paths != NULL && *paths != NULL)
+	while (path_list && *path_list)
 	{
-		pathname = ft_strjoin(*paths, arg);
+		pathname = ft_strjoin(*path_list, arg);
 		if (access(pathname, F_OK | X_OK) == 0)
 			return (pathname);
 		free(pathname);
-		paths++;
+		path_list++;
 	}
 	pathname = ft_strjoin("/usr/bin/", arg);
 	if (access(pathname, F_OK | X_OK) == 0)

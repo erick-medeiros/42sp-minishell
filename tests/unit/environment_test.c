@@ -58,17 +58,20 @@ void test_envp_to_list_two_str(void) {
 	char *str2 = "str2_name=str2_val";
 	char *envp[] = {str1, str2, NULL};
 	t_vlst vars;
+	t_var *var;
 
 	envp_to_list(envp, &vars);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list);
 	TEST_ASSERT_EQUAL_size_t(2, vars.len);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list->content);
-	TEST_ASSERT_EQUAL_STRING("str1_name", ((t_var *)vars.list->content)->name);
-	TEST_ASSERT_EQUAL_STRING("str1_val", ((t_var *)vars.list->content)->val);
+	var = ((t_var *)vars.list->content);
+	TEST_ASSERT_EQUAL_STRING("str1_name", var->name);
+	TEST_ASSERT_EQUAL_STRING("str1_val", var->val);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list->next);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list->next->content);
-	TEST_ASSERT_EQUAL_STRING("str2_name", ((t_var *)vars.list->next->content)->name);
-	TEST_ASSERT_EQUAL_STRING("str2_val", ((t_var *)vars.list->next->content)->val);
+	var = ((t_var *)vars.list->next->content);
+	TEST_ASSERT_EQUAL_STRING("str2_name", var->name);
+	TEST_ASSERT_EQUAL_STRING("str2_val", var->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next->next);
 	clear_list(vars.list, del_var_node);
 }
@@ -104,16 +107,19 @@ void test_list_to_envp_one_node(void) {
 void test_list_to_envp_two_nodes(void) {
 	char **envp;
 	t_vlst vars;
+	t_var *var;
 
 	vars.list = NULL;
 	add_node(&(vars.list), new_var_node_from_str("name1=val1"));
 	add_node(&(vars.list), new_var_node_from_str("name2=val2"));
 	vars.len = 2;
-	TEST_ASSERT_EQUAL_STRING("name1", ((t_var *)vars.list->content)->name);
-	TEST_ASSERT_EQUAL_STRING("val1", ((t_var *)vars.list->content)->val);
+	var = ((t_var *)vars.list->content);
+	TEST_ASSERT_EQUAL_STRING("name1", var->name);
+	TEST_ASSERT_EQUAL_STRING("val1", var->val);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list->next);
-	TEST_ASSERT_EQUAL_STRING("name2", ((t_var *)vars.list->next->content)->name);
-	TEST_ASSERT_EQUAL_STRING("val2", ((t_var *)vars.list->next->content)->val);
+	var = ((t_var *)vars.list->next->content);
+	TEST_ASSERT_EQUAL_STRING("name2", var->name);
+	TEST_ASSERT_EQUAL_STRING("val2", var->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next->next);
 	envp = list_to_envp(&vars, 0);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
@@ -161,16 +167,19 @@ void test_list_to_envp_one_node_quoted(void) {
 void test_list_to_envp_two_nodes_quoted(void) {
 	char **envp;
 	t_vlst vars;
+	t_var *var;
 
 	vars.list = NULL;
 	add_node(&(vars.list), new_var_node_from_str("name1=val1"));
 	add_node(&(vars.list), new_var_node_from_str("name2=val2"));
 	vars.len = 2;
-	TEST_ASSERT_EQUAL_STRING("name1", ((t_var *)vars.list->content)->name);
-	TEST_ASSERT_EQUAL_STRING("val1", ((t_var *)vars.list->content)->val);
+	var = ((t_var *)vars.list->content);
+	TEST_ASSERT_EQUAL_STRING("name1", var->name);
+	TEST_ASSERT_EQUAL_STRING("val1", var->val);
 	TEST_ASSERT_NOT_EQUAL(NULL, vars.list->next);
-	TEST_ASSERT_EQUAL_STRING("name2", ((t_var *)vars.list->next->content)->name);
-	TEST_ASSERT_EQUAL_STRING("val2", ((t_var *)vars.list->next->content)->val);
+	var = ((t_var *)vars.list->next->content);
+	TEST_ASSERT_EQUAL_STRING("name2", var->name);
+	TEST_ASSERT_EQUAL_STRING("val2", var->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next->next);
 	envp = list_to_envp(&vars, 1);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);

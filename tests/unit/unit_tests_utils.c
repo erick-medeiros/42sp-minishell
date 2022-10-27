@@ -1,5 +1,7 @@
+#include "unit_tests_utils.h"
 #include "Unity/unity.h"
 #include "minishell.h"
+#include <stddef.h>
 #include <sys/mman.h>
 
 void ut_stds_devnull(void) {
@@ -49,4 +51,19 @@ void *ut_mmap(size_t len) {
 	void *ptr = mmap(NULL, len, prot, flags, 0, 0);
 	memset(ptr, 0, len);
 	return (ptr);
+}
+
+char **ut_fake_envp_path(void) {
+	char *env_path;
+	char **fake_envp;
+
+	env_path = getenv("PATH");
+	if (!env_path)
+		TEST_IGNORE_MESSAGE("Error getenv returned NULL");
+	fake_envp = malloc(sizeof(char *) * 2);
+	if (!fake_envp)
+		TEST_IGNORE_MESSAGE(UT_ERR_ALLOC);
+	fake_envp[0] = ft_strjoin("PATH=", env_path);
+	fake_envp[1] = NULL;
+	return (fake_envp);
 }
