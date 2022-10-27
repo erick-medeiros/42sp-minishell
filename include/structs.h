@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:51:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:27:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,21 @@ typedef enum e_bool {
 	TRUE
 }	t_bool;
 
-typedef struct s_node
-{
-	void			*content;
-	struct s_node	*next;
-}	t_node;
-
-typedef struct s_var
-{
-	char	*name;
-	char	*val;
-}	t_var;
-
-typedef struct s_vlst
-{
-	t_node	*list;
-	size_t	len;
-}	t_vlst;
-
-typedef struct s_node_funcs
-{
-	void	(*clear)(void *content);
-	int		(*cmp)(void *a, void *b);
-}	t_node_funcs;
+typedef enum e_lex_state {
+	STATE_APPEND,
+	STATE_COMPLETE,
+	STATE_DQUOTE,
+	STATE_DQINCOMP,
+	STATE_HEREDOC,
+	STATE_INPUT,
+	STATE_INVALID,
+	STATE_OUTPUT,
+	STATE_PIPE,
+	STATE_SKIP,
+	STATE_SQUOTE,
+	STATE_SQINCOMP,
+	STATE_WORD
+}	t_lex_state;
 
 typedef enum e_operator {
 	OPERATOR_MAIN,
@@ -51,6 +43,19 @@ typedef enum e_operator {
 	OPERATOR_AND,
 	OPERATOR_OR
 }	t_operator;
+
+typedef enum e_tok_type {
+	TOKEN_APPEND,
+	TOKEN_DQUOTE,
+	TOKEN_DQINCOMP,
+	TOKEN_HEREDOC,
+	TOKEN_INPUT,
+	TOKEN_OUTPUT,
+	TOKEN_PIPE,
+	TOKEN_SQUOTE,
+	TOKEN_SQINCOMP,
+	TOKEN_WORD
+}	t_tok_type;
 
 typedef struct s_cmd
 {
@@ -67,6 +72,18 @@ typedef struct s_cmd
 	t_bool	isbuiltin;
 }	t_cmd;
 
+typedef struct s_node
+{
+	void			*content;
+	struct s_node	*next;
+}	t_node;
+
+typedef struct s_node_funcs
+{
+	void	(*clear)(void *content);
+	int		(*cmp)(void *a, void *b);
+}	t_node_funcs;
+
 typedef struct s_pipeline
 {
 	t_operator	operator;
@@ -74,6 +91,32 @@ typedef struct s_pipeline
 	int			command_count;
 	int			**pipefds;
 }	t_pipeline;
+
+typedef struct s_token
+{
+	t_tok_type	type;
+	char		*value;
+}	t_token;
+
+typedef struct s_val_info
+{
+	char *prompt;
+	size_t	start;
+	size_t	len;
+	int		active;
+}	t_val_info;
+
+typedef struct s_var
+{
+	char	*name;
+	char	*val;
+}	t_var;
+
+typedef struct s_vlst
+{
+	t_node	*list;
+	size_t	len;
+}	t_vlst;
 
 typedef struct s_minishell
 {
@@ -83,21 +126,5 @@ typedef struct s_minishell
 	char	**envp;
 	char	**path_list;
 }	t_minishell;
-
-enum e_token {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_INPUT,
-	TOKEN_OUTPUT,
-	TOKEN_APPEND,
-	TOKEN_SQUOTE,
-	TOKEN_DQUOTE
-};
-
-typedef struct s_token
-{
-	enum e_token	type;
-	char			*value;
-}	t_token;
 
 #endif

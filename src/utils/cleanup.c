@@ -6,11 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/13 01:32:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:07:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
 void	clear_list(t_node *lst, void (*del_node)(void *))
 {
@@ -48,4 +49,12 @@ void	del_var_node(void *content)
 	free(((t_var *)content)->name);
 	free(((t_var *)content)->val);
 	free(((t_var *)content));
+}
+
+void	del_token_node(void *content)
+{
+	if (!content)
+		return ;
+	free(((t_token *)content)->value);
+	free(((t_token *)content));
 }

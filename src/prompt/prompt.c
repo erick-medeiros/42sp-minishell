@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/26 14:38:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:24:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ void	miniprompt(t_minishell *minishell)
 		if (!prompt)
 			break ;
 		add_history(prompt);
-		rl_clear_history();
-		minishell->token_list = lexer(prompt);
+		minishell->token_list = NULL;
+		lexer(prompt, &minishell->token_list, STATE_SKIP);
 		free(prompt);
 		parser(minishell);
 		executor(minishell);
 		free_minishell(minishell);
 	}
+	// rl_clear_history();
 	free(prompt);
 }

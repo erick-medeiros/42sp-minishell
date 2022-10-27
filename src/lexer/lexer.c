@@ -3,42 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/19 11:17:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 02:53:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_node	*lexer(char *prompt)
-{
-	char	**cmd;
-	size_t	i;
-	t_node	*list;
-	t_token	*token;
+static t_lex_state	get_next_state(size_t idx, t_node **tokens,
+	t_lex_state st, t_val_info *vi);
 
-	cmd = ft_split_cmd(prompt, ' ');
-	list = NULL;
-	i = 0;
-	while (cmd[i])
+int	lexer(char *prompt, t_node **tokens, t_lex_state start_state)
+{
+	t_lex_state	next_state;
+	t_val_info	vi;
+	size_t		idx;
+
+	vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt, .active = 0};
+	idx = 0;
+	next_state = start_state;
+	while (next_state != STATE_COMPLETE && next_state != STATE_DQINCOMP
+		&& next_state != STATE_SQINCOMP && next_state != STATE_INVALID)
+		next_state = get_next_state(idx++, tokens, next_state, &vi);
+	if (next_state == STATE_INVALID)
 	{
-		token = malloc(sizeof(t_token));
-		token->value = ft_strdup(cmd[i]);
-		token->type = TOKEN_WORD;
-		if (ft_strcmp(token->value, "|") == 0)
-			token->type = TOKEN_PIPE;
-		else if (ft_strcmp(token->value, "<") == 0)
-			token->type = TOKEN_INPUT;
-		else if (ft_strcmp(token->value, ">") == 0)
-			token->type = TOKEN_OUTPUT;
-		else if (ft_strcmp(token->value, ">>") == 0)
-			token->type = TOKEN_APPEND;
-		add_node(&list, token);
-		free(cmd[i]);
-		++i;
+		clear_list(*tokens, del_token_node);
+		return (ERR_LEXER);
 	}
-	free(cmd);
-	return (list);
+	return (OK);
+}
+
+static t_lex_state	get_next_state(size_t idx, t_node **tokens,
+	t_lex_state st, t_val_info *vi)
+{
+	if (st == STATE_WORD)
+		return (handle_word_state(idx, tokens, vi));
+	if (st == STATE_SKIP)
+		return (handle_skip_state(idx, vi));
+	if (st == STATE_DQUOTE)
+		return (handle_dquote_state(idx, tokens, vi));
+	if (st == STATE_SQUOTE)
+		return (handle_squote_state(idx, tokens, vi));
+	if (st == STATE_INPUT)
+		return (handle_input_state(idx, tokens, vi));
+	if (st == STATE_OUTPUT)
+		return (handle_output_state(idx, tokens, vi));
+	if (st == STATE_PIPE)
+		return (handle_pipe_state(idx, tokens, vi));
+	if (st == STATE_APPEND)
+		return (handle_append_state(idx, tokens, vi));
+	if (st == STATE_HEREDOC)
+		return (handle_heredoc_state(idx, tokens, vi));
+	return (STATE_INVALID);
 }
