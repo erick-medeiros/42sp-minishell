@@ -6,14 +6,14 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:50 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/27 02:51:47 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:33:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_lex_state	new_word_token(t_node **tokens,
-	t_val_info *vi, t_lex_state next_state);
+						t_val_info *vi, t_lex_state next_state);
 
 t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi)
 {

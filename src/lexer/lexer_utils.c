@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 02:11:33 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/27 02:36:52 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:33:07 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,3 @@ t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st)
 	vi->active = 1;
 	return (st);
 }
-
