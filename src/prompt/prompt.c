@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 19:42:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:29:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	miniprompt(t_minishell *minishell)
 		if (!prompt)
 			break ;
 		add_history(prompt);
-		minishell->token_list = lexer(prompt);
+		minishell->token_list = NULL;
+		lexer(prompt, &minishell->token_list, STATE_SKIP);
 		free(prompt);
 		parser(minishell);
 		executor(minishell);
