@@ -5,6 +5,12 @@ echo
 echo "(compile)"
 echo
 make
+cd ./tests/unit
+make
+cd ../leak
+make
+cd ../..
+
 
 #-----norm
 
@@ -28,7 +34,6 @@ echo
 echo "(unit)"
 echo
 cd ./tests/unit
-make
 ./run_test.out
 cd ../..
 
