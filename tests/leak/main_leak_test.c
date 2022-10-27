@@ -28,8 +28,9 @@ void child_process(char *test_input, int pipefd[2]) {
 	close(pipefd[0]);
 	close(pipefd[1]);
 	char *flaglogfile = ft_strjoin("--log-file=", logfile);
-	char *const argv[] = {"./valgrind",						 //
-						  "--leak-check=full",				 //
+	char *const argv[] = {"./valgrind",		   //
+						  "--leak-check=full", //
+						  "--show-leak-kinds=all",
 						  "--suppressions=../readline.supp", //
 						  "--track-fds=yes",				 //
 						  "--trace-children=yes",
