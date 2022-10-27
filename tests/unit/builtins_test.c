@@ -92,6 +92,71 @@ void test_builtin_pwd(void) {
 	}
 }
 
+static char *create_temp_dir_overflow() {
+	int overflow = PATH_MAX + 1;
+	char *str;
+	char *dir;
+	int i;
+	pid_t pid;
+
+	str = malloc(sizeof(char) * (overflow + 1));
+	memset(str, 'w', overflow);
+	str[overflow] = '\0';
+	i = -1;
+	while (str[++i])
+		if (!(i % 10))
+			str[i] = '/';
+	dir = ft_strjoin("/tmp/42sp/test_builtin_pwd_overflow", str);
+	dir[PATH_MAX] = '\0';
+	free(str);
+	pid = ut_fork();
+	if (pid == 0) {
+		char *const argv[] = {"mkdir", "-p", dir, NULL};
+		if (execv("/usr/bin/mkdir", argv) == -1)
+			exit(1);
+	}
+	wait(NULL);
+	return (dir);
+}
+
+static void cd_temp_dir_overflow(char *dir) {
+	int i = 0;
+	char **temp = ft_split(dir, '/');
+	while (temp[i]) {
+		char *cd;
+		if (i == 0)
+			cd = ft_strjoin("/", temp[i]);
+		else
+			cd = ft_strjoin("./", temp[i]);
+		chdir(cd);
+		free(cd);
+		++i;
+	}
+	free_string_list(temp);
+}
+
+void test_builtin_pwd_overflow(void) {
+	char *dir;
+	pid_t pid;
+
+	dir = create_temp_dir_overflow();
+	pid = ut_fork();
+	if (pid == 0) {
+		ut_stds_devnull();
+		cd_temp_dir_overflow(dir);
+		free(dir);
+		errno = 0;
+		builtin_pwd();
+		exit(errno);
+	}
+	int status = ut_wait();
+	if (status == 0)
+		TEST_PASS();
+	else
+		TEST_IGNORE();
+	free(dir);
+}
+
 void test_builtin_exit(void) {
 	pid_t pid;
 	int status;
@@ -113,6 +178,7 @@ int file_builtins_test(void) {
 	RUN_TEST(test_builtin_echo);
 	RUN_TEST(test_builtin_cd);
 	RUN_TEST(test_builtin_pwd);
+	RUN_TEST(test_builtin_pwd_overflow);
 	RUN_TEST(test_builtin_exit);
 	return UNITY_END();
 }
