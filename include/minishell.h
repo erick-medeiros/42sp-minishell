@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:21:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:28:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,9 @@ void	panic_error(char *msg);
 // Minishell
 
 void	init_minishell(t_minishell *minishell, char **envp);
+
+// Remove
+
+char	**get_paths(char *envp[]);
 
 #endif
