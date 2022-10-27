@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/25 09:42:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:37:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,12 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 
 void	child_process(t_minishell *minishell, t_cmd *command)
 {
+	char	**envp;
+
+	envp = list_to_envp(&minishell->env_list, 0);
 	if (!command->pathname)
 		exit_process(minishell, 127);
-	if (execve(command->pathname, command->argv, minishell->envp) == -1)
+	if (execve(command->pathname, command->argv, envp) == -1)
 		exit_process(minishell, errno);
 	exit_process(minishell, 1);
 }

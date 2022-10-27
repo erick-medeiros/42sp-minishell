@@ -9,7 +9,6 @@ void test_function_init_minishell(void) {
 	init_minishell(&minishell, NULL);
 	TEST_ASSERT_EQUAL(NULL, minishell.path_list);
 	TEST_ASSERT_EQUAL(NULL, minishell.token_list);
-	TEST_ASSERT_EQUAL(NULL, minishell.envp);
 	TEST_ASSERT_EQUAL(NULL, minishell.pipelines);
 	TEST_ASSERT_EQUAL(NULL, minishell.env_list.list);
 	TEST_ASSERT_EQUAL(0, minishell.env_list.len);

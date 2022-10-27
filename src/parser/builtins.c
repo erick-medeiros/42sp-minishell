@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 17:41:18 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/24 18:53:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:51:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	configure_builtin(t_cmd *command)
 	else if (ft_strcmp(command->argv[0], "pwd") == 0)
 		command->subshell = TRUE;
 	else if (ft_strcmp(command->argv[0], "export") == 0)
-		command->subshell = TRUE;
+		command->subshell = FALSE;
 	else if (ft_strcmp(command->argv[0], "unset") == 0)
-		command->subshell = TRUE;
+		command->subshell = FALSE;
 	else if (ft_strcmp(command->argv[0], "env") == 0)
 		command->subshell = TRUE;
 	else if (ft_strcmp(command->argv[0], "exit") == 0)

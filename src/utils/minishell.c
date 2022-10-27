@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:43:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:34:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 {
 	minishell->token_list = NULL;
 	minishell->pipelines = NULL;
-	minishell->envp = NULL;
 	minishell->path_list = NULL;
 	minishell->env_list.len = 0;
 	minishell->env_list.list = NULL;
@@ -27,7 +26,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 	{
 		minishell->path_list = get_paths(envp);
 		envp_to_list(envp, &minishell->env_list);
-		minishell->envp = envp;
 	}
 }
 
