@@ -6,29 +6,41 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:50 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/20 03:36:46 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 02:51:47 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_lex_state	handle_word_state(char next_ch, t_node **tokens)
+static t_lex_state	new_word_token(t_node **tokens,
+	t_val_info *vi, t_lex_state next_state);
+
+t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	(void)tokens;
+	const char	next_ch = vi->prompt[idx];
+
 	if (next_ch == '|')
-		return (STATE_PIPE);
-	else if (next_ch == '>')
-		return (STATE_OUTPUT);
-	else if (next_ch == '<')
-		return (STATE_INPUT);
-	else if (next_ch == '"')
-		return (STATE_DQUOTE);
-	else if (next_ch == '\'')
-		return (STATE_SQUOTE);
-	else if (ft_isspace(next_ch))
-		return (STATE_SPACE);
-	else if (next_ch == '\0')
-		return (STATE_COMPLETE);
-	else
-		return (STATE_WORD);
+		return (new_word_token(tokens, vi, STATE_PIPE));
+	if (next_ch == '>')
+		return (new_word_token(tokens, vi, STATE_OUTPUT));
+	if (next_ch == '<')
+		return (new_word_token(tokens, vi, STATE_INPUT));
+	if (next_ch == '"')
+		return (new_word_token(tokens, vi, STATE_DQUOTE));
+	if (next_ch == '\'')
+		return (new_word_token(tokens, vi, STATE_SQUOTE));
+	if (ft_isspace(next_ch))
+		return (new_word_token(tokens, vi, STATE_SKIP));
+	if (next_ch == '\0')
+		return (new_word_token(tokens, vi, STATE_COMPLETE));
+	vi->len++;
+	return (STATE_WORD);
+}
+
+static t_lex_state	new_word_token(t_node **tokens,
+	t_val_info *vi, t_lex_state next_state)
+{
+	if (new_token_with_val(tokens, TOKEN_WORD, vi))
+		return (STATE_INVALID);
+	return (next_state);
 }

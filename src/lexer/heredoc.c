@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   space.c                                            :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 03:28:58 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/20 03:36:21 by gmachado         ###   ########.fr       */
+/*   Created: 2022/10/27 02:35:57 by gmachado          #+#    #+#             */
+/*   Updated: 2022/10/27 02:39:33 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_lex_state	handle_space_state(char next_ch, t_node **tokens)
+t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	(void)tokens;
+	const char	next_ch = vi->prompt[idx];
+
+	if (new_token(tokens, TOKEN_HEREDOC))
+		return (STATE_INVALID);
 	if (next_ch == '|')
 		return (STATE_PIPE);
-	else if (next_ch == '>')
+	if (next_ch == '>')
 		return (STATE_OUTPUT);
-	else if (next_ch == '<')
+	if (next_ch == '<')
 		return (STATE_INPUT);
-	else if (next_ch == '"')
+	if (next_ch == '"')
 		return (STATE_DQUOTE);
-	else if (next_ch == '\'')
+	if (next_ch == '\'')
 		return (STATE_SQUOTE);
-	else if (ft_isspace(next_ch))
-		return (STATE_SPACE);
-	else if (next_ch == '\0')
+	if (ft_isspace(next_ch))
+		return (STATE_SKIP);
+	if (next_ch == '\0')
 		return (STATE_COMPLETE);
-	else
-		return (STATE_WORD);
+	return (init_word_value(idx, vi, STATE_WORD));
 }

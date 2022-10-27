@@ -6,29 +6,31 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/20 03:37:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 02:32:51 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
-t_lex_state	handle_squote_state(char next_ch, t_node **tokens)
+t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	(void)tokens;
-	if (next_ch == '|')
-		return (STATE_PIPE);
-	else if (next_ch == '>')
-		return (STATE_OUTPUT);
-	else if (next_ch == '<')
-		return (STATE_INPUT);
-	else if (next_ch == '"')
-		return (STATE_DQUOTE);
-	else if (next_ch == '\'')
-		return (STATE_SQUOTE);
-	else if (ft_isspace(next_ch))
-		return (STATE_SPACE);
-	else if (next_ch == '\0')
-		return (STATE_COMPLETE);
-	else
-		return (STATE_WORD);
+	const char	next_ch = vi->prompt[idx];
+
+	if (vi->active == 0)
+		init_word_value(idx, vi, STATE_SQUOTE);
+	if (next_ch == '\'')
+	{
+		if (new_token_with_val(tokens, TOKEN_SQUOTE, vi))
+			return (STATE_INVALID);
+		return (STATE_SKIP);
+	}
+	if (next_ch == '\0')
+	{
+		if (new_token_with_val(tokens, TOKEN_SQINCOMP, vi))
+			return (STATE_INVALID);
+		return (STATE_SQINCOMP);
+	}
+	vi->len++;
+	return (STATE_SQUOTE);
 }

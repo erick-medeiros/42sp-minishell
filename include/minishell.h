@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 11:09:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/27 02:52:07 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define OK 0
 # define ERR_ALLOC 1
 # define ERR_NOT_FOUND 2
+# define ERR_LEXER 3
 
 // List-related functions
 int			add_node(t_node **lst, void *content);
@@ -96,15 +97,19 @@ void		parser(t_minishell *minishell);
 
 // Lexer
 
-t_lex_state	handle_append_state(char next_ch, t_node **tokens);
-t_lex_state	handle_dquote_state(char next_ch, t_node **tokens);
-t_lex_state	handle_input_state(char next_ch, t_node **tokens);
-t_lex_state	handle_output_state(char next_ch, t_node **tokens);
-t_lex_state	handle_pipe_state(char next_ch, t_node **tokens);
-t_lex_state	handle_space_state(char next_ch, t_node **tokens);
-t_lex_state	handle_squote_state(char next_ch, t_node **tokens);
-t_lex_state	handle_start_state(char next_ch, t_node **tokens);
-t_lex_state	handle_word_state(char next_ch, t_node **tokens);
-t_node		*lexer(char *prompt);
+t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_dquote_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_input_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_skip_state(size_t idx, t_val_info *vi);
+t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
+int lexer(char *prompt, t_node **tokens, t_lex_state start_state);
+int	new_token(t_node **tokens, t_tok_type tok_type);
+int	new_token_with_val(t_node **tokens, t_tok_type tok_type, t_val_info *vi);
+t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st);
+t_lex_state	init_quote_value(size_t idx, t_val_info *vi, t_lex_state st);
 
 #endif
