@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:34:32 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:43:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ void	free_minishell(t_minishell *minishell)
 	}
 }
 
-// rl_clear_history();
-
 void	destroy_minishell(t_minishell *minishell)
 {
 	free_minishell(minishell);
 	if (minishell->env_list.list)
 		clear_list(minishell->env_list.list, del_var_node);
 	free_string_list(minishell->path_list);
+	rl_clear_history();
 }
