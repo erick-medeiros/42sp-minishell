@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:24:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:32:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ void	miniprompt(t_minishell *minishell)
 		executor(minishell);
 		free_minishell(minishell);
 	}
-	// rl_clear_history();
 	free(prompt);
 }

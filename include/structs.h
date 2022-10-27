@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:27:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:31:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_token
 
 typedef struct s_val_info
 {
-	char *prompt;
+	char	*prompt;
 	size_t	start;
 	size_t	len;
 	int		active;

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:28:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/27 12:31:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,30 +105,31 @@ t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_skip_state(size_t idx, t_val_info *vi);
 t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
-int lexer(char *prompt, t_node **tokens, t_lex_state start_state);
-int	new_token(t_node **tokens, t_tok_type tok_type);
-int	new_token_with_val(t_node **tokens, t_tok_type tok_type, t_val_info *vi);
+int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
+int			new_token(t_node **tokens, t_tok_type tok_type);
+int			new_token_with_val(t_node **tokens, t_tok_type tok_type,
+				t_val_info *vi);
 t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st);
 t_lex_state	init_quote_value(size_t idx, t_val_info *vi, t_lex_state st);
 
 // Error
 
-void	panic_error(char *msg);
+void		panic_error(char *msg);
 
 // Minishell
 
-void	init_minishell(t_minishell *minishell, char **envp);
+void		init_minishell(t_minishell *minishell, char **envp);
 
 // Error
 
-void	panic_error(char *msg);
+void		panic_error(char *msg);
 
 // Minishell
 
-void	init_minishell(t_minishell *minishell, char **envp);
+void		init_minishell(t_minishell *minishell, char **envp);
 
 // Remove
 
-char	**get_paths(char *envp[]);
+char		**get_paths(char *envp[]);
 
 #endif
