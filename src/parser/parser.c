@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 15:04:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:15:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	parser(t_minishell *minishell)
 	t_node		*node;
 
 	list = NULL;
-	pipeline = new_pipeline(OPERATOR_MAIN);
-	pipeline->commands = main_pipeline(minishell);
+	pipeline = pipeline_generator(minishell);
 	pipeline->command_count = 0;
 	node = pipeline->commands;
 	while (node)
@@ -49,20 +48,18 @@ typedef enum e_steps {
 	STEP_END
 }	t_steps;
 
-t_node	*main_pipeline(t_minishell *minishell)
+t_pipeline	*pipeline_generator(t_minishell *minishell)
 {
-	t_node		*list;
+	t_pipeline	*pipeline;
 	t_node		*node;
 	t_cmd		*cmd;
 	t_token		*token;
 	t_steps		step;
-	int			number;
 
-	list = NULL;
+	pipeline = new_pipeline(OPERATOR_MAIN);
 	step = STEP_PATH;
 	node = minishell->token_list;
 	cmd = NULL;
-	number = 0;
 	while (node)
 	{
 		token = node->content;
@@ -71,10 +68,11 @@ t_node	*main_pipeline(t_minishell *minishell)
 			if (token->type != TOKEN_WORD)
 				panic_error("error parser STEP_PATH");
 			if (!cmd)
-				cmd = new_command(number++);
+				cmd = new_command(pipeline->command_count++);
 			cmd->isbuiltin = isbuiltin(token->value);
 			if (!cmd->isbuiltin)
-				cmd->pathname = get_pathname(token->value, minishell->path_list);
+				cmd->pathname = get_pathname(token->value,
+						minishell->path_list);
 			parser_add_arg_cmd(cmd, token->value);
 			configure_builtin(cmd);
 			step = STEP_ARG;
@@ -90,15 +88,15 @@ t_node	*main_pipeline(t_minishell *minishell)
 		}
 		if (step == STEP_END)
 		{
-			add_node(&list, cmd);
+			add_node(&pipeline->commands, cmd);
 			cmd = NULL;
 			step = STEP_PATH;
 		}
 		node = node->next;
 	}
 	if (step == STEP_ARG || step == STEP_END)
-		add_node(&list, cmd);
-	return (list);
+		add_node(&pipeline->commands, cmd);
+	return (pipeline);
 }
 
 void	parser_add_arg_cmd(t_cmd *cmd, char *arg)
