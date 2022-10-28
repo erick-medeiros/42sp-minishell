@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 15:15:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 15:16:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,9 @@ void	parser(t_minishell *minishell)
 {
 	t_node		*list;
 	t_pipeline	*pipeline;
-	t_node		*node;
 
 	list = NULL;
 	pipeline = pipeline_generator(minishell);
-	pipeline->command_count = 0;
-	node = pipeline->commands;
-	while (node)
-	{
-		pipeline->command_count++;
-		node = node->next;
-	}
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
 }
