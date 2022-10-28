@@ -6,13 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 15:16:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:56:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
-#include "parser_internals.h"
+#include "parser.h"
 
 typedef enum e_mode {
 	IN_MODE,
@@ -65,6 +65,8 @@ t_pipeline	*pipeline_generator(t_minishell *minishell)
 			if (!cmd->isbuiltin)
 				cmd->pathname = get_pathname(token->value,
 						minishell->path_list);
+			else
+				cmd->pathname = ft_strdup(token->value);
 			parser_add_arg_cmd(cmd, token->value);
 			configure_builtin(cmd);
 			step = STEP_ARG;

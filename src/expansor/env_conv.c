@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env_conv.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 00:59:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/13 10:35:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:49:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "expansor.h"
 
 static char	*copy_to_str(t_var *content, int quote);
 

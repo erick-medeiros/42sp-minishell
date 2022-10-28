@@ -6,12 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 18:34:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:52:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parser_internals.h"
+#include "expansor.h"
+#include "parser.h"
 
 void	free_token(void *content);
 

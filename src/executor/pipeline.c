@@ -6,12 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:36:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/26 16:47:50 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:49:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "executor_internals.h"
+#include "executor.h"
 
 void	open_pipes(t_pipeline *pipeline)
 {

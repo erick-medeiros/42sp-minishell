@@ -6,12 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 18:37:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:49:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "executor_internals.h"
+#include "executor.h"
+#include "expansor.h"
+#include "builtins.h"
 
 void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 {
