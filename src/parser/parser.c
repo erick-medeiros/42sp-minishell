@@ -6,13 +6,15 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/25 10:04:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 13:43:23 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
 #include "parser_internals.h"
+
+void	parser_add_arg_cmd(t_cmd *cmd, char *arg);
 
 void	parser(t_minishell *minishell)
 {
@@ -34,11 +36,11 @@ void	parser(t_minishell *minishell)
 	minishell->pipelines = list;
 }
 
-enum e_steps {
-	PARSER_STEP_EXEC,
-	PARSER_STEP_ARG,
-	PARSER_STEP_END
-};
+typedef enum e_steps {
+	STEP_PATH,
+	STEP_ARG,
+	STEP_END
+}	t_steps;
 
 t_node	*main_pipeline(t_minishell *minishell)
 {
@@ -46,56 +48,67 @@ t_node	*main_pipeline(t_minishell *minishell)
 	t_node		*node;
 	t_cmd		*cmd;
 	t_token		*token;
-	int			steps;
-	char		*tmp;
+	t_steps		step;
 	int			number;
 
 	list = NULL;
-	steps = PARSER_STEP_EXEC;
+	step = STEP_PATH;
 	node = minishell->token_list;
 	cmd = NULL;
 	number = 0;
 	while (node)
 	{
 		token = node->content;
-		if (token->type == TOKEN_PIPE)
-			steps = PARSER_STEP_END;
-		if (steps == PARSER_STEP_EXEC)
+		if (step == STEP_PATH)
 		{
-			cmd = new_command();
-			cmd->number = number++;
+			if (token->type != TOKEN_WORD)
+				panic_error("error parser STEP_PATH");
+			if (!cmd)
+				cmd = new_command(number++);
 			cmd->isbuiltin = isbuiltin(token->value);
-			if (cmd->isbuiltin)
-				cmd->pathname = ft_strdup(token->value);
-			else
+			if (!cmd->isbuiltin)
 				cmd->pathname = get_pathname(token->value, minishell->path_list);
-			cmd->argc = 1;
-			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-			cmd->argv[0] = ft_strdup(token->value);
-			cmd->argv[1] = NULL;
+			parser_add_arg_cmd(cmd, token->value);
 			configure_builtin(cmd);
-			steps = PARSER_STEP_ARG;
+			step = STEP_ARG;
 		}
-		else if (steps == PARSER_STEP_ARG)
+		else if (step == STEP_ARG)
 		{
-			tmp = ft_strdup(cmd->argv[0]);
-			free_string_list(cmd->argv);
-			cmd->argc = 2;
-			cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-			cmd->argv[0] = tmp;
-			cmd->argv[1] = ft_strdup(token->value);
-			cmd->argv[2] = NULL;
+			if (token->type == TOKEN_WORD)
+				parser_add_arg_cmd(cmd, token->value);
+			else if (token->type == TOKEN_PIPE)
+				step = STEP_END;
+			else
+				panic_error("error parser STEP_ARG");
 		}
-		else if (steps == PARSER_STEP_END)
+		if (step == STEP_END)
 		{
 			add_node(&list, cmd);
-			steps = PARSER_STEP_EXEC;
+			cmd = NULL;
+			step = STEP_PATH;
 		}
 		node = node->next;
 	}
-	if (steps == PARSER_STEP_ARG)
-		steps = PARSER_STEP_END;
-	if (steps == PARSER_STEP_END)
+	if (step == STEP_ARG || step == STEP_END)
 		add_node(&list, cmd);
 	return (list);
+}
+
+void	parser_add_arg_cmd(t_cmd *cmd, char *arg)
+{
+	char	**temp;
+	int		i;
+
+	temp = cmd->argv;
+	cmd->argc++;
+	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+	i = 0;
+	while (temp && temp[i])
+	{
+		cmd->argv[i] = ft_strdup(temp[i]);
+		++i;
+	}
+	cmd->argv[i] = ft_strdup(arg);
+	cmd->argv[cmd->argc] = NULL;
+	free_string_list(temp);
 }
