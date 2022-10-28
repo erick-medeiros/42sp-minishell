@@ -33,6 +33,7 @@ FILES += pathname_test.c
 FILES += subshell_test.c
 FILES += utils_test.c
 FILES += executor_test.c
+FILES += lexer_test.c
 
 OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
