@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 18:34:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:27:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,6 @@ typedef enum e_bool {
 	FALSE,
 	TRUE
 }	t_bool;
-
-typedef enum e_lex_state {
-	STATE_APPEND,
-	STATE_COMPLETE,
-	STATE_DQUOTE,
-	STATE_DQINCOMP,
-	STATE_HEREDOC,
-	STATE_INPUT,
-	STATE_INVALID,
-	STATE_OUTPUT,
-	STATE_PIPE,
-	STATE_SKIP,
-	STATE_SQUOTE,
-	STATE_SQINCOMP,
-	STATE_WORD
-}	t_lex_state;
 
 typedef enum e_operator {
 	OPERATOR_MAIN,
@@ -97,14 +81,6 @@ typedef struct s_token
 	t_tok_type	type;
 	char		*value;
 }	t_token;
-
-typedef struct s_val_info
-{
-	char	*prompt;
-	size_t	start;
-	size_t	len;
-	int		active;
-}	t_val_info;
 
 typedef struct s_var
 {
