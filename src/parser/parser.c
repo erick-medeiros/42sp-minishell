@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:56:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 20:07:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,7 @@ t_pipeline	*pipeline_generator(t_minishell *minishell)
 			if (!cmd)
 				cmd = new_command(pipeline->command_count++);
 			cmd->isbuiltin = isbuiltin(token->value);
-			if (!cmd->isbuiltin)
-				cmd->pathname = get_pathname(token->value,
-						minishell->path_list);
-			else
-				cmd->pathname = ft_strdup(token->value);
+			cmd->pathname = ft_strdup(token->value);
 			parser_add_arg_cmd(cmd, token->value);
 			configure_builtin(cmd);
 			step = STEP_ARG;

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:46:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 20:04:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,10 @@ t_var		*new_var_node_from_name_val(char *name, char *val);
 t_var		*new_var_node_from_str(char *str);
 int			split_name_val(char *str, char *equal_pos, t_var *content);
 int			update_var(t_vlst *vars, t_var *content);
+
+// Path
+
+char		*get_pathname(char *arg, char **path_list);
+char		**get_paths(char *envp[]);
 
 #endif
