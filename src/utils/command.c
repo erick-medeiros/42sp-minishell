@@ -6,14 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/26 15:54:01 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 12:46:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
 
-t_cmd	*new_command(void)
+t_cmd	*new_command(int number)
 {
 	t_cmd	*command;
 
@@ -26,7 +26,7 @@ t_cmd	*new_command(void)
 	command->output = STDOUT;
 	command->pid = 0;
 	command->status = 0;
-	command->number = 0;
+	command->number = number;
 	command->isbuiltin = FALSE;
 	command->subshell = TRUE;
 	return (command);
