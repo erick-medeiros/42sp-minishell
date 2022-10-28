@@ -1,7 +1,7 @@
 #include "Unity/unity.h"
-#include "executor_internals.h"
+#include "executor.h"
 #include "minishell.h"
-#include "parser_internals.h"
+#include "parser.h"
 #include "structs.h"
 #include "unit_tests_utils.h"
 #include <string.h>
@@ -16,7 +16,7 @@ void test_function_process_exit_status(void) {
 	int index = -1;
 	while (++index < size) {
 		status = test_list[index];
-		cmd = new_command();
+		cmd = new_command(index);
 		cmd->pid = fork();
 		if (cmd->pid < 0)
 			TEST_IGNORE_MESSAGE(UT_ERR_FORK);
@@ -33,7 +33,7 @@ void test_function_process_exit_status(void) {
 		wait(NULL);
 	}
 	status = 0;
-	cmd = new_command();
+	cmd = new_command(0);
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
@@ -80,7 +80,7 @@ void test_function_update_io(void) {
 	init_minishell(&minishell, NULL);
 	ut_pipe(pipefd_in);
 	ut_pipe(pipefd_out);
-	command = new_command();
+	command = new_command(0);
 	pid = fork();
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
@@ -117,7 +117,7 @@ void test_function_update_io(void) {
 
 void test_function_child_process(void) {
 	char *expected = "oi";
-	t_cmd *cmd = new_command();
+	t_cmd *cmd = new_command(0);
 	t_minishell minishell;
 	int pipefd[2];
 

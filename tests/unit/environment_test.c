@@ -1,4 +1,5 @@
 #include "Unity/unity.h"
+#include "expansor.h"
 #include "minishell.h"
 
 void test_new_var_node_contains_equal(void) {
