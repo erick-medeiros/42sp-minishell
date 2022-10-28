@@ -4,15 +4,18 @@
 void debug_token(t_minishell *minishell) {
   t_node *node;
   t_token *token;
-  char *types[7];
+  char *types[10];
 
-  types[0] = "TOKEN_WORD";
-  types[1] = "TOKEN_PIPE";
-  types[2] = "TOKEN_INPUT";
-  types[3] = "TOKEN_OUTPUT";
-  types[4] = "TOKEN_APPEND";
-  types[5] = "TOKEN_SQUOTE";
-  types[6] = "TOKEN_DQUOTE";
+  types[0] = "TOKEN_APPEND";
+  types[1] = "TOKEN_DQUOTE";
+  types[2] = "TOKEN_DQINCOMP";
+  types[3] = "TOKEN_HEREDOC";
+  types[4] = "TOKEN_INPUT";
+  types[5] = "TOKEN_OUTPUT";
+  types[6] = "TOKEN_PIPE";
+  types[7] = "TOKEN_SQUOTE";
+  types[8] = "TOKEN_SQINCOMP";
+  types[9] = "TOKEN_WORD";
   node = minishell->token_list;
   printf("token list:\n");
   while (node) {
@@ -60,6 +63,18 @@ void debug_command(t_cmd *command) {
   else
     printf("subshell) no\n");
   printf("----------\n\n");
+}
+
+void debug_pipeline_commands(t_pipeline *pipeline) {
+  t_node *node;
+
+  if (!pipeline)
+    return;
+  node = pipeline->commands;
+  while (node) {
+    debug_command(node->content);
+    node = node->next;
+  }
 }
 
 void debug_pipeline_fds(t_pipeline *pipeline) {
