@@ -17,12 +17,12 @@ void tearDown(void) {}
 
 void run_all_test() {
 	file_utils_test();
-	file_prompt_test();
-	file_list_test();
-	file_builtins_test();
+	// file_prompt_test();
+	// file_list_test();
+	// file_builtins_test();
 	file_environment_test();
-	file_pathname_test();
-	file_subshell_test();
+	// file_pathname_test();
+	// file_subshell_test();
 	file_executor_test();
 	file_lexer_test();
 }
