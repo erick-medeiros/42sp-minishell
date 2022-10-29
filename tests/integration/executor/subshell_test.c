@@ -1,7 +1,7 @@
 #include "Unity/unity.h"
-#include "executor_internals.h"
+#include "executor.h"
 #include "minishell.h"
-#include "parser_internals.h"
+#include "parser.h"
 #include "structs.h"
 #include "unit_tests_utils.h"
 #include <string.h>

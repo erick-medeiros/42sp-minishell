@@ -1,15 +1,15 @@
 #include "Unity/unity.h"
-#include "executor_internals.h"
+#include "executor.h"
 #include "minishell.h"
-#include "parser_internals.h"
+#include "parser.h"
 #include "structs.h"
 
 void test_connect_pipes() {
 	t_pipeline *pipeline = new_pipeline(OPERATOR_MAIN);
-	t_cmd *cmd1 = new_command();
-	t_cmd *cmd2 = new_command();
-	t_cmd *cmd3 = new_command();
-	t_cmd *cmd4 = new_command();
+	t_cmd *cmd1 = new_command(0);
+	t_cmd *cmd2 = new_command(1);
+	t_cmd *cmd3 = new_command(2);
+	t_cmd *cmd4 = new_command(3);
 	char *expected1 = "one";
 	char *expected2 = "two";
 	char *expected3 = "three";
@@ -18,10 +18,6 @@ void test_connect_pipes() {
 	int link2[2];
 	int link3[2];
 
-	cmd1->number = 0;
-	cmd2->number = 1;
-	cmd3->number = 2;
-	cmd4->number = 3;
 	pipeline->command_count = 4;
 	add_node(&pipeline->commands, cmd1);
 	add_node(&pipeline->commands, cmd2);
