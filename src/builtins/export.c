@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/14 01:47:14 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:48:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expansor.h"
 #include "minishell.h"
-#include <stddef.h>
 
 static void		change_or_create_var(t_vlst *vars, char *str);
 static void		print_sorted_vars(t_vlst *vars, char *prefix);

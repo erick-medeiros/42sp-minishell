@@ -1,6 +1,6 @@
 #include "Unity/unity.h"
 #include "minishell.h"
-#include "parser_internals.h"
+#include "parser.h"
 #include "structs.h"
 
 void test_function_init_minishell(void) {
@@ -17,7 +17,7 @@ void test_function_init_minishell(void) {
 void test_function_new_command() {
 	t_cmd *cmd;
 
-	cmd = new_command();
+	cmd = new_command(1);
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd);
 	TEST_ASSERT_EQUAL(NULL, cmd->pathname);
 	TEST_ASSERT_EQUAL(0, cmd->argc);
@@ -25,7 +25,7 @@ void test_function_new_command() {
 	TEST_ASSERT_EQUAL(NULL, cmd->envp);
 	TEST_ASSERT_EQUAL(STDIN, cmd->input);
 	TEST_ASSERT_EQUAL(STDOUT, cmd->output);
-	TEST_ASSERT_EQUAL(0, cmd->number);
+	TEST_ASSERT_EQUAL(1, cmd->number);
 	TEST_ASSERT_EQUAL(FALSE, cmd->isbuiltin);
 	TEST_ASSERT_EQUAL(0, cmd->pid);
 	TEST_ASSERT_EQUAL(0, cmd->status);

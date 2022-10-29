@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   append.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:20:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/27 02:36:23 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:50:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexer.h"
 
 t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi)
 {

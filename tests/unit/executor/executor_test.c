@@ -1,7 +1,6 @@
 #include "Unity/unity.h"
-#include "executor_internals.h"
+#include "executor.h"
 #include "minishell.h"
-#include "parser_internals.h"
 #include "structs.h"
 
 void test_open_pipes_no_open() {

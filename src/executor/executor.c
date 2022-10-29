@@ -6,12 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/25 09:42:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:49:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "executor_internals.h"
+#include "executor.h"
+#include "builtins.h"
 
 void	executor(t_minishell *minishell)
 {

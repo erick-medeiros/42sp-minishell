@@ -20,8 +20,8 @@ FILES += utils/command.c utils/minishell.c utils/utils.c
 FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
 FILES += lexer/append.c lexer/double_quote.c lexer/heredoc.c lexer/input.c lexer/lexer.c lexer/lexer_utils.c
 FILES += lexer/output.c lexer/pipe.c lexer/single_quote.c lexer/skip.c lexer/word.c
-FILES += expansor/expansor.c expansor/env_conv.c expansor/env_utils.c
-FILES += parser/parser.c parser/pathname.c parser/builtins.c
+FILES += expansor/env_conv.c expansor/env_utils.c expansor/pathname.c
+FILES += parser/parser.c parser/builtins.c
 FILES += builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c
 FILES += builtins/export.c builtins/pwd.c builtins/unset.c
 FILES += executor/executor.c executor/pipeline.c executor/subshell.c
@@ -29,7 +29,7 @@ FILES += executor/executor.c executor/pipeline.c executor/subshell.c
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
-FILES_INC = minishell.h structs.h executor_internals.h parser_internals.h
+FILES_INC = builtins.h executor.h expansor.h lexer.h minishell.h parser.h structs.h
 HEADERS = $(addprefix include/, $(FILES_INC))
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))

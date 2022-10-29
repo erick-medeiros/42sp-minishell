@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:21:39 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/27 02:32:51 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:50:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
+#include "lexer.h"
 
 t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi)
 {

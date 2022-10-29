@@ -6,12 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 18:34:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 20:02:15 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parser_internals.h"
+#include "expansor.h"
+#include "parser.h"
 
 void	free_token(void *content);
 
@@ -24,7 +25,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 	minishell->env_list.list = NULL;
 	if (envp)
 	{
-		minishell->path_list = get_paths(envp);
 		envp_to_list(envp, &minishell->env_list);
 	}
 }

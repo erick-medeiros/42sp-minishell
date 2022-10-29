@@ -6,12 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 18:37:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 20:08:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "executor_internals.h"
+#include "executor.h"
+#include "expansor.h"
+#include "builtins.h"
 
 void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 {
@@ -38,8 +40,13 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 void	child_process(t_minishell *minishell, t_cmd *command)
 {
 	char	**envp;
+	char	*pathname;
 
 	envp = list_to_envp(&minishell->env_list, 0);
+	minishell->path_list = get_paths(envp);
+	pathname = command->pathname;
+	command->pathname = get_pathname(pathname, minishell->path_list);
+	free(pathname);
 	if (!command->pathname)
 		exit_process(minishell, 127);
 	if (execve(command->pathname, command->argv, envp) == -1)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:28:58 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/27 02:33:44 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:50:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexer.h"
 
 t_lex_state	handle_skip_state(size_t idx, t_val_info *vi)
 {

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:31:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/28 19:44:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,21 @@ t_node		*remove_node(t_node *current, void (*del_node)(void *));
 int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
 
-// Environment variable-related functions
-int			cmp_vars_by_name(void *a, void *b);
-void		envp_to_list(char **envp, t_vlst *vars);
-char		**list_to_envp(t_vlst *vars, int quote);
-t_var		*new_var_node_from_name_val(char *name, char *val);
-t_var		*new_var_node_from_str(char *str);
-int			split_name_val(char *str, char *equal_pos, t_var *content);
-int			update_var(t_vlst *vars, t_var *content);
+// Init
+
+t_cmd		*new_command(int number);
+t_pipeline	*new_pipeline(t_operator operator);
+void		init_minishell(t_minishell *minishell, char **envp);
 
 // Cleanup functions
 void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
-void		free_minishell(t_minishell *minishell);
+void		destroy_command(t_cmd *command);
+void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
+void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);
 
 // Prompt
@@ -77,59 +76,14 @@ char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
 
-// Builtins
-
-void		builtins(t_minishell *minishell, t_cmd *command);
-void		builtin_cd(char *path, t_vlst *vars);
-void		builtin_echo(char *option, char *string);
-void		builtin_env(t_vlst *vars);
-void		builtin_exit(void);
-void		builtin_export(int argc, char *argv[], t_vlst *vars);
-void		builtin_pwd(void);
-void		builtin_unset(int argc, char *argv[], t_vlst *vars);
-char		*get_pwd(void);
-
 // Commands
 
+int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
 void		executor(t_minishell *minishell);
 void		parser(t_minishell *minishell);
 
-// Lexer
-
-t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_dquote_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_input_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_skip_state(size_t idx, t_val_info *vi);
-t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
-int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
-int			new_token(t_node **tokens, t_tok_type tok_type);
-int			new_token_with_val(t_node **tokens, t_tok_type tok_type,
-				t_val_info *vi);
-t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st);
-t_lex_state	init_quote_value(size_t idx, t_val_info *vi, t_lex_state st);
-
-// Error
-
-void		panic_error(char *msg);
-
-// Minishell
-
-void		init_minishell(t_minishell *minishell, char **envp);
-
-// Error
-
-void		panic_error(char *msg);
-
-// Minishell
-
-void		init_minishell(t_minishell *minishell, char **envp);
-
 // Remove
 
-char		**get_paths(char *envp[]);
+void		panic_error(char *msg);
 
 #endif
