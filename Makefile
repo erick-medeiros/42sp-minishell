@@ -52,7 +52,7 @@ $(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) $(LIBFT) $(LIBDEBUG)
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBDEBUG) $(LIBFLAGS)
 
 clean:
-	$(RM) $(OBJ_DIR)*
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
