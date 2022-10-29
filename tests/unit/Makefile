@@ -1,81 +1,59 @@
-NAME = run_test.out
+NAME = run_unity_tests.out
 
 MINISHELL_DIR = ../../
-MIN_SRC_DIR = $(MINISHELL_DIR)src/
-MIN_OBJ_DIR = $(MINISHELL_DIR)obj/
-MIN_INC_DIR = $(MINISHELL_DIR)include/
-MINISHELL = $(MINISHELL_DIR)minishell
+MIN_SRC_DIR = ${MINISHELL_DIR}src/
+MIN_OBJ_DIR = ${MINISHELL_DIR}obj/
+MIN_INC_DIR = ${MINISHELL_DIR}include/
+MINISHELL = ${MINISHELL_DIR}minishell
 
-LIBFT_DIR = $(MINISHELL_DIR)libft/
-LIBFT = $(LIBFT_DIR)libft.a
-LIBDEBUG = $(MINISHELL_DIR)debug/debug.a
+LIBFT_DIR = ${MINISHELL_DIR}libft/
+LIBFT = ${LIBFT_DIR}libft.a
+LIBDEBUG = ${MINISHELL_DIR}debug/debug.a
+LIBUTILS_DIR = ../lib/
+UNITY_OBJ_DIR = ../obj/Unity/
+TEST_UTILS_OBJ_DIR = ../obj/test_utils/
 
-MIN_SRC_FILES=$(wildcard $(MIN_SRC_DIR)*/*.c)
-MIN_OBJ_FILES=$(wildcard $(MIN_OBJ_DIR)*/*.o)
+MIN_SRC_FILES=${wildcard ${MIN_SRC_DIR}*/*.c}
+MIN_OBJ_FILES=${wildcard ${MIN_OBJ_DIR}*/*.o}
 OBJ_DIR = obj/
-REQUIRED_DIRS = obj/ obj/Unity/
 
 CFLAGS = -Wall -Wextra -Werror
 # CFLAGS += -fsanitize=address
-CFLAGS += -I$(LIBFT_DIR) -I$(MIN_INC_DIR) -I$(MIN_SRC_DIR)debug -g
-LIBFLAGS = -L$(LIBFT_DIR) -lft -lreadline
+CFLAGS += -I${LIBFT_DIR} -I${MIN_INC_DIR} -I${MIN_SRC_DIR}debug -I../lib -I../lib/test_utils -g
+LIBFLAGS = -L${LIBFT_DIR} -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
 
-FILES = main_test.c
-FILES += Unity/unity.c
-FILES += unit_tests_utils.c
-FILES += prompt_test.c
-FILES += list_test.c
-FILES += builtins_test.c
-FILES += environment_test.c
-FILES += pathname_test.c
-FILES += subshell_test.c
-FILES += utils_test.c
-FILES += executor_test.c
-FILES += lexer_test.c
+UNIT_FILES = main_test.c
+UNIT_FILES += builtins/builtins_test.c
+UNIT_FILES += ${addprefix executor/, executor_test.c pathname_test.c subshell_test.c}
+UNIT_FILES += lexer/lexer_test.c
+UNIT_FILES += prompt/prompt_test.c
+UNIT_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
 
-OBJS = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
+OBJS = ${addprefix ${OBJ_DIR}, ${UNIT_FILES:.c=.o}}
 
-all: $(NAME)
+all: ${NAME}
 
-$(REQUIRED_DIRS):
-	@mkdir -p $@
+run:
+	./run_unity_tests.out
 
-$(OBJ_DIR)%.o: %.c
-	@$(FORMAT) $<
-	$(CC) $(CFLAGS) -c $< -o $@
+${OBJ_DIR}%.o: %.c
+	@${FORMAT} $<
+	mkdir -p ${dir $@}
+	${CC} ${CFLAGS} -c $< -o $@
 
-$(NAME): $(REQUIRED_DIRS) $(OBJS) $(MIN_SRC_FILES) $(MIN_OBJ_FILES) $(LIBDEBUG) $(MINISHELL)
-	make -C $(MINISHELL_DIR)
-	gcc $(CFLAGS) $(OBJS) $(MIN_OBJ_DIR)*/*.o -o $(NAME) $(LIBDEBUG) $(LIBFLAGS)
-
-reminishell:
-	make re -C $(MINISHELL_DIR)
-	make re
+${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_INC_DIR}*.h ${LIBUTILS_DIR}/Unity/*.h ${LIBUTILS_DIR}/test_utils/*.h
+	make -C ${MINISHELL_DIR}
+	make -C ${LIBUTILS_DIR}
+	gcc ${CFLAGS} ${OBJS} ${MIN_OBJ_DIR}*/*.o ${TEST_UTILS_OBJ_DIR}*.o ${UNITY_OBJ_DIR}*.o -o ${NAME} ${LIBDEBUG} ${LIBFLAGS}
 
 clean:
-	$(RM) $(OBJ_DIR)*
+	${RM} ${OBJ_DIR}
 
 fclean:	clean
-	$(RM) $(NAME)
+	${RM} ${NAME}
 
-re:	fclean all
+re:	all fclean
 
-leaks:
-	@valgrind \
-		--leak-check=full \
-		--show-leak-kinds=all \
-		--suppressions=../readline.supp \
-		--track-fds=yes \
-		--track-origins=yes \
-		--log-file=leak.log \
-		./$(NAME)
-
-debug_leak_log:
-	@echo "FDS>"
-	@cat leak.log | grep "FILE DESCRIPTORS" | cut -d ' ' -f2- | uniq | sort
-	@echo "LEAKS>"
-	@cat leak.log | grep "ERROR SUMMARY" | cut -d ' ' -f2- | uniq | sort
-
-.PHONY: all clean fclean re reminishell leaks
+.PHONY: all clean fclean re run
