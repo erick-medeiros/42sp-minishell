@@ -49,9 +49,11 @@ ${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_IN
 	gcc ${CFLAGS} ${OBJS} ${MIN_OBJ_DIR}*/*.o ${TEST_UTILS_OBJ_DIR}*.o ${UNITY_OBJ_DIR}*.o -o ${NAME} ${LIBDEBUG} ${LIBFLAGS}
 
 clean:
-	${RM} ${OBJ_DIR}
+	-${RM} ${OBJ_DIR}
 
 fclean: clean
-	${RM} ${NAME}
+	-${RM} ${NAME}
 
-re: all clean fclean run
+re: fclean all
+
+.PHONY: all clean fclean re run

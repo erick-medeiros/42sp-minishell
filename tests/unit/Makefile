@@ -51,9 +51,9 @@ ${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_IN
 clean:
 	${RM} ${OBJ_DIR}
 
-fclean:	clean
+fclean: clean
 	${RM} ${NAME}
 
-re:	all fclean
+re: fclean all
 
 .PHONY: all clean fclean re run

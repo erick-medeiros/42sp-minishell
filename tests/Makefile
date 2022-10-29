@@ -1,4 +1,4 @@
-MAKEFLAGS += -s
+MAKEFLAGS += s
 MINISHELL_DIR = ../
 UNIT_DIR = unit/
 UNIT_NAME = ${UNIT_DIR}run_unity_tests.out
