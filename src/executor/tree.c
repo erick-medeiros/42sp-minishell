@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/31 12:29:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/31 14:06:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ void	*destroy_tree(t_tree *root)
 		root->left = destroy_tree(root->left);
 	if (root->right)
 		root->right = destroy_tree(root->right);
+	if (root->type == TREE_TYPE_CMD)
+	{
+		destroy_command(root->content);
+	}
 	free(root);
 	return (NULL);
 }
@@ -75,11 +79,33 @@ t_tree	*convert_list_to_tree(t_pipeline *pipeline)
 	while (list)
 	{
 		root = insert_into_tree(root, TREE_TYPE_CMD, list->content);
+		list->content = NULL;
 		list = list->next;
 		if (list)
 			root = insert_into_tree(root, TREE_TYPE_PIPE, NULL);
 	}
-	debug_tree(root);
-	destroy_tree(root);
 	return (root);
+}
+
+void	tree_executor_recursive(t_minishell *minishell, t_tree *parent, t_tree *tree_node)
+{
+	if (tree_node->left)
+		tree_executor_recursive(minishell, tree_node, tree_node->left);
+	if (tree_node->right)
+		tree_executor_recursive(minishell, tree_node, tree_node->right);
+	if (tree_node->type == TREE_TYPE_CMD)
+		printf(" cmd%d ", ((t_cmd *)tree_node->content)->number);
+	if (tree_node->type == TREE_TYPE_PIPE)
+		printf(" | ");
+	(void) parent;
+}
+
+void	tree_executor(t_minishell *minishell, t_pipeline *pipeline)
+{
+	t_tree	*root;
+
+	root = convert_list_to_tree(pipeline);
+	tree_executor_recursive(minishell, NULL, root);
+	printf("\n");
+	destroy_tree(root);
 }
