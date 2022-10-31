@@ -2,6 +2,7 @@ NAME = debug.a
 
 HEADER = debug.h
 SRC = debug.c
+SRC += debug_tree.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
