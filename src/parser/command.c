@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
+/*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
 /*   Updated: 2022/10/31 02:30:41 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "minishell.h"
+#include "structs.h"
 
-# include "minishell.h"
+static int	is_cmd_part(t_tok_type tok_type);
 
-t_pipeline	*pipeline_generator(t_minishell *minishell);
+t_tree_node	*get_command(t_node **tokens, int num)
+{
+	t_tree_node	*cmd_node;
+	t_token		*token;
 
-// Builtins
+	if (*tokens != NULL)
+		return (NULL);
+	cmd_node = malloc (sizeof(*cmd_node));
+	cmd_node->cmd = new_command(num);
+	while (*tokens != NULL)
+	{
+		token = ((t_token *)(*tokens)->content);
+		if (token->type == TOKEN_PIPE)
+			return (cmd_node);
+		if (token->type == TOKEN_WORD)
 
-t_bool		isbuiltin(char *arg);
-void		configure_builtin(t_cmd *command);
-
-#endif
+		*tokens = remove_node(*tokens, del_token_node);
+	}
+}

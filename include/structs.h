@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:44:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/30 20:09:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,6 @@ typedef enum e_tok_type {
 	TOKEN_WORD
 }	t_tok_type;
 
-typedef struct s_cmd
-{
-	pid_t	pid;
-	char	*pathname;
-	int		argc;
-	char	**argv;
-	int		status;
-	int		input;
-	int		output;
-	int		number;
-	char	**envp;
-	t_bool	subshell;
-	t_bool	isbuiltin;
-}	t_cmd;
-
 typedef enum e_lex_state {
 	STATE_APPEND,
 	STATE_COMPLETE,
@@ -71,6 +56,27 @@ typedef enum e_lex_state {
 	STATE_SQINCOMP,
 	STATE_WORD
 }	t_lex_state;
+
+typedef enum e_op_type
+{
+	OP_PIPE,
+	OP_COMMAND
+}	t_op_type;
+
+typedef struct s_cmd
+{
+	pid_t	pid;
+	char	*pathname;
+	int		argc;
+	char	**argv;
+	int		status;
+	int		input;
+	int		output;
+	int		number;
+	char	**envp;
+	t_bool	subshell;
+	t_bool	isbuiltin;
+}	t_cmd;
 
 typedef struct s_node
 {
@@ -125,5 +131,13 @@ typedef struct s_minishell
 	t_node	*pipelines;
 	char	**path_list;
 }	t_minishell;
+
+typedef struct s_tree_node
+{
+	t_op_type			op;
+	t_cmd				*cmd;
+	struct s_tree_node	*left;
+	struct s_tree_node	*right;
+}	t_tree_node;
 
 #endif
