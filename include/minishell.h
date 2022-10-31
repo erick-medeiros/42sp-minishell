@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:44:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/10/31 19:31:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int			remove_node_by_content(t_node **lst, void *content,
 // Init
 
 t_cmd		*new_command(int number);
+t_cmd		*duplicate_command(t_cmd *command);
 t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
 
