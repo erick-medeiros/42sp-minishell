@@ -70,7 +70,7 @@ void test_function_exit_process(void) {
 	}
 }
 
-void test_function_update_io(void) {
+void test_function_subshell_redirect(void) {
 	t_minishell minishell;
 	t_cmd *command;
 	int pipefd_in[2];
@@ -89,7 +89,7 @@ void test_function_update_io(void) {
 		command->output = dup(pipefd_out[1]);
 		ut_close_pipefd(pipefd_in);
 		ut_close_pipefd(pipefd_out);
-		update_io(&minishell, command);
+		subshell_redirect(&minishell, command);
 		char *content = get_content_fd(STDIN);
 		printf("%s", content);
 		free(content);
@@ -115,7 +115,7 @@ void test_function_update_io(void) {
 	}
 }
 
-void test_function_child_process(void) {
+void test_function_execute_program(void) {
 	char *expected = "oi";
 	t_cmd *cmd = new_command(0);
 	t_minishell minishell;
@@ -134,7 +134,7 @@ void test_function_child_process(void) {
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
 		init_minishell(&minishell, NULL);
-		child_process(&minishell, cmd);
+		execute_program(&minishell, cmd);
 		exit(1);
 	} else {
 		close(pipefd[1]);
@@ -153,7 +153,7 @@ int file_subshell_test() {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_process_exit_status);
 	RUN_TEST(test_function_exit_process);
-	RUN_TEST(test_function_update_io);
-	RUN_TEST(test_function_child_process);
+	RUN_TEST(test_function_subshell_redirect);
+	RUN_TEST(test_function_execute_program);
 	return UNITY_END();
 }
