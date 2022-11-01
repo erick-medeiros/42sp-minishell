@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/31 19:31:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:06:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,33 +30,6 @@ t_cmd	*new_command(int number)
 	command->isbuiltin = FALSE;
 	command->subshell = TRUE;
 	return (command);
-}
-
-t_cmd	*duplicate_command(t_cmd *command)
-{
-	t_cmd	*cmd;
-	int		i;
-
-	cmd = new_command(command->number);
-	if (command->pathname)
-		cmd->pathname = ft_strdup(command->pathname);
-	cmd->pid = command->pid;
-	cmd->status = command->status;
-	cmd->envp = command->envp;
-	cmd->argc = command->argc;
-	cmd->input = command->input;
-	cmd->output = command->output;
-	cmd->subshell = command->subshell;
-	cmd->isbuiltin = command->isbuiltin;
-	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-	i = 0;
-	while (command->argv[i])
-	{
-		cmd->argv[i] = ft_strdup(command->argv[i]);
-		++i;
-	}
-	cmd->argv[cmd->argc] = NULL;
-	return (cmd);
 }
 
 void	destroy_command(t_cmd *command)

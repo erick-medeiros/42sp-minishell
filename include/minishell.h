@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:15:15 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:06:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void		*destroy_tree(t_tree *root, void (*destroy)(t_tree *));
 // Init
 
 t_cmd		*new_command(int number);
-t_cmd		*duplicate_command(t_cmd *command);
 t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
 
