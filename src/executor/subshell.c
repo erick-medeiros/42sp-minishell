@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:58:14 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 17:24:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,14 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 			execute_builtin(minishell, command);
 		else
 			execute_program(minishell, command);
+		exit_subshell(minishell, 1);
 	}
 }
 
 void	execute_builtin(t_minishell *minishell, t_cmd *command)
 {
 	builtins(minishell, command);
-	exit_process(minishell, 0);
+	exit_subshell(minishell, 0);
 }
 
 void	execute_program(t_minishell *minishell, t_cmd *command)
@@ -51,10 +52,9 @@ void	execute_program(t_minishell *minishell, t_cmd *command)
 	command->pathname = get_pathname(pathname, minishell->path_list);
 	free(pathname);
 	if (!command->pathname)
-		exit_process(minishell, 127);
+		exit_subshell(minishell, 127);
 	if (execve(command->pathname, command->argv, envp) == -1)
-		exit_process(minishell, errno);
-	exit_process(minishell, 1);
+		exit_subshell(minishell, errno);
 }
 
 void	subshell_redirect(t_minishell *minishell, t_cmd *command)
@@ -65,7 +65,7 @@ void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 			close(command->input);
 		if (command->output >= 0)
 			close(command->output);
-		exit_process(minishell, 1);
+		exit_subshell(minishell, 1);
 	}
 	dup2(command->input, STDIN);
 	dup2(command->output, STDOUT);
@@ -73,7 +73,7 @@ void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 	close(command->output);
 }
 
-void	exit_process(t_minishell *minishell, int status)
+void	exit_subshell(t_minishell *minishell, int status)
 {
 	destroy_minishell(minishell);
 	exit(status);

@@ -49,7 +49,7 @@ void test_function_process_exit_status(void) {
 	}
 }
 
-void test_function_exit_process(void) {
+void test_function_exit_subshell(void) {
 	t_minishell minishell;
 	pid_t pid;
 	int expected;
@@ -60,7 +60,7 @@ void test_function_exit_process(void) {
 	if (pid < 0)
 		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
 	if (pid == 0) {
-		exit_process(&minishell, expected);
+		exit_subshell(&minishell, expected);
 	} else {
 		int status;
 		waitpid(pid, &status, 0);
@@ -152,7 +152,7 @@ void test_function_execute_program(void) {
 int file_subshell_test() {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_process_exit_status);
-	RUN_TEST(test_function_exit_process);
+	RUN_TEST(test_function_exit_subshell);
 	RUN_TEST(test_function_subshell_redirect);
 	RUN_TEST(test_function_execute_program);
 	return UNITY_END();

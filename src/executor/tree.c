@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:58:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 17:25:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,12 @@ void	tree_subshell(t_minishell *minishell, t_cmd *command)
 		{
 			builtins(minishell, command);
 			destroy_command(command);
-			exit_process(minishell, 0);
+			exit_subshell(minishell, 0);
 		}
 		else
 			execute_program(minishell, command);
 		destroy_command(command);
-		exit_process(minishell, 0);
+		exit_subshell(minishell, 0);
 	}
 }
 
