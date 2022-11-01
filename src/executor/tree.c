@@ -6,37 +6,17 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/31 19:35:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:16:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
 
-t_tree	*new_tree_node(t_tree_type type)
+void	destroy_exec_tree(t_tree *root)
 {
-	t_tree	*tree_node;
-
-	tree_node = malloc(sizeof(t_tree));
-	tree_node->type = type;
-	tree_node->content = NULL;
-	tree_node->left = NULL;
-	tree_node->right = NULL;
-	return (tree_node);
-}
-
-void	*destroy_tree(t_tree *root)
-{
-	if (!root)
-		return (NULL);
-	if (root->left)
-		root->left = destroy_tree(root->left);
-	if (root->right)
-		root->right = destroy_tree(root->right);
 	if (root->type == TREE_TYPE_CMD)
 		destroy_command(root->content);
-	free(root);
-	return (NULL);
 }
 
 void	close_pipes_tree(t_tree *root)
@@ -113,7 +93,7 @@ void	tree_subshell(t_minishell *minishell, t_cmd *command)
 		command = duplicate_command(command);
 		update_io(minishell, command);
 		close_pipes_tree(minishell->root);
-		destroy_tree(minishell->root);
+		destroy_tree(minishell->root, destroy_exec_tree);
 		if (command->isbuiltin)
 		{
 			builtins(minishell, command);
@@ -199,5 +179,5 @@ void	tree_executor(t_minishell *minishell, t_pipeline *pipeline)
 		tree_executor_recursive(minishell, NULL, NULL, minishell->root);
 	close_pipes_tree(minishell->root);
 	wait_tree(minishell->root);
-	destroy_tree(minishell->root);
+	destroy_tree(minishell->root, destroy_exec_tree);
 }
