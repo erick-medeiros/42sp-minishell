@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 17:23:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:26:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ void	builtins(t_minishell *minishell, t_cmd *command);
 void	open_pipes(t_pipeline *pipeline);
 void	connect_pipes(t_pipeline *pipeline, t_cmd *command);
 void	close_pipes(t_pipeline *pipeline);
+void	connect_pipeline(t_cmd *cmd, t_tree *grandparent, t_tree *parent,
+			t_tree *node);
+void	close_pipeline(t_tree *root);
 
 // Subshell
 
