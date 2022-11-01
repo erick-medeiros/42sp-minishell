@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:29:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:37:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,27 @@ void	tree_subshell(t_minishell *minishell, t_cmd *command)
 	}
 }
 
-void	tree_executor_recursive(t_minishell *minishell, t_tree *grandparent, t_tree *parent, t_tree *tree_node)
+void	tree_executor_recursive(t_minishell *minishell, t_tree *grandparent,
+			t_tree *parent, t_tree *root)
 {
 	t_cmd	*cmd;
 
-	if (tree_node->type == TREE_TYPE_PIPE)
+	if (!root)
+		return ;
+	if (root->type == TREE_TYPE_PIPE)
 	{
-		tree_node->content = malloc(sizeof(int) * 2);
-		if (pipe(tree_node->content) == -1)
+		root->content = malloc(sizeof(int) * 2);
+		if (pipe(root->content) == -1)
 			panic_error("tree executor ~ pipe");
 	}
-	if (tree_node->left)
-		tree_executor_recursive(minishell, parent, tree_node, tree_node->left);
-	if (tree_node->right)
-		tree_executor_recursive(minishell, parent, tree_node, tree_node->right);
-	if (tree_node->type == TREE_TYPE_CMD)
+	if (root->left)
+		tree_executor_recursive(minishell, parent, root, root->left);
+	if (root->right)
+		tree_executor_recursive(minishell, parent, root, root->right);
+	if (root->type == TREE_TYPE_CMD)
 	{
-		cmd = (t_cmd *) tree_node->content;
-		connect_pipeline(cmd, grandparent, parent, tree_node);
+		cmd = (t_cmd *) root->content;
+		connect_pipeline(cmd, grandparent, parent, root);
 		tree_subshell(minishell, cmd);
 	}
 }
@@ -132,8 +135,7 @@ void	wait_tree(t_tree *root)
 void	tree_executor(t_minishell *minishell, t_pipeline *pipeline)
 {
 	minishell->root = convert_list_to_tree(pipeline);
-	if (minishell->root)
-		tree_executor_recursive(minishell, NULL, NULL, minishell->root);
+	tree_executor_recursive(minishell, NULL, NULL, minishell->root);
 	close_pipeline(minishell->root);
 	wait_tree(minishell->root);
 	destroy_tree(minishell->root, destroy_exec_tree);

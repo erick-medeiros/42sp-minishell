@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:02:15 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:34:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	free_token(void *content);
 
 void	init_minishell(t_minishell *minishell, char **envp)
 {
+	minishell->root = NULL;
 	minishell->token_list = NULL;
 	minishell->pipelines = NULL;
 	minishell->path_list = NULL;
