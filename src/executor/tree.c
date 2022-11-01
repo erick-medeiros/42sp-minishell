@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:51:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:58:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	tree_subshell(t_minishell *minishell, t_cmd *command)
 		command->input = dup(command->input);
 		command->output = dup(command->output);
 		command = duplicate_command(command);
-		update_io(minishell, command);
+		subshell_redirect(minishell, command);
 		close_pipes_tree(minishell->root);
 		destroy_tree(minishell->root, destroy_exec_tree);
 		if (command->isbuiltin)

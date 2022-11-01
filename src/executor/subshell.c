@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:53:44 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:58:14 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 		command->input = dup(command->input);
 		command->output = dup(command->output);
 		close_pipes(pipeline);
-		update_io(minishell, command);
+		subshell_redirect(minishell, command);
 		if (command->isbuiltin)
 			execute_builtin(minishell, command);
 		else
@@ -57,7 +57,7 @@ void	execute_program(t_minishell *minishell, t_cmd *command)
 	exit_process(minishell, 1);
 }
 
-void	update_io(t_minishell *minishell, t_cmd *command)
+void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 {
 	if (command->input < 0 || command->output < 0)
 	{
