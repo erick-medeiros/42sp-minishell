@@ -6,18 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:37:44 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:51:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
-
-void	destroy_exec_tree(t_tree *root)
-{
-	if (root->type == TREE_TYPE_CMD)
-		destroy_command(root->content);
-}
 
 t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)
 {
@@ -79,12 +73,10 @@ void	tree_subshell(t_minishell *minishell, t_cmd *command)
 		if (command->isbuiltin)
 		{
 			builtins(minishell, command);
-			destroy_tree(minishell->root, destroy_exec_tree);
 			exit_subshell(minishell, 0);
 		}
 		else
 			execute_program(minishell, command);
-		destroy_tree(minishell->root, destroy_exec_tree);
 		exit_subshell(minishell, 0);
 	}
 }
@@ -138,5 +130,4 @@ void	tree_executor(t_minishell *minishell, t_pipeline *pipeline)
 	tree_executor_recursive(minishell, NULL, NULL, minishell->root);
 	close_pipeline(minishell->root);
 	wait_tree(minishell->root);
-	destroy_tree(minishell->root, destroy_exec_tree);
 }

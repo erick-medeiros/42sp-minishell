@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 16:12:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:42:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@ t_tree	*new_tree_node(t_tree_type type)
 	return (tree_node);
 }
 
-void	*destroy_tree(t_tree *root, void (*destroy)(t_tree *))
+void	*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *))
 {
 	if (!root)
 		return (NULL);
 	if (root->left)
-		root->left = destroy_tree(root->left, destroy);
+		root->left = destroy_tree(root->left, destroy_content);
 	if (root->right)
-		root->right = destroy_tree(root->right, destroy);
-	if (destroy)
-		destroy(root);
+		root->right = destroy_tree(root->right, destroy_content);
+	if (destroy_content)
+		destroy_content(root);
 	free(root);
 	return (NULL);
 }

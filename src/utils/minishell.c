@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:34:32 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:47:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ void	free_minishell(t_minishell *minishell)
 	{
 		clear_list(minishell->token_list, free_token);
 		minishell->token_list = NULL;
+	}
+	if (minishell->root)
+	{
+		destroy_tree(minishell->root, destroy_execution_tree);
+		minishell->root = NULL;
 	}
 }
 

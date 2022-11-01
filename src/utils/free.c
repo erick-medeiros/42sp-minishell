@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:38:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:51:18 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:46:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,10 @@ void	free_string_list(char **str)
 	while (str[++i])
 		free(str[i]);
 	free(str);
+}
+
+void	destroy_execution_tree(t_tree *root)
+{
+	if (root->type == TREE_TYPE_CMD)
+		destroy_command(root->content);
 }

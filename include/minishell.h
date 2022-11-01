@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:06:19 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:47:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int			remove_node_by_content(t_node **lst, void *content,
 // Tree
 
 t_tree		*new_tree_node(t_tree_type type);
-void		*destroy_tree(t_tree *root, void (*destroy)(t_tree *));
+void		destroy_execution_tree(t_tree *root);
+void		*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *));
 
 // Init
 
