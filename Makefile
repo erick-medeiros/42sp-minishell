@@ -16,7 +16,7 @@ MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
 FILES = main.c
 FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c
-FILES += utils/command.c utils/minishell.c utils/utils.c
+FILES += utils/command.c utils/minishell.c utils/utils.c utils/tree.c
 FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
 FILES += lexer/append.c lexer/double_quote.c lexer/heredoc.c lexer/input.c lexer/lexer.c lexer/lexer_utils.c
 FILES += lexer/output.c lexer/pipe.c lexer/single_quote.c lexer/skip.c lexer/word.c
