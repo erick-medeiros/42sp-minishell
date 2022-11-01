@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:08:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 16:53:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,19 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 		close_pipes(pipeline);
 		update_io(minishell, command);
 		if (command->isbuiltin)
-		{
-			builtins(minishell, command);
-			exit_process(minishell, 0);
-		}
+			execute_builtin(minishell, command);
 		else
-			child_process(minishell, command);
+			execute_program(minishell, command);
 	}
 }
 
-void	child_process(t_minishell *minishell, t_cmd *command)
+void	execute_builtin(t_minishell *minishell, t_cmd *command)
+{
+	builtins(minishell, command);
+	exit_process(minishell, 0);
+}
+
+void	execute_program(t_minishell *minishell, t_cmd *command)
 {
 	char	**envp;
 	char	*pathname;
