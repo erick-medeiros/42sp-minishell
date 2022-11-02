@@ -12,6 +12,7 @@ void test_builtin_echo(void) {
 	char *expected;
 	char *content;
 	int status;
+	t_cmd *cmd;
 
 	expected = "echo\necho";
 	if (pipe(pipefd) == -1)
@@ -23,8 +24,23 @@ void test_builtin_echo(void) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
-		builtin_echo("", "echo");
-		builtin_echo("-n", "echo");
+		cmd = new_command(0);
+		cmd->argc = 2;
+		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+		cmd->argv[0] = strdup("echo");
+		cmd->argv[1] = strdup("echo");
+		cmd->argv[2] = NULL;
+		builtin_echo(cmd);
+		destroy_command(cmd);
+		cmd = new_command(0);
+		cmd->argc = 3;
+		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+		cmd->argv[0] = strdup("echo");
+		cmd->argv[1] = strdup("-n");
+		cmd->argv[2] = strdup("echo");
+		cmd->argv[3] = NULL;
+		builtin_echo(cmd);
+		destroy_command(cmd);
 		exit(0);
 	} else {
 		close(pipefd[1]);
