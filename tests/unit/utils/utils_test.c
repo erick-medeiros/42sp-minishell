@@ -25,6 +25,7 @@ void test_function_new_command() {
 	TEST_ASSERT_EQUAL(NULL, cmd->envp);
 	TEST_ASSERT_EQUAL(STDIN, cmd->input);
 	TEST_ASSERT_EQUAL(STDOUT, cmd->output);
+	TEST_ASSERT_EQUAL(NULL, cmd->redirect);
 	TEST_ASSERT_EQUAL(1, cmd->number);
 	TEST_ASSERT_EQUAL(FALSE, cmd->isbuiltin);
 	TEST_ASSERT_EQUAL(0, cmd->pid);

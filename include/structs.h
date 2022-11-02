@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 11:03:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:32:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stddef.h>
 # include <sys/types.h>
+
+typedef struct s_node	t_node;
 
 typedef enum e_bool {
 	FALSE,
@@ -50,6 +52,7 @@ typedef struct s_cmd
 	int		status;
 	int		input;
 	int		output;
+	t_node	*redirect;
 	int		number;
 	char	**envp;
 	t_bool	subshell;
@@ -91,6 +94,11 @@ typedef struct s_pipeline
 	int			command_count;
 	int			**pipefds;
 }	t_pipeline;
+
+typedef struct s_redirect {
+	char	*path;
+	int		operator;
+}	t_redirect;
 
 typedef struct s_token
 {
