@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 09:16:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:44:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	execute_program(t_minishell *minishell, t_cmd *command);
 
 // Tree
 
-t_tree	*convert_list_to_tree(t_pipeline *pipeline);
-void	tree_executor(t_minishell *minishell, t_pipeline *pipeline);
+void	tree_executor(t_minishell *minishell);
 
 #endif

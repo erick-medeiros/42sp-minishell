@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 09:17:50 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:44:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	executor(t_minishell *minishell)
 	{
 		pipeline = (t_pipeline *) node->content;
 		if (pipeline->operator == OPERATOR_MAIN)
-			tree_executor(minishell, pipeline);
+			tree_executor(minishell);
 		else if (pipeline->operator == OPERATOR_MAIN)
 			pipeline_executor(minishell, pipeline);
 		node = node->next;

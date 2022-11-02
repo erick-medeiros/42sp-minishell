@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:07:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:40:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	parser(t_minishell *minishell)
 	pipeline = pipeline_generator(minishell);
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
+	minishell->root = convert_list_to_tree(pipeline);
 }
 
 typedef enum e_steps {
@@ -123,4 +124,50 @@ int	open_fd(char *pathname, int mode)
 	else
 		fd = open(pathname, O_RDWR | O_WRONLY | O_CREAT | O_TRUNC, permissions);
 	return (fd);
+}
+
+t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)
+{
+	t_tree	*temp;
+	t_tree	*current;
+	t_tree	*parent;
+
+	(void) parent;
+	temp = new_tree_node(type);
+	temp->content = content;
+	if (root == NULL)
+		root = temp;
+	else
+	{
+		current = root;
+		parent = NULL;
+		if (current->type == TREE_TYPE_PIPE && current->right == NULL)
+		{
+			current->right = temp;
+		}
+		else
+		{
+			root = temp;
+			root->left = current;
+		}
+	}
+	return (root);
+}
+
+t_tree	*convert_list_to_tree(t_pipeline *pipeline)
+{
+	t_tree	*root;
+	t_node	*list;
+
+	root = NULL;
+	list = pipeline->commands;
+	while (list)
+	{
+		root = insert_into_tree(root, TREE_TYPE_CMD, list->content);
+		list->content = NULL;
+		list = list->next;
+		if (list)
+			root = insert_into_tree(root, TREE_TYPE_PIPE, NULL);
+	}
+	return (root);
 }

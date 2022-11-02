@@ -6,58 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 08:55:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:44:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
-
-t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)
-{
-	t_tree	*temp;
-	t_tree	*current;
-	t_tree	*parent;
-
-	(void) parent;
-	temp = new_tree_node(type);
-	temp->content = content;
-	if (root == NULL)
-		root = temp;
-	else
-	{
-		current = root;
-		parent = NULL;
-		if (current->type == TREE_TYPE_PIPE && current->right == NULL)
-		{
-			current->right = temp;
-		}
-		else
-		{
-			root = temp;
-			root->left = current;
-		}
-	}
-	return (root);
-}
-
-t_tree	*convert_list_to_tree(t_pipeline *pipeline)
-{
-	t_tree	*root;
-	t_node	*list;
-
-	root = NULL;
-	list = pipeline->commands;
-	while (list)
-	{
-		root = insert_into_tree(root, TREE_TYPE_CMD, list->content);
-		list->content = NULL;
-		list = list->next;
-		if (list)
-			root = insert_into_tree(root, TREE_TYPE_PIPE, NULL);
-	}
-	return (root);
-}
 
 void	tree_executor_recursive(t_minishell *minishell, t_tree *grandparent,
 			t_tree *parent, t_tree *root)
@@ -102,9 +56,8 @@ void	wait_tree(t_tree *root)
 	}
 }
 
-void	tree_executor(t_minishell *minishell, t_pipeline *pipeline)
+void	tree_executor(t_minishell *minishell)
 {
-	minishell->root = convert_list_to_tree(pipeline);
 	tree_executor_recursive(minishell, NULL, NULL, minishell->root);
 	close_pipeline(minishell->root);
 	wait_tree(minishell->root);
