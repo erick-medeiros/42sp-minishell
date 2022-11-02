@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:54:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:11:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,25 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 
 void	execute_builtin(t_minishell *minishell, t_cmd *command)
 {
-	builtins(minishell, command);
-	exit_subshell(minishell, 0);
+	if (command_is_equal(command->pathname, "echo"))
+		builtin_echo(command);
+	else if (command_is_equal(command->pathname, "cd") && command->argc == 2)
+		builtin_cd(command->argv[1], &minishell->env_list);
+	else if (command_is_equal(command->pathname, "pwd"))
+		builtin_pwd();
+	else if (command_is_equal(command->pathname, "export"))
+		builtin_export(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "unset"))
+		builtin_unset(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "env"))
+		builtin_env(&minishell->env_list);
+	else if (command_is_equal(command->pathname, "exit"))
+	{
+		destroy_minishell(minishell);
+		builtin_exit();
+	}
+	if (command->subshell)
+		exit_subshell(minishell, 0);
 }
 
 void	execute_program(t_minishell *minishell, t_cmd *command)

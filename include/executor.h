@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:10:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:13:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 			t_tree *parent, t_tree *root);
 void	sync_tree_execution(t_tree *root);
-void	builtins(t_minishell *minishell, t_cmd *command);
+void	process_exit_status(t_cmd *command);
 
 // Pipeline
 
@@ -34,7 +34,6 @@ void	close_pipeline(t_tree *root);
 void	subshell(t_minishell *minishell, t_cmd *command);
 void	subshell_redirect(t_minishell *minishell, t_cmd *command);
 void	exit_subshell(t_minishell *minishell, int status);
-void	process_exit_status(t_cmd *command);
 
 // Execute
 
