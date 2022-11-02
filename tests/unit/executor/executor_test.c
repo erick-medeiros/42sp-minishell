@@ -19,7 +19,7 @@ void test_function_process_exit_status(void) {
 		cmd = new_command(index);
 		cmd->pid = fork();
 		if (cmd->pid < 0)
-			TEST_IGNORE_MESSAGE(UT_ERR_FORK);
+			TEST_FAIL();
 		if (cmd->pid == 0) {
 			destroy_command(cmd);
 			exit(status);
@@ -36,7 +36,7 @@ void test_function_process_exit_status(void) {
 	cmd = new_command(0);
 	cmd->pid = fork();
 	if (cmd->pid < 0)
-		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
+		TEST_FAIL();
 	if (cmd->pid == 0) {
 		destroy_command(cmd);
 		exit(status);

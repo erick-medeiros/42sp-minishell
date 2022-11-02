@@ -15,12 +15,14 @@ void test_function_subshell_redirect(void) {
 	pid_t pid;
 
 	init_minishell(&minishell, NULL);
-	ut_pipe(pipefd_in);
-	ut_pipe(pipefd_out);
+	if (pipe(pipefd_in) == -1)
+		TEST_FAIL();
+	if (pipe(pipefd_out) == -1)
+		TEST_FAIL();
 	command = new_command(0);
 	pid = fork();
 	if (pid < 0)
-		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
+		TEST_FAIL();
 	else if (pid == 0) {
 		command->input = dup(pipefd_in[0]);
 		command->output = dup(pipefd_out[1]);
@@ -65,9 +67,12 @@ void test_function_execute_program(void) {
 	cmd->argv[1] = strdup("-n");
 	cmd->argv[2] = strdup(expected);
 	cmd->argv[3] = NULL;
-	ut_pipe(pipefd);
-	pid_t pid = ut_fork();
-	if (pid == 0) {
+	if (pipe(pipefd) == -1)
+		TEST_FAIL();
+	pid_t pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
 		init_minishell(&minishell, NULL);
@@ -95,7 +100,7 @@ void test_function_exit_subshell(void) {
 	init_minishell(&minishell, NULL);
 	pid = fork();
 	if (pid < 0)
-		TEST_IGNORE_MESSAGE(UT_ERR_FORK);
+		TEST_FAIL();
 	if (pid == 0) {
 		exit_subshell(&minishell, expected);
 	} else {
