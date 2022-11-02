@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:20:55 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:51:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 08:55:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,6 @@ t_tree	*convert_list_to_tree(t_pipeline *pipeline)
 	return (root);
 }
 
-void	tree_subshell(t_minishell *minishell, t_cmd *command)
-{
-	command->pid = fork();
-	if (command->pid < 0)
-		panic_error("executor: fork");
-	else if (command->pid == 0)
-	{
-		command->input = dup(command->input);
-		command->output = dup(command->output);
-		subshell_redirect(minishell, command);
-		close_pipeline(minishell->root);
-		if (command->isbuiltin)
-		{
-			builtins(minishell, command);
-			exit_subshell(minishell, 0);
-		}
-		else
-			execute_program(minishell, command);
-		exit_subshell(minishell, 0);
-	}
-}
-
 void	tree_executor_recursive(t_minishell *minishell, t_tree *grandparent,
 			t_tree *parent, t_tree *root)
 {
@@ -102,7 +80,7 @@ void	tree_executor_recursive(t_minishell *minishell, t_tree *grandparent,
 	{
 		cmd = (t_cmd *) root->content;
 		connect_pipeline(cmd, grandparent, parent, root);
-		tree_subshell(minishell, cmd);
+		subshell(minishell, cmd);
 	}
 }
 

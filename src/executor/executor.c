@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/31 13:19:13 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 08:59:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	run_command(t_minishell *minishell, t_pipeline *pipeline,
 	if (command->isbuiltin && !command->subshell)
 		builtins(minishell, command);
 	else
-		subshell(minishell, pipeline, command);
+	{
+		connect_pipes(pipeline, command);
+		subshell(minishell, command);
+	}
 }
 
 void	command_exit_status(t_cmd *command)

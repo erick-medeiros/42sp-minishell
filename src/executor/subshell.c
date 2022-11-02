@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 17:24:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/01 19:58:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include "expansor.h"
 #include "builtins.h"
 
-void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
+void	subshell(t_minishell *minishell, t_cmd *command)
 {
-	connect_pipes(pipeline, command);
 	command->pid = fork();
 	if (command->pid < 0)
 		panic_error("executor: fork");
@@ -25,7 +24,7 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 	{
 		command->input = dup(command->input);
 		command->output = dup(command->output);
-		close_pipes(pipeline);
+		close_pipeline(minishell->root);
 		subshell_redirect(minishell, command);
 		if (command->isbuiltin)
 			execute_builtin(minishell, command);
