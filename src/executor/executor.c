@@ -6,13 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 08:59:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 09:17:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
 #include "builtins.h"
+#include "structs.h"
 
 void	executor(t_minishell *minishell)
 {
@@ -33,44 +34,36 @@ void	executor(t_minishell *minishell)
 
 void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
 {
-	t_node		*node;
+	t_cmd	*cmd;
+	t_node	*node;
 
 	open_pipes(pipeline);
 	node = pipeline->commands;
 	while (node)
 	{
-		run_command(minishell, pipeline, node->content);
+		cmd = node->content;
+		if (cmd->isbuiltin && !cmd->subshell)
+			builtins(minishell, cmd);
+		else
+		{
+			connect_pipes(pipeline, cmd);
+			subshell(minishell, cmd);
+		}
 		node = node->next;
 	}
 	close_pipes(pipeline);
 	node = pipeline->commands;
 	while (node)
 	{
-		command_exit_status(node->content);
+		cmd = node->content;
+		if (cmd->subshell)
+		{
+			waitpid(cmd->pid, &cmd->status, 0);
+			process_exit_status(cmd);
+			if (cmd->status != 0)
+				panic_error(strerror(cmd->status));
+		}
 		node = node->next;
-	}
-}
-
-void	run_command(t_minishell *minishell, t_pipeline *pipeline,
-			t_cmd *command)
-{
-	if (command->isbuiltin && !command->subshell)
-		builtins(minishell, command);
-	else
-	{
-		connect_pipes(pipeline, command);
-		subshell(minishell, command);
-	}
-}
-
-void	command_exit_status(t_cmd *command)
-{
-	if (command->subshell)
-	{
-		waitpid(command->pid, &command->status, 0);
-		process_exit_status(command);
-		if (command->status != 0)
-			panic_error(strerror(command->status));
 	}
 }
 
