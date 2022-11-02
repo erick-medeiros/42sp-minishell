@@ -12,7 +12,6 @@ LIBFT = libft/libft.a
 LIBDEBUG = debug/debug.a
 SRC_DIR = src/
 OBJ_DIR = obj/
-MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
 
 FILES = main.c
 FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c
@@ -32,7 +31,7 @@ OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 FILES_INC = builtins.h executor.h expansor.h lexer.h minishell.h parser.h structs.h
 HEADERS = $(addprefix include/, $(FILES_INC))
 
-REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))
+REQUIRED_DIRS = $(sort $(dir $(OBJ)))
 
 all: $(NAME)
 
