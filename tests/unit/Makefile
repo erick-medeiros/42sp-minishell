@@ -26,21 +26,26 @@ FORMAT = clang-format -i
 
 UNIT_FILES = main_test.c
 UNIT_FILES += builtins/builtins_test.c
-UNIT_FILES += ${addprefix executor/, executor_test.c pathname_test.c subshell_test.c}
+UNIT_FILES += ${addprefix executor/, executor_test.c pipeline_test.c subshell_test.c}
 UNIT_FILES += lexer/lexer_test.c
 UNIT_FILES += prompt/prompt_test.c
 UNIT_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
+UNIT_FILES += ${addprefix expansor/, pathname_test.c}
 
 OBJS = ${addprefix ${OBJ_DIR}, ${UNIT_FILES:.c=.o}}
+
+REQUIRED_DIRS = ${sort ${dir ${OBJS}}}
 
 all: ${NAME}
 
 run:
 	./run_unity_tests.out
 
+${REQUIRED_DIRS}:
+	mkdir -p $@
+
 ${OBJ_DIR}%.o: %.c
 	@${FORMAT} $<
-	mkdir -p ${dir $@}
 	${CC} ${CFLAGS} -c $< -o $@
 
 ${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_INC_DIR}*.h ${LIBUTILS_DIR}/Unity/*.h ${LIBUTILS_DIR}/test_utils/*.h
