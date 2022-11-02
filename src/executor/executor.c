@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 16:34:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 19:59:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ void	sync_tree_execution(t_tree *root)
 	{
 		cmd = (t_cmd *) root->content;
 		if (cmd->subshell)
+		{
 			waitpid(cmd->pid, &cmd->status, 0);
+			process_exit_status(cmd);
+			if (cmd->status != 0)
+				panic_error(strerror(cmd->status));
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 16:40:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 20:17:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,29 +71,29 @@ void	execute_program(t_minishell *minishell, t_cmd *command)
 
 void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 {
-	if (command->input < 0 || command->output < 0)
-	{
-		if (command->input >= 0)
-			close(command->input);
-		if (command->output >= 0)
-			close(command->output);
-		exit_subshell(minishell, 1);
-	}
 	dup2(command->input, STDIN);
 	dup2(command->output, STDOUT);
-	close(command->input);
-	close(command->output);
-	command->input = open_redirects(command->redirect_input);
-	if (command->input >= 0)
-	{
-		dup2(command->input, STDIN);
+	if (command->input > STDERR)
 		close(command->input);
-	}
-	command->output = open_redirects(command->redirect_output);
-	if (command->output >= 0)
-	{
-		dup2(command->output, STDOUT);
+	if (command->output > STDERR)
 		close(command->output);
+	if (command->redirect_input)
+	{
+		command->input = open_redirects(command->redirect_input);
+		if (command->input == -1)
+			exit_subshell(minishell, errno);
+		dup2(command->input, STDIN);
+		if (command->input > STDERR)
+			close(command->input);
+	}
+	if (command->redirect_output)
+	{
+		command->output = open_redirects(command->redirect_output);
+		if (command->output == -1)
+			exit_subshell(minishell, errno);
+		dup2(command->output, STDOUT);
+		if (command->output > STDERR)
+			close(command->output);
 	}
 }
 
