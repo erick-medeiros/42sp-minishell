@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:06:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:41:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	destroy_command(t_cmd *command)
 	}
 	free(command->argv);
 	free(command->pathname);
+	free_string_list(command->envp);
 	free(command);
 }
 

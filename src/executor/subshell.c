@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:22:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:54:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,12 @@ void	execute_builtin(t_minishell *minishell, t_cmd *command)
 
 void	execute_program(t_minishell *minishell, t_cmd *command)
 {
-	char	**envp;
-	char	*pathname;
-
-	envp = list_to_envp(&minishell->env_list, 0);
-	minishell->path_list = get_paths(envp);
-	pathname = command->pathname;
-	command->pathname = get_pathname(pathname, minishell->path_list);
-	free(pathname);
+	command->envp = list_to_envp(&minishell->env_list, 0);
+	free(command->pathname);
+	command->pathname = get_pathname(command->argv[0], command->envp);
 	if (!command->pathname)
 		exit_subshell(minishell, 127);
-	if (execve(command->pathname, command->argv, envp) == -1)
+	if (execve(command->pathname, command->argv, command->envp) == -1)
 		exit_subshell(minishell, errno);
 }
 
