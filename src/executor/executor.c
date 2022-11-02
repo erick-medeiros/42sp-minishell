@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:22:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:09:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 	if (root->type == TREE_TYPE_CMD)
 	{
 		cmd = (t_cmd *) root->content;
-		connect_pipeline(cmd, grandparent, parent, root);
-		subshell(minishell, cmd);
+		if (cmd->isbuiltin)
+			builtins(minishell, cmd);
+		else
+		{
+			connect_pipeline(cmd, grandparent, parent, root);
+			subshell(minishell, cmd);
+		}
 	}
 }
 
