@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 00:44:36 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/31 01:14:33 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/10/31 19:40:20 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_tree_node	*new_tree_node(t_op_type op_type, t_cmd *cmd,
 
 void	del_tree_node(t_tree_node *node)
 {
-	free(node->cmd);
+	destroy_command(node->cmd);
 	free(node);
 }
 

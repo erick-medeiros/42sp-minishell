@@ -17,3 +17,6 @@ exita
 valgrind --leak-check=full ./minishell
 here_doc
 EOF
+
+# Test heredoc + incomplete quote
+cat << EOF | cat << EOF | cat << EOF '

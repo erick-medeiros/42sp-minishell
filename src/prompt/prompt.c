@@ -3,31 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/27 12:32:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:42:44 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "debug.h"
 #include "minishell.h"
+#include "parser.h"
 
-void	temp_call(char *prompt)
-{
-	int	fd;
-
-	if (command_is_equal(prompt, "here_doc"))
-	{
-		fd = here_doc("EOF");
-		debug_content_fd(fd, prompt, 1);
-	}
-	else if (command_ends_with(prompt, '|'))
-	{
-		fd = ends_in_pipe();
-		debug_content_fd(fd, prompt, 2);
-	}
-}
 
 void	miniprompt(t_minishell *minishell)
 {
@@ -38,13 +24,40 @@ void	miniprompt(t_minishell *minishell)
 		prompt = readline(PROMPT_STRING);
 		if (!prompt)
 			break ;
-		add_history(prompt);
 		minishell->token_list = NULL;
-		lexer(prompt, &minishell->token_list, STATE_SKIP);
-		free(prompt);
-		parser(minishell);
-		executor(minishell);
+		process_line(prompt, minishell);
 		free_minishell(minishell);
 	}
 	free(prompt);
 }
+
+void	process_line(char *prompt, t_minishell *minishell)
+{
+	int		complete;
+	t_node	*heredoc_queue;
+	int		parse_result;
+
+	complete = 0;
+	heredoc_queue = NULL;
+	while (!complete)
+	{
+		lexer(prompt, &minishell->token_list, STATE_SKIP);
+		parse_result = parser(minishell, &heredoc_queue);
+		if (parse_result == ERR_BAD_SYNTAX)
+			print_parse_error(parse_result);
+		// if (heredoc_queue)
+		// 	process_heredoc(&heredoc_queue);
+		else
+			add_history(prompt);
+		free(prompt);
+	}
+	executor(minishell);
+}
+
+void		print_parse_error(int parse_result)
+{
+	if (parse_result == ERR_BAD_SYNTAX)
+		printf("%s\n", MSG_SYNTAX_ERR);
+	return ;
+}
+

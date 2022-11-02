@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:07:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:34:47 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,17 @@ typedef enum e_mode {
 void	parser_add_arg_cmd(t_cmd *cmd, char *arg);
 int		open_fd(char *pathname, int mode);
 
-void	parser(t_minishell *minishell)
+int	parser(t_minishell *minishell, t_node **heredoc_queue)
 {
 	t_node		*list;
 	t_pipeline	*pipeline;
 
+	(void)heredoc_queue;
 	list = NULL;
 	pipeline = pipeline_generator(minishell);
 	add_node(&list, pipeline);
 	minishell->pipelines = list;
+	return (OK);
 }
 
 typedef enum e_steps {
@@ -124,3 +126,4 @@ int	open_fd(char *pathname, int mode)
 		fd = open(pathname, O_RDWR | O_WRONLY | O_CREAT | O_TRUNC, permissions);
 	return (fd);
 }
+

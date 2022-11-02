@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:44:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:39:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define ERR_ALLOC 1
 # define ERR_NOT_FOUND 2
 # define ERR_LEXER 3
+# define ERR_BAD_SYNTAX 4
 
 // List-related functions
 int			add_node(t_node **lst, void *content);
@@ -78,9 +79,11 @@ void		miniprompt(t_minishell *minishell);
 
 // Commands
 
+void		process_line(char *prompt, t_minishell *minishell);
 int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
 void		executor(t_minishell *minishell);
-void		parser(t_minishell *minishell);
+int			parser(t_minishell *minishell, t_node **heredoc_queue);
+void		handle_word_token(t_token *token, t_tree_node *cmd_node);
 
 // Remove
 
