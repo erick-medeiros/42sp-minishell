@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/30 20:09:08 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:49:52 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,24 @@ typedef struct s_vlst
 	size_t	len;
 }	t_vlst;
 
+typedef enum e_tree_type {
+	TREE_TYPE_CMD,
+	TREE_TYPE_PIPE
+}		t_tree_type;
+
+typedef struct s_tree {
+	t_tree_type		type;
+	void			*content;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}		t_tree;
+
 typedef struct s_minishell
 {
 	t_vlst	env_list;
 	t_node	*token_list;
 	t_node	*pipelines;
-	char	**path_list;
+	t_tree	*root;
 }	t_minishell;
 
 typedef struct s_tree_node

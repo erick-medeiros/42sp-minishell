@@ -12,16 +12,35 @@ void test_builtin_echo(void) {
 	char *expected;
 	char *content;
 	int status;
+	t_cmd *cmd;
 
 	expected = "echo\necho";
-	ut_pipe(pipefd);
-	pid = ut_fork();
-	if (pid == 0) {
+	if (pipe(pipefd) == -1)
+		TEST_FAIL();
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
-		builtin_echo("", "echo");
-		builtin_echo("-n", "echo");
+		cmd = new_command(0);
+		cmd->argc = 2;
+		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+		cmd->argv[0] = strdup("echo");
+		cmd->argv[1] = strdup("echo");
+		cmd->argv[2] = NULL;
+		builtin_echo(cmd);
+		destroy_command(cmd);
+		cmd = new_command(0);
+		cmd->argc = 3;
+		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
+		cmd->argv[0] = strdup("echo");
+		cmd->argv[1] = strdup("-n");
+		cmd->argv[2] = strdup("echo");
+		cmd->argv[3] = NULL;
+		builtin_echo(cmd);
+		destroy_command(cmd);
 		exit(0);
 	} else {
 		close(pipefd[1]);
@@ -45,8 +64,10 @@ void test_builtin_cd(void) {
 	expected = "/tmp";
 	len = strlen(expected) + 1;
 	content = ut_mmap(len);
-	pid = ut_fork();
-	if (pid == 0) {
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		ut_stds_devnull();
 		builtin_cd(expected, NULL);
 		char *new_dir = ut_getcwd();
@@ -69,9 +90,12 @@ void test_builtin_pwd(void) {
 	int pipefd[2];
 	int status;
 
-	ut_pipe(pipefd);
-	pid = ut_fork();
-	if (pid == 0) {
+	if (pipe(pipefd) == -1)
+		TEST_FAIL();
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
@@ -110,8 +134,10 @@ static char *create_temp_dir_overflow() {
 	dir = ft_strjoin("/tmp/42sp/test_builtin_pwd_overflow", str);
 	dir[PATH_MAX] = '\0';
 	free(str);
-	pid = ut_fork();
-	if (pid == 0) {
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		char *const argv[] = {"mkdir", "-p", dir, NULL};
 		if (execv("/usr/bin/mkdir", argv) == -1)
 			exit(1);
@@ -141,8 +167,10 @@ void test_builtin_pwd_overflow(void) {
 	pid_t pid;
 
 	dir = create_temp_dir_overflow();
-	pid = ut_fork();
-	if (pid == 0) {
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		ut_stds_devnull();
 		cd_temp_dir_overflow(dir);
 		free(dir);
@@ -163,8 +191,10 @@ void test_builtin_exit(void) {
 	int status;
 	int expected;
 
-	pid = ut_fork();
-	if (pid == 0) {
+	pid = fork();
+	if (pid < 0)
+		TEST_FAIL();
+	else if (pid == 0) {
 		ut_stds_devnull();
 		builtin_exit();
 		exit(1);

@@ -6,11 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:12:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/20 10:38:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 11:04:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "expansor.h"
 
 char	**get_paths(char *envp[])
 {
@@ -38,7 +39,30 @@ char	**get_paths(char *envp[])
 	return (paths);
 }
 
-char	*get_pathname(char *arg, char **path_list)
+static char	*check_path_env(char *arg, char *envp[])
+{
+	char	*pathname;
+	char	**path_list;
+	int		i;
+
+	path_list = get_paths(envp);
+	i = 0;
+	while (path_list && path_list[i])
+	{
+		pathname = ft_strjoin(path_list[i], arg);
+		if (access(pathname, F_OK | X_OK) == 0)
+		{
+			free_string_list(path_list);
+			return (pathname);
+		}
+		free(pathname);
+		++i;
+	}
+	free_string_list(path_list);
+	return (NULL);
+}
+
+char	*get_pathname(char *arg, char *envp[])
 {
 	char	*pathname;
 
@@ -48,14 +72,9 @@ char	*get_pathname(char *arg, char **path_list)
 			return (ft_strdup(arg));
 		return (NULL);
 	}
-	while (path_list && *path_list)
-	{
-		pathname = ft_strjoin(*path_list, arg);
-		if (access(pathname, F_OK | X_OK) == 0)
-			return (pathname);
-		free(pathname);
-		path_list++;
-	}
+	pathname = check_path_env(arg, envp);
+	if (pathname)
+		return (pathname);
 	pathname = ft_strjoin("/usr/bin/", arg);
 	if (access(pathname, F_OK | X_OK) == 0)
 		return (ft_strdup(pathname));

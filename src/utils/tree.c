@@ -5,38 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/31 00:44:36 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/31 19:40:20 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
+/*   Updated: 2022/11/02 18:51:41 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
-t_tree_node	*new_tree_node(t_op_type op_type, t_cmd *cmd,
-				t_tree_node *left, t_tree_node *right)
+t_tree	*new_tree_node(t_tree_type type)
 {
-	t_tree_node	*new_node;
+	t_tree	*tree_node;
 
-	new_node = malloc(sizeof(*new_node));
-	new_node->cmd = cmd;
-	new_node->op = op_type;
-	new_node->left = left;
-	new_node->right = right;
-	return (new_node);
+	tree_node = malloc(sizeof(t_tree));
+	tree_node->type = type;
+	tree_node->content = NULL;
+	tree_node->left = NULL;
+	tree_node->right = NULL;
+	return (tree_node);
 }
 
-void	del_tree_node(t_tree_node *node)
+void	*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *))
 {
-	destroy_command(node->cmd);
-	free(node);
-}
-
-void	clear_tree(t_tree_node *root)
-{
+	if (!root)
+		return (NULL);
 	if (root->left)
-		clear_tree(root->left);
+		root->left = destroy_tree(root->left, destroy_content);
 	if (root->right)
-		clear_tree(root->right);
-	del_tree_node(root);
+		root->right = destroy_tree(root->right, destroy_content);
+	if (destroy_content)
+		destroy_content(root);
+	free(root);
+	return (NULL);
 }

@@ -6,91 +6,72 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:49:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:34:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
 #include "builtins.h"
+#include "structs.h"
 
 void	executor(t_minishell *minishell)
 {
-	t_node		*node;
-	t_pipeline	*pipeline;
+	tree_executor(minishell, NULL, NULL, minishell->root);
+	close_pipeline(minishell->root);
+	sync_tree_execution(minishell->root);
+}
 
-	node = minishell->pipelines;
-	while (node)
+void	tree_executor(t_minishell *minishell, t_tree *grandparent,
+			t_tree *parent, t_tree *root)
+{
+	t_cmd	*cmd;
+
+	if (!root)
+		return ;
+	if (root->type == TREE_TYPE_PIPE)
 	{
-		pipeline = (t_pipeline *) node->content;
-		if (pipeline->operator == OPERATOR_MAIN)
-			pipeline_executor(minishell, pipeline);
-		node = node->next;
+		root->content = malloc(sizeof(int) * 2);
+		if (pipe(root->content) == -1)
+			panic_error("tree executor ~ pipe");
+	}
+	if (root->left)
+		tree_executor(minishell, parent, root, root->left);
+	if (root->right)
+		tree_executor(minishell, parent, root, root->right);
+	if (root->type == TREE_TYPE_CMD)
+	{
+		cmd = (t_cmd *) root->content;
+		if (cmd->isbuiltin && !cmd->subshell)
+			execute_builtin(minishell, cmd);
+		else
+		{
+			connect_pipeline(cmd, grandparent, parent, root);
+			subshell(minishell, cmd);
+		}
 	}
 }
 
-void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
+void	sync_tree_execution(t_tree *root)
 {
-	t_node		*node;
+	t_cmd	*cmd;
 
-	open_pipes(pipeline);
-	node = pipeline->commands;
-	while (node)
+	if (!root)
+		return ;
+	if (root->left)
+		sync_tree_execution(root->left);
+	if (root->right)
+		sync_tree_execution(root->right);
+	if (root->type == TREE_TYPE_CMD)
 	{
-		run_command(minishell, pipeline, node->content);
-		node = node->next;
-	}
-	close_pipes(pipeline);
-	node = pipeline->commands;
-	while (node)
-	{
-		command_exit_status(node->content);
-		node = node->next;
+		cmd = (t_cmd *) root->content;
+		if (cmd->subshell)
+			waitpid(cmd->pid, &cmd->status, 0);
 	}
 }
 
-void	run_command(t_minishell *minishell, t_pipeline *pipeline,
-			t_cmd *command)
+void	process_exit_status(t_cmd *command)
 {
-	if (command->isbuiltin && !command->subshell)
-		builtins(minishell, command);
-	else
-		subshell(minishell, pipeline, command);
-}
-
-void	command_exit_status(t_cmd *command)
-{
-	if (command->subshell)
-	{
-		waitpid(command->pid, &command->status, 0);
-		process_exit_status(command);
-		if (command->status != 0)
-			panic_error(strerror(command->status));
-	}
-}
-
-void	builtins(t_minishell *minishell, t_cmd *command)
-{
-	if (command_is_equal(command->pathname, "echo"))
-	{
-		if (command->argc == 3 && command_is_equal(command->argv[1], "-n"))
-			builtin_echo("-n", command->argv[2]);
-		else if (command->argc == 2)
-			builtin_echo("", command->argv[1]);
-	}
-	else if (command_is_equal(command->pathname, "cd") && command->argc == 2)
-		builtin_cd(command->argv[1], &minishell->env_list);
-	else if (command_is_equal(command->pathname, "pwd"))
-		builtin_pwd();
-	else if (command_is_equal(command->pathname, "export"))
-		builtin_export(command->argc, command->argv, &minishell->env_list);
-	else if (command_is_equal(command->pathname, "unset"))
-		builtin_unset(command->argc, command->argv, &minishell->env_list);
-	else if (command_is_equal(command->pathname, "env"))
-		builtin_env(&minishell->env_list);
-	else if (command_is_equal(command->pathname, "exit"))
-	{
-		destroy_minishell(minishell);
-		builtin_exit();
-	}
+	if (WIFEXITED(command->status))
+		command->status = WEXITSTATUS(command->status);
 }

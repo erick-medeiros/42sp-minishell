@@ -1,4 +1,4 @@
-NAME = run_unity_tests.out
+NAME = run_integration_tests.out
 
 MINISHELL_DIR = ../../
 MIN_SRC_DIR = ${MINISHELL_DIR}src/
@@ -24,28 +24,23 @@ LIBFLAGS = -L${LIBFT_DIR} -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
 
-UNIT_FILES = main_test.c
-UNIT_FILES += builtins/builtins_test.c
-UNIT_FILES += ${addprefix executor/, executor_test.c pipeline_test.c subshell_test.c}
-UNIT_FILES += lexer/lexer_test.c
-UNIT_FILES += prompt/prompt_test.c
-UNIT_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
-UNIT_FILES += ${addprefix expansor/, pathname_test.c}
+INTEG_FILES = main_test.c
+INTEG_FILES += builtins/builtins_test.c
+INTEG_FILES += ${addprefix executor/, executor_test.c pathname_test.c subshell_test.c}
+INTEG_FILES += lexer/lexer_test.c
+INTEG_FILES += prompt/prompt_test.c
+INTEG_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
 
-OBJS = ${addprefix ${OBJ_DIR}, ${UNIT_FILES:.c=.o}}
-
-REQUIRED_DIRS = ${sort ${dir ${OBJS}}}
+OBJS = ${addprefix ${OBJ_DIR}, ${INTEG_FILES:.c=.o}}
 
 all: ${NAME}
 
 run:
-	./run_unity_tests.out
-
-${REQUIRED_DIRS}:
-	mkdir -p $@
+	./run_integration_tests.out
 
 ${OBJ_DIR}%.o: %.c
 	@${FORMAT} $<
+	mkdir -p ${dir $@}
 	${CC} ${CFLAGS} -c $< -o $@
 
 ${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_INC_DIR}*.h ${LIBUTILS_DIR}/Unity/*.h ${LIBUTILS_DIR}/test_utils/*.h
@@ -54,10 +49,10 @@ ${NAME}: ${REQUIRED_DIRS} ${OBJS} ${LIBDEBUG} ${LIBFT} ${MIN_OBJ_FILES} ${MIN_IN
 	gcc ${CFLAGS} ${OBJS} ${MIN_OBJ_DIR}*/*.o ${TEST_UTILS_OBJ_DIR}*.o ${UNITY_OBJ_DIR}*.o -o ${NAME} ${LIBDEBUG} ${LIBFLAGS}
 
 clean:
-	${RM} ${OBJ_DIR}
+	-${RM} ${OBJ_DIR}
 
 fclean: clean
-	${RM} ${NAME}
+	-${RM} ${NAME}
 
 re: fclean all
 

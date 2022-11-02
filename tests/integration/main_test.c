@@ -10,7 +10,6 @@ int file_subshell_test(void);
 int file_utils_test(void);
 int file_executor_test(void);
 int file_lexer_test(void);
-int file_pipeline_test(void);
 
 void setUp(void) {}
 
@@ -18,15 +17,14 @@ void tearDown(void) {}
 
 void run_all_test() {
 	file_utils_test();
-	file_prompt_test();
-	file_list_test();
-	file_builtins_test();
+	// file_prompt_test();
+	// file_list_test();
+	// file_builtins_test();
 	file_environment_test();
-	file_pathname_test();
-	file_subshell_test();
+	// file_pathname_test();
+	// file_subshell_test();
 	file_executor_test();
 	file_lexer_test();
-	file_pipeline_test();
 }
 
 int main(int argc, char *argv[]) {
@@ -52,8 +50,6 @@ int main(int argc, char *argv[]) {
 			file_executor_test();
 		else if (strcmp("lexer", file) == 0)
 			file_lexer_test();
-		else if (strcmp("pipeline", file) == 0)
-			file_pipeline_test();
 	}
 	return 0;
 }

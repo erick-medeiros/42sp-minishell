@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 12:46:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:41:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	destroy_command(t_cmd *command)
 {
 	int	i;
 
+	if (command == NULL)
+		return ;
 	i = 0;
 	while (command->argv && command->argv[i])
 	{
@@ -44,6 +46,7 @@ void	destroy_command(t_cmd *command)
 	}
 	free(command->argv);
 	free(command->pathname);
+	free_string_list(command->envp);
 	free(command);
 }
 
@@ -61,6 +64,8 @@ t_pipeline	*new_pipeline(t_operator operator)
 
 void	destroy_pipeline(t_pipeline	*pipeline)
 {
+	if (pipeline == NULL)
+		return ;
 	if (pipeline->commands)
 		clear_list(pipeline->commands, (void (*)(void *))destroy_command);
 	free(pipeline);

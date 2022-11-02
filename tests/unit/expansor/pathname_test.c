@@ -38,16 +38,13 @@ void test_function_get_paths(void) {
 
 void test_function_get_pathname(void) {
 	char **fake_envp;
-	char **path_list;
 	char *pathname;
 
 	fake_envp = ut_fake_envp_path();
-	path_list = get_paths(fake_envp);
-	pathname = get_pathname("echo", path_list);
+	pathname = get_pathname("echo", fake_envp);
 	TEST_ASSERT_EQUAL_STRING("/usr/bin/echo", pathname);
 	free(pathname);
 	free_string_list(fake_envp);
-	free_string_list(path_list);
 }
 
 int file_pathname_test(void) {

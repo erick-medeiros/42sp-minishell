@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:08:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 14:11:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include "expansor.h"
 #include "builtins.h"
 
-void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
+void	subshell(t_minishell *minishell, t_cmd *command)
 {
-	connect_pipes(pipeline, command);
 	command->pid = fork();
 	if (command->pid < 0)
 		panic_error("executor: fork");
@@ -25,36 +24,51 @@ void	subshell(t_minishell *minishell, t_pipeline *pipeline, t_cmd *command)
 	{
 		command->input = dup(command->input);
 		command->output = dup(command->output);
-		close_pipes(pipeline);
-		update_io(minishell, command);
+		close_pipeline(minishell->root);
+		subshell_redirect(minishell, command);
 		if (command->isbuiltin)
-		{
-			builtins(minishell, command);
-			exit_process(minishell, 0);
-		}
+			execute_builtin(minishell, command);
 		else
-			child_process(minishell, command);
+			execute_program(minishell, command);
+		exit_subshell(minishell, 1);
 	}
 }
 
-void	child_process(t_minishell *minishell, t_cmd *command)
+void	execute_builtin(t_minishell *minishell, t_cmd *command)
 {
-	char	**envp;
-	char	*pathname;
-
-	envp = list_to_envp(&minishell->env_list, 0);
-	minishell->path_list = get_paths(envp);
-	pathname = command->pathname;
-	command->pathname = get_pathname(pathname, minishell->path_list);
-	free(pathname);
-	if (!command->pathname)
-		exit_process(minishell, 127);
-	if (execve(command->pathname, command->argv, envp) == -1)
-		exit_process(minishell, errno);
-	exit_process(minishell, 1);
+	if (command_is_equal(command->pathname, "echo"))
+		builtin_echo(command);
+	else if (command_is_equal(command->pathname, "cd") && command->argc == 2)
+		builtin_cd(command->argv[1], &minishell->env_list);
+	else if (command_is_equal(command->pathname, "pwd"))
+		builtin_pwd();
+	else if (command_is_equal(command->pathname, "export"))
+		builtin_export(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "unset"))
+		builtin_unset(command->argc, command->argv, &minishell->env_list);
+	else if (command_is_equal(command->pathname, "env"))
+		builtin_env(&minishell->env_list);
+	else if (command_is_equal(command->pathname, "exit"))
+	{
+		destroy_minishell(minishell);
+		builtin_exit();
+	}
+	if (command->subshell)
+		exit_subshell(minishell, 0);
 }
 
-void	update_io(t_minishell *minishell, t_cmd *command)
+void	execute_program(t_minishell *minishell, t_cmd *command)
+{
+	command->envp = list_to_envp(&minishell->env_list, 0);
+	free(command->pathname);
+	command->pathname = get_pathname(command->argv[0], command->envp);
+	if (!command->pathname)
+		exit_subshell(minishell, 127);
+	if (execve(command->pathname, command->argv, command->envp) == -1)
+		exit_subshell(minishell, errno);
+}
+
+void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 {
 	if (command->input < 0 || command->output < 0)
 	{
@@ -62,7 +76,7 @@ void	update_io(t_minishell *minishell, t_cmd *command)
 			close(command->input);
 		if (command->output >= 0)
 			close(command->output);
-		exit_process(minishell, 1);
+		exit_subshell(minishell, 1);
 	}
 	dup2(command->input, STDIN);
 	dup2(command->output, STDOUT);
@@ -70,14 +84,8 @@ void	update_io(t_minishell *minishell, t_cmd *command)
 	close(command->output);
 }
 
-void	exit_process(t_minishell *minishell, int status)
+void	exit_subshell(t_minishell *minishell, int status)
 {
 	destroy_minishell(minishell);
 	exit(status);
-}
-
-void	process_exit_status(t_cmd *command)
-{
-	if (WIFEXITED(command->status))
-		command->status = WEXITSTATUS(command->status);
 }

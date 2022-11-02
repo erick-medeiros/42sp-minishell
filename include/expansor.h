@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 20:04:44 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:55:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			update_var(t_vlst *vars, t_var *content);
 
 // Path
 
-char		*get_pathname(char *arg, char **path_list);
+char		*get_pathname(char *arg, char *envp[]);
 char		**get_paths(char *envp[]);
 
 #endif
