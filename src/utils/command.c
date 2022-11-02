@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 14:54:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:17:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_cmd	*new_command(int number)
 	command->envp = NULL;
 	command->input = STDIN;
 	command->output = STDOUT;
-	command->redirect = NULL;
+	command->redirect_input = NULL;
+	command->redirect_output = NULL;
 	command->pid = 0;
 	command->status = 0;
 	command->number = number;

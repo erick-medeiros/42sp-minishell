@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 15:32:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:40:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "executor.h"
 #include "expansor.h"
 #include "builtins.h"
+#include "structs.h"
 
 void	subshell(t_minishell *minishell, t_cmd *command)
 {
@@ -82,6 +83,18 @@ void	subshell_redirect(t_minishell *minishell, t_cmd *command)
 	dup2(command->output, STDOUT);
 	close(command->input);
 	close(command->output);
+	command->input = open_redirects(command->redirect_input);
+	if (command->input >= 0)
+	{
+		dup2(command->input, STDIN);
+		close(command->input);
+	}
+	command->output = open_redirects(command->redirect_output);
+	if (command->output >= 0)
+	{
+		dup2(command->output, STDOUT);
+		close(command->output);
+	}
 }
 
 void	exit_subshell(t_minishell *minishell, int status)

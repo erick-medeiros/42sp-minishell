@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 09:40:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 15:39:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 #include "structs.h"
 #include "parser.h"
 
-typedef enum e_mode {
-	IN_MODE,
-	OUT_MODE,
-	APPEND_MODE,
-}	t_mode;
-
 void	parser_add_arg_cmd(t_cmd *cmd, char *arg);
-int		open_fd(char *pathname, int mode);
 
 void	parser(t_minishell *minishell)
 {
@@ -107,23 +100,6 @@ void	parser_add_arg_cmd(t_cmd *cmd, char *arg)
 	cmd->argv[i] = ft_strdup(arg);
 	cmd->argv[cmd->argc] = NULL;
 	free_string_list(temp);
-}
-
-int	open_fd(char *pathname, int mode)
-{
-	int	fd;
-	int	permissions;
-
-	permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	if (mode == IN_MODE)
-		fd = open(pathname, O_RDONLY);
-	else if (mode == OUT_MODE)
-		fd = open(pathname, O_WRONLY | O_CREAT | O_TRUNC, permissions);
-	else if (mode == APPEND_MODE)
-		fd = open(pathname, O_WRONLY | O_CREAT | O_APPEND, permissions);
-	else
-		fd = open(pathname, O_RDWR | O_WRONLY | O_CREAT | O_TRUNC, permissions);
-	return (fd);
 }
 
 t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)

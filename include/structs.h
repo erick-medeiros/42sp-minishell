@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 15:32:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:05:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ typedef struct s_cmd
 	int		status;
 	int		input;
 	int		output;
-	t_node	*redirect;
+	t_node	*redirect_input;
+	t_node	*redirect_output;
 	int		number;
 	char	**envp;
 	t_bool	subshell;

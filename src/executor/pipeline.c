@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:36:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:09:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 18:41:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,31 @@ void	close_pipeline(t_tree *root)
 		close(((int *)root->content)[1]);
 		free(root->content);
 	}
+}
+
+int	open_redirects(t_node *redirects)
+{
+	int			fd;
+	int			mode;
+	t_node		*node;
+	t_redirect	*redirect;
+
+	fd = -1;
+	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	node = redirects;
+	while (node)
+	{
+		fd = -1;
+		redirect = ((t_redirect *)node->content);
+		if (redirect->operator == TOKEN_INPUT)
+			fd = open(redirect->path, O_RDONLY);
+		else if (redirect->operator == TOKEN_OUTPUT)
+			fd = open(redirect->path, O_WRONLY | O_CREAT | O_TRUNC, mode);
+		else if (redirect->operator == TOKEN_APPEND)
+			fd = open(redirect->path, O_WRONLY | O_CREAT | O_APPEND, mode);
+		node = node->next;
+		if (node)
+			close(fd);
+	}
+	return (fd);
 }
