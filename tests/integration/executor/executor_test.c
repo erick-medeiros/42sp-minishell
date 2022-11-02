@@ -4,7 +4,12 @@
 #include "parser.h"
 #include "structs.h"
 
+void open_pipes(t_pipeline *pipeline);
+void connect_pipes(t_pipeline *pipeline, t_cmd *command);
+void close_pipes(t_pipeline *pipeline);
+
 void test_connect_pipes() {
+	TEST_IGNORE();
 	t_pipeline *pipeline = new_pipeline(OPERATOR_MAIN);
 	t_cmd *cmd1 = new_command(0);
 	t_cmd *cmd2 = new_command(1);

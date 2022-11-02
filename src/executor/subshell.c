@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:58:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:22:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,4 @@ void	exit_subshell(t_minishell *minishell, int status)
 {
 	destroy_minishell(minishell);
 	exit(status);
-}
-
-void	process_exit_status(t_cmd *command)
-{
-	if (WIFEXITED(command->status))
-		command->status = WEXITSTATUS(command->status);
 }

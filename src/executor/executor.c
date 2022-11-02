@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 09:44:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/02 10:22:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,53 +17,51 @@
 
 void	executor(t_minishell *minishell)
 {
-	t_node		*node;
-	t_pipeline	*pipeline;
+	tree_executor(minishell, NULL, NULL, minishell->root);
+	close_pipeline(minishell->root);
+	sync_tree_execution(minishell->root);
+}
 
-	node = minishell->pipelines;
-	while (node)
+void	tree_executor(t_minishell *minishell, t_tree *grandparent,
+			t_tree *parent, t_tree *root)
+{
+	t_cmd	*cmd;
+
+	if (!root)
+		return ;
+	if (root->type == TREE_TYPE_PIPE)
 	{
-		pipeline = (t_pipeline *) node->content;
-		if (pipeline->operator == OPERATOR_MAIN)
-			tree_executor(minishell);
-		else if (pipeline->operator == OPERATOR_MAIN)
-			pipeline_executor(minishell, pipeline);
-		node = node->next;
+		root->content = malloc(sizeof(int) * 2);
+		if (pipe(root->content) == -1)
+			panic_error("tree executor ~ pipe");
+	}
+	if (root->left)
+		tree_executor(minishell, parent, root, root->left);
+	if (root->right)
+		tree_executor(minishell, parent, root, root->right);
+	if (root->type == TREE_TYPE_CMD)
+	{
+		cmd = (t_cmd *) root->content;
+		connect_pipeline(cmd, grandparent, parent, root);
+		subshell(minishell, cmd);
 	}
 }
 
-void	pipeline_executor(t_minishell *minishell, t_pipeline *pipeline)
+void	sync_tree_execution(t_tree *root)
 {
 	t_cmd	*cmd;
-	t_node	*node;
 
-	open_pipes(pipeline);
-	node = pipeline->commands;
-	while (node)
+	if (!root)
+		return ;
+	if (root->left)
+		sync_tree_execution(root->left);
+	if (root->right)
+		sync_tree_execution(root->right);
+	if (root->type == TREE_TYPE_CMD)
 	{
-		cmd = node->content;
-		if (cmd->isbuiltin && !cmd->subshell)
-			builtins(minishell, cmd);
-		else
-		{
-			connect_pipes(pipeline, cmd);
-			subshell(minishell, cmd);
-		}
-		node = node->next;
-	}
-	close_pipes(pipeline);
-	node = pipeline->commands;
-	while (node)
-	{
-		cmd = node->content;
+		cmd = (t_cmd *) root->content;
 		if (cmd->subshell)
-		{
 			waitpid(cmd->pid, &cmd->status, 0);
-			process_exit_status(cmd);
-			if (cmd->status != 0)
-				panic_error(strerror(cmd->status));
-		}
-		node = node->next;
 	}
 }
 
@@ -91,4 +89,10 @@ void	builtins(t_minishell *minishell, t_cmd *command)
 		destroy_minishell(minishell);
 		builtin_exit();
 	}
+}
+
+void	process_exit_status(t_cmd *command)
+{
+	if (WIFEXITED(command->status))
+		command->status = WEXITSTATUS(command->status);
 }
