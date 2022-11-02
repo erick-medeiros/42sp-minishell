@@ -12,7 +12,11 @@ all: $(NAME)
 	cc -g -I../include -I../libft -c $< -o $@
 
 $(NAME): $(HEADER) $(OBJ)
-	@ar -rcs $(NAME) $(OBJ)
+	ar -rcs $(NAME) $(OBJ)
 
 fclean:
-	@rm -fr $(OBJ)
+	rm -fr $(OBJ)
+
+re: fclean all
+
+.PHONY: all clean fclean re

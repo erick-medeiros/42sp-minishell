@@ -55,7 +55,7 @@ clean:
 	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(LIBFT) $(LIBDEBUG)
 
 re: fclean all
 
