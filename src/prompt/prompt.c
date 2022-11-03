@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 18:42:44 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/02 23:10:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	process_line(char *prompt, t_minishell *minishell)
 		parse_result = parser(minishell, &heredoc_queue);
 		if (parse_result == ERR_BAD_SYNTAX)
 			print_parse_error(parse_result);
-		// if (heredoc_queue)
-		// 	process_heredoc(&heredoc_queue);
+		if (heredoc_queue)
+			process_heredoc(&heredoc_queue);
 		else
 			add_history(prompt);
 		free(prompt);

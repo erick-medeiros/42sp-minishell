@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 18:49:07 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/03 03:14:49 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@
 # define ERR_NOT_FOUND 2
 # define ERR_LEXER 3
 # define ERR_BAD_SYNTAX 4
+# define ERR_INCOMPLETE 5
+# define ERR_BAD_TOKEN 6
+# define ERR_FILE_OPEN 7
 
 // List-related functions
 int			add_node(t_node **lst, void *content);
@@ -50,6 +53,11 @@ t_node		*find_node_by_content(t_node *lst, void *content,
 t_node		*remove_node(t_node *current, void (*del_node)(void *));
 int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
+
+// Queue
+t_queue		*new_queue();
+int			enqueue(t_queue *queue, void *content);
+void		*dequeue(t_queue *queue);
 
 // Tree
 
@@ -68,6 +76,7 @@ void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
+void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
@@ -88,8 +97,9 @@ void		miniprompt(t_minishell *minishell);
 void		process_line(char *prompt, t_minishell *minishell);
 int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
 void		executor(t_minishell *minishell);
-int			parser(t_minishell *minishell, t_node **heredoc_queue);
-void		handle_word_token(t_token *token, t_tree_node *cmd_node);
+int			parser(t_minishell *ms, t_lex_state *ls);
+int			get_command(t_node **tokens, t_tree **cmd_node,
+				t_minishell *ms, int num);
 
 // Remove
 

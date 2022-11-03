@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 18:50:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/03 12:57:22 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,67 @@
 #include "structs.h"
 #include "parser.h"
 
-typedef enum e_mode {
-	IN_MODE,
-	OUT_MODE,
-	APPEND_MODE,
-}	t_mode;
-
 void	parser_add_arg_cmd(t_cmd *cmd, char *arg);
-int		open_fd(char *pathname, int mode);
+static int	add_new_op_node(t_node **lst, t_tree_type op_type);
+static int	parse_token(t_minishell *ms, t_node **tmp_stack,
+				int *cmd_num, t_lex_state *ls);
 
-int	parser(t_minishell *minishell, t_node **heredoc_queue)
+// int	parser(t_minishell *minishell, t_node **heredoc_queue)
+// {
+// 	t_node		*list;
+// 	t_pipeline	*pipeline;
+
+// 	(void)heredoc_queue;
+// 	list = NULL;
+// 	pipeline = pipeline_generator(minishell);
+// 	add_node(&list, pipeline);
+// 	minishell->pipelines = list;
+// 	return (OK);
+// }
+
+int	parser(t_minishell *ms, t_lex_state *ls)
 {
-	t_node		*list;
-	t_pipeline	*pipeline;
+	int			cmd_num;
+	t_node	*tmp_stack;
 
-	(void)heredoc_queue;
-	list = NULL;
-	pipeline = pipeline_generator(minishell);
-	add_node(&list, pipeline);
-	minishell->pipelines = list;
-	return (OK);
+	cmd_num = 0;
+	while (ms->token_list)
+	{
+
+
+
+	}
 }
+
+static int	parse_token(t_minishell *ms, t_node **tmp_stack,
+				int *cmd_num, t_lex_state *ls)
+{
+	t_tok_type	tok_type;
+
+	tok_type = ((t_token *)ms->token_list->content)->type;
+	if (tok_type == TOKEN_PIPE)
+		return (add_new_op_node(cmds, TREE_TYPE_PIPE));
+	if (tok_type == TOKEN_SQINCOMP)
+	{
+		process_incomp_squote(t_minishell *ms)
+	}
+
+}
+
+static int	add_new_op_node(t_node **lst, t_tree_type op_type)
+{
+	t_tree *cmd_node;
+	cmd_node = malloc(sizeof(*cmd_node));
+	if (!cmd_node)
+		return (ERR_ALLOC);
+	cmd_node->type = op_type;
+	cmd_node->left = NULL;
+	cmd_node->right = NULL;
+	cmd_node->content = NULL;
+	return (add_node(lst, cmd_node));
+}
+
+
 
 typedef enum e_steps {
 	STEP_PATH,

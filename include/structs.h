@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 18:49:52 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/03 03:11:56 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ typedef enum e_lex_state {
 	STATE_SQINCOMP,
 	STATE_WORD
 }	t_lex_state;
-
-typedef enum e_op_type
-{
-	OP_PIPE,
-	OP_COMMAND
-}	t_op_type;
 
 typedef struct s_cmd
 {
@@ -136,20 +130,26 @@ typedef struct s_tree {
 	struct s_tree	*right;
 }		t_tree;
 
+typedef struct s_queue
+{
+	t_node	*front;
+	t_node	*rear;
+}	t_queue;
+
 typedef struct s_minishell
 {
 	t_vlst	env_list;
 	t_node	*token_list;
-	t_node	*pipelines;
+	t_queue	heredoc_queue;
+	t_node	*cmd_list;
 	t_tree	*root;
+	int		last_result;
 }	t_minishell;
 
-typedef struct s_tree_node
+typedef struct s_heredoc
 {
-	t_op_type			op;
-	t_cmd				*cmd;
-	struct s_tree_node	*left;
-	struct s_tree_node	*right;
-}	t_tree_node;
+	char	*delimiter;
+	t_cmd	*cmd;
+}	t_heredoc;
 
 #endif
