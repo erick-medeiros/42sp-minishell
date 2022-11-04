@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 16:05:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:29:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ typedef struct s_minishell
 	t_node	*token_list;
 	t_node	*pipelines;
 	t_tree	*root;
+	int		exit_status;
 }	t_minishell;
 
 #endif

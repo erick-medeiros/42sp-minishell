@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 16:23:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 17:35:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ void	prompt_signal_handler(int sig)
 		write(STDOUT, "\n", 1);
 		rl_replace_line("", TRUE);
 		rl_on_new_line();
-		rl_redisplay();
 	}
 }

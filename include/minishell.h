@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 16:00:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 17:49:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define STDOUT 1
 # define STDERR 2
 
-# define PROMPT_STRING "minishell> "
+# define PROMPT_STRING "minishell "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
 
