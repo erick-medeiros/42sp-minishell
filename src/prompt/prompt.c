@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/03 12:24:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:18:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	miniprompt(t_minishell *minishell)
 
 	while (1)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
+		handle_signal(SIGINT, prompt_signal_handler);
+		handle_signal(SIGQUIT, SIG_IGN);
 		prompt = readline(PROMPT_STRING);
 		if (!prompt)
 			break ;
@@ -44,9 +44,11 @@ void	miniprompt(t_minishell *minishell)
 		minishell->token_list = NULL;
 		lexer(prompt, &minishell->token_list, STATE_SKIP);
 		free(prompt);
+		prompt = NULL;
 		parser(minishell);
 		executor(minishell);
 		free_minishell(minishell);
 	}
+	write(STDOUT, "exit\n", 5);
 	free(prompt);
 }

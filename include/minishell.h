@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 19:51:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 16:00:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,10 @@ void		parser(t_minishell *minishell);
 // Remove
 
 void		panic_error(char *msg);
+
+// Signal
+
+void		handle_signal(int sig, void *handler);
+void		prompt_signal_handler(int sig);
 
 #endif
