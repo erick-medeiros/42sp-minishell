@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 17:49:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 18:24:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void		panic_error(char *msg);
 
 void		handle_signal(int sig, void *handler);
 void		prompt_signal_handler(int sig);
+void		command_signal_handler(int sig);
 
 #endif

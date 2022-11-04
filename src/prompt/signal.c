@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 17:35:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/04 18:37:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,21 @@ void	prompt_signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		write(STDOUT, "\n", 1);
+		write(STDERR, "\n", 1);
 		rl_replace_line("", TRUE);
 		rl_on_new_line();
+		rl_redisplay();
+	}
+}
+
+void	command_signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(STDERR, "\n", 1);
+	}
+	if (sig == SIGQUIT)
+	{
+		write(STDERR, "\n", 1);
 	}
 }
