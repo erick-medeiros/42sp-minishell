@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:00 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/28 19:50:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/05 02:43:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,13 @@ t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_OUTPUT);
 	if (next_ch == '<')
 		return (STATE_INPUT);
-	if (next_ch == '"')
-		return (STATE_DQUOTE);
-	if (next_ch == '\'')
-		return (STATE_SQUOTE);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')
 		return (STATE_COMPLETE);
-	init_word_value(idx, vi, STATE_WORD);
-	return (STATE_WORD);
+	if (next_ch == '"')
+		return (init_word_value(idx, vi, STATE_DQUOTE));
+	if (next_ch == '\'')
+		return (init_word_value(idx, vi, STATE_SQUOTE));
+	return (init_word_value(idx, vi, STATE_WORD));
 }

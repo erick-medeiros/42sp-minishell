@@ -6,16 +6,16 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 01:50:08 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:24:09 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static int	parse_token(t_minishell *ms, t_node **tmp_stack,
-				t_node	**cmds, int cmd_num);
-static t_tree_type tok_to_tree_type(t_token *tok);
+static int			parse_token(t_minishell *ms, t_node **tmp_stack,
+						t_node	**cmds, int cmd_num);
+static t_tree_type	tok_to_tree_type(t_token *tok);
 
 int	parser(t_minishell *ms, int cmd_num)
 {
@@ -26,8 +26,8 @@ int	parser(t_minishell *ms, int cmd_num)
 	result = OK;
 	tmp_stack = NULL;
 	cmds = NULL;
-	if (ms->token_list &&
-		is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
+	if (ms->token_list
+		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
 		return (ERR_BAD_SYNTAX);
 	while (ms->token_list && result == OK)
 		result = parse_token(ms, &tmp_stack, &cmds, cmd_num);
@@ -62,7 +62,7 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 	return (result);
 }
 
-static t_tree_type tok_to_tree_type(t_token *tok)
+static t_tree_type	tok_to_tree_type(t_token *tok)
 {
 	if (tok->type == TOKEN_PIPE)
 		return (TREE_TYPE_PIPE);

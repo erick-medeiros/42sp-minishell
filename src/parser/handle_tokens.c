@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_tokens.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/05 04:24:21 by gmachado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "parser.h"
 #include "structs.h"
@@ -66,7 +78,6 @@ int	enqueue_heredoc(t_node **toks, t_tree *cmd_node, t_minishell *ms)
 // TODO: check if files should indeed be closed
 static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
 {
-
 	if (redir_type == TOKEN_INPUT)
 	{
 		if (cmd->output != STDIN)

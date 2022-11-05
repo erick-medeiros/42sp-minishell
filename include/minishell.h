@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 01:05:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:25:44 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
 
 // Queue
-t_queue		*new_queue();
+t_queue		*new_queue(void);
 int			enqueue(t_queue *queue, void *content);
 void		*dequeue(t_queue *queue);
 
@@ -100,7 +100,7 @@ void		miniprompt(t_minishell *minishell);
 // Commands
 
 void		process_line(char *prompt, t_minishell *minishell);
-int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
+int			lexer(char *prompt, t_node **tokens, t_lex_state st);
 void		executor(t_minishell *minishell);
 int			parser(t_minishell *ms, int cmd_num);
 int			get_command(t_node **tokens, t_tree **cmd_node,

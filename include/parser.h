@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 21:35:10 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:25:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSER_H
 
 # include "minishell.h"
-#include "structs.h"
 
 # define MSG_SYNTAX_ERR "minishell: syntax error near unexpected token `|'"
 # define MSG_ALLOC_ERR "minishell: allocation error"

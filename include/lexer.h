@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:24:50 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:44:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:11:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "minishell.h"
 
 t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi);
+t_lex_state	handle_continue_state(t_node **tokens, t_val_info *vi);
 t_lex_state	handle_dquote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_input_state(size_t idx, t_node **tokens, t_val_info *vi);

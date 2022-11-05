@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 21:19:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 03:57:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include "libft.h"
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
 
 static t_lex_state	get_lex_state(int parse_result);
-static void	handle_parse_result(int result, char **prompt,
-			char ** history, t_minishell *minishell);
+static void			handle_parse_result(int result, char **prompt,
+						char **history, t_minishell *minishell);
 
 void	miniprompt(t_minishell *minishell)
 {
@@ -52,6 +51,7 @@ void	process_line(char *prompt, t_minishell *minishell)
 		parse_result = parser(minishell, cmd_num++);
 		handle_parse_result(parse_result, &prompt, &history, minishell);
 	}
+	free(prompt);
 	add_history(history);
 	free(history);
 	if (parse_result == OK)
@@ -59,13 +59,14 @@ void	process_line(char *prompt, t_minishell *minishell)
 }
 
 static void	handle_parse_result(int result, char **prompt,
-			char ** history, t_minishell *minishell)
+			char **history, t_minishell *ms)
 {
 	if (result == ERR_BAD_SYNTAX || result == ERR_ALLOC)
 		print_parse_error(result);
-	if (minishell->heredoc_queue.front)
-		process_heredoc(&minishell->heredoc_queue);
+	if (ms->heredoc_queue.front)
+		process_heredoc(&ms->heredoc_queue);
 	free(*prompt);
+	*prompt = NULL;
 	if (result == ERR_INCOMP_PIPE)
 		*prompt = readline(PROMPT_EXTRA_PIPE);
 	else if (result == ERR_INCOMP_DQ)
@@ -94,4 +95,3 @@ int	print_parse_error(int parse_result)
 		printf("%s\n", MSG_ALLOC_ERR);
 	return (parse_result);
 }
-

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/03 03:11:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 03:54:20 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_tok_type {
 typedef enum e_lex_state {
 	STATE_APPEND,
 	STATE_COMPLETE,
+	STATE_CONTINUE,
 	STATE_DQUOTE,
 	STATE_DQINCOMP,
 	STATE_HEREDOC,
@@ -109,7 +110,6 @@ typedef struct s_val_info
 	char	*prompt;
 	size_t	start;
 	size_t	len;
-	int		active;
 }	t_val_info;
 
 typedef struct s_vlst

@@ -6,14 +6,14 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 00:56:53 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/03 01:23:49 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:19:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
 
-t_queue	*new_queue()
+t_queue	*new_queue(void)
 {
 	t_queue	*queue;
 
@@ -28,7 +28,7 @@ t_queue	*new_queue()
 int	enqueue(t_queue *queue, void *content)
 {
 	t_node	*new_node;
-	int result;
+	int		result;
 
 	if (!queue)
 		return (ERR_NOT_FOUND);
@@ -50,7 +50,7 @@ int	enqueue(t_queue *queue, void *content)
 void	*dequeue(t_queue *queue)
 {
 	t_node	*tmp;
-	void*	content;
+	void	*content;
 
 	if (queue == NULL || queue->front == NULL)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/04 21:12:00 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 04:21:40 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	get_command(t_node **tokens, t_tree **cmd_node,
 		t_minishell *ms, int num)
 {
-	int result;
+	int	result;
 
 	if (*tokens == NULL)
 		return (OK);
@@ -57,7 +57,8 @@ int	handle_next_token(t_node **tokens, t_tree *cmd_node,
 
 t_tree	*new_cmd_node(int num)
 {
-	t_tree *cmd_node;
+	t_tree	*cmd_node;
+
 	cmd_node = malloc(sizeof(*cmd_node));
 	if (!cmd_node)
 		return (NULL);
@@ -70,7 +71,6 @@ t_tree	*new_cmd_node(int num)
 
 int	new_op_node(t_tree	**op_node, t_tree_type op_type)
 {
-
 	*op_node = malloc(sizeof(**op_node));
 	if (!op_node)
 		return (ERR_ALLOC);
