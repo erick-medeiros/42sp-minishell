@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/03 03:14:49 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/04 01:05:19 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define STDERR 2
 
 # define PROMPT_STRING "minishell> "
+# define PROMPT_EXTRA_SQ "continue single quote> "
+# define PROMPT_EXTRA_DQ "continue double quote> "
+# define PROMPT_EXTRA_PIPE "continue pipe> "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
 
@@ -40,9 +43,11 @@
 # define ERR_NOT_FOUND 2
 # define ERR_LEXER 3
 # define ERR_BAD_SYNTAX 4
-# define ERR_INCOMPLETE 5
-# define ERR_BAD_TOKEN 6
-# define ERR_FILE_OPEN 7
+# define ERR_INCOMP_PIPE 5
+# define ERR_INCOMP_DQ 6
+# define ERR_INCOMP_SQ 7
+# define ERR_BAD_TOKEN 8
+# define ERR_FILE_OPEN 9
 
 // List-related functions
 int			add_node(t_node **lst, void *content);
@@ -97,7 +102,7 @@ void		miniprompt(t_minishell *minishell);
 void		process_line(char *prompt, t_minishell *minishell);
 int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
 void		executor(t_minishell *minishell);
-int			parser(t_minishell *ms, t_lex_state *ls);
+int			parser(t_minishell *ms, int cmd_num);
 int			get_command(t_node **tokens, t_tree **cmd_node,
 				t_minishell *ms, int num);
 

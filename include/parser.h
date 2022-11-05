@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/03 02:11:33 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:35:10 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define PARSER_H
 
 # include "minishell.h"
+#include "structs.h"
 
 # define MSG_SYNTAX_ERR "minishell: syntax error near unexpected token `|'"
+# define MSG_ALLOC_ERR "minishell: allocation error"
 
 typedef enum e_mode {
 	IN_MODE,
@@ -34,14 +36,24 @@ void		configure_builtin(t_cmd *command);
 int			print_parse_error(int parse_result);
 int			open_fd(char *pathname, int mode);
 
+int			new_op_node(t_tree	**op_node, t_tree_type op_type);
+t_tree		*new_cmd_node(int num);
+int			is_op(t_tree_type t);
+
+// Infix list utils
+int			push_infix(t_node **tmp_stack, t_node **cmds, t_tree *tree);
+void		flush_infix(t_node **tmp_stack, t_node **cmds);
+
 // Heredoc
-int			process_heredoc(t_node **heredoc_queue);
+int			process_heredoc(t_queue *heredoc_queue);
 
 // Tree
 
 t_tree		*convert_list_to_tree(t_pipeline *pipeline);
 
 // Token parsing
+int			handle_next_token(t_node **tokens, t_tree *cmd_node,
+				t_minishell *ms);
 int			handle_word_token(t_token *tok, t_tree *cmd_node, t_minishell *ms);
 int			handle_redirect_token(t_node **tokens, t_tree *cmd_node,
 				t_minishell *ms);
