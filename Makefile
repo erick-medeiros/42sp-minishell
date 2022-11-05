@@ -59,7 +59,8 @@ fclean: clean
 re: fclean all
 
 install:
-	sudo apt install libreadline-dev clang-format
+	sudo apt install libreadline-dev clang-format bear
+	bear -- make re
 
 norm:
 	@clear
