@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 20:19:28 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:28:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);
 int			is_op(t_tree_type t);
 
-// Infix list utils
-int			push_infix(t_node **tmp_stack, t_node **cmds, t_tree *tree);
-void		flush_infix(t_node **tmp_stack, t_node **cmds);
+// postfix list utils
+int			push_postfix(t_node **tmp_stack, t_node **cmds, t_tree *tree);
+void		flush_postfix(t_node **tmp_stack, t_node **cmds);
 
 // Heredoc
 void		process_heredoc(t_queue *heredoc_queue);

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 19:52:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:28:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	parser(t_minishell *ms, int cmd_num)
 		return (ERR_BAD_SYNTAX);
 	while (ms->token_list && result == OK)
 		result = parse_token(ms, &tmp_stack, &cmds, cmd_num);
-	flush_infix(&tmp_stack, &cmds);
+	flush_postfix(&tmp_stack, &cmds);
 	return (result);
 }
 
@@ -56,7 +56,7 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 		result = get_command(&ms->token_list, &tree, ms, cmd_num);
 	if (result != ERR_BAD_SYNTAX && result != ERR_ALLOC)
 	{
-		if (push_infix(tmp_stack, cmds, tree))
+		if (push_postfix(tmp_stack, cmds, tree))
 			return (ERR_ALLOC);
 	}
 	return (result);

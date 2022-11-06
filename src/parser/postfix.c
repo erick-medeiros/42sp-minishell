@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   infix.c                                            :+:      :+:    :+:   */
+/*   postfix.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@
 
 static void	transfer_node(t_node **src, t_node **dst);
 
-int	push_infix(t_node **tmp_stack, t_node **cmds, t_tree *tree)
+int	push_postfix(t_node **tmp_stack, t_node **cmds, t_tree *tree)
 {
 	if (is_op(tree->type))
 	{
@@ -27,7 +27,7 @@ int	push_infix(t_node **tmp_stack, t_node **cmds, t_tree *tree)
 	return (add_node(cmds, tree));
 }
 
-void	flush_infix(t_node **tmp_stack, t_node **cmds)
+void	flush_postfix(t_node **tmp_stack, t_node **cmds)
 {
 	while (tmp_stack != NULL)
 		transfer_node(tmp_stack, cmds);

@@ -6,12 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/03 03:13:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:27:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "expansor.h"
+#include "expander.h"
 #include "parser.h"
 
 void	free_token(void *content);

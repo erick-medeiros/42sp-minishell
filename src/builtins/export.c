@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/28 19:48:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:25:42 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "expansor.h"
+#include "expander.h"
 #include "minishell.h"
 
 static void		change_or_create_var(t_vlst *vars, char *str);

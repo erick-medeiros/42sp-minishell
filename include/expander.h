@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansor.h                                         :+:      :+:    :+:   */
+/*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 10:55:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:25:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANSOR_H
-# define EXPANSOR_H
+#ifndef EXPANDER_H
+# define EXPANDER_H
 
 # include "minishell.h"
 

@@ -1,5 +1,5 @@
 #include "Unity/unity.h"
-#include "expansor.h"
+#include "expander.h"
 #include "minishell.h"
 
 void test_envp_to_list_one_str(void) {

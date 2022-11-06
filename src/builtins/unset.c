@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 01:10:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/28 19:48:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:27:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "expansor.h"
+#include "expander.h"
 
 void	builtin_unset(int argc, char *argv[], t_vlst *vars)
 {

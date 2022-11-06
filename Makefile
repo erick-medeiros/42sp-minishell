@@ -20,14 +20,14 @@ FILES += $(addprefix executor/, executor.c pipeline.c subshell.c)
 FILES += $(addprefix expander/, env_conv.c env_utils.c pathname.c)
 FILES += $(addprefix lexer/, append.c continue.c double_quote.c heredoc.c input.c lexer.c)
 FILES += $(addprefix lexer/, lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
-FILES += $(addprefix parser/, builtins.c expand.c handle_tokens.c infix.c parser.c parser_utils.c)
+FILES += $(addprefix parser/, builtins.c expand.c handle_tokens.c postfix.c parser.c parser_utils.c)
 FILES += $(addprefix prompt/, prompt.c here_doc.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c queue.c tree.c utils.c)
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))
 
-FILES_INC = builtins.h executor.h expansor.h lexer.h minishell.h parser.h structs.h
+FILES_INC = builtins.h executor.h expander.h lexer.h minishell.h parser.h structs.h
 HEADERS = $(addprefix include/, $(FILES_INC))
 
 REQUIRED_DIRS = $(OBJ_DIR) $(addprefix $(OBJ_DIR), $(MODULES))

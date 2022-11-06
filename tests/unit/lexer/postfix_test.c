@@ -4,7 +4,7 @@
 
 static void print_token_list(t_node *tokens);
 
-void test_infix_to_postfix(void) {
+void test_postfix_to_postfix(void) {
 	t_node *tokens = NULL;
 	char *prompt = " abcde ";
 	t_val_info vi =
@@ -14,7 +14,7 @@ void test_infix_to_postfix(void) {
 	new_token(&tokens, TOKEN_PIPE);
 	new_token_with_val(&tokens, TOKEN_WORD, &vi);
 	print_token_list(tokens);
-	infix_to_postfix(&tokens);
+	postfix_to_postfix(&tokens);
 	print_token_list(tokens);
 }
 
@@ -45,5 +45,5 @@ static void print_token_list(t_node *tokens)
 
 int main(void)
 {
-	test_infix_to_postfix();
+	test_postfix_to_postfix();
 }

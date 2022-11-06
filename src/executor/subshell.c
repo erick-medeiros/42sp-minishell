@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 14:11:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:25:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
-#include "expansor.h"
+#include "expander.h"
 #include "builtins.h"
 
 void	subshell(t_minishell *minishell, t_cmd *command)
