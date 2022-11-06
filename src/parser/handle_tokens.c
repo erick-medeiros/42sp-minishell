@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 04:24:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 15:11:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_word_token(t_token *tok, t_tree *cmd_node, t_minishell *ms)
 
 	cmd = ((t_cmd *)cmd_node->content);
 	if (cmd->argc == 0)
-		result = expand_filename(tok->value, &expd, ms);
+		result = expand_vars(tok->value, &expd, ms);
 	else
 		result = expand_vars(tok->value, &expd, ms);
 	if (result)
@@ -45,7 +45,7 @@ int	handle_redirect_token(t_node **toks, t_tree *cmd_node, t_minishell *ms)
 	*toks = remove_node(*toks, del_token_node);
 	if (((t_token *)(*toks)->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
-	result = expand_filename(((t_token *)(*toks)->content)->value, &expd, ms);
+	result = expand_vars(((t_token *)(*toks)->content)->value, &expd, ms);
 	if (result)
 		return (result);
 	result = set_redir(redir_type, expd, cmd);
@@ -81,9 +81,9 @@ static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
 	if (redir_type == TOKEN_INPUT)
 	{
 		if (cmd->output != STDIN)
-			close(cmd->output);
+			close(cmd->input);
 		cmd->input = open_fd(filename, IN_MODE);
-		if (cmd->output == -1)
+		if (cmd->input == -1)
 			return (ERR_FILE_OPEN);
 	}
 	else

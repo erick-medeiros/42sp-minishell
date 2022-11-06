@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 04:25:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:19:28 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int			push_infix(t_node **tmp_stack, t_node **cmds, t_tree *tree);
 void		flush_infix(t_node **tmp_stack, t_node **cmds);
 
 // Heredoc
-int			process_heredoc(t_queue *heredoc_queue);
+void		process_heredoc(t_queue *heredoc_queue);
 
 // Tree
 

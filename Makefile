@@ -12,19 +12,17 @@ LIBFT = libft/libft.a
 LIBDEBUG = debug/debug.a
 SRC_DIR = src/
 OBJ_DIR = obj/
-MODULES = prompt/ builtins/ lexer/ parser/ expansor/ executor/ utils/
+MODULES = prompt/ builtins/ lexer/ parser/ expander/ executor/ utils/
 
 FILES = main.c
-FILES += utils/cleanup.c utils/list.c utils/free.c utils/error.c
-FILES += utils/command.c utils/minishell.c utils/utils.c utils/tree.c
-FILES += prompt/ends_in_pipe.c prompt/here_doc.c prompt/prompt.c
-FILES += lexer/append.c lexer/double_quote.c lexer/heredoc.c lexer/input.c lexer/lexer.c lexer/lexer_utils.c
-FILES += lexer/output.c lexer/pipe.c lexer/single_quote.c lexer/skip.c lexer/word.c
-FILES += expansor/env_conv.c expansor/env_utils.c expansor/pathname.c
-FILES += parser/parser.c parser/builtins.c
-FILES += builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c
-FILES += builtins/export.c builtins/pwd.c builtins/unset.c
-FILES += executor/executor.c executor/pipeline.c executor/subshell.c
+FILES += $(addprefix builtins/, cd.c echo.c env.c exit.c export.c pwd.c unset.c)
+FILES += $(addprefix executor/, executor.c pipeline.c subshell.c)
+FILES += $(addprefix expander/, env_conv.c env_utils.c pathname.c)
+FILES += $(addprefix lexer/, append.c continue.c double_quote.c heredoc.c input.c lexer.c)
+FILES += $(addprefix lexer/, lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
+FILES += $(addprefix parser/, builtins.c expand.c handle_tokens.c infix.c parser.c parser_utils.c)
+FILES += $(addprefix prompt/, prompt.c here_doc.c)
+FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c queue.c tree.c utils.c)
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))

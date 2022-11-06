@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 04:25:44 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:11:04 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);
+void		destroy_queue(t_queue *queue, void (*del_node)(void *));
 
 // Prompt
 

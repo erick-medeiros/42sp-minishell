@@ -6,32 +6,14 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 04:21:40 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:19:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-
-int	get_command(t_node **tokens, t_tree **cmd_node,
-		t_minishell *ms, int num)
-{
-	int	result;
-
-	if (*tokens == NULL)
-		return (OK);
-	*cmd_node = new_cmd_node(num);
-	if (!(*cmd_node))
-		return (ERR_ALLOC);
-	while (*tokens != NULL)
-	{
-		result = handle_next_token(tokens, *cmd_node, ms);
-		if (result != OK)
-			return (result);
-		*tokens = remove_node(*tokens, del_token_node);
-	}
-	return (OK);
-}
+#include "structs.h"
+#include <unistd.h>
 
 int	handle_next_token(t_node **tokens, t_tree *cmd_node,
 				t_minishell *ms)
@@ -96,4 +78,19 @@ int	open_fd(char *pathname, int mode)
 	else
 		fd = open(pathname, O_RDWR | O_WRONLY | O_CREAT | O_TRUNC, permissions);
 	return (fd);
+}
+
+void	process_heredoc(t_queue *heredoc_queue)
+{
+	t_heredoc	*heredoc;
+
+	while (heredoc_queue->front != NULL)
+	{
+		heredoc = dequeue(heredoc_queue);
+		if (heredoc->cmd->input != STDIN)
+			close(heredoc->cmd->input);
+		heredoc->cmd->input = here_doc(heredoc->delimiter);
+		free(heredoc->delimiter);
+		free(heredoc);
+	}
 }

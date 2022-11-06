@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 04:24:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 19:52:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,26 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 			return (ERR_ALLOC);
 	}
 	return (result);
+}
+
+int	get_command(t_node **tokens, t_tree **cmd_node,
+		t_minishell *ms, int num)
+{
+	int	result;
+
+	if (*tokens == NULL)
+		return (OK);
+	*cmd_node = new_cmd_node(num);
+	if (!(*cmd_node))
+		return (ERR_ALLOC);
+	while (*tokens != NULL)
+	{
+		result = handle_next_token(tokens, *cmd_node, ms);
+		if (result != OK)
+			return (result);
+		*tokens = remove_node(*tokens, del_token_node);
+	}
+	return (OK);
 }
 
 static t_tree_type	tok_to_tree_type(t_token *tok)

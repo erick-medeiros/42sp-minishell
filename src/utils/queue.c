@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 00:56:53 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 04:19:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/05 20:10:55 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,11 @@ void	*dequeue(t_queue *queue)
 		queue->rear = NULL;
 	free(tmp);
 	return (content);
+}
+
+void	destroy_queue(t_queue *queue, void (*del_node)(void *))
+{
+	clear_list(queue->front, del_node);
+	queue->front = NULL;
+	queue->rear = NULL;
 }
