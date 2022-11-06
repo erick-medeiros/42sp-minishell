@@ -17,8 +17,8 @@ void setUp(void) {}
 void tearDown(void) {}
 
 void run_all_test() {
-	file_utils_test();
-	file_prompt_test();
+	// file_utils_test();
+	// file_prompt_test();
 	file_list_test();
 	file_builtins_test();
 	file_environment_test();
@@ -34,12 +34,12 @@ int main(int argc, char *argv[]) {
 		run_all_test();
 	else {
 		char *file = argv[1];
-		if (strcmp("utils", file) == 0)
-			return file_utils_test();
-		else if (strcmp("list", file) == 0)
+		// if (strcmp("utils", file) == 0)
+		//	return file_utils_test();
+		if (strcmp("list", file) == 0)
 			return file_list_test();
-		else if (strcmp("prompt", file) == 0)
-			return file_prompt_test();
+		// else if (strcmp("prompt", file) == 0)
+		//	return file_prompt_test();
 		else if (strcmp("builtins", file) == 0)
 			return file_builtins_test();
 		else if (strcmp("environment", file) == 0)
