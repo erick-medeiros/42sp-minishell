@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 20:11:04 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:38:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void		destroy_queue(t_queue *queue, void (*del_node)(void *));
 
 int			command_ends_with(char *cmd, char c);
 int			command_is_equal(char *cmd, char *str);
-int			ends_in_pipe(void);
 char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
