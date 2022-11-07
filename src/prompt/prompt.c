@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 18:07:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/07 11:01:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,17 @@ char	*get_prompt(t_minishell *minishell)
 	return (prompt);
 }
 
-void	miniprompt(t_minishell *minishell)
+void	shell(t_minishell *minishell, char *line)
+{
+	minishell->token_list = NULL;
+	lexer(line, &minishell->token_list, STATE_SKIP);
+	free(line);
+	parser(minishell);
+	executor(minishell);
+	free_minishell(minishell);
+}
+
+void	shell_loop(t_minishell *minishell)
 {
 	char	*line;
 
@@ -58,16 +68,11 @@ void	miniprompt(t_minishell *minishell)
 		handle_signal(SIGQUIT, SIG_IGN);
 		line = readline(get_prompt(minishell));
 		if (!line)
+		{
+			write(STDOUT, "exit\n", 5);
 			break ;
+		}
 		add_history(line);
-		minishell->token_list = NULL;
-		lexer(line, &minishell->token_list, STATE_SKIP);
-		free(line);
-		line = NULL;
-		parser(minishell);
-		executor(minishell);
-		free_minishell(minishell);
+		shell(minishell, line);
 	}
-	write(STDOUT, "exit\n", 5);
-	free(line);
 }
