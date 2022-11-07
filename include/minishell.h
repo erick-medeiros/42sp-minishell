@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/07 10:59:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/07 12:02:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,9 @@ void		command_signal_handler(int sig);
 
 void		shell(t_minishell *minishell, char *line);
 void		shell_loop(t_minishell *minishell);
+
+// Expansor
+
+char		*expansor_vars(t_vlst *env_list, char *str);
 
 #endif

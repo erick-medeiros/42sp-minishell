@@ -11,6 +11,7 @@ int file_utils_test(void);
 int file_executor_test(void);
 int file_lexer_test(void);
 int file_pipeline_test(void);
+int file_expansor_test(void);
 
 void setUp(void) {}
 
@@ -27,6 +28,7 @@ void run_all_test() {
 	file_executor_test();
 	file_lexer_test();
 	file_pipeline_test();
+	file_expansor_test();
 }
 
 int main(int argc, char *argv[]) {
@@ -54,6 +56,8 @@ int main(int argc, char *argv[]) {
 			file_lexer_test();
 		else if (strcmp("pipeline", file) == 0)
 			file_pipeline_test();
+		else if (!strcmp("expansor", file))
+			file_expansor_test();
 	}
 	return 0;
 }
