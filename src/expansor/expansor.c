@@ -6,16 +6,16 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/07 19:48:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/07 20:01:29 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
 
-static int	find_env_var(void *expand, void *var)
+int	find_env_var(void *str, void *var)
 {
-	if (command_is_equal(expand, ((t_var *)var)->name))
+	if (command_is_equal(str, ((t_var *)var)->name))
 		return (0);
 	return (1);
 }
