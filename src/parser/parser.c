@@ -6,26 +6,28 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/06 02:28:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 23:30:45 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
+#include "structs.h"
 
 static int			parse_token(t_minishell *ms, t_node **tmp_stack,
-						t_node	**cmds, int cmd_num);
+						t_queue *cmds, int cmd_num);
 static t_tree_type	tok_to_tree_type(t_token *tok);
 
 int	parser(t_minishell *ms, int cmd_num)
 {
 	t_node		*tmp_stack;
-	t_node		*cmds;
+	t_queue		cmds;
 	int			result;
 
 	result = OK;
 	tmp_stack = NULL;
-	cmds = NULL;
+	cmds.front = NULL;
+	cmds.rear = NULL;
 	if (ms->token_list
 		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
 		return (ERR_BAD_SYNTAX);
@@ -36,7 +38,7 @@ int	parser(t_minishell *ms, int cmd_num)
 }
 
 static int	parse_token(t_minishell *ms, t_node **tmp_stack,
-				t_node	**cmds, int cmd_num)
+				t_queue *cmds, int cmd_num)
 {
 	t_tree		*tree;
 	t_tree_type	tree_type;
@@ -53,7 +55,7 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 		result = new_op_node(&tree, tree_type);
 	}
 	else
-		result = get_command(&ms->token_list, &tree, ms, cmd_num);
+		result = get_command(&tree, ms, cmd_num);
 	if (result != ERR_BAD_SYNTAX && result != ERR_ALLOC)
 	{
 		if (push_postfix(tmp_stack, cmds, tree))
@@ -62,22 +64,22 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 	return (result);
 }
 
-int	get_command(t_node **tokens, t_tree **cmd_node,
+int	get_command(t_tree **cmd_node,
 		t_minishell *ms, int num)
 {
-	int	result;
+	int		result;
 
-	if (*tokens == NULL)
+	if (ms->token_list == NULL)
 		return (OK);
 	*cmd_node = new_cmd_node(num);
 	if (!(*cmd_node))
 		return (ERR_ALLOC);
-	while (*tokens != NULL)
+	while (ms->token_list != NULL)
 	{
-		result = handle_next_token(tokens, *cmd_node, ms);
+		result = handle_next_token(*cmd_node, ms);
 		if (result != OK)
 			return (result);
-		*tokens = remove_node(*tokens, del_token_node);
+		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
 	return (OK);
 }

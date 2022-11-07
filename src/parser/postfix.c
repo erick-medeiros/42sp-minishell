@@ -14,26 +14,26 @@
 #include "parser.h"
 #include "structs.h"
 
-static void	transfer_node(t_node **src, t_node **dst);
+static void	transfer_node(t_node **src, t_queue *dst);
 
-int	push_postfix(t_node **tmp_stack, t_node **cmds, t_tree *tree)
+int	push_postfix(t_node **tmp_stack, t_queue *cmds, t_tree *tree)
 {
 	if (is_op(tree->type))
 	{
-		while (tmp_stack != NULL)
+		while (*tmp_stack != NULL)
 			transfer_node(tmp_stack, cmds);
 		return (add_node(tmp_stack, tree));
 	}
-	return (add_node(cmds, tree));
+	return (enqueue(cmds, tree));
 }
 
-void	flush_postfix(t_node **tmp_stack, t_node **cmds)
+void	flush_postfix(t_node **tmp_stack, t_queue *cmds)
 {
-	while (tmp_stack != NULL)
+	while (*tmp_stack != NULL)
 		transfer_node(tmp_stack, cmds);
 }
 
-static void	transfer_node(t_node **src, t_node **dst)
+static void	transfer_node(t_node **src, t_queue *dst)
 {
 	t_node	*popped;
 
@@ -41,6 +41,6 @@ static void	transfer_node(t_node **src, t_node **dst)
 		return ;
 	popped = *src;
 	*src = (*src)->next;
-	popped->next = *dst;
-	*dst = popped;
+	enqueue(dst, popped->content);
+	free(popped);
 }

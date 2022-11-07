@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 20:19:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/06 23:33:20 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,20 @@
 #include "structs.h"
 #include <unistd.h>
 
-int	handle_next_token(t_node **tokens, t_tree *cmd_node,
-				t_minishell *ms)
+int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 {
 	t_token	*tok;
 
-	tok = ((t_token *)(*tokens)->content);
+	tok = ((t_token *)(ms->token_list->content));
 	if (tok->type == TOKEN_PIPE)
 		return (OK);
 	if (tok->type == TOKEN_WORD)
-		return (handle_word_token(tok, cmd_node, ms));
+		return (handle_word_token(cmd_node, ms));
 	if (tok->type == TOKEN_INPUT || tok->type == TOKEN_OUTPUT
 		|| tok->type == TOKEN_APPEND)
-		return (handle_redirect_token(tokens, cmd_node, ms));
+		return (handle_redirect_token(cmd_node, ms));
 	if (tok->type == TOKEN_HEREDOC)
-		return (enqueue_heredoc(tokens, cmd_node, ms));
+		return (enqueue_heredoc(cmd_node, ms));
 	if (tok->type == TOKEN_DQINCOMP)
 		return (ERR_INCOMP_DQ);
 	if (tok->type == TOKEN_SQINCOMP)

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/06 02:38:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/07 01:21:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		*dequeue(t_queue *queue);
 t_tree		*new_tree_node(t_tree_type type);
 void		destroy_execution_tree(t_tree *root);
 void		*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *));
+void		del_cmd_tree_node(void *tree);
 
 // Init
 
@@ -103,8 +104,7 @@ void		process_line(char *prompt, t_minishell *minishell);
 int			lexer(char *prompt, t_node **tokens, t_lex_state st);
 void		executor(t_minishell *minishell);
 int			parser(t_minishell *ms, int cmd_num);
-int			get_command(t_node **tokens, t_tree **cmd_node,
-				t_minishell *ms, int num);
+int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
 
 // Remove
 
