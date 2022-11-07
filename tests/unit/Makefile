@@ -19,7 +19,7 @@ OBJ_DIR = obj/
 
 CFLAGS = -Wall -Wextra -Werror
 # CFLAGS += -fsanitize=address
-CFLAGS += -I${LIBFT_DIR} -I${MIN_INC_DIR} -I${MIN_SRC_DIR}debug -I../lib -I../lib/test_utils -g
+CFLAGS += -I${LIBFT_DIR} -I${MIN_INC_DIR} -I${MIN_SRC_DIR}debug -I../lib -I../lib/test_utils -g3
 LIBFLAGS = -L${LIBFT_DIR} -lft -lreadline
 RM = rm -fr
 FORMAT = clang-format -i
@@ -27,10 +27,11 @@ FORMAT = clang-format -i
 UNIT_FILES = main_test.c
 UNIT_FILES += builtins/builtins_test.c
 UNIT_FILES += ${addprefix executor/, executor_test.c pipeline_test.c subshell_test.c}
+UNIT_FILES += ${addprefix expander/, pathname_test.c}
 UNIT_FILES += lexer/lexer_test.c
+UNIT_FILES += ${addprefix parser/, parser_test.c postfix_test.c}
 UNIT_FILES += prompt/prompt_test.c
 UNIT_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
-UNIT_FILES += ${addprefix expander/, pathname_test.c}
 
 OBJS = ${addprefix ${OBJ_DIR}, ${UNIT_FILES:.c=.o}}
 

@@ -264,6 +264,58 @@ void test_handle_word(void) {
 	clear_list(tokens, del_token_node);
 }
 
+void test_line_continuation_dquote_alone(void) {
+	char *prompt = ft_strdup("\"");
+	t_node *tokens = NULL;
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .prompt = "\"abc"};
+	size_t idx;
+	t_lex_state next_state = STATE_CONTINUE;
+
+	new_token_with_val(&tokens, TOKEN_DQINCOMP, &old_vi);
+	TEST_ASSERT_EQUAL_STRING("\"abc", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_DQINCOMP, ((t_token *)tokens->content)->type);
+	next_state = handle_continue_state(&tokens, &vi);
+	idx = vi.len;
+	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
+	next_state = handle_dquote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
+	next_state = handle_word_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
+	TEST_ASSERT_EQUAL_STRING("\"abc\"", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
+	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
+	clear_list(tokens, del_token_node);
+	free(vi.prompt);
+}
+
+void test_line_continuation_word_dquote(void) {
+	char *prompt = ft_strdup("d\"");
+	t_node *tokens = NULL;
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .prompt = "\"abc"};
+	size_t idx;
+	t_lex_state next_state = STATE_CONTINUE;
+
+	new_token_with_val(&tokens, TOKEN_DQINCOMP, &old_vi);
+	TEST_ASSERT_EQUAL_STRING("\"abc", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_DQINCOMP, ((t_token *)tokens->content)->type);
+	next_state = handle_continue_state(&tokens, &vi);
+	idx = vi.len;
+	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
+	next_state = handle_dquote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
+	next_state = handle_dquote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
+	next_state = handle_word_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
+	TEST_ASSERT_EQUAL_STRING("\"abcd\"", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
+	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
+	clear_list(tokens, del_token_node);
+	free(vi.prompt);
+}
+
 int file_lexer_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_new_token);
@@ -282,5 +334,7 @@ int file_lexer_test(void) {
 	RUN_TEST(test_handle_word_with_squotes_inside);
 	RUN_TEST(test_handle_squote_incomplete);
 	RUN_TEST(test_handle_word);
+	RUN_TEST(test_line_continuation_dquote_alone);
+	RUN_TEST(test_line_continuation_word_dquote);
 	return UNITY_END();
 }
