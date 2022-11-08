@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 17:34:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 17:46:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ static int	isquote(char c)
 	return (FALSE);
 }
 
+static int	update_quote(char c, int quote)
+{
+	if (c == SINGLE_QUOTE && !quote)
+		quote = SINGLE_QUOTE;
+	else if (c == DOUBLE_QUOTE && !quote)
+		quote = DOUBLE_QUOTE;
+	else if (isquote(c) && quote == c)
+		quote = 0;
+	return (quote);
+}
+
 char	*clean_quote_expansor(char *str)
 {
 	char	*new;
@@ -29,18 +40,16 @@ char	*clean_quote_expansor(char *str)
 	int		i;
 	int		j;
 
+	if (!str)
+		return (str);
 	quote = 0;
 	new = ft_strdup(str);
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
-		if (str[i] == SINGLE_QUOTE && !quote)
-			quote = SINGLE_QUOTE;
-		else if (str[i] == DOUBLE_QUOTE && !quote)
-			quote = DOUBLE_QUOTE;
-		else if (isquote(str[i]) && quote == str[i])
-			quote = 0;
+		if (isquote(str[i]) && (!quote || str[i] == quote))
+			quote = update_quote(str[i], quote);
 		else
 			new[j++] = str[i];
 		++i;
