@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:54:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 20:27:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ void	process_line(char *prompt, t_minishell *minishell)
 	add_history(history);
 	free(history);
 	if (parse_result == OK)
+	{
+		minishell->root = dequeue(&minishell->cmd_list);
 		executor(minishell);
+	}
 }
 
 static void	handle_parse_result(int result, char **prompt,
