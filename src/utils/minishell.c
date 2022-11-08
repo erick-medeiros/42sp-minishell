@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:41:30 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 20:04:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	init_minishell(t_minishell *minishell, char **envp)
 	minishell->heredoc_queue.rear = NULL;
 	minishell->env_list.len = 0;
 	minishell->env_list.list = NULL;
-	minishell->cmd_list = NULL;
+	minishell->cmd_list.front = NULL;
+	minishell->cmd_list.rear = NULL;
 	minishell->last_result = 0;
 	minishell->exit_status = 0;
 	if (envp)
@@ -44,10 +45,11 @@ void	free_minishell(t_minishell *minishell)
 		clear_list(minishell->token_list, free_token);
 		minishell->token_list = NULL;
 	}
-	if (minishell->cmd_list)
+	if (minishell->cmd_list.front)
 	{
-		clear_list(minishell->cmd_list, free_token);
-		minishell->cmd_list = NULL;
+		clear_list(minishell->cmd_list.front, del_cmd_tree_node);
+		minishell->cmd_list.front = NULL;
+		minishell->cmd_list.rear = NULL;
 	}
 	if (minishell->root)
 	{
@@ -63,7 +65,5 @@ void	destroy_minishell(t_minishell *minishell)
 		clear_list(minishell->env_list.list, del_var_node);
 	if (minishell->heredoc_queue.front)
 		clear_list(minishell->heredoc_queue.front, del_heredoc_node);
-	if (minishell->cmd_list)
-		clear_list(minishell->cmd_list, free_token);
 	rl_clear_history();
 }

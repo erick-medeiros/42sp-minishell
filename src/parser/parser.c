@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 19:55:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 20:05:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,19 @@ static t_tree_type	tok_to_tree_type(t_token *tok);
 
 int	parser(t_minishell *ms, int cmd_num)
 {
-	t_node		*tmp_stack;
-	t_queue		cmds;
-	int			result;
+	t_node	*tmp_stack;
+	int		result;
 
 	result = OK;
 	tmp_stack = NULL;
-	cmds.front = NULL;
-	cmds.rear = NULL;
+	ms->cmd_list.front = NULL;
+	ms->cmd_list.rear = NULL;
 	if (ms->token_list
 		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
 		return (ERR_BAD_SYNTAX);
 	while (ms->token_list && result == OK)
-		result = parse_token(ms, &tmp_stack, &cmds, cmd_num);
-	flush_postfix(&tmp_stack, &cmds);
+		result = parse_token(ms, &tmp_stack, &ms->cmd_list, cmd_num);
+	flush_postfix(&tmp_stack, &ms->cmd_list);
 	return (result);
 }
 
