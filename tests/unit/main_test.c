@@ -13,6 +13,7 @@ int file_executor_test(void);
 int file_lexer_test(void);
 int file_pipeline_test(void);
 int file_postfix_test(void);
+int file_heredoc_test(void);
 
 void setUp(void) {}
 
@@ -22,6 +23,7 @@ void run_all_test() {
 	file_builtins_test();
 	file_environment_test();
 	file_executor_test();
+	file_heredoc_test();
 	file_lexer_test();
 	file_list_test();
 	file_parser_test();
@@ -44,6 +46,8 @@ int main(int argc, char *argv[]) {
 			return file_environment_test();
 		if (strcmp("executor", file) == 0)
 			file_executor_test();
+		if (strcmp("heredoc", file) == 0)
+			file_heredoc_test();
 		if (strcmp("lexer", file) == 0)
 			file_lexer_test();
 		if (strcmp("list", file) == 0)

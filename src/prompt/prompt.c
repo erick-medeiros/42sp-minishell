@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 03:57:16 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/07 23:25:33 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "minishell.h"
 #include "parser.h"
+#include "structs.h"
 
 static t_lex_state	get_lex_state(int parse_result);
 static void			handle_parse_result(int result, char **prompt,
@@ -72,7 +73,7 @@ static void	handle_parse_result(int result, char **prompt,
 	else if (result == ERR_INCOMP_DQ)
 		*prompt = readline(PROMPT_EXTRA_DQ);
 	else if (result == ERR_INCOMP_SQ)
-		*prompt = readline(PROMPT_EXTRA_PIPE);
+		*prompt = readline(PROMPT_EXTRA_SQ);
 	else
 		return ;
 	ft_strappend(history, *prompt);
@@ -80,10 +81,8 @@ static void	handle_parse_result(int result, char **prompt,
 
 static t_lex_state	get_lex_state(int parse_result)
 {
-	if (parse_result == ERR_INCOMP_DQ)
-		return (STATE_DQUOTE);
-	if (parse_result == ERR_INCOMP_SQ)
-		return (STATE_SQUOTE);
+	if (parse_result == ERR_INCOMP_DQ || parse_result == ERR_INCOMP_SQ)
+		return (STATE_CONTINUE);
 	return (STATE_SKIP);
 }
 

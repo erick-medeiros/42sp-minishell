@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/07 03:31:30 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/08 01:31:58 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 	cmd = ((t_cmd *)cmd_node->content);
 	redir_type = ((t_token *)ms->token_list->content)->type;
 	ms->token_list = remove_node(ms->token_list, del_token_node);
+	if (ms->token_list == NULL)
+		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
 	result = expand_vars(((t_token *)ms->token_list->content)->value,
@@ -94,6 +96,8 @@ int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
 	t_heredoc	*content;
 
 	ms->token_list = remove_node(ms->token_list, del_token_node);
+	if (ms->token_list == NULL)
+		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
 	result = expand_vars(((t_token *)ms->token_list->content)->value,
