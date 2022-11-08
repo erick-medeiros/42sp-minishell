@@ -93,3 +93,16 @@ void debug_pipeline_fds(t_pipeline *pipeline) {
   }
   printf("----------\n\n");
 }
+
+void debug_queue_cmds(t_queue *cmds) {
+  t_node *node;
+  t_tree *tree;
+
+  node = cmds->front;
+  while (node) {
+    tree = node->content;
+    debug_tree(tree);
+    printf("=============\n");
+    node = node->next;
+  }
+}

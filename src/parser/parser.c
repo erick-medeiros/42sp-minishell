@@ -6,13 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:43:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 19:55:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 #include "structs.h"
+#include "debug.h"
 
 static int			parse_token(t_minishell *ms, t_node **tmp_stack,
 						t_queue *cmds, int cmd_num);
@@ -48,11 +49,12 @@ static int	parse_token(t_minishell *ms, t_node **tmp_stack,
 	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
 	if (is_op(tree_type))
 	{
-		if (ms->token_list == NULL)
+		if (ms->token_list->next == NULL)
 			return (ERR_INCOMP_PIPE);
-		if (is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
+		if (is_op(tok_to_tree_type(((t_token *)ms->token_list->next->content))))
 			return (ERR_BAD_SYNTAX);
 		result = new_op_node(&tree, tree_type);
+		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
 	else
 		result = get_command(&tree, ms, cmd_num);
@@ -74,7 +76,8 @@ int	get_command(t_tree **cmd_node,
 	*cmd_node = new_cmd_node(num);
 	if (!(*cmd_node))
 		return (ERR_ALLOC);
-	while (ms->token_list != NULL)
+	while (ms->token_list != NULL
+		&& ((t_token *)ms->token_list->content)->type != TOKEN_PIPE)
 	{
 		result = handle_next_token(*cmd_node, ms);
 		if (result != OK)
