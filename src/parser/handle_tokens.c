@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/08 01:31:58 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/08 03:36:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
 {
 	if (redir_type == TOKEN_INPUT)
 	{
-		if (cmd->output != STDIN)
+		if (cmd->input != STDIN)
 			close(cmd->input);
 		cmd->input = open_fd(filename, IN_MODE);
 		if (cmd->input == -1)
