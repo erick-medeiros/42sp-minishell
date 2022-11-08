@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/08 03:36:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/08 19:55:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "structs.h"
 #include <stddef.h>
 
-static int	add_arg(int argc, char ***argv, char* new_arg);
+static int	add_arg(int argc, char ***argv, char *new_arg);
 static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd);
 
 int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
@@ -43,7 +43,7 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 	return (OK);
 }
 
-static int	add_arg(int argc, char ***argv, char* new_arg)
+static int	add_arg(int argc, char ***argv, char *new_arg)
 {
 	char	**tmp;
 	int		idx;
