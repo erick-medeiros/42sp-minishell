@@ -33,8 +33,23 @@ void test_expansor_vars(void) {
 	// str = expansor_vars(&env_list, strdup("$_"));
 }
 
+void test_clean_quote_expansor(void) {
+	char *str;
+
+	str = clean_quote_expansor(strdup("\"abc'def\""));
+	TEST_ASSERT_EQUAL_STRING("abc'def", str);
+	free(str);
+	str = clean_quote_expansor(strdup("\"abc'def\"'abc\"def'"));
+	TEST_ASSERT_EQUAL_STRING("abc'defabc\"def", str);
+	free(str);
+	str = clean_quote_expansor(strdup("abc"));
+	TEST_ASSERT_EQUAL_STRING("abc", str);
+	free(str);
+}
+
 int file_expansor_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_expansor_vars);
+	RUN_TEST(test_clean_quote_expansor);
 	return UNITY_END();
 }
