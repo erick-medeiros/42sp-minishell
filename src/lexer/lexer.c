@@ -3,28 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:50:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/05 22:45:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
+#include "structs.h"
+#include <stddef.h>
 
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
 
-int	lexer(char *prompt, t_node **tokens, t_lex_state start_state)
+int	lexer(char *prompt, t_node **tokens, t_lex_state st)
 {
 	t_lex_state	next_state;
 	t_val_info	vi;
 	size_t		idx;
 
-	vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt, .active = 0};
-	idx = 0;
-	next_state = start_state;
+	vi.start = 0;
+	vi.len = 0;
+	vi.prompt = prompt;
+	if (st == STATE_CONTINUE)
+		next_state = handle_continue_state(tokens, &vi);
+	else
+		next_state = st;
+	idx = vi.len;
 	while (next_state != STATE_COMPLETE && next_state != STATE_DQINCOMP
 		&& next_state != STATE_SQINCOMP && next_state != STATE_INVALID)
 		next_state = get_next_state(idx++, tokens, next_state, &vi);

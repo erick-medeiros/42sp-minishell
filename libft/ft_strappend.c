@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_quote.c                                     :+:      :+:    :+:   */
+/*   ft_strappend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 03:22:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 02:46:48 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/04 01:22:27 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/05 03:21:09 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "structs.h"
-#include "lexer.h"
+#include "libft.h"
 
-t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi)
+void	ft_strappend(char **s1, char const *s2)
 {
-	const char	next_ch = vi->prompt[idx];
+	char	*tmp;
 
-	if (next_ch == '\0')
+	if (s2 == NULL)
+		return;
+	if (*s1 == NULL)
 	{
-		if (new_token_with_val(tokens, TOKEN_SQINCOMP, vi))
-			return (STATE_INVALID);
-		return (STATE_SQINCOMP);
+		*s1 = ft_strdup(s2);
+		return ;
 	}
-	vi->len++;
-	if (next_ch == '\'')
-		return (STATE_WORD);
-	return (STATE_SQUOTE);
+	tmp = *s1;
+	*s1 = ft_strjoin(*s1, s2);
+	free(tmp);
 }

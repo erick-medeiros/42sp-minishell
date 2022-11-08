@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/20 11:07:27 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/03 01:33:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,12 @@ void	del_token_node(void *content)
 		return ;
 	free(((t_token *)content)->value);
 	free(((t_token *)content));
+}
+
+void	del_heredoc_node(void *content)
+{
+	if (!content)
+		return ;
+	free(((t_heredoc *)content)->delimiter);
+	free(((t_heredoc *)content));
 }

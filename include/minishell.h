@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/07 12:02:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:35:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define STDERR 2
 
 # define PROMPT_STRING "minishell "
+# define PROMPT_EXTRA_SQ "continue single quote> "
+# define PROMPT_EXTRA_DQ "continue double quote> "
+# define PROMPT_EXTRA_PIPE "continue pipe> "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
 
@@ -39,6 +42,12 @@
 # define ERR_ALLOC 1
 # define ERR_NOT_FOUND 2
 # define ERR_LEXER 3
+# define ERR_BAD_SYNTAX 4
+# define ERR_INCOMP_PIPE 5
+# define ERR_INCOMP_DQ 6
+# define ERR_INCOMP_SQ 7
+# define ERR_BAD_TOKEN 8
+# define ERR_FILE_OPEN 9
 
 // List-related functions
 int			add_node(t_node **lst, void *content);
@@ -50,11 +59,17 @@ t_node		*remove_node(t_node *current, void (*del_node)(void *));
 int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
 
+// Queue
+t_queue		*new_queue(void);
+int			enqueue(t_queue *queue, void *content);
+void		*dequeue(t_queue *queue);
+
 // Tree
 
 t_tree		*new_tree_node(t_tree_type type);
 void		destroy_execution_tree(t_tree *root);
 void		*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *));
+void		del_cmd_tree_node(void *tree);
 
 // Init
 
@@ -67,27 +82,30 @@ void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
+void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_redirect(t_redirect *redirect);
 void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);
+void		destroy_queue(t_queue *queue, void (*del_node)(void *));
 
 // Prompt
 
 int			command_ends_with(char *cmd, char c);
 int			command_is_equal(char *cmd, char *str);
-int			ends_in_pipe(void);
 char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
 
 // Commands
 
-int			lexer(char *prompt, t_node **tokens, t_lex_state start_state);
+void		process_line(char *prompt, t_minishell *minishell);
+int			lexer(char *prompt, t_node **tokens, t_lex_state st);
 void		executor(t_minishell *minishell);
-void		parser(t_minishell *minishell);
+int			parser(t_minishell *ms, int cmd_num);
+int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
 
 // Remove
 

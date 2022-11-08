@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   single_quote.c                                     :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 03:22:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 02:46:48 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/02 23:11:00 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/03 00:03:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
-#include "lexer.h"
 
-t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi)
+// TODO: implement expansion of filename word token values
+int	expand_filename(char *src, char **dst, t_minishell *ms)
 {
-	const char	next_ch = vi->prompt[idx];
+	(void)ms;
+	*dst = ft_strdup(src);
+	return (OK);
+}
 
-	if (next_ch == '\0')
-	{
-		if (new_token_with_val(tokens, TOKEN_SQINCOMP, vi))
-			return (STATE_INVALID);
-		return (STATE_SQINCOMP);
-	}
-	vi->len++;
-	if (next_ch == '\'')
-		return (STATE_WORD);
-	return (STATE_SQUOTE);
+// TODO: implement expansion of non-filename word token values
+int	expand_vars(char *src, char **dst, t_minishell *ms)
+{
+	(void)ms;
+	*dst = ft_strdup(src);
+	return (OK);
 }

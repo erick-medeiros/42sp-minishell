@@ -43,49 +43,8 @@ void test_here_doc(void) {
 	}
 }
 
-void test_ends_in_pipe(void) {
-	int pipefd[2];
-	char *string;
-	char *expected;
-	char *write_line1;
-	char *write_line2;
-	pid_t pid;
-	int len;
-
-	write_line1 = "cat |";
-	write_line2 = "cat";
-	expected = "cat | cat";
-	len = strlen(write_line1) + strlen(write_line2) + 1;
-	string = ut_mmap(sizeof(char) * len);
-	if (pipe(pipefd) == -1)
-		TEST_IGNORE_MESSAGE("Error pipe");
-	pid = fork();
-	if (pid < 0)
-		TEST_IGNORE_MESSAGE("Error fork");
-	else if (pid == 0) {
-		ut_stds_devnull();
-		dup2(pipefd[0], STDIN);
-		ut_close_pipefd(pipefd);
-		int fd = ends_in_pipe();
-		char *content = get_content_fd(fd);
-		strncpy(string, content, len);
-		free(content);
-		close(fd);
-		exit(0);
-	} else {
-		write(pipefd[1], write_line1, strlen(write_line1));
-		write(pipefd[1], "\n", 1);
-		write(pipefd[1], write_line2, strlen(write_line2));
-		write(pipefd[1], "\n", 1);
-		ut_close_pipefd(pipefd);
-		wait(NULL);
-		TEST_ASSERT_EQUAL_STRING(expected, string);
-	}
-}
-
 int file_prompt_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_here_doc);
-	RUN_TEST(test_ends_in_pipe);
 	return UNITY_END();
 }

@@ -6,144 +6,92 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 15:39:19 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:43:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 #include "parser.h"
+#include "structs.h"
 
-void	parser_add_arg_cmd(t_cmd *cmd, char *arg);
+static int			parse_token(t_minishell *ms, t_node **tmp_stack,
+						t_queue *cmds, int cmd_num);
+static t_tree_type	tok_to_tree_type(t_token *tok);
 
-void	parser(t_minishell *minishell)
+int	parser(t_minishell *ms, int cmd_num)
 {
-	t_node		*list;
-	t_pipeline	*pipeline;
+	t_node		*tmp_stack;
+	t_queue		cmds;
+	int			result;
 
-	list = NULL;
-	pipeline = pipeline_generator(minishell);
-	add_node(&list, pipeline);
-	minishell->pipelines = list;
-	minishell->root = convert_list_to_tree(pipeline);
+	result = OK;
+	tmp_stack = NULL;
+	cmds.front = NULL;
+	cmds.rear = NULL;
+	if (ms->token_list
+		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
+		return (ERR_BAD_SYNTAX);
+	while (ms->token_list && result == OK)
+		result = parse_token(ms, &tmp_stack, &cmds, cmd_num);
+	flush_postfix(&tmp_stack, &cmds);
+	return (result);
 }
 
-typedef enum e_steps {
-	STEP_PATH,
-	STEP_ARG,
-	STEP_END
-}	t_steps;
-
-t_pipeline	*pipeline_generator(t_minishell *minishell)
+static int	parse_token(t_minishell *ms, t_node **tmp_stack,
+				t_queue *cmds, int cmd_num)
 {
-	t_pipeline	*pipeline;
-	t_node		*node;
-	t_cmd		*cmd;
-	t_token		*token;
-	t_steps		step;
+	t_tree		*tree;
+	t_tree_type	tree_type;
+	int			result;
 
-	pipeline = new_pipeline(OPERATOR_MAIN);
-	step = STEP_PATH;
-	node = minishell->token_list;
-	cmd = NULL;
-	while (node)
+	tree = NULL;
+	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
+	if (is_op(tree_type))
 	{
-		token = node->content;
-		if (step == STEP_PATH)
-		{
-			if (token->type != TOKEN_WORD)
-				panic_error("error parser STEP_PATH");
-			if (!cmd)
-				cmd = new_command(pipeline->command_count++);
-			cmd->isbuiltin = isbuiltin(token->value);
-			cmd->pathname = ft_strdup(token->value);
-			parser_add_arg_cmd(cmd, token->value);
-			configure_builtin(cmd);
-			step = STEP_ARG;
-		}
-		else if (step == STEP_ARG)
-		{
-			if (token->type == TOKEN_WORD)
-				parser_add_arg_cmd(cmd, token->value);
-			else if (token->type == TOKEN_PIPE)
-				step = STEP_END;
-			else
-				panic_error("error parser STEP_ARG");
-		}
-		if (step == STEP_END)
-		{
-			add_node(&pipeline->commands, cmd);
-			cmd = NULL;
-			step = STEP_PATH;
-		}
-		node = node->next;
+		if (ms->token_list == NULL)
+			return (ERR_INCOMP_PIPE);
+		if (is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
+			return (ERR_BAD_SYNTAX);
+		result = new_op_node(&tree, tree_type);
 	}
-	if (step == STEP_ARG || step == STEP_END)
-		add_node(&pipeline->commands, cmd);
-	return (pipeline);
-}
-
-void	parser_add_arg_cmd(t_cmd *cmd, char *arg)
-{
-	char	**temp;
-	int		i;
-
-	temp = cmd->argv;
-	cmd->argc++;
-	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-	i = 0;
-	while (temp && temp[i])
-	{
-		cmd->argv[i] = ft_strdup(temp[i]);
-		++i;
-	}
-	cmd->argv[i] = ft_strdup(arg);
-	cmd->argv[cmd->argc] = NULL;
-	free_string_list(temp);
-}
-
-t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)
-{
-	t_tree	*temp;
-	t_tree	*current;
-	t_tree	*parent;
-
-	(void) parent;
-	temp = new_tree_node(type);
-	temp->content = content;
-	if (root == NULL)
-		root = temp;
 	else
+		result = get_command(&tree, ms, cmd_num);
+	if (result != ERR_BAD_SYNTAX && result != ERR_ALLOC)
 	{
-		current = root;
-		parent = NULL;
-		if (current->type == TREE_TYPE_PIPE && current->right == NULL)
-		{
-			current->right = temp;
-		}
-		else
-		{
-			root = temp;
-			root->left = current;
-		}
+		if (push_postfix(tmp_stack, cmds, tree))
+			return (ERR_ALLOC);
 	}
-	return (root);
+	return (result);
 }
 
-t_tree	*convert_list_to_tree(t_pipeline *pipeline)
+int	get_command(t_tree **cmd_node,
+		t_minishell *ms, int num)
 {
-	t_tree	*root;
-	t_node	*list;
+	int		result;
 
-	root = NULL;
-	list = pipeline->commands;
-	while (list)
+	if (ms->token_list == NULL)
+		return (OK);
+	*cmd_node = new_cmd_node(num);
+	if (!(*cmd_node))
+		return (ERR_ALLOC);
+	while (ms->token_list != NULL)
 	{
-		root = insert_into_tree(root, TREE_TYPE_CMD, list->content);
-		list->content = NULL;
-		list = list->next;
-		if (list)
-			root = insert_into_tree(root, TREE_TYPE_PIPE, NULL);
+		result = handle_next_token(*cmd_node, ms);
+		if (result != OK)
+			return (result);
+		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
-	return (root);
+	return (OK);
+}
+
+static t_tree_type	tok_to_tree_type(t_token *tok)
+{
+	if (tok->type == TOKEN_PIPE)
+		return (TREE_TYPE_PIPE);
+	return (TREE_TYPE_CMD);
+}
+
+int	is_op(t_tree_type t)
+{
+	return (t == TREE_TYPE_PIPE);
 }

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:39:54 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/28 19:47:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:26:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "expansor.h"
+#include "expander.h"
 
 void	builtin_env(t_vlst *vars)
 {

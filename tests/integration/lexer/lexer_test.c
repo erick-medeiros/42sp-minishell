@@ -10,8 +10,7 @@ void test_tokenize_empty_string(void) {
 
 	result = lexer(prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
-	TEST_ASSERT_EQUAL_INT(NULL, tokens);
-	TEST_ASSERT_EQUAL(NULL, tokens->next);
+	TEST_ASSERT_EQUAL_PTR(NULL, tokens);
 }
 
 void test_tokenize_word_pipe_word_no_space(void) {
@@ -55,7 +54,7 @@ void test_tokenize_word_pipe_word_space(void) {
 }
 
 void test_tokenize_word_pipe_dquote(void) {
-	char *prompt = "abc | \"def\"";
+	char *prompt = "abc|\"def\"";
 	t_node *tokens = NULL;
 	int result;
 
@@ -66,9 +65,29 @@ void test_tokenize_word_pipe_dquote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_DQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("\"def\"",
+							 ((t_token *)tokens->next->next->content)->value);
+	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
+	clear_list(tokens, del_token_node);
+}
+
+void test_tokenize_word_pipe_dquote_spaces(void) {
+	char *prompt = " abc | \"def\" ";
+	t_node *tokens = NULL;
+	int result;
+
+	result = lexer(prompt, &tokens, STATE_SKIP);
+	TEST_ASSERT_EQUAL_INT(OK, result);
+	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
+	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
+	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)tokens->next->content)->type);
+	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
+					  ((t_token *)tokens->next->next->content)->type);
+	TEST_ASSERT_EQUAL_STRING("\"def\"",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -88,14 +107,14 @@ void test_tokenize_word_pipe_dquote_incomplete(void) {
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_DQINCOMP,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("\"def",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
 }
 
 void test_tokenize_word_pipe_squote(void) {
-	char *prompt = "abc | 'def'";
+	char *prompt = "abc|'def'";
 	t_node *tokens = NULL;
 	int result;
 
@@ -106,16 +125,16 @@ void test_tokenize_word_pipe_squote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_SQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def'",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
 }
 
 void test_tokenize_word_pipe_squote_incomplete(void) {
-	char *prompt = "abc | 'def";
+	char *prompt = " abc | 'def ";
 	t_node *tokens = NULL;
 	int result;
 
@@ -128,7 +147,7 @@ void test_tokenize_word_pipe_squote_incomplete(void) {
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_SQINCOMP,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def ",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -146,9 +165,9 @@ void test_tokenize_word_append_squote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_APPEND, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_SQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def'",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -166,9 +185,9 @@ void test_tokenize_word_heredoc_squote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_HEREDOC, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_SQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def'",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -186,9 +205,9 @@ void test_tokenize_word_input_squote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_INPUT, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_SQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def'",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -206,9 +225,9 @@ void test_tokenize_word_output_squote(void) {
 	TEST_ASSERT_EQUAL_STRING("abc", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_OUTPUT, ((t_token *)tokens->next->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_token *)tokens->next->content)->value);
-	TEST_ASSERT_EQUAL(TOKEN_SQUOTE,
+	TEST_ASSERT_EQUAL(TOKEN_WORD,
 					  ((t_token *)tokens->next->next->content)->type);
-	TEST_ASSERT_EQUAL_STRING("def",
+	TEST_ASSERT_EQUAL_STRING("'def'",
 							 ((t_token *)tokens->next->next->content)->value);
 	TEST_ASSERT_EQUAL(NULL, tokens->next->next->next);
 	clear_list(tokens, del_token_node);
@@ -216,6 +235,9 @@ void test_tokenize_word_output_squote(void) {
 
 int file_lexer_test(void) {
 	UNITY_BEGIN();
+	RUN_TEST(test_tokenize_empty_string);
+	RUN_TEST(test_tokenize_word_pipe_word_no_space);
+	RUN_TEST(test_tokenize_word_pipe_word_space);
 	RUN_TEST(test_tokenize_word_pipe_dquote);
 	RUN_TEST(test_tokenize_word_pipe_dquote_incomplete);
 	RUN_TEST(test_tokenize_word_pipe_squote);

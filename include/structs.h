@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 16:29:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:38:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,23 @@ typedef enum e_tok_type {
 	TOKEN_WORD
 }	t_tok_type;
 
+typedef enum e_lex_state {
+	STATE_APPEND,
+	STATE_COMPLETE,
+	STATE_CONTINUE,
+	STATE_DQUOTE,
+	STATE_DQINCOMP,
+	STATE_HEREDOC,
+	STATE_INPUT,
+	STATE_INVALID,
+	STATE_OUTPUT,
+	STATE_PIPE,
+	STATE_SKIP,
+	STATE_SQUOTE,
+	STATE_SQINCOMP,
+	STATE_WORD
+}	t_lex_state;
+
 typedef struct s_cmd
 {
 	pid_t	pid;
@@ -59,22 +76,6 @@ typedef struct s_cmd
 	t_bool	subshell;
 	t_bool	isbuiltin;
 }	t_cmd;
-
-typedef enum e_lex_state {
-	STATE_APPEND,
-	STATE_COMPLETE,
-	STATE_DQUOTE,
-	STATE_DQINCOMP,
-	STATE_HEREDOC,
-	STATE_INPUT,
-	STATE_INVALID,
-	STATE_OUTPUT,
-	STATE_PIPE,
-	STATE_SKIP,
-	STATE_SQUOTE,
-	STATE_SQINCOMP,
-	STATE_WORD
-}	t_lex_state;
 
 typedef struct s_node
 {
@@ -118,7 +119,6 @@ typedef struct s_val_info
 	char	*prompt;
 	size_t	start;
 	size_t	len;
-	int		active;
 }	t_val_info;
 
 typedef struct s_vlst
@@ -139,13 +139,27 @@ typedef struct s_tree {
 	struct s_tree	*right;
 }		t_tree;
 
+typedef struct s_queue
+{
+	t_node	*front;
+	t_node	*rear;
+}	t_queue;
+
 typedef struct s_minishell
 {
 	t_vlst	env_list;
 	t_node	*token_list;
-	t_node	*pipelines;
+	t_queue	heredoc_queue;
+	t_node	*cmd_list;
 	t_tree	*root;
+	int		last_result;
 	int		exit_status;
 }	t_minishell;
+
+typedef struct s_heredoc
+{
+	char	*delimiter;
+	t_cmd	*cmd;
+}	t_heredoc;
 
 #endif

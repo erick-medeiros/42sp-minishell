@@ -6,13 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 17:24:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/08 18:39:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtins.h"
-#include "expansor.h"
+#include "expander.h"
 #include "structs.h"
 
 //cd — change the working directory

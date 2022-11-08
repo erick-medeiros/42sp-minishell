@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 09:41:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 23:22:24 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 # include "minishell.h"
 
+# define MSG_SYNTAX_ERR "minishell: syntax error near unexpected token `|'"
+# define MSG_ALLOC_ERR "minishell: allocation error"
+
+typedef enum e_mode {
+	IN_MODE,
+	OUT_MODE,
+	APPEND_MODE,
+}	t_mode;
+
 t_pipeline	*pipeline_generator(t_minishell *minishell);
 
 // Builtins
@@ -22,8 +31,33 @@ t_pipeline	*pipeline_generator(t_minishell *minishell);
 t_bool		isbuiltin(char *arg);
 void		configure_builtin(t_cmd *command);
 
+// Utils
+int			print_parse_error(int parse_result);
+int			open_fd(char *pathname, int mode);
+
+int			new_op_node(t_tree	**op_node, t_tree_type op_type);
+t_tree		*new_cmd_node(int num);
+int			is_op(t_tree_type t);
+
+// postfix list utils
+int			push_postfix(t_node **tmp_stack, t_queue *cmds, t_tree *tree);
+void		flush_postfix(t_node **tmp_stack, t_queue *cmds);
+
+// Heredoc
+void		process_heredoc(t_queue *heredoc_queue);
+
 // Tree
 
 t_tree		*convert_list_to_tree(t_pipeline *pipeline);
+
+// Token parsing
+int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
+int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
+int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
+int			enqueue_heredoc(t_tree *cmd_node, t_minishell *ms);
+
+// Variable expansion
+int			expand_filename(char *src, char **dst, t_minishell *ms);
+int			expand_vars(char *src, char **dst, t_minishell *ms);
 
 #endif

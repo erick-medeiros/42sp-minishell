@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pathname.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:12:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 11:04:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:26:01 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "expansor.h"
+#include "expander.h"
 
 char	**get_paths(char *envp[])
 {

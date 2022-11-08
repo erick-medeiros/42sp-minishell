@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/01 19:42:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/07 02:54:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
 t_tree	*new_tree_node(t_tree_type type)
 {
@@ -36,4 +37,14 @@ void	*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *))
 		destroy_content(root);
 	free(root);
 	return (NULL);
+}
+
+void	del_cmd_tree_node(void *tree)
+{
+	t_tree	*node;
+
+	node = (t_tree *)tree;
+	if (node->type == TREE_TYPE_CMD && node->content != NULL)
+		destroy_command((t_cmd *)(node->content));
+	free(node);
 }
