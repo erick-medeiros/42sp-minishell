@@ -27,12 +27,11 @@ FORMAT = clang-format -i
 UNIT_FILES = main_test.c
 UNIT_FILES += builtins/builtins_test.c
 UNIT_FILES += ${addprefix executor/, executor_test.c pipeline_test.c subshell_test.c}
-UNIT_FILES += ${addprefix expander/, pathname_test.c}
+UNIT_FILES += ${addprefix expander/, expander_test.c pathname_test.c}
 UNIT_FILES += lexer/lexer_test.c
 UNIT_FILES += ${addprefix parser/, heredoc_test.c parser_test.c postfix_test.c}
 UNIT_FILES += prompt/prompt_test.c
 UNIT_FILES += ${addprefix utils/, environment_test.c list_test.c utils_test.c}
-UNIT_FILES += ${addprefix expansor/, pathname_test.c expansor_test.c}
 
 OBJS = ${addprefix ${OBJ_DIR}, ${UNIT_FILES:.c=.o}}
 

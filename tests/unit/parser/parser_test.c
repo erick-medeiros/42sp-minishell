@@ -10,13 +10,8 @@
 
 void test_handle_word_tokens(void) {
 	t_tree *cmd_node = new_cmd_node(0);
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_token *cmd_token = malloc(sizeof(*cmd_token));
 	t_token *arg_token = malloc(sizeof(*arg_token));
 
@@ -38,13 +33,8 @@ void test_handle_word_tokens(void) {
 
 void test_handle_output_word(void) {
 	t_tree *cmd_node = new_cmd_node(0);
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_token *output_token = malloc(sizeof(*output_token));
 	t_token *filename_token = malloc(sizeof(*filename_token));
 	char *filename = "out.txt";
@@ -77,13 +67,8 @@ void test_handle_output_word(void) {
 
 void test_handle_output_eol(void) {
 	t_tree *cmd_node = new_cmd_node(0);
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_token *output_token = malloc(sizeof(*output_token));
 	int result;
 
@@ -98,13 +83,8 @@ void test_handle_output_eol(void) {
 
 void test_handle_output_word_output_word(void) {
 	t_tree *cmd_node = new_cmd_node(0);
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_token *output1_token = malloc(sizeof(*output1_token));
 	t_token *filename1_token = malloc(sizeof(*filename1_token));
 	t_token *output2_token = malloc(sizeof(*output2_token));
@@ -156,13 +136,8 @@ void test_handle_output_word_output_word(void) {
 
 void test_handle_output_pipe(void) {
 	t_tree *cmd_node = new_cmd_node(0);
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_token *output_token = malloc(sizeof(*output_token));
 	t_token *pipe_token = malloc(sizeof(*pipe_token));
 	int result;
@@ -182,13 +157,8 @@ void test_handle_output_pipe(void) {
 
 void test_get_complete_command(void) {
 	t_tree *cmd_node = NULL;
-	t_minishell ms =
-		(t_minishell){.env_list = {.list = NULL, .len = 0},
-					  .token_list = NULL,
-					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
-					  .root = NULL,
-					  .last_result = 0};
+	t_minishell ms;
+	init_minishell(&ms, NULL);
 	t_val_info vi;
 	char *cmd = "echo";
 	char *arg1 = "'a'";
