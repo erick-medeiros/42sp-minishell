@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:43:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ int			find_env_var(void *str, void *var);
 char		*get_pathname(char *arg, char *envp[]);
 char		**get_paths(char *envp[]);
 
-char		*clean_quote_expansor(char *str);
+char		*clean_quote_expander(char *str);
 
 #endif

@@ -14,9 +14,10 @@ void test_handle_word_tokens(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *cmd_token = malloc(sizeof(*cmd_token));
 	t_token *arg_token = malloc(sizeof(*arg_token));
 
@@ -42,9 +43,10 @@ void test_handle_output_word(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *output_token = malloc(sizeof(*output_token));
 	t_token *filename_token = malloc(sizeof(*filename_token));
 	char *filename = "out.txt";
@@ -81,9 +83,10 @@ void test_handle_output_eol(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *output_token = malloc(sizeof(*output_token));
 	int result;
 
@@ -102,9 +105,10 @@ void test_handle_output_word_output_word(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *output1_token = malloc(sizeof(*output1_token));
 	t_token *filename1_token = malloc(sizeof(*filename1_token));
 	t_token *output2_token = malloc(sizeof(*output2_token));
@@ -160,9 +164,10 @@ void test_handle_output_pipe(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *output_token = malloc(sizeof(*output_token));
 	t_token *pipe_token = malloc(sizeof(*pipe_token));
 	int result;
@@ -186,9 +191,10 @@ void test_get_complete_command(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_val_info vi;
 	char *cmd = "echo";
 	char *arg1 = "'a'";
@@ -236,6 +242,47 @@ void test_get_complete_command(void) {
 	del_cmd_tree_node(cmd_node);
 }
 
+void test_get_complete_command_pipe(void) {
+	t_tree *cmd_node = NULL;
+	t_minishell ms =
+		(t_minishell){.env_list = {.list = NULL, .len = 0},
+					  .token_list = NULL,
+					  .heredoc_queue = {.front = NULL, .rear = NULL},
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
+					  .root = NULL,
+					  .exit_status = 0};
+	t_val_info vi;
+	char *cmd_a = "echo";
+	char *arg_a1 = "'a'";
+	char *arg_a2 = "b";
+	char *arg_a3 = "\"c\"";
+	int result;
+
+	vi = (t_val_info){.prompt = cmd_a, .start = 0, .len = ft_strlen(cmd_a)};
+	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
+	vi = (t_val_info){.prompt = arg_a1, .start = 0, .len = ft_strlen(arg_a1)};
+	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
+	vi = (t_val_info){.prompt = arg_a2, .start = 0, .len = ft_strlen(arg_a2)};
+	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
+	vi = (t_val_info){.prompt = arg_a3, .start = 0, .len = ft_strlen(arg_a3)};
+	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
+	new_token(&(ms.token_list), TOKEN_PIPE);
+	result = get_command(&cmd_node, &ms, 0);
+	TEST_ASSERT_EQUAL_INT(OK, result);
+	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
+	TEST_ASSERT_EQUAL_INT(4, ((t_cmd *)cmd_node->content)->argc);
+	TEST_ASSERT_EQUAL_STRING(cmd_a, ((t_cmd *)cmd_node->content)->argv[0]);
+	TEST_ASSERT_EQUAL_STRING(arg_a1, ((t_cmd *)cmd_node->content)->argv[1]);
+	TEST_ASSERT_EQUAL_STRING(arg_a2, ((t_cmd *)cmd_node->content)->argv[2]);
+	TEST_ASSERT_EQUAL_STRING(arg_a3, ((t_cmd *)cmd_node->content)->argv[3]);
+	TEST_ASSERT_EQUAL_PTR(NULL, ((t_cmd *)cmd_node->content)->argv[4]);
+	TEST_ASSERT_NOT_EQUAL(NULL, ms.token_list);
+	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)ms.token_list->content)->type);
+	del_cmd_tree_node(cmd_node);
+	clear_list(ms.token_list, del_token_node);
+}
+
 int file_parser_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_handle_word_tokens);
@@ -244,5 +291,6 @@ int file_parser_test(void) {
 	RUN_TEST(test_handle_output_word_output_word);
 	RUN_TEST(test_handle_output_pipe);
 	RUN_TEST(test_get_complete_command);
+	RUN_TEST(test_get_complete_command_pipe);
 	return UNITY_END();
 }

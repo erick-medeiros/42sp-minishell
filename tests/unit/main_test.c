@@ -14,7 +14,7 @@ int file_lexer_test(void);
 int file_pipeline_test(void);
 int file_postfix_test(void);
 int file_heredoc_test(void);
-int file_expansor_test(void);
+int file_expander_test(void);
 
 void setUp(void) {}
 
@@ -34,7 +34,7 @@ void run_all_test() {
 	file_prompt_test();
 	file_subshell_test();
 	file_utils_test();
-	file_expansor_test();
+	file_expander_test();
 }
 
 int main(int argc, char *argv[]) {
@@ -68,8 +68,8 @@ int main(int argc, char *argv[]) {
 			return file_subshell_test();
 		if (strcmp("utils", file) == 0)
 			return file_utils_test();
-		else if (!strcmp("expansor", file))
-			file_expansor_test();
+		else if (!strcmp("expander", file))
+			file_expander_test();
 	}
 	return 0;
 }

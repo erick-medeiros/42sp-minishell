@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 20:04:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 04:12:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 	minishell->env_list.list = NULL;
 	minishell->cmd_list.front = NULL;
 	minishell->cmd_list.rear = NULL;
-	minishell->last_result = 0;
 	minishell->exit_status = 0;
 	if (envp)
 		envp_to_list(envp, &minishell->env_list);

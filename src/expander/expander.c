@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expansor.c                                         :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/07 20:01:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	concat_expanded(char **str, int start, int end, char *expanded)
 	return (len);
 }
 
-char	*expansor_vars(t_vlst *env_list, char *str)
+char	*expander_vars(t_vlst *env_list, char *str)
 {
 	char	*expanded;
 	int		i;

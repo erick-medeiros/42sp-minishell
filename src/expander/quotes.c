@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 17:46:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	update_quote(char c, int quote)
 	return (quote);
 }
 
-char	*clean_quote_expansor(char *str)
+char	*clean_quote_expander(char *str)
 {
 	char	*new;
 	int		quote;

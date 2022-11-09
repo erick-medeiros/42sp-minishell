@@ -10,9 +10,10 @@ void test_enqueue_heredoc_word(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *heredoc_token = malloc(sizeof(*heredoc_token));
 	t_token *delimiter_token = malloc(sizeof(*delimiter_token));
 	char *delimiter = "EOF";
@@ -44,9 +45,10 @@ void test_enqueue_heredoc_eol(void) {
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
 					  .token_list = NULL,
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
-					  .cmd_list = NULL,
+					  .cmd_list.front = NULL,
+					  .cmd_list.rear = NULL,
 					  .root = NULL,
-					  .last_result = 0};
+					  .exit_status = 0};
 	t_token *heredoc_token = malloc(sizeof(*heredoc_token));
 	int result;
 

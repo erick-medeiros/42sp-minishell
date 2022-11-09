@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:35:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 03:45:35 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ int			command_is_equal(char *cmd, char *str);
 char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
+t_lex_state	get_lex_state(int parse_result);
+void		handle_parse_result(int result, char **prompt,
+				char **history, t_minishell *ms);
 
 // Commands
 
@@ -122,8 +125,8 @@ void		command_signal_handler(int sig);
 void		shell(t_minishell *minishell, char *line);
 void		shell_loop(t_minishell *minishell);
 
-// Expansor
+// Expander
 
-char		*expansor_vars(t_vlst *env_list, char *str);
+char		*expander_vars(t_vlst *env_list, char *str);
 
 #endif
