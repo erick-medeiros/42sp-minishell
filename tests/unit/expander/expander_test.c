@@ -47,9 +47,17 @@ void test_clean_quote_expansor(void) {
 	free(str);
 }
 
+void test_filename_expander(void) {
+	char *result;
+
+	(void)result;
+	TEST_ASSERT_EQUAL_STRING(NULL, filename_expander(NULL));
+}
+
 int file_expansor_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_expansor_vars);
 	RUN_TEST(test_clean_quote_expansor);
+	RUN_TEST(test_filename_expander);
 	return UNITY_END();
 }

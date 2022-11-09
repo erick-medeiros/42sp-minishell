@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:43:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/09 15:02:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int			find_env_var(void *str, void *var);
 
 char		*get_pathname(char *arg, char *envp[]);
 char		**get_paths(char *envp[]);
+char		*filename_expander(char *str);
 
 char		*clean_quote_expansor(char *str);
 
