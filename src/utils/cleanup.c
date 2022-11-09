@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/03 01:33:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/09 18:56:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	clear_list(t_node *lst, void (*del_node)(void *))
 
 	while (lst)
 	{
-		del_node(lst->content);
+		if (del_node)
+			del_node(lst->content);
 		tmp = lst;
 		lst = lst->next;
 		free(tmp);

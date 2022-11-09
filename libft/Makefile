@@ -10,7 +10,7 @@ HEADER = libft.h
 SRC = ft_itoa.c ft_math.c ft_split.c ft_isspace.c
 SRC += ft_strchr.c ft_strrchr.c ft_strcmp.c
 SRC += ft_strdup.c ft_strjoin.c ft_strlcpy.c
-SRC += ft_strlen.c ft_strncmp.c ft_substr.c
+SRC += ft_strlen.c ft_strncasecmp.c ft_strncmp.c ft_substr.c
 SRC += ft_strappend.c
 
 OBJ = $(SRC:.c=.o)
