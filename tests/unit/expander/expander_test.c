@@ -75,18 +75,29 @@ char *simulate_bash_exec(char *exec) {
 }
 
 void test_filename_expander(void) {
+	char *expected;
 	char *result;
 
 	TEST_ASSERT_EQUAL_STRING(NULL, filename_expander(NULL));
+	expected = simulate_bash_exec("echo -n *");
 	result = filename_expander("*");
-	printf("\n=====\n");
-	printf("minishell\n[%s]\n", result);
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
 	free(result);
-	// result = simulate_bash_exec("echo *");
-	// result = simulate_bash_exec("echo -e * '\\0'");
-	result = simulate_bash_exec("echo -n *; echo -e '\\0'");
-	printf("\nbash\n[%s]", result);
-	printf("\n=====\n\n");
+	expected = simulate_bash_exec("echo -n *.c");
+	result = filename_expander("*.c");
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
+	free(result);
+	expected = simulate_bash_exec("echo -n M*");
+	result = filename_expander("M*");
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
+	free(result);
+	expected = simulate_bash_exec("echo -n *k*");
+	result = filename_expander("*k*");
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
 	free(result);
 }
 

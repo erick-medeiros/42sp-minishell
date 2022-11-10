@@ -6,34 +6,35 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 20:53:30 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 12:52:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	debug_list_filename(t_node	*list)
-{
-	while (list)
-	{
-		printf("%s", ((char *)list->content));
-		list = list->next;
-		if (list)
-			printf(" ");
-	}
-	printf("\n\n");
-}
-
 t_bool	pattern_matching(char *match, struct dirent *direntp)
 {
-	(void)match;
+	char	**matchs;
+	int		i;
+	int		check;
+
 	if (ft_strcmp(".", direntp->d_name) == 0)
 		return (FALSE);
 	if (ft_strcmp("..", direntp->d_name) == 0)
 		return (FALSE);
 	if (direntp->d_name[0] == '.')
 		return (FALSE);
-	return (TRUE);
+	matchs = ft_split(match, '*');
+	check = TRUE;
+	i = 0;
+	while (matchs[i])
+	{
+		if (!ft_strnstr(direntp->d_name, matchs[i], ft_strlen(direntp->d_name)))
+			check = FALSE;
+		++i;
+	}
+	free_string_list(matchs);
+	return (check);
 }
 
 t_node	*directory_files(char *match)
