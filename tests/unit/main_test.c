@@ -15,6 +15,7 @@ int file_pipeline_test(void);
 int file_postfix_test(void);
 int file_heredoc_test(void);
 int file_expander_test(void);
+int file_debug_fd(void);
 
 void setUp(void) {}
 
@@ -68,7 +69,7 @@ int main(int argc, char *argv[]) {
 			return file_subshell_test();
 		if (strcmp("utils", file) == 0)
 			return file_utils_test();
-		else if (!strcmp("expander", file))
+		if (!strcmp("expander", file))
 			file_expander_test();
 	}
 	return 0;

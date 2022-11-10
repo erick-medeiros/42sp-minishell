@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 02:11:33 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 03:44:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:55:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	new_token_with_val(t_node **tokens, t_tok_type tok_type, t_val_info *vi)
 		return (ERR_ALLOC);
 	}
 	content->type = tok_type;
-	ft_strlcpy(val, vi->prompt + vi->start, vi->len + 1);
+	ft_strlcpy(val, vi->line + vi->start, vi->len + 1);
 	content->value = val;
 	vi->len = 0;
 	return (add_node(tokens, content));

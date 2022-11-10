@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 02:40:22 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:54:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ typedef struct s_var
 
 typedef struct s_val_info
 {
-	char	*prompt;
+	char	*line;
 	size_t	start;
 	size_t	len;
 }	t_val_info;

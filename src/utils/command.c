@@ -6,12 +6,14 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 02:40:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 02:23:42 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expander.h"
 #include "minishell.h"
 #include "structs.h"
+#include "parser.h"
 
 t_cmd	*new_command(int number)
 {
@@ -77,4 +79,23 @@ void	destroy_pipeline(t_pipeline	*pipeline)
 	if (pipeline->commands)
 		clear_list(pipeline->commands, (void (*)(void *))destroy_command);
 	free(pipeline);
+}
+
+int	initialize_command(t_cmd *command, t_minishell * ms)
+{
+	if (command->argc > 0)
+	{
+
+		if (isbuiltin(command->argv[0]))
+		{
+			command->isbuiltin = TRUE;
+			configure_builtin(command);
+			return (OK);
+		}
+		command->envp = list_to_envp(&ms->env_list, 0);
+		if (command->envp  == NULL)
+			return (ERR_ALLOC);
+		command->pathname = get_pathname(command->argv[0], command->envp);
+	}
+	return (OK);
 }

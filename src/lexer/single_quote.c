@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 02:46:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:55:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	const char	next_ch = vi->prompt[idx];
+	const char	next_ch = vi->line[idx];
 
 	if (next_ch == '\0')
 	{

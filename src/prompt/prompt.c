@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 03:56:14 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:43:04 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*get_prompt(t_minishell *minishell)
 	return (prompt);
 }
 
-void	shell(t_minishell *minishell, char *line)
+void	shell(t_minishell *minishell, char **line)
 {
 	minishell->token_list = NULL;
 	lexer(line, &minishell->token_list, STATE_SKIP);
@@ -58,7 +58,7 @@ void	shell_loop(t_minishell *minishell)
 			break ;
 		}
 		minishell->token_list = NULL;
-		process_line(line, minishell);
+		process_line(&line, minishell);
 		free_minishell(minishell);
 	}
 }

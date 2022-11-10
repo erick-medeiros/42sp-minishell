@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/06 23:22:24 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:41:11 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			is_op(t_tree_type t);
 
 // postfix list utils
 int			push_postfix(t_node **tmp_stack, t_queue *cmds, t_tree *tree);
-void		flush_postfix(t_node **tmp_stack, t_queue *cmds);
+int			flush_postfix(t_node **tmp_stack, t_queue *cmds);
 
 // Heredoc
 void		process_heredoc(t_queue *heredoc_queue);
@@ -49,6 +49,7 @@ void		process_heredoc(t_queue *heredoc_queue);
 // Tree
 
 t_tree		*convert_list_to_tree(t_pipeline *pipeline);
+t_tree 		*build_tree_postfix(t_minishell *ms);
 
 // Token parsing
 int			handle_next_token(t_tree *cmd_node, t_minishell *ms);

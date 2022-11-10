@@ -6,41 +6,50 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:42:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/09 02:42:12 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:38:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
 
-static void	transfer_node(t_node **src, t_queue *dst);
+static int	transfer_node(t_node **src, t_queue *dst);
 
 int	push_postfix(t_node **tmp_stack, t_queue *cmds, t_tree *tree)
 {
 	if (is_op(tree->type))
 	{
 		while (*tmp_stack != NULL)
-			transfer_node(tmp_stack, cmds);
-		return (add_node(tmp_stack, tree));
+		{
+			if (transfer_node(tmp_stack, cmds))
+				return (ERR_ALLOC);
+		}
+
+		return (push_node(tmp_stack, tree));
 	}
 	return (enqueue(cmds, tree));
 }
 
-void	flush_postfix(t_node **tmp_stack, t_queue *cmds)
+int	flush_postfix(t_node **tmp_stack, t_queue *cmds)
 {
 	while (*tmp_stack != NULL)
-		transfer_node(tmp_stack, cmds);
+	{
+		if (transfer_node(tmp_stack, cmds))
+			return (ERR_ALLOC);
+	}
+	return (OK);
 }
 
-static void	transfer_node(t_node **src, t_queue *dst)
+static int	transfer_node(t_node **src, t_queue *dst)
 {
 	t_node	*popped;
+	int		result;
 
 	if (*src == NULL)
-		return ;
+		return (OK);
 	popped = *src;
 	*src = (*src)->next;
-	enqueue(dst, popped->content);
+	result = enqueue(dst, popped->content);
 	free(popped);
+	return(result);
 }

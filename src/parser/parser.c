@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 03:57:01 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/09 23:50:33 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	parser(t_minishell *ms, int cmd_num)
 
 	result = OK;
 	tmp_stack = NULL;
-	ms->cmd_list.front = NULL;
-	ms->cmd_list.rear = NULL;
 	if (ms->token_list
 		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
 		return (ERR_BAD_SYNTAX);
@@ -41,7 +39,8 @@ int	parser(t_minishell *ms, int cmd_num)
 			tree = NULL;
 		}
 	}
-	flush_postfix(&tmp_stack, &ms->cmd_list);
+	if (result == OK)
+		result = flush_postfix(&tmp_stack, &ms->cmd_list);
 	return (result);
 }
 
@@ -54,7 +53,13 @@ static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num)
 	if (is_op(tree_type))
 	{
 		if (ms->token_list->next == NULL)
+		{
+			result = new_op_node(tree, tree_type);
+			if (result != OK)
+				return (result);
+			ms->token_list = remove_node(ms->token_list, del_token_node);
 			return (ERR_INCOMP_PIPE);
+		}
 		if (is_op(tok_to_tree_type(ms->token_list->next->content)))
 			return (ERR_BAD_SYNTAX);
 		result = new_op_node(tree, tree_type);

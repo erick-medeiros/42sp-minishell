@@ -1,29 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   stack.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/02 23:11:00 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 00:25:54 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/10 03:37:27 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/10 03:38:07 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// TODO: implement expansion of filename word token values
-int	expand_filename(char *src, char **dst, t_minishell *ms)
+int	push_node(t_node **lst, void *content)
 {
-	(void)ms;
-	*dst = ft_strdup(src);
+	t_node	*new_node;
+
+	if (!lst)
+		return (ERR_NOT_FOUND);
+	new_node = malloc(sizeof(*new_node));
+	if (!new_node)
+		return (ERR_ALLOC);
+	new_node->content = content;
+	new_node->next = *lst;
+	*lst = new_node;
 	return (OK);
 }
 
-// TODO: implement expansion of non-filename word token values
-int	expand_vars(char *src, char **dst, t_minishell *ms)
+void	*pop_node(t_node **src)
 {
-	(void)ms;
-	*dst = ft_strdup(src);
-	return (OK);
+	t_node	*popped;
+	void	*content;
+
+	if (*src == NULL)
+		return (NULL);
+	popped = *src;
+	*src = popped->next;
+	content = popped->content;
+	free(popped);
+	return(content);
 }

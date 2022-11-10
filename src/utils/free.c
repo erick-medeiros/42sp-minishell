@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:38:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/02 19:57:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:45:47 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	free_string_list(char **str)
 	free(str);
 }
 
-void	destroy_execution_tree(t_tree *root)
+void	destroy_execution_tree(void *root)
 {
-	if (root->type == TREE_TYPE_CMD)
-		destroy_command(root->content);
+	if (((t_tree *)root)->type == TREE_TYPE_CMD)
+		destroy_command(((t_tree *)root)->content);
 }
 
 void	destroy_redirect(t_redirect *redirect)

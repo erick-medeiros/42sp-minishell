@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/07 02:54:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:34:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_tree	*new_tree_node(t_tree_type type)
 	return (tree_node);
 }
 
-void	*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *))
+void	*destroy_tree(t_tree *root, void (*destroy_content)(void *))
 {
 	if (!root)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/05 22:45:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 01:10:35 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
 
-int	lexer(char *prompt, t_node **tokens, t_lex_state st)
+int	lexer(char **line, t_node **tokens, t_lex_state st)
 {
 	t_lex_state	next_state;
 	t_val_info	vi;
@@ -26,9 +26,12 @@ int	lexer(char *prompt, t_node **tokens, t_lex_state st)
 
 	vi.start = 0;
 	vi.len = 0;
-	vi.prompt = prompt;
+	vi.line = *line;
 	if (st == STATE_CONTINUE)
+	{
 		next_state = handle_continue_state(tokens, &vi);
+		*line = vi.line;
+	}
 	else
 		next_state = st;
 	idx = vi.len;

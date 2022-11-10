@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 03:45:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:46:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ t_node		*find_node_by_content(t_node *lst, void *content,
 t_node		*remove_node(t_node *current, void (*del_node)(void *));
 int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
+int			push_node(t_node **lst, void *content);
+void		*pop_node(t_node **src);
 
 // Queue
 t_queue		*new_queue(void);
@@ -67,8 +69,8 @@ void		*dequeue(t_queue *queue);
 // Tree
 
 t_tree		*new_tree_node(t_tree_type type);
-void		destroy_execution_tree(t_tree *root);
-void		*destroy_tree(t_tree *root, void (*destroy_content)(t_tree *));
+void		destroy_execution_tree(void *root);
+void		*destroy_tree(t_tree *root, void (*destroy_content)(void *));
 void		del_cmd_tree_node(void *tree);
 
 // Init
@@ -76,6 +78,7 @@ void		del_cmd_tree_node(void *tree);
 t_cmd		*new_command(int number);
 t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
+int			initialize_command(t_cmd *command, t_minishell * ms);
 
 // Cleanup functions
 void		*clear_envp(char **envp);
@@ -99,13 +102,13 @@ char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
 t_lex_state	get_lex_state(int parse_result);
-void		handle_parse_result(int result, char **prompt,
+void		handle_parse_result(int result, char **line,
 				char **history, t_minishell *ms);
 
 // Commands
 
-void		process_line(char *prompt, t_minishell *minishell);
-int			lexer(char *prompt, t_node **tokens, t_lex_state st);
+void		process_line(char **line, t_minishell *minishell);
+int			lexer(char **line, t_node **tokens, t_lex_state st);
 void		executor(t_minishell *minishell);
 int			parser(t_minishell *ms, int cmd_num);
 int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
@@ -122,7 +125,7 @@ void		command_signal_handler(int sig);
 
 // Interactive
 
-void		shell(t_minishell *minishell, char *line);
+void		shell(t_minishell *minishell, char **line);
 void		shell_loop(t_minishell *minishell);
 
 // Expander
