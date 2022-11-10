@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 12:52:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 12:57:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,8 @@ char	*filename_expander(char *match)
 			ft_strappend(&result, " ");
 	}
 	clear_list(list, free);
-	return (result);
+	if (result)
+		return (result);
+	else
+		return (ft_strdup(match));
 }
