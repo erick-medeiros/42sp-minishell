@@ -6,31 +6,53 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 12:57:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 17:32:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
+#include "structs.h"
+
+t_bool	matching(char *match, char **match_list, int i, struct dirent *direntp)
+{
+	char	*tmp;
+	t_bool	check;
+
+	check = TRUE;
+	if (i == 0 && match[0] != '*')
+	{
+		if (ft_strncmp(direntp->d_name, match_list[i],
+				ft_strlen(match_list[i])))
+			check = FALSE;
+	}
+	else if (!match_list[i + 1] && match[ft_strlen(match) - 1] != '*')
+	{
+		tmp = &direntp->d_name[ft_strlen(direntp->d_name)
+			- ft_strlen(match_list[i])];
+		if (ft_strncmp(tmp, match_list[i], ft_strlen(tmp)))
+			check = FALSE;
+	}
+	else if (!ft_strnstr(direntp->d_name, match_list[i],
+			ft_strlen(direntp->d_name)))
+		check = FALSE;
+	return (check);
+}
 
 t_bool	pattern_matching(char *match, struct dirent *direntp)
 {
 	char	**matchs;
 	int		i;
-	int		check;
+	t_bool	check;
 
-	if (ft_strcmp(".", direntp->d_name) == 0)
-		return (FALSE);
-	if (ft_strcmp("..", direntp->d_name) == 0)
-		return (FALSE);
-	if (direntp->d_name[0] == '.')
+	if (direntp->d_name[0] == '.' && match[0] != '.')
 		return (FALSE);
 	matchs = ft_split(match, '*');
 	check = TRUE;
 	i = 0;
-	while (matchs[i])
+	while (matchs[i] && check)
 	{
-		if (!ft_strnstr(direntp->d_name, matchs[i], ft_strlen(direntp->d_name)))
-			check = FALSE;
+		check = matching(match, matchs, i, direntp);
 		++i;
 	}
 	free_string_list(matchs);
@@ -98,7 +120,9 @@ char	*filename_expander(char *match)
 
 	result = NULL;
 	if (!match)
-		return (match);
+		return (NULL);
+	if (!ft_strchr(match, '*'))
+		return (ft_strdup(match));
 	list = directory_files(match);
 	sort_list(list);
 	node = list;

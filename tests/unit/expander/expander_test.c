@@ -99,6 +99,19 @@ void test_filename_expander(void) {
 	TEST_ASSERT_EQUAL_STRING(expected, result);
 	free(expected);
 	free(result);
+	result = filename_expander("abc");
+	TEST_ASSERT_EQUAL_STRING("abc", result);
+	free(result);
+	expected = simulate_bash_exec("echo -n .*");
+	result = filename_expander(".*");
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
+	free(result);
+	expected = simulate_bash_exec("echo -n *e");
+	result = filename_expander("*e");
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(expected);
+	free(result);
 }
 
 int file_expander_test(void) {
