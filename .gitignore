@@ -63,3 +63,6 @@ minishell
 
 # gdb
 .gdb_history
+
+# script to pull all branches
+pull_all.sh
