@@ -171,21 +171,21 @@ void test_get_complete_command(void) {
 
 	fd = open(in_filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	close(fd);
-	vi = (t_val_info){.prompt = cmd, .start = 0, .len = ft_strlen(cmd)};
+	vi = (t_val_info){.line = cmd, .start = 0, .len = ft_strlen(cmd)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg1, .start = 0, .len = ft_strlen(arg1)};
+	vi = (t_val_info){.line = arg1, .start = 0, .len = ft_strlen(arg1)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
 	new_token(&(ms.token_list), TOKEN_INPUT);
 	vi = (t_val_info){
-		.prompt = in_filename, .start = 0, .len = ft_strlen(in_filename)};
+		.line = in_filename, .start = 0, .len = ft_strlen(in_filename)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
 	new_token(&(ms.token_list), TOKEN_OUTPUT);
 	vi = (t_val_info){
-		.prompt = out_filename, .start = 0, .len = ft_strlen(out_filename)};
+		.line = out_filename, .start = 0, .len = ft_strlen(out_filename)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg2, .start = 0, .len = ft_strlen(arg2)};
+	vi = (t_val_info){.line = arg2, .start = 0, .len = ft_strlen(arg2)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg3, .start = 0, .len = ft_strlen(arg3)};
+	vi = (t_val_info){.line = arg3, .start = 0, .len = ft_strlen(arg3)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
 	result = get_command(&cmd_node, &ms, 0);
 	TEST_ASSERT_EQUAL_INT(OK, result);
@@ -223,13 +223,13 @@ void test_get_complete_command_pipe(void) {
 	char *arg_a3 = "\"c\"";
 	int result;
 
-	vi = (t_val_info){.prompt = cmd_a, .start = 0, .len = ft_strlen(cmd_a)};
+	vi = (t_val_info){.line = cmd_a, .start = 0, .len = ft_strlen(cmd_a)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg_a1, .start = 0, .len = ft_strlen(arg_a1)};
+	vi = (t_val_info){.line = arg_a1, .start = 0, .len = ft_strlen(arg_a1)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg_a2, .start = 0, .len = ft_strlen(arg_a2)};
+	vi = (t_val_info){.line = arg_a2, .start = 0, .len = ft_strlen(arg_a2)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
-	vi = (t_val_info){.prompt = arg_a3, .start = 0, .len = ft_strlen(arg_a3)};
+	vi = (t_val_info){.line = arg_a3, .start = 0, .len = ft_strlen(arg_a3)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
 	new_token(&(ms.token_list), TOKEN_PIPE);
 	result = get_command(&cmd_node, &ms, 0);

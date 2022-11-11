@@ -8,7 +8,7 @@ void test_tokenize_empty_string(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_EQUAL_PTR(NULL, tokens);
 }
@@ -18,7 +18,7 @@ void test_tokenize_word_pipe_word_no_space(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -38,7 +38,7 @@ void test_tokenize_word_pipe_word_space(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -58,7 +58,7 @@ void test_tokenize_word_pipe_dquote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -78,7 +78,7 @@ void test_tokenize_word_pipe_dquote_spaces(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -98,7 +98,7 @@ void test_tokenize_word_pipe_dquote_incomplete(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -118,7 +118,7 @@ void test_tokenize_word_pipe_squote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -138,7 +138,7 @@ void test_tokenize_word_pipe_squote_incomplete(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -158,7 +158,7 @@ void test_tokenize_word_append_squote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -178,7 +178,7 @@ void test_tokenize_word_heredoc_squote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -198,7 +198,7 @@ void test_tokenize_word_input_squote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
@@ -218,7 +218,7 @@ void test_tokenize_word_output_squote(void) {
 	t_node *tokens = NULL;
 	int result;
 
-	result = lexer(prompt, &tokens, STATE_SKIP);
+	result = lexer(&prompt, &tokens, STATE_SKIP);
 	TEST_ASSERT_EQUAL_INT(OK, result);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
