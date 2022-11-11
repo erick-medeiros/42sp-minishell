@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 03:41:51 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 12:14:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	process_line(char **line, t_minishell *minishell)
 		handle_parse_result(parse_result, line, &history, minishell);
 	}
 	free(*line);
-	add_history(history);
+	if (minishell->set_history)
+		add_history(history);
 	free(history);
 	if (parse_result == OK)
 	{
