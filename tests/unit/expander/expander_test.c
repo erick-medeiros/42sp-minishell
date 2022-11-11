@@ -37,13 +37,13 @@ void test_expansor_vars(void) {
 void test_clean_quote_expansor(void) {
 	char *str;
 
-	str = clean_quote_expander(strdup("\"abc'def\""));
+	str = clean_quote_expander("\"abc'def\"");
 	TEST_ASSERT_EQUAL_STRING("abc'def", str);
 	free(str);
-	str = clean_quote_expander(strdup("\"abc'def\"'abc\"def'"));
+	str = clean_quote_expander("\"abc'def\"'abc\"def'");
 	TEST_ASSERT_EQUAL_STRING("abc'defabc\"def", str);
 	free(str);
-	str = clean_quote_expander(strdup("abc"));
+	str = clean_quote_expander("abc");
 	TEST_ASSERT_EQUAL_STRING("abc", str);
 	free(str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 15:48:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char	*clean_quote_expander(char *str)
 			new[j++] = str[i];
 		++i;
 	}
-	free(str);
 	new[j] = '\0';
 	return (new);
 }
