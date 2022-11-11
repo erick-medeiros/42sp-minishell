@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 18:57:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 23:20:52 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ static t_tree_type	tok_to_tree_type(t_token *tok);
 
 int	parser(t_minishell *ms, int cmd_num)
 {
-	static t_tree	*tree = NULL;
-	t_node			*tmp_stack;
+	static t_tree	*tree;
+	static t_node	*tmp_stack = NULL;
 	int				result;
 
 	result = OK;
-	tmp_stack = NULL;
 	if (ms->token_list
 		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
 		return (ERR_BAD_SYNTAX);
