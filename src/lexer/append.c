@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:20:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/05 02:41:50 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:54:42 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	const char	next_ch = vi->prompt[idx];
+	const char	next_ch = vi->line[idx];
 
 	if (new_token(tokens, TOKEN_APPEND))
 		return (STATE_INVALID);

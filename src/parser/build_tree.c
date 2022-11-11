@@ -3,39 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 20:28:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 03:36:42 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
-t_tree	*insert_into_tree(t_tree *root, t_tree_type type, void *content)
+static t_bool	is_operand(t_tree *t);
+static int	build_tree_node(t_node **tmp_stack, t_tree* root);
+
+t_tree *build_tree_postfix(t_minishell *ms)
 {
-	t_tree	*temp;
-	t_tree	*current;
-	t_tree	*parent;
+	t_node	*tmp_stack;
+	t_tree	*root;
 
-	(void) parent;
-	temp = new_tree_node(type);
-	temp->content = content;
-	if (root == NULL)
-		root = temp;
+	tmp_stack = NULL;
+	if (ms->cmd_list.front == NULL
+		|| ((t_tree *)ms->cmd_list.front->content)->type != TREE_TYPE_CMD)
+		return (NULL);
+	if (ms->cmd_list.front == ms->cmd_list.rear)
+		return (dequeue(&ms->cmd_list));
+	root = dequeue(&ms->cmd_list);
+	while (root != NULL)
+	{
+		build_tree_node(&tmp_stack, root);
+		root = dequeue(&ms->cmd_list);
+	}
+	return (pop_node(&tmp_stack));
+}
+
+static t_bool	is_operand(t_tree *t)
+{
+	return (t->type == TREE_TYPE_CMD || t->content);
+}
+
+static int	build_tree_node(t_node **tmp_stack, t_tree* root)
+{
+	int	result;
+
+	if (is_operand(root))
+		result = push_node(tmp_stack, root);
 	else
 	{
-		current = root;
-		parent = NULL;
-		if (current->type == TREE_TYPE_PIPE && current->right == NULL)
-		{
-			current->right = temp;
-		}
-		else
-		{
-			root = temp;
-			root->left = current;
-		}
+		root->right = pop_node(tmp_stack);
+		root->left = pop_node(tmp_stack);
+		root->content = (void *)1;
+		result = push_node(tmp_stack, root);
+		if (!root->left || !root->right)
+			result = ERR_ALLOC;
 	}
-	return (root);
+	if (result != OK)
+	{
+		destroy_tree(root, del_cmd_tree_node);
+		clear_list(*tmp_stack, del_cmd_tree_node);
+		return (result);
+	}
+	return (OK);
 }

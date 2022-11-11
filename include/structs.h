@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 19:59:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 00:54:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ typedef struct s_var
 
 typedef struct s_val_info
 {
-	char	*prompt;
+	char	*line;
 	size_t	start;
 	size_t	len;
 }	t_val_info;
@@ -152,7 +152,6 @@ typedef struct s_minishell
 	t_queue	heredoc_queue;
 	t_queue	cmd_list;
 	t_tree	*root;
-	int		last_result;
 	int		exit_status;
 }	t_minishell;
 

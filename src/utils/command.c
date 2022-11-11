@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:41:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/11 01:35:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expander.h"
 #include "minishell.h"
 #include "structs.h"
+#include "parser.h"
 
 t_cmd	*new_command(int number)
 {
@@ -77,4 +79,19 @@ void	destroy_pipeline(t_pipeline	*pipeline)
 	if (pipeline->commands)
 		clear_list(pipeline->commands, (void (*)(void *))destroy_command);
 	free(pipeline);
+}
+
+int	initialize_command(t_cmd *command)
+{
+	if (command->argc > 0)
+	{
+
+		if (isbuiltin(command->argv[0]))
+		{
+			command->isbuiltin = TRUE;
+			configure_builtin(command);
+			return (OK);
+		}
+	}
+	return (OK);
 }

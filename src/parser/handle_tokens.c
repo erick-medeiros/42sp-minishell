@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/08 19:55:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/10 01:28:40 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 
 	cmd = ((t_cmd *)cmd_node->content);
 	tok = ms->token_list->content;
-	if (cmd->argc == 0)
-		result = expand_vars(tok->value, &expd, ms);
-	else
-		result = expand_vars(tok->value, &expd, ms);
+	result = expand_vars(tok->value, &expd, ms);
 	if (result != OK)
 		return (result);
 	result = add_arg(cmd->argc, &cmd->argv, expd);
