@@ -6,13 +6,13 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 00:03:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/14 01:47:49 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 03:16:58 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	split_name_val(char *str, char *equal_pos, t_var *content)
+static int	str_to_name_val_node(char *str, char *equal_pos, t_var *content)
 {
 	size_t	len;
 
@@ -45,7 +45,7 @@ t_var	*new_var_node_from_str(char *str)
 	content = malloc(sizeof(*content));
 	if (!content)
 		return (NULL);
-	if (split_name_val(str, equal_pos, content))
+	if (str_to_name_val_node(str, equal_pos, content))
 	{
 		free(content);
 		return (NULL);

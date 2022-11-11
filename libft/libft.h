@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:07:14 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:38:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/11 02:29:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <stddef.h>
 
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
 int		ft_isspace(char c);
 char	*ft_itoa(int number);
 int		ft_max(int number1, int number2);

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 01:35:16 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 03:12:48 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define ERR_FILE_OPEN 9
 
 // List-related functions
+
 int			add_node(t_node **lst, void *content);
 int			change_node_content(t_node *lst, void *old_content,
 				void *new_content, t_node_funcs *funcs);
@@ -62,6 +63,7 @@ int			push_node(t_node **lst, void *content);
 void		*pop_node(t_node **src);
 
 // Queue
+
 t_queue		*new_queue(void);
 int			enqueue(t_queue *queue, void *content);
 void		*dequeue(t_queue *queue);
@@ -81,6 +83,7 @@ void		init_minishell(t_minishell *minishell, char **envp);
 int			initialize_command(t_cmd *command);
 
 // Cleanup functions
+
 void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
@@ -131,5 +134,9 @@ void		shell_loop(t_minishell *minishell);
 // Expander
 
 char		*expander_vars(t_vlst *env_list, char *str);
+
+// Quicksort string list
+
+void	quicksort(char **envp, size_t start_idx, size_t end_idx);
 
 #endif

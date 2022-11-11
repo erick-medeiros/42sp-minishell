@@ -6,22 +6,22 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/06 02:25:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 03:26:18 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtins.h"
 #include "expander.h"
 #include "minishell.h"
 
-static void		change_or_create_var(t_vlst *vars, char *str);
+static void	change_or_create_var(t_vlst *vars, char *name, char *val);
 static void		print_sorted_vars(t_vlst *vars, char *prefix);
 static size_t	partition(char **envp, size_t start_idx, size_t end_idx);
-static void		quicksort(char **envp, size_t start_idx, size_t end_idx);
 
-// TODO: sanitize args
 void	builtin_export(int argc, char *argv[], t_vlst *vars)
 {
 	int		idx;
+
 
 	if (argc == 1)
 	{
@@ -30,7 +30,17 @@ void	builtin_export(int argc, char *argv[], t_vlst *vars)
 	}
 	idx = 1;
 	while (idx < argc)
+	{
+
+		if (!is_valid_name(content->name))
+		{
+			write(STDERR, "minishell: export: `", 20);
+			write(STDERR, argv[idx], ft_strlen(argv[idx]));
+			write(STDERR, "': not a valid identifier\n", 26);
+			continue ;
+		}
 		change_or_create_var(vars, argv[idx++]);
+	}
 }
 
 static void	print_sorted_vars(t_vlst *vars, char *prefix)
@@ -46,14 +56,14 @@ static void	print_sorted_vars(t_vlst *vars, char *prefix)
 	clear_envp(tmp);
 }
 
-static void	change_or_create_var(t_vlst *vars, char *str)
+static void	change_or_create_var(t_vlst *vars, char *name, char *val)
 {
 	t_var			*content;
 	t_node_funcs	funcs;
 
 	funcs.clear = del_var_node;
 	funcs.cmp = cmp_vars_by_name;
-	content = new_var_node_from_str(str);
+	content = new_var_node_from_name_val(name, val);
 	if (!content)
 		return ;
 	if (change_node_content(vars->list, content, content, &funcs))
@@ -67,41 +77,16 @@ static void	change_or_create_var(t_vlst *vars, char *str)
 	}
 }
 
-static size_t	partition(char **envp, size_t start_idx, size_t end_idx)
+int	split_name_val(char *str, char **name, char **val)
 {
-	char	*pivot;
-	char	*tmp;
-	size_t	i;
-	size_t	j;
+	char	*equal_pos;
 
-	pivot = envp[end_idx];
-	i = start_idx;
-	j = start_idx;
-	while (j < end_idx)
-	{
-		if (ft_strcmp(envp[j], pivot) <= 0)
-		{
-			tmp = envp[j];
-			envp[j] = envp[i];
-			envp[i] = tmp;
-			i++;
-		}
-		j++;
-	}
-	tmp = envp[end_idx];
-	envp[end_idx] = envp[i];
-	envp[i] = tmp;
-	return (i);
-}
-
-static void	quicksort(char **envp, size_t start_idx, size_t end_idx)
-{
-	size_t	pivot_idx;
-
-	if (start_idx < end_idx)
-	{
-		pivot_idx = partition(envp, start_idx, end_idx);
-		quicksort(envp, start_idx, pivot_idx - 1);
-		quicksort(envp, pivot_idx + 1, end_idx);
-	}
+	if (!str)
+		return (ERR_NOT_FOUND);
+	equal_pos = ft_strchr(str, '=');
+	if (!equal_pos)
+		return (ERR_NOT_FOUND);
+	*name = malloc(sizeof(*content));
+	if (!content)
+		return (NULL);
 }
