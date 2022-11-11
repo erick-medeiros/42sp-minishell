@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 11:21:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:30:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ typedef enum e_mode {
 	OUT_MODE,
 	APPEND_MODE,
 }	t_mode;
-
-t_pipeline	*pipeline_generator(t_minishell *minishell);
 
 // Builtins
 
@@ -48,7 +46,6 @@ void		process_heredoc(t_queue *heredoc_queue);
 
 // Tree
 
-t_tree		*convert_list_to_tree(t_pipeline *pipeline);
 t_tree		*build_tree_postfix(t_minishell *ms);
 
 // Token parsing

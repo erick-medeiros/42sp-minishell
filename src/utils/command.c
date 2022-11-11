@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 11:24:01 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:29:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,6 @@ void	destroy_command(t_cmd *command)
 		clear_list(command->redirect_output,
 			(void (*)(void *))destroy_redirect);
 	free(command);
-}
-
-t_pipeline	*new_pipeline(t_operator operator)
-{
-	t_pipeline	*pipeline;
-
-	pipeline = malloc(sizeof(t_pipeline));
-	pipeline->command_count = 0;
-	pipeline->operator = operator;
-	pipeline->pipefds = NULL;
-	pipeline->commands = NULL;
-	return (pipeline);
-}
-
-void	destroy_pipeline(t_pipeline	*pipeline)
-{
-	if (pipeline == NULL)
-		return ;
-	if (pipeline->commands)
-		clear_list(pipeline->commands, (void (*)(void *))destroy_command);
-	free(pipeline);
 }
 
 int	initialize_command(t_cmd *command)

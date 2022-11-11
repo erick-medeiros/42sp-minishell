@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 11:10:13 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:29:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void		del_cmd_tree_node(void *tree);
 // Init
 
 t_cmd		*new_command(int number);
-t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
 int			initialize_command(t_cmd *command);
 
@@ -89,7 +88,6 @@ void		del_var_node(void *content);
 void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_redirect(t_redirect *redirect);
-void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);

@@ -65,35 +65,6 @@ void debug_command(t_cmd *command) {
   printf("----------\n\n");
 }
 
-void debug_pipeline_commands(t_pipeline *pipeline) {
-  t_node *node;
-
-  if (!pipeline)
-    return;
-  node = pipeline->commands;
-  while (node) {
-    debug_command(node->content);
-    node = node->next;
-  }
-}
-
-void debug_pipeline_fds(t_pipeline *pipeline) {
-  int i;
-
-  printf("\n----------\n");
-  printf("debug pipeline fds:\n\n");
-  printf("number) %d\n", pipeline->command_count);
-  i = 0;
-  while (i < pipeline->command_count - 1) {
-    close(pipeline->pipefds[i][0]);
-    close(pipeline->pipefds[i][1]);
-    printf("pipefds[%d][0] = %d\n", i, pipeline->pipefds[i][0]);
-    printf("pipefds[%d][1] = %d\n", i, pipeline->pipefds[i][1]);
-    ++i;
-  }
-  printf("----------\n\n");
-}
-
 void debug_queue_cmds(t_queue *cmds) {
   t_node *node;
   t_tree *tree;

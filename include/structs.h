@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 00:54:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:30:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,6 @@ typedef struct s_node_funcs
 	void	(*clear)(void *content);
 	int		(*cmp)(void *a, void *b);
 }	t_node_funcs;
-
-typedef struct s_pipeline
-{
-	t_operator	operator;
-	t_node		*commands;
-	int			command_count;
-	int			**pipefds;
-}	t_pipeline;
 
 typedef struct s_redirect {
 	char	*path;
