@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 17:34:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ char	*expander_vars(t_vlst *env_list, char *str)
 	int		end;
 
 	if (!str)
-		return (str);
+		return (NULL);
+	str = ft_strdup(str);
 	i = 0;
 	while (str[i])
 	{

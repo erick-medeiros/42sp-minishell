@@ -11,22 +11,22 @@ void test_expansor_vars(void) {
 	char *str;
 
 	envp_to_list(envp, &env_list);
-	str = expander_vars(&env_list, strdup("$a"));
+	str = expander_vars(&env_list, "$a");
 	TEST_ASSERT_EQUAL_STRING("bc", str);
 	free(str);
-	str = expander_vars(&env_list, strdup("${a}d"));
+	str = expander_vars(&env_list, "${a}d");
 	TEST_ASSERT_EQUAL_STRING("bcd", str);
 	free(str);
-	str = expander_vars(&env_list, strdup("$a d"));
+	str = expander_vars(&env_list, "$a d");
 	TEST_ASSERT_EQUAL_STRING("bc d", str);
 	free(str);
-	str = expander_vars(&env_list, strdup("d $a e"));
+	str = expander_vars(&env_list, "d $a e");
 	TEST_ASSERT_EQUAL_STRING("d bc e", str);
 	free(str);
-	str = expander_vars(&env_list, strdup("a$a${c}f"));
+	str = expander_vars(&env_list, "a$a${c}f");
 	TEST_ASSERT_EQUAL_STRING("abcdef", str);
 	free(str);
-	str = expander_vars(&env_list, strdup("$$$"));
+	str = expander_vars(&env_list, "$$$");
 	TEST_ASSERT_EQUAL_STRING("42$", str);
 	free(str);
 	clear_list(env_list.list, del_var_node);
