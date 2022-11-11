@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 23:50:33 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/10 18:57:02 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	get_command(t_tree **cmd_node, t_minishell *ms, int num)
 			return (result);
 		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
+	initialize_command((*cmd_node)->content, ms);
 	return (OK);
 }
 
