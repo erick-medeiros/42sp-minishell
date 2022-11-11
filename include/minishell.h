@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 03:46:03 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 01:35:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void		del_cmd_tree_node(void *tree);
 t_cmd		*new_command(int number);
 t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
-int			initialize_command(t_cmd *command, t_minishell * ms);
+int			initialize_command(t_cmd *command);
 
 // Cleanup functions
 void		*clear_envp(char **envp);

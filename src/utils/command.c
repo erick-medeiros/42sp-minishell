@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 02:23:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 01:35:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	destroy_pipeline(t_pipeline	*pipeline)
 	free(pipeline);
 }
 
-int	initialize_command(t_cmd *command, t_minishell * ms)
+int	initialize_command(t_cmd *command)
 {
 	if (command->argc > 0)
 	{
@@ -92,10 +92,6 @@ int	initialize_command(t_cmd *command, t_minishell * ms)
 			configure_builtin(command);
 			return (OK);
 		}
-		command->envp = list_to_envp(&ms->env_list, 0);
-		if (command->envp  == NULL)
-			return (ERR_ALLOC);
-		command->pathname = get_pathname(command->argv[0], command->envp);
 	}
 	return (OK);
 }
