@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 03:36:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:23:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "structs.h"
 
 static t_bool	is_operand(t_tree *t);
-static int	build_tree_node(t_node **tmp_stack, t_tree* root);
+static int		build_tree_node(t_node **tmp_stack, t_tree *root);
 
-t_tree *build_tree_postfix(t_minishell *ms)
+t_tree	*build_tree_postfix(t_minishell *ms)
 {
 	t_node	*tmp_stack;
 	t_tree	*root;
@@ -41,7 +41,7 @@ static t_bool	is_operand(t_tree *t)
 	return (t->type == TREE_TYPE_CMD || t->content);
 }
 
-static int	build_tree_node(t_node **tmp_stack, t_tree* root)
+static int	build_tree_node(t_node **tmp_stack, t_tree *root)
 {
 	int	result;
 

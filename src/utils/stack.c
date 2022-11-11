@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 03:37:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 03:38:07 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:24:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	*pop_node(t_node **src)
 	*src = popped->next;
 	content = popped->content;
 	free(popped);
-	return(content);
+	return (content);
 }
