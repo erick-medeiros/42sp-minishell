@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 03:12:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:27:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define PROMPT_STRING "minishell "
 # define PROMPT_EXTRA_SQ "continue single quote> "
 # define PROMPT_EXTRA_DQ "continue double quote> "
+# define PROMPT_EXTRA_BRC "continue brace> "
 # define PROMPT_EXTRA_PIPE "continue pipe> "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
@@ -46,8 +47,11 @@
 # define ERR_INCOMP_PIPE 5
 # define ERR_INCOMP_DQ 6
 # define ERR_INCOMP_SQ 7
-# define ERR_BAD_TOKEN 8
-# define ERR_FILE_OPEN 9
+# define ERR_INCOMP_BRC 8
+# define ERR_INCOMP_BRC_DQ 9
+# define ERR_INCOMP_BRC_SQ 10
+# define ERR_BAD_TOKEN 11
+# define ERR_FILE_OPEN 12
 
 // List-related functions
 
@@ -104,7 +108,7 @@ int			command_is_equal(char *cmd, char *str);
 char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
-t_lex_state	get_lex_state(int parse_result);
+t_lex_state	get_lex_state(int result);
 void		handle_parse_result(int result, char **line,
 				char **history, t_minishell *ms);
 

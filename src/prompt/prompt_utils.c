@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 03:41:51 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:28:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,19 @@ void	handle_parse_result(int result, char **line,
 		*line = readline(PROMPT_EXTRA_DQ);
 	else if (result == ERR_INCOMP_SQ)
 		*line = readline(PROMPT_EXTRA_SQ);
+	else if (result == ERR_INCOMP_BRC || result == ERR_INCOMP_BRC_SQ
+		|| result == ERR_INCOMP_BRC_DQ)
+		*line = readline(PROMPT_EXTRA_BRC);
 	else
 		return ;
 	ft_strappend(history, *line);
 }
 
-t_lex_state	get_lex_state(int parse_result)
+t_lex_state	get_lex_state(int result)
 {
-	if (parse_result == ERR_INCOMP_DQ || parse_result == ERR_INCOMP_SQ)
+	if (result == ERR_INCOMP_DQ || result == ERR_INCOMP_SQ
+		|| result == ERR_INCOMP_BRC || result == ERR_INCOMP_BRC_SQ
+		|| result == ERR_INCOMP_BRC_DQ)
 		return (STATE_CONTINUE);
 	return (STATE_SKIP);
 }

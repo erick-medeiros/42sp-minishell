@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/06 23:33:20 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 15:24:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_INCOMP_DQ);
 	if (tok->type == TOKEN_SQINCOMP)
 		return (ERR_INCOMP_SQ);
+	if (tok->type == TOKEN_BRCINCOMP)
+		return (ERR_INCOMP_BRC);
+	if (tok->type == TOKEN_DQBRACE)
+		return (ERR_INCOMP_BRC_DQ);
+	if (tok->type == TOKEN_SQBRACE)
+		return (ERR_INCOMP_BRC_SQ);
 	return (ERR_BAD_SYNTAX);
 }
 
