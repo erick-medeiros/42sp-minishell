@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 01:10:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 04:14:59 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	lexer(char **line, t_node **tokens, t_lex_state st)
 	vi.start = 0;
 	vi.len = 0;
 	vi.line = *line;
+	vi.in_braces = FALSE;
 	if (st == STATE_CONTINUE)
 	{
 		next_state = handle_continue_state(tokens, &vi);
@@ -35,8 +36,8 @@ int	lexer(char **line, t_node **tokens, t_lex_state st)
 	else
 		next_state = st;
 	idx = vi.len;
-	while (next_state != STATE_COMPLETE && next_state != STATE_DQINCOMP
-		&& next_state != STATE_SQINCOMP && next_state != STATE_INVALID)
+	while (next_state != STATE_COMPLETE && next_state != STATE_INCOMPLETE
+		&& next_state != STATE_INVALID)
 		next_state = get_next_state(idx++, tokens, next_state, &vi);
 	if (next_state == STATE_INVALID)
 	{
@@ -57,6 +58,8 @@ static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 		return (handle_dquote_state(idx, tokens, vi));
 	if (st == STATE_SQUOTE)
 		return (handle_squote_state(idx, tokens, vi));
+	if (st == STATE_BRACE)
+		return (handle_brace_state(idx, tokens, vi));
 	if (st == STATE_INPUT)
 		return (handle_input_state(idx, tokens, vi));
 	if (st == STATE_OUTPUT)

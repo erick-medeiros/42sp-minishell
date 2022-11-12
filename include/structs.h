@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 00:54:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 04:13:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,34 @@ typedef enum e_operator {
 
 typedef enum e_tok_type {
 	TOKEN_APPEND,
+	TOKEN_BRCINCOMP,
 	TOKEN_DQUOTE,
+	TOKEN_DQBRACE,
 	TOKEN_DQINCOMP,
 	TOKEN_HEREDOC,
 	TOKEN_INPUT,
 	TOKEN_OUTPUT,
 	TOKEN_PIPE,
 	TOKEN_SQUOTE,
+	TOKEN_SQBRACE,
 	TOKEN_SQINCOMP,
 	TOKEN_WORD
 }	t_tok_type;
 
 typedef enum e_lex_state {
 	STATE_APPEND,
+	STATE_BRACE,
 	STATE_COMPLETE,
 	STATE_CONTINUE,
 	STATE_DQUOTE,
-	STATE_DQINCOMP,
 	STATE_HEREDOC,
+	STATE_INCOMPLETE,
 	STATE_INPUT,
 	STATE_INVALID,
 	STATE_OUTPUT,
 	STATE_PIPE,
 	STATE_SKIP,
 	STATE_SQUOTE,
-	STATE_SQINCOMP,
 	STATE_WORD
 }	t_lex_state;
 
@@ -119,6 +122,7 @@ typedef struct s_val_info
 	char	*line;
 	size_t	start;
 	size_t	len;
+	t_bool	in_braces;
 }	t_val_info;
 
 typedef struct s_vlst

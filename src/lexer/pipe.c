@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:00 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 00:55:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 02:04:49 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_SKIP);
 	if (next_ch == '\0')
 		return (STATE_COMPLETE);
+	if (next_ch == '$')
+		return (init_word_value(idx, vi, STATE_BRACE));
 	if (next_ch == '"')
 		return (init_word_value(idx, vi, STATE_DQUOTE));
 	if (next_ch == '\'')
