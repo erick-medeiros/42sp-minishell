@@ -34,16 +34,16 @@ void test_expansor_vars(void) {
 	// str = expander_vars(&env_list, strdup("$_"));
 }
 
-void test_clean_quote_expansor(void) {
+void test_remove_quote(void) {
 	char *str;
 
-	str = clean_quote_expander("\"abc'def\"");
+	str = remove_quote("\"abc'def\"");
 	TEST_ASSERT_EQUAL_STRING("abc'def", str);
 	free(str);
-	str = clean_quote_expander("\"abc'def\"'abc\"def'");
+	str = remove_quote("\"abc'def\"'abc\"def'");
 	TEST_ASSERT_EQUAL_STRING("abc'defabc\"def", str);
 	free(str);
-	str = clean_quote_expander("abc");
+	str = remove_quote("abc");
 	TEST_ASSERT_EQUAL_STRING("abc", str);
 	free(str);
 }
@@ -112,12 +112,13 @@ void test_filename_expander(void) {
 	TEST_ASSERT_EQUAL_STRING(expected, result);
 	free(expected);
 	free(result);
+	// integ_leak.log integration in.txt
 }
 
 int file_expander_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_expansor_vars);
-	RUN_TEST(test_clean_quote_expansor);
+	RUN_TEST(test_remove_quote);
 	RUN_TEST(test_filename_expander);
 	return UNITY_END();
 }

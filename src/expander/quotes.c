@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 15:48:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 12:59:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,18 @@
 #define SINGLE_QUOTE 39
 #define DOUBLE_QUOTE 34
 
-static int	isquote(char c)
-{
-	if (c == SINGLE_QUOTE || c == DOUBLE_QUOTE)
-		return (TRUE);
-	return (FALSE);
-}
-
 static int	update_quote(char c, int quote)
 {
 	if (c == SINGLE_QUOTE && !quote)
 		quote = SINGLE_QUOTE;
 	else if (c == DOUBLE_QUOTE && !quote)
 		quote = DOUBLE_QUOTE;
-	else if (isquote(c) && quote == c)
+	else if (ft_isquote(c) && quote == c)
 		quote = 0;
 	return (quote);
 }
 
-char	*clean_quote_expander(char *str)
+char	*remove_quote(char *str)
 {
 	char	*new;
 	int		quote;
@@ -48,7 +41,7 @@ char	*clean_quote_expander(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (isquote(str[i]) && (!quote || str[i] == quote))
+		if (ft_isquote(str[i]) && (!quote || str[i] == quote))
 			quote = update_quote(str[i], quote);
 		else
 			new[j++] = str[i];
