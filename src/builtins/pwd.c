@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:56 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/28 19:48:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/13 01:28:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ char	*get_pwd(void)
 	retptr = getcwd(NULL, 1024);
 	if (retptr == NULL)
 	{
-		printf("Error: get working directory failed\n");
+		write(STDERR, MSG_PWD_ERR, ft_strlen(MSG_PWD_ERR));
+		write(STDERR, "\n", 1);
 		if (errno == ERANGE)
-			printf("Error: path max buffer\n");
+			write(STDERR, MSG_PATH_MAX_ERR, ft_strlen(MSG_PATH_MAX_ERR));
 		else if (errno == ENOMEM)
-			printf("Error: memory cannot be allocated\n");
+			write(STDERR, MSG_PWD_ALLOC_ERR, ft_strlen(MSG_PWD_ALLOC_ERR));
+		write(STDERR, "\n", 1);
 		return (NULL);
 	}
 	return (retptr);

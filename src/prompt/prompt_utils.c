@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/13 00:59:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/13 01:22:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,9 @@ t_lex_state	get_lex_state(int result)
 int	print_parse_error(int parse_result)
 {
 	if (parse_result == ERR_BAD_SYNTAX)
-		printf("%s\n", MSG_SYNTAX_ERR);
+		write(STDERR, MSG_SYNTAX_ERR, ft_strlen(MSG_SYNTAX_ERR));
 	else if (parse_result == ERR_ALLOC)
-		printf("%s\n", MSG_ALLOC_ERR);
+		write(STDERR, MSG_ALLOC_ERR, ft_strlen(MSG_ALLOC_ERR));
+	write(STDERR, "\n", 1);
 	return (parse_result);
 }
