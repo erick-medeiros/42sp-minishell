@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 10:09:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/13 10:12:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*expand_parameter(char *str, char *param_expand, t_minishell *ms)
 	if (parameter && ft_isalnum(parameter[0]))
 		result = expand_variable(&ms->env_list, str);
 	else if (parameter && parameter[0] == '?')
-		result = ft_strdup("^v^");
+		result = ft_strdup(ft_itoa(ms->exit_status));
 	else
 		result = ft_strdup(param_expand);
 	free(parameter);
