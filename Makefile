@@ -40,13 +40,13 @@ $(REQUIRED_DIRS):
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -c $< -o $@
 
-$(LIBFT):
+libft:
 	make -C $(LIBFT_DIR)
 
-$(LIBDEBUG):
+libdebug:
 	make -C debug
 
-$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) $(LIBFT) $(LIBDEBUG)
+$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft libdebug
 	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBDEBUG) $(LIBFLAGS)
 
 clean:
@@ -75,4 +75,4 @@ compile_tests: re
 unit_tests:
 	./tests/unit/run_test.out
 
-.PHONY: all clean fclean re install norm leaks compile_tests unit_tests
+.PHONY: all clean compile_tests fclean install libdebug libft norm leaks re unit_tests
