@@ -6,16 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 12:59:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 22:48:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "expander.h"
 
-#define SINGLE_QUOTE 39
-#define DOUBLE_QUOTE 34
-
-static int	update_quote(char c, int quote)
+int	update_quote(char c, int quote)
 {
 	if (c == SINGLE_QUOTE && !quote)
 		quote = SINGLE_QUOTE;

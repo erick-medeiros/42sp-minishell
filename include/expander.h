@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 21:04:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 22:49:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define EXPANDER_H
 
 # include "minishell.h"
+
+# define SINGLE_QUOTE 39
+# define DOUBLE_QUOTE 34
 
 // Environment variable-related functions
 int		cmp_vars_by_name(void *a, void *b);
@@ -36,6 +39,7 @@ char	*remove_quote(char *str);
 int		concat_expanded(char **str, int start, char *str_in, char *str_out);
 char	*get_parameter_expansion(char *str);
 char	*get_parameter(char *parameter_expansion);
+int		update_quote(char c, int quote);
 
 char	*get_pathname(char *arg, char *envp[]);
 char	**get_paths(char *envp[]);

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:14:41 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 21:01:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:43:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	concat_expanded(char **str, int start, char *str_in, char *str_out)
 	*str = ft_strjoin(concat, next);
 	free(concat);
 	free(previous);
+	free(str_in);
+	free(str_out);
 	return (len);
 }
 

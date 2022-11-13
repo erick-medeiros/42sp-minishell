@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 20:57:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:43:18 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@ int	expander(char *src, char **dst, t_minishell *ms)
 {
 	char	*expanded;
 	char	*param_expand;
-	char	*tmp;
 	int		i;
+	int		quote;
 
+	quote = 0;
 	src = ft_strdup(src);
 	i = 0;
 	while (src[i])
 	{
-		if (src[i] == '$')
+		if (ft_isquote(src[i]) && (!quote || src[i] == quote))
+			quote = update_quote(src[i], quote);
+		if (src[i] == '$' && (!quote || quote == DOUBLE_QUOTE))
 		{
 			param_expand = get_parameter_expansion(&src[i]);
 			expanded = expand_parameter(&src[i], param_expand, ms);
 			i = concat_expanded(&src, i, expanded, param_expand);
-			free(expanded);
-			free(param_expand);
 		}
 		else
 			++i;
 	}
-	tmp = src;
 	*dst = remove_quote(src);
-	free(tmp);
+	free(src);
 	return (OK);
 }
 
