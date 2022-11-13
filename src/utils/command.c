@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 01:35:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 17:13:01 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	initialize_command(t_cmd *command)
 {
 	if (command->argc > 0)
 	{
-
 		if (isbuiltin(command->argv[0]))
 		{
 			command->isbuiltin = TRUE;

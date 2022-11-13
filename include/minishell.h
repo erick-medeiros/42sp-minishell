@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 15:27:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 18:05:36 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ int			remove_node_by_content(t_node **lst, void *content,
 				void (*del_node)(void *), int (*cmp_content)(void *, void *));
 int			push_node(t_node **lst, void *content);
 void		*pop_node(t_node **src);
+
+// Variable-related functions
+int			change_or_create_var(t_vlst *vars, char *name, char *val);
+void		print_sorted_vars(t_vlst *vars, char *prefix);
+int			split_name_val(char *str, char **name, char **val);
 
 // Queue
 
@@ -141,6 +146,6 @@ char		*expander_vars(t_vlst *env_list, char *str);
 
 // Quicksort string list
 
-void	quicksort(char **envp, size_t start_idx, size_t end_idx);
+void		quicksort(char **envp, size_t start_idx, size_t end_idx);
 
 #endif

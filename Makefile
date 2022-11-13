@@ -22,7 +22,7 @@ FILES += $(addprefix lexer/, lexer_utils.c output.c pipe.c single_quote.c skip.c
 FILES += $(addprefix parser/, build_tree.c builtins.c expand.c handle_tokens.c parser.c parser_utils.c postfix.c)
 FILES += $(addprefix prompt/, here_doc.c prompt.c prompt_utils.c signal.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c)
-FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c)
+FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(FILES:.c=.o))

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 00:03:07 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/11 03:16:58 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 17:38:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,16 @@ t_var	*new_var_node_from_name_val(char *name, char *val)
 {
 	t_var	*content;
 
-	if (!name || !val)
+	if (!name)
 		return (NULL);
 	content = malloc(sizeof(*content));
 	if (!content)
 		return (NULL);
 	content->name = ft_strdup(name);
-	content->val = ft_strdup(val);
+	if (val == NULL)
+		content->val = NULL;
+	else
+		content->val = ft_strdup(val);
 	return (content);
 }
 

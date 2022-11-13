@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 18:58:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 22:17:57 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	execute_builtin(t_minishell *minishell, t_cmd *command)
 
 void	execute_program(t_minishell *minishell, t_cmd *command)
 {
-	command->envp = list_to_envp(&minishell->env_list, 0);
+	command->envp = list_to_envp(&minishell->env_list, NULL, 0);
 	free(command->pathname);
 	command->pathname = get_pathname(command->argv[0], command->envp);
 	if (!command->pathname)
