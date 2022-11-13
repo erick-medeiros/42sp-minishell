@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 12:13:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 21:38:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ typedef struct s_minishell
 	t_tree	*root;
 	int		exit_status;
 	t_bool	set_history;
+	t_bool	pipeline;
 }	t_minishell;
 
 typedef struct s_heredoc

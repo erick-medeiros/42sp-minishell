@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 01:35:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 21:43:22 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num)
 	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
 	if (is_op(tree_type))
 	{
+		if (tree_type == TREE_TYPE_PIPE)
+			ms->pipeline = TRUE;
 		if (ms->token_list->next == NULL)
 		{
 			result = new_op_node(tree, tree_type);

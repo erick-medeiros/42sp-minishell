@@ -12,6 +12,7 @@ void test_function_init_minishell(void) {
 	TEST_ASSERT_EQUAL(NULL, minishell.token_list);
 	TEST_ASSERT_EQUAL(NULL, minishell.env_list.list);
 	TEST_ASSERT_EQUAL(0, minishell.env_list.len);
+	TEST_ASSERT_EQUAL(FALSE, minishell.pipeline);
 }
 
 void test_function_new_command() {
