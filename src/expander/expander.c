@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:43:18 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/13 10:09:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*expand_parameter(char *str, char *param_expand, t_minishell *ms)
 	else if (parameter && parameter[0] == '?')
 		result = ft_strdup("^v^");
 	else
-		result = ft_strdup("");
+		result = ft_strdup(param_expand);
 	free(parameter);
 	return (result);
 }

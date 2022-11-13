@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:14:41 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:43:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/13 10:04:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_parameter_expansion(char *str)
 		if (str[i++] != '}')
 			return (NULL);
 	}
-	else if (!ft_isalnum(str[i]))
+	else if (!ft_isalnum(str[i]) && str[i] != ' ')
 		++i;
 	else
 	{
