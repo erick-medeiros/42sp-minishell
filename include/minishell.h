@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 11:29:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 21:04:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,6 @@ void		shell_loop(t_minishell *minishell);
 
 // Expander
 
-char		*expander_vars(t_vlst *env_list, char *str);
+int			expander(char *src, char **dst, t_minishell *ms);
 
 #endif

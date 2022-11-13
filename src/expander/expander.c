@@ -6,111 +6,67 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 17:34:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 20:57:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
-#include "structs.h"
+#include "expander.h"
 
-int	find_env_var(void *str, void *var)
+int	expander(char *src, char **dst, t_minishell *ms)
 {
-	if (command_is_equal(str, ((t_var *)var)->name))
-		return (0);
-	return (1);
-}
+	char	*expanded;
+	char	*param_expand;
+	char	*tmp;
+	int		i;
 
-static int	count_replace(char *str, int start)
-{
-	int	i;
-
-	i = start;
-	++i;
-	if (str[i] == '$')
-		++i;
-	else if (str[i] == '{')
+	src = ft_strdup(src);
+	i = 0;
+	while (src[i])
 	{
-		while (str[i] && str[i] != '}')
-			++i;
-		if (str[i] == '}')
+		if (src[i] == '$')
+		{
+			param_expand = get_parameter_expansion(&src[i]);
+			expanded = expand_parameter(&src[i], param_expand, ms);
+			i = concat_expanded(&src, i, expanded, param_expand);
+			free(expanded);
+			free(param_expand);
+		}
+		else
 			++i;
 	}
-	else
-		while (str[i] && str[i] != ' ' && str[i] != '$')
-			++i;
-	return (i);
+	tmp = src;
+	*dst = remove_quote(src);
+	free(tmp);
+	return (OK);
 }
 
-static char	*expand_variable(t_vlst *env_list, char *str, int start, int end)
+char	*expand_parameter(char *str, char *param_expand, t_minishell *ms)
+{
+	char	*parameter;
+	char	*result;
+
+	parameter = get_parameter(param_expand);
+	if (parameter && ft_isalnum(parameter[0]))
+		result = expand_variable(&ms->env_list, str);
+	else if (parameter && parameter[0] == '?')
+		result = ft_strdup("^v^");
+	else
+		result = ft_strdup("");
+	free(parameter);
+	return (result);
+}
+
+char	*expand_variable(t_vlst *env_list, char *str)
 {
 	char	*expand;
 	t_node	*node;
-	int		ignore;
-	int		len;
 
-	len = end - start;
-	ignore = 0;
-	if (str[start + ignore] == '$')
-		++ignore;
-	if (str[start + ignore] == '{')
-	{
-		++ignore;
-		--len;
-	}
-	len -= ignore;
-	expand = ft_strdup(&str[start + ignore]);
-	expand[len] = '\0';
+	expand = get_parameter(str);
 	node = find_node_by_content(env_list->list, expand, find_env_var);
 	free(expand);
 	if (!node)
 		return (NULL);
 	return (ft_strdup((((t_var *)node->content)->val)));
-}
-
-static int	concat_expanded(char **str, int start, int end, char *expanded)
-{
-	char	*next;
-	char	*previous;
-	char	*concat;
-	int		len;
-
-	previous = *str;
-	previous[start] = '\0';
-	next = &previous[end];
-	concat = ft_strjoin(previous, expanded);
-	len = ft_strlen(concat);
-	*str = ft_strjoin(concat, next);
-	free(concat);
-	free(expanded);
-	free(previous);
-	return (len);
-}
-
-char	*expander_vars(t_vlst *env_list, char *str)
-{
-	char	*expanded;
-	int		i;
-	int		start;
-	int		end;
-
-	if (!str)
-		return (NULL);
-	str = ft_strdup(str);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			start = i;
-			end = count_replace(str, start);
-			expanded = expand_variable(env_list, str, start, end);
-			if (!expanded && (end - start) == 1)
-				++i;
-			else
-				i = concat_expanded(&str, start, end, expanded);
-		}
-		else
-			++i;
-	}
-	return (str);
 }

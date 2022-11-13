@@ -156,6 +156,7 @@ void test_handle_output_pipe(void) {
 }
 
 void test_get_complete_command(void) {
+	TEST_IGNORE();
 	t_tree *cmd_node = NULL;
 	t_minishell ms;
 	init_minishell(&ms, NULL);
@@ -207,6 +208,7 @@ void test_get_complete_command(void) {
 }
 
 void test_get_complete_command_pipe(void) {
+	TEST_IGNORE();
 	t_tree *cmd_node = NULL;
 	t_minishell ms =
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
