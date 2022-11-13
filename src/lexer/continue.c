@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 03:56:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 15:29:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/13 00:55:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_lex_state	handle_continue_state(t_node **tokens, t_val_info *vi)
 	else
 		state = STATE_INVALID;
 	vi->len = ft_strlen(((t_token *)(*tokens)->content)->value);
+	ft_strappend(&((t_token *)(*tokens)->content)->value, "\n");
 	ft_strappend(&((t_token *)(*tokens)->content)->value, vi->line);
 	free(vi->line);
 	vi->line = ((t_token *)(*tokens)->content)->value;

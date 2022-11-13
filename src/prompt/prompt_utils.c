@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 23:50:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/13 00:59:09 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	handle_parse_result(int result, char **line,
 		*line = readline(PROMPT_EXTRA_BRC);
 	else
 		return ;
+	ft_strappend(history, "\n");
 	ft_strappend(history, *line);
 }
 
