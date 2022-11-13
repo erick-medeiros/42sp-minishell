@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 04:13:27 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:52:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,6 @@ typedef struct s_node_funcs
 	int		(*cmp)(void *a, void *b);
 }	t_node_funcs;
 
-typedef struct s_pipeline
-{
-	t_operator	operator;
-	t_node		*commands;
-	int			command_count;
-	int			**pipefds;
-}	t_pipeline;
-
 typedef struct s_redirect {
 	char	*path;
 	int		operator;
@@ -157,6 +149,8 @@ typedef struct s_minishell
 	t_queue	cmd_list;
 	t_tree	*root;
 	int		exit_status;
+	t_bool	set_history;
+	t_bool	pipeline;
 }	t_minishell;
 
 typedef struct s_heredoc

@@ -3,37 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 20:41:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 01:25:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 22:48:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "expander.h"
 
-#define SINGLE_QUOTE 39
-#define DOUBLE_QUOTE 34
-
-static int	isquote(char c)
-{
-	if (c == SINGLE_QUOTE || c == DOUBLE_QUOTE)
-		return (TRUE);
-	return (FALSE);
-}
-
-static int	update_quote(char c, int quote)
+int	update_quote(char c, int quote)
 {
 	if (c == SINGLE_QUOTE && !quote)
 		quote = SINGLE_QUOTE;
 	else if (c == DOUBLE_QUOTE && !quote)
 		quote = DOUBLE_QUOTE;
-	else if (isquote(c) && quote == c)
+	else if (ft_isquote(c) && quote == c)
 		quote = 0;
 	return (quote);
 }
 
-char	*clean_quote_expander(char *str)
+char	*remove_quote(char *str)
 {
 	char	*new;
 	int		quote;
@@ -48,13 +39,12 @@ char	*clean_quote_expander(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (isquote(str[i]) && (!quote || str[i] == quote))
+		if (ft_isquote(str[i]) && (!quote || str[i] == quote))
 			quote = update_quote(str[i], quote);
 		else
 			new[j++] = str[i];
 		++i;
 	}
-	free(str);
 	new[j] = '\0';
 	return (new);
 }

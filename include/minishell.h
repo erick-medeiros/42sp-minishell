@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 18:05:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:55:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <stddef.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -87,7 +88,6 @@ void		del_cmd_tree_node(void *tree);
 // Init
 
 t_cmd		*new_command(int number);
-t_pipeline	*new_pipeline(t_operator operator);
 void		init_minishell(t_minishell *minishell, char **envp);
 int			initialize_command(t_cmd *command);
 
@@ -100,7 +100,6 @@ void		del_var_node(void *content);
 void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_redirect(t_redirect *redirect);
-void		destroy_pipeline(t_pipeline	*pipeline);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);
@@ -142,7 +141,7 @@ void		shell_loop(t_minishell *minishell);
 
 // Expander
 
-char		*expander_vars(t_vlst *env_list, char *str);
+int			expander(char *src, char **dst, t_minishell *ms);
 
 // Quicksort string list
 

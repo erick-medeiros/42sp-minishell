@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/11 12:01:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:57:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,8 @@ char	*get_prompt(t_minishell *minishell)
 
 void	shell(t_minishell *minishell, char **line)
 {
-	minishell->token_list = NULL;
-	lexer(line, &minishell->token_list, STATE_SKIP);
-	free(*line);
-	parser(minishell, 0);
-	executor(minishell);
+	minishell->set_history = FALSE;
+	process_line(line, minishell);
 	free_minishell(minishell);
 }
 
@@ -57,7 +54,6 @@ void	shell_loop(t_minishell *minishell)
 			write(STDOUT, "exit\n", 5);
 			break ;
 		}
-		minishell->token_list = NULL;
 		process_line(&line, minishell);
 		free_minishell(minishell);
 	}

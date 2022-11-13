@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 18:08:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/12 21:54:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 	if (root->type == TREE_TYPE_CMD)
 	{
 		cmd = (t_cmd *) root->content;
-		if (cmd->isbuiltin && !cmd->subshell)
+		if (cmd->isbuiltin && !cmd->subshell && !minishell->pipeline)
 			execute_builtin(minishell, cmd);
 		else
 		{

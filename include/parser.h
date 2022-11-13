@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 17:12:18 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 23:52:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ typedef enum e_mode {
 	OUT_MODE,
 	APPEND_MODE,
 }	t_mode;
-
-t_pipeline	*pipeline_generator(t_minishell *minishell);
 
 // Builtins
 
@@ -48,7 +46,6 @@ void		process_heredoc(t_queue *heredoc_queue);
 
 // Tree
 
-t_tree		*convert_list_to_tree(t_pipeline *pipeline);
 t_tree		*build_tree_postfix(t_minishell *ms);
 
 // Token parsing
@@ -56,9 +53,5 @@ int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
 int			enqueue_heredoc(t_tree *cmd_node, t_minishell *ms);
-
-// Variable expansion
-int			expand_filename(char *src, char **dst, t_minishell *ms);
-int			expand_vars(char *src, char **dst, t_minishell *ms);
 
 #endif

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   handle_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/10 01:28:40 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/12 20:56:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 #include "structs.h"
-#include <stddef.h>
+#include "expander.h"
 
 static int	add_arg(int argc, char ***argv, char *new_arg);
 static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd);
@@ -27,7 +27,7 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 
 	cmd = ((t_cmd *)cmd_node->content);
 	tok = ms->token_list->content;
-	result = expand_vars(tok->value, &expd, ms);
+	result = expander(tok->value, &expd, ms);
 	if (result != OK)
 		return (result);
 	result = add_arg(cmd->argc, &cmd->argv, expd);
@@ -75,7 +75,7 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
-	result = expand_vars(((t_token *)ms->token_list->content)->value,
+	result = expander(((t_token *)ms->token_list->content)->value,
 			&expd, ms);
 	if (result != OK)
 		return (result);
@@ -97,7 +97,7 @@ int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
-	result = expand_vars(((t_token *)ms->token_list->content)->value,
+	result = expander(((t_token *)ms->token_list->content)->value,
 			&expd, ms);
 	if (result != OK)
 		return (result);

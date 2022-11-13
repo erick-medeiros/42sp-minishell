@@ -21,7 +21,7 @@ void test_new_token(void) {
 void test_new_token_with_value(void) {
 	char *prompt = " abcde ";
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 1, .len = 5, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 1, .len = 5, .line = prompt};
 
 	new_token_with_val(&tokens, TOKEN_WORD, &vi);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
@@ -35,20 +35,20 @@ void test_new_token_with_value(void) {
 void test_init_word_value(void) {
 	t_lex_state result;
 	size_t idx = 2;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = NULL};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = NULL};
 
 	result = init_word_value(idx, &vi, STATE_APPEND);
 	TEST_ASSERT_EQUAL(STATE_APPEND, result);
 	TEST_ASSERT_EQUAL_INT(idx, vi.start);
 	TEST_ASSERT_EQUAL_INT(1, vi.len);
-	TEST_ASSERT_EQUAL_PTR(NULL, vi.prompt);
+	TEST_ASSERT_EQUAL_PTR(NULL, vi.line);
 }
 
 void test_handle_append(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_append_state(idx, &tokens, &vi);
@@ -64,7 +64,7 @@ void test_handle_word_with_dquotes(void) {
 	char *prompt = "\"abc\"";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx, &tokens, &vi);
 	while (++idx < 5)
@@ -82,7 +82,7 @@ void test_handle_word_with_dquotes_inside(void) {
 	char *prompt = "a\"abc\"b";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx++, &tokens, &vi);
 	next_state = handle_word_state(idx, &tokens, &vi);
@@ -102,12 +102,12 @@ void test_handle_dquote_incomplete(void) {
 	char *prompt = "\"abc";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx, &tokens, &vi);
 	while (++idx < 5)
 		next_state = handle_dquote_state(idx, &tokens, &vi);
-	TEST_ASSERT_EQUAL(STATE_DQINCOMP, next_state);
+	TEST_ASSERT_EQUAL(STATE_INCOMPLETE, next_state);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_DQINCOMP, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_STRING("\"abc", ((t_token *)tokens->content)->value);
@@ -119,7 +119,7 @@ void test_handle_heredoc(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_heredoc_state(idx, &tokens, &vi);
@@ -135,7 +135,7 @@ void test_handle_input(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_input_state(idx, &tokens, &vi);
@@ -151,7 +151,7 @@ void test_handle_output(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_output_state(idx, &tokens, &vi);
@@ -167,7 +167,7 @@ void test_handle_pipe(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_pipe_state(idx, &tokens, &vi);
@@ -183,7 +183,7 @@ void test_handle_skip(void) {
 	char *prompt = "";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	next_state = handle_skip_state(idx, &vi);
@@ -195,7 +195,7 @@ void test_handle_word_with_squotes(void) {
 	char *prompt = "'abc'";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx, &tokens, &vi);
 	while (++idx < 5)
@@ -213,7 +213,7 @@ void test_handle_word_with_squotes_inside(void) {
 	char *prompt = "a'abc'b";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx++, &tokens, &vi);
 	next_state = handle_word_state(idx, &tokens, &vi);
@@ -233,12 +233,12 @@ void test_handle_squote_incomplete(void) {
 	char *prompt = "'abc";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 	next_state = handle_word_state(idx, &tokens, &vi);
 	while (++idx < 5)
 		next_state = handle_squote_state(idx, &tokens, &vi);
-	TEST_ASSERT_EQUAL(STATE_SQINCOMP, next_state);
+	TEST_ASSERT_EQUAL(STATE_INCOMPLETE, next_state);
 	TEST_ASSERT_NOT_EQUAL(NULL, tokens);
 	TEST_ASSERT_EQUAL(TOKEN_SQINCOMP, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_STRING("'abc", ((t_token *)tokens->content)->value);
@@ -250,7 +250,7 @@ void test_handle_word(void) {
 	char *prompt = "abc";
 	t_lex_state next_state;
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
 	size_t idx = 0;
 
 	init_word_value(idx, &vi, STATE_WORD);
@@ -267,8 +267,8 @@ void test_handle_word(void) {
 void test_line_continuation_dquote_alone(void) {
 	char *prompt = ft_strdup("\"");
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
-	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .prompt = "\"abc"};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .line = "\"abc"};
 	size_t idx;
 	t_lex_state next_state = STATE_CONTINUE;
 
@@ -286,14 +286,14 @@ void test_line_continuation_dquote_alone(void) {
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
 	clear_list(tokens, del_token_node);
-	free(vi.prompt);
+	free(vi.line);
 }
 
 void test_line_continuation_word_dquote(void) {
 	char *prompt = ft_strdup("d\"");
 	t_node *tokens = NULL;
-	t_val_info vi = (t_val_info){.start = 0, .len = 0, .prompt = prompt};
-	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .prompt = "\"abc"};
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .line = "\"abc"};
 	size_t idx;
 	t_lex_state next_state = STATE_CONTINUE;
 
@@ -313,7 +313,7 @@ void test_line_continuation_word_dquote(void) {
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
 	clear_list(tokens, del_token_node);
-	free(vi.prompt);
+	free(vi.line);
 }
 
 int file_lexer_test(void) {

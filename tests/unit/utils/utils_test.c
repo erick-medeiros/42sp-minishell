@@ -8,10 +8,11 @@ void test_function_init_minishell(void) {
 
 	init_minishell(&minishell, NULL);
 	TEST_ASSERT_EQUAL(NULL, minishell.root);
+	TEST_ASSERT_EQUAL(TRUE, minishell.set_history);
 	TEST_ASSERT_EQUAL(NULL, minishell.token_list);
-	// TEST_ASSERT_EQUAL(NULL, minishell.pipelines);
 	TEST_ASSERT_EQUAL(NULL, minishell.env_list.list);
 	TEST_ASSERT_EQUAL(0, minishell.env_list.len);
+	TEST_ASSERT_EQUAL(FALSE, minishell.pipeline);
 }
 
 void test_function_new_command() {
@@ -33,18 +34,6 @@ void test_function_new_command() {
 	TEST_ASSERT_EQUAL(0, cmd->status);
 	TEST_ASSERT_EQUAL(TRUE, cmd->subshell);
 	destroy_command(cmd);
-}
-
-void test_function_new_pipeline() {
-	t_pipeline *pipeline;
-
-	pipeline = new_pipeline(OPERATOR_MAIN);
-	TEST_ASSERT_NOT_EQUAL(NULL, pipeline);
-	TEST_ASSERT_EQUAL(OPERATOR_MAIN, pipeline->operator);
-	TEST_ASSERT_EQUAL(0, pipeline->command_count);
-	TEST_ASSERT_EQUAL(NULL, pipeline->commands);
-	TEST_ASSERT_EQUAL(NULL, pipeline->pipefds);
-	destroy_pipeline(pipeline);
 }
 
 void test_function_command_is_equal(void) {
@@ -76,20 +65,10 @@ void test_function_get_content_fd(void) {
 	free(content);
 }
 
-int test_group_new(void) {
+int file_utils_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_init_minishell);
 	RUN_TEST(test_function_new_command);
-	RUN_TEST(test_function_new_pipeline);
-	return (UNITY_END());
-}
-
-int file_utils_test(void) {
-	int status;
-	status = test_group_new();
-	if (status)
-		return (status);
-	UNITY_BEGIN();
 	RUN_TEST(test_function_command_is_equal);
 	RUN_TEST(test_function_command_ends_with);
 	RUN_TEST(test_function_get_content_fd);

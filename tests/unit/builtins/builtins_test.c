@@ -6,15 +6,14 @@
 #include <string.h>
 #include <unistd.h>
 
-void test_builtin_echo(void) {
+char *simulate_cmd_echo(char *argv[]) {
 	int pipefd[2];
 	pid_t pid;
-	char *expected;
 	char *content;
 	int status;
 	t_cmd *cmd;
+	int i;
 
-	expected = "echo\necho";
 	if (pipe(pipefd) == -1)
 		TEST_FAIL();
 	pid = fork();
@@ -24,34 +23,52 @@ void test_builtin_echo(void) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
+		//
 		cmd = new_command(0);
-		cmd->argc = 2;
+		i = 0;
+		while (argv[i])
+			++i;
+		cmd->argc = i;
 		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-		cmd->argv[0] = strdup("echo");
-		cmd->argv[1] = strdup("echo");
-		cmd->argv[2] = NULL;
-		builtin_echo(cmd);
-		destroy_command(cmd);
-		cmd = new_command(0);
-		cmd->argc = 3;
-		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-		cmd->argv[0] = strdup("echo");
-		cmd->argv[1] = strdup("-n");
-		cmd->argv[2] = strdup("echo");
-		cmd->argv[3] = NULL;
+		i = 0;
+		while (argv[i]) {
+			cmd->argv[i] = strdup(argv[i]);
+			++i;
+		}
+		cmd->argv[i] = NULL;
+		//
 		builtin_echo(cmd);
 		destroy_command(cmd);
 		exit(0);
-	} else {
-		close(pipefd[1]);
-		status = ut_wait();
-		if (status != 0)
-			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
-		content = get_content_fd(pipefd[0]);
-		TEST_ASSERT_EQUAL_STRING(expected, content);
-		free(content);
-		close(pipefd[0]);
 	}
+	close(pipefd[1]);
+	status = ut_wait();
+	if (status != 0)
+		TEST_IGNORE_MESSAGE(UT_ERR_PROC);
+	content = get_content_fd(pipefd[0]);
+	close(pipefd[0]);
+	return (content);
+}
+
+void test_builtin_echo(void) {
+	char *output;
+
+	output = simulate_cmd_echo(((char *[]){"echo", "echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("echo\n", output);
+	free(output);
+	output = simulate_cmd_echo(((char *[]){"echo", "-n", "echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("echo", output);
+	free(output);
+	output = simulate_cmd_echo(((char *[]){"echo", "-nn", "echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("echo", output);
+	free(output);
+	output = simulate_cmd_echo(((char *[]){"echo", "echo", "echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("echo echo\n", output);
+	free(output);
+	output =
+		simulate_cmd_echo(((char *[]){"echo", "-n", "echo", "echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("echo echo", output);
+	free(output);
 }
 
 void test_builtin_cd(void) {

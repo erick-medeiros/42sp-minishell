@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:38:59 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/09 21:20:34 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:07:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*get_content_fd(int fd)
 	while (TRUE)
 	{
 		bytes = read(fd, buffer, 100);
+		buffer[bytes] = '\0';
 		buffer[bytes] = '\0';
 		if (bytes <= 0)
 			break ;

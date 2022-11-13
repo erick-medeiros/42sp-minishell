@@ -7,11 +7,13 @@ RM = rm -fr
 
 HEADER = libft.h
 
-SRC = ft_itoa.c ft_isalpha.c ft_isdigit.c ft_isspace.c
-SRC += ft_math.c ft_split.c ft_strappend.c
-SRC += ft_strchr.c ft_strcmp.c ft_strdup.c
-SRC += ft_strjoin.c ft_strlcpy.c ft_strlen.c
-SRC += ft_strncmp.c ft_strrchr.c ft_substr.c
+SRC = ft_itoa.c ft_isquote.c ft_isalnum.c
+SRC += ft_isalpha.c ft_isdigit.c
+SRC += ft_math.c ft_split.c ft_isspace.c
+SRC += ft_strchr.c ft_strrchr.c ft_strcmp.c
+SRC += ft_strdup.c ft_strjoin.c ft_strlcpy.c
+SRC += ft_strlen.c ft_strncasecmp.c ft_strncmp.c
+SRC += ft_strnstr.c ft_substr.c ft_strappend.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -24,7 +26,7 @@ $(NAME): $(OBJ) $(HEADER)
 	$(LIB) $(NAME) $(OBJ)
 
 clean:
-	$(RM) $(OBJ)
+	$(RM) $(OBJ) *.o
 
 fclean: clean
 	$(RM) $(NAME)

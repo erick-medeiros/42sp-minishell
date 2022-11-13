@@ -20,3 +20,6 @@ EOF
 
 # Test heredoc + incomplete quote
 cat << EOF | cat << EOF | cat << EOF '
+
+# Test clean quotes
+echo '(''" '-      -" """')'
