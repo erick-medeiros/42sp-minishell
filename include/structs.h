@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:52:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 19:41:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,6 @@ typedef enum e_bool {
 	FALSE,
 	TRUE
 }	t_bool;
-
-typedef enum e_operator {
-	OPERATOR_MAIN,
-	OPERATOR_PRIORITY,
-	OPERATOR_AND,
-	OPERATOR_OR
-}	t_operator;
 
 typedef enum e_tok_type {
 	TOKEN_APPEND,
