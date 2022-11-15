@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:07:14 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 03:30:06 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:50:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int		ft_isquote(char c);
 int		ft_isspace(char c);
 char	*ft_itoa(int number);
 int		ft_max(int number1, int number2);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putendl_fd(char *str, int fd);
+void	ft_putstr_fd(char *str, int fd);
 char	**ft_split(char const *s, char c);
 size_t	ft_split_count(char const *s, char c);
 char	**ft_split_cmd(char const *s, char c);
