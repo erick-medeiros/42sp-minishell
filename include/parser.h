@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:52:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 21:58:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@
 # define MSG_SYNTAX_ERR "minishell: syntax error near unexpected token `|'"
 # define MSG_ALLOC_ERR "minishell: allocation error"
 
-typedef enum e_mode {
-	IN_MODE,
-	OUT_MODE,
-	APPEND_MODE,
-}	t_mode;
-
 // Builtins
 
 t_bool		isbuiltin(char *arg);
@@ -31,7 +25,7 @@ void		configure_builtin(t_cmd *command);
 
 // Utils
 int			print_parse_error(int parse_result);
-int			open_fd(char *pathname, int mode);
+int			open_redirect_fd(char *pathname, int token_type);
 
 int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);

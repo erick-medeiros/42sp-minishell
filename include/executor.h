@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 16:32:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 22:32:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ void	process_exit_status(t_cmd *command);
 void	connect_pipeline(t_cmd *cmd, t_tree *grandparent, t_tree *parent,
 			t_tree *node);
 void	close_pipeline(t_tree *root);
-int		open_redirects(t_node *redirects);
 
 // Subshell
 
 void	subshell(t_minishell *minishell, t_cmd *command);
-void	subshell_redirect(t_minishell *minishell, t_cmd *command);
+void	subshell_redirect(t_cmd *command);
 void	exit_subshell(t_minishell *minishell, int status);
 
 // Execute
