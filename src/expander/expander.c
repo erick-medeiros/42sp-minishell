@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 10:12:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 20:00:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	expander(char *src, char **dst, t_minishell *ms)
 		{
 			param_expand = get_parameter_expansion(&src[i]);
 			expanded = expand_parameter(&src[i], param_expand, ms);
+			printf("e) %s\ne) %s\n", param_expand, expanded);
 			i = concat_expanded(&src, i, expanded, param_expand);
 		}
 		else
@@ -48,7 +49,9 @@ char	*expand_parameter(char *str, char *param_expand, t_minishell *ms)
 	char	*result;
 
 	parameter = get_parameter(param_expand);
-	if (parameter && ft_isalnum(parameter[0]))
+	if (ft_strlen(param_expand) == 1)
+		result = ft_strdup("");
+	else if (parameter && ft_isalnum(parameter[0]))
 		result = expand_variable(&ms->env_list, str);
 	else if (parameter && parameter[0] == '?')
 		result = ft_strdup(ft_itoa(ms->exit_status));

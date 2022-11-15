@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:14:41 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:50:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 19:58:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*get_parameter_expansion(char *str)
 	i = 0;
 	if (str[i++] != '$')
 		return (NULL);
+	if (ft_isquote(str[i]))
+		return (ft_strdup("$"));
 	if (str[i] == '{')
 	{
 		while (str[i] && str[i] != '}')
@@ -60,10 +62,8 @@ char	*get_parameter_expansion(char *str)
 	else if (!ft_isalnum(str[i]) && str[i] != ' ')
 		++i;
 	else
-	{
 		while (str[i] && ft_isalnum(str[i]) && str[i] != ' ')
 			++i;
-	}
 	param = malloc(sizeof(char) * (i + 1));
 	ft_strlcpy(param, str, i + 1);
 	return (param);
