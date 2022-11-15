@@ -15,18 +15,21 @@ SRC += ft_strdup.c ft_strjoin.c ft_strlcpy.c
 SRC += ft_strlen.c ft_strncasecmp.c ft_strncmp.c
 SRC += ft_strnstr.c ft_strrchr.c ft_substr.c
 
-OBJ = $(SRC:.c=.o)
+OBJ = $(addprefix obj/, $(SRC:.c=.o))
 
 all: $(NAME)
 
-%.o: %.c
+obj:
+	mkdir -p obj
+
+obj/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJ) $(HEADER)
+$(NAME): obj $(OBJ) $(HEADER)
 	$(LIB) $(NAME) $(OBJ)
 
 clean:
-	$(RM) $(OBJ) *.o
+	$(RM) obj *.o
 
 fclean: clean
 	$(RM) $(NAME)
