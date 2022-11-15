@@ -1,31 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 01:22:42 by gmachado         ###   ########.fr       */
+/*   Created: 2022/04/07 18:52:55 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/13 03:29:11 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	ft_atoi(const char *nptr)
 {
-	t_minishell	minishell;
-	char		*line;
+	int	is_negative;
+	int	result;
 
-	init_minishell(&minishell, envp);
-	init_system_vars(&minishell);
-	if (argc == 3 && command_is_equal(argv[1], "-c"))
+	result = 0;
+	is_negative = 0;
+	while (ft_isspace(*nptr))
+		nptr++;
+	if (*nptr == '-')
 	{
-		line = ft_strdup(argv[2]);
-		shell(&minishell, &line);
+		is_negative = 1;
+		nptr++;
 	}
-	else
-		shell_loop(&minishell);
-	destroy_minishell(&minishell);
-	return (minishell.exit_status);
+	else if (*nptr == '+')
+		nptr++;
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		result = 10 * result - (int)(*nptr - '0');
+		nptr++;
+	}
+	if (is_negative)
+		return (result);
+	return (-result);
 }

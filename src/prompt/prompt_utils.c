@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/13 01:22:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/15 01:02:48 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	handle_parse_result(int result, char **line,
 	if (result == ERR_BAD_SYNTAX || result == ERR_ALLOC)
 		print_parse_error(result);
 	if (ms->heredoc_queue.front)
+	{
+		ms->set_history = FALSE;
 		process_heredoc(&ms->heredoc_queue);
+	}
 	free(*line);
 	*line = NULL;
 	if (result == ERR_INCOMP_PIPE)
