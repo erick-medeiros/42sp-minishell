@@ -59,7 +59,7 @@ void test_list_to_envp_one_node(void) {
 	TEST_ASSERT_EQUAL_STRING("name1", ((t_var *)vars.list->content)->name);
 	TEST_ASSERT_EQUAL_STRING("val1", ((t_var *)vars.list->content)->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next);
-	envp = list_to_envp(&vars, 0);
+	envp = list_to_envp(&vars, NULL, 0);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[0]);
 	TEST_ASSERT_EQUAL_STRING("name1=val1", envp[0]);
@@ -85,7 +85,7 @@ void test_list_to_envp_two_nodes(void) {
 	TEST_ASSERT_EQUAL_STRING("name2", var->name);
 	TEST_ASSERT_EQUAL_STRING("val2", var->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next->next);
-	envp = list_to_envp(&vars, 0);
+	envp = list_to_envp(&vars, NULL, 0);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[0]);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[1]);
@@ -103,7 +103,7 @@ void test_list_to_envp_no_node(void) {
 	vars.list = NULL;
 	vars.len = 0;
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list);
-	envp = list_to_envp(&vars, 0);
+	envp = list_to_envp(&vars, NULL, 0);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_EQUAL_PTR(NULL, envp[0]);
 	clear_envp(envp);
@@ -119,7 +119,7 @@ void test_list_to_envp_one_node_quoted(void) {
 	TEST_ASSERT_EQUAL_STRING("name1", ((t_var *)vars.list->content)->name);
 	TEST_ASSERT_EQUAL_STRING("val1", ((t_var *)vars.list->content)->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next);
-	envp = list_to_envp(&vars, 1);
+	envp = list_to_envp(&vars, NULL, 1);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[0]);
 	TEST_ASSERT_EQUAL_STRING("name1=\"val1\"", envp[0]);
@@ -145,7 +145,7 @@ void test_list_to_envp_two_nodes_quoted(void) {
 	TEST_ASSERT_EQUAL_STRING("name2", var->name);
 	TEST_ASSERT_EQUAL_STRING("val2", var->val);
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list->next->next);
-	envp = list_to_envp(&vars, 1);
+	envp = list_to_envp(&vars, NULL, 1);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[0]);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp[1]);
@@ -163,7 +163,7 @@ void test_list_to_envp_no_node_quoted(void) {
 	vars.list = NULL;
 	vars.len = 0;
 	TEST_ASSERT_EQUAL_PTR(NULL, vars.list);
-	envp = list_to_envp(&vars, 1);
+	envp = list_to_envp(&vars, NULL, 1);
 	TEST_ASSERT_NOT_EQUAL(NULL, envp);
 	TEST_ASSERT_EQUAL_PTR(NULL, envp[0]);
 	clear_envp(envp);

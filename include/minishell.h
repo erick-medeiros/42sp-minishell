@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:58:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 09:04:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void		del_cmd_tree_node(void *tree);
 t_cmd		*new_command(int number);
 void		init_minishell(t_minishell *minishell, char **envp);
 int			initialize_command(t_cmd *command);
+void		init_system_vars(t_minishell *ms);
 
 // Cleanup functions
 

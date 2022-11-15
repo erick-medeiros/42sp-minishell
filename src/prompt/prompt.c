@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:57:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 01:08:28 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	shell_loop(t_minishell *minishell)
 	{
 		handle_signal(SIGINT, prompt_signal_handler);
 		handle_signal(SIGQUIT, SIG_IGN);
+		minishell->set_history = TRUE;
 		line = readline(get_prompt(minishell));
 		if (!line)
 		{
