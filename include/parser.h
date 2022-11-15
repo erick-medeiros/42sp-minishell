@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/14 21:58:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:02:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@
 
 # define MSG_SYNTAX_ERR "minishell: syntax error near unexpected token `|'"
 # define MSG_ALLOC_ERR "minishell: allocation error"
-
-// Builtins
-
-t_bool		isbuiltin(char *arg);
-void		configure_builtin(t_cmd *command);
 
 // Utils
 int			print_parse_error(int parse_result);

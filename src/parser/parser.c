@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 21:43:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 14:16:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	get_command(t_tree **cmd_node, t_minishell *ms, int num)
 			return (result);
 		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
-	initialize_command((*cmd_node)->content);
 	return (OK);
 }
 

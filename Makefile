@@ -15,11 +15,11 @@ OBJ_DIR = obj/
 
 FILES = main.c
 FILES += $(addprefix builtins/, cd.c echo.c env.c exit.c export.c pwd.c unset.c)
-FILES += $(addprefix executor/, executor.c pipeline.c subshell.c)
-FILES += $(addprefix expander/, env_conv.c env_utils.c expander.c expander_utils.c filename.c pathname.c quotes.c)
+FILES += $(addprefix executor/, executor.c pipeline.c search.c subshell.c)
+FILES += $(addprefix expander/, env_conv.c env_utils.c expander.c expander_utils.c filename.c quotes.c)
 FILES += $(addprefix lexer/, append.c brace.c continue.c double_quote.c heredoc.c input.c lexer.c)
 FILES += $(addprefix lexer/, lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
-FILES += $(addprefix parser/, build_tree.c builtins.c handle_tokens.c parser.c parser_utils.c postfix.c)
+FILES += $(addprefix parser/, build_tree.c handle_tokens.c parser.c parser_utils.c postfix.c)
 FILES += $(addprefix prompt/, here_doc.c prompt.c prompt_utils.c signal.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c)
 FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)

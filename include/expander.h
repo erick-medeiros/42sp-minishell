@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 00:00:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:54:02 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,5 @@ int		concat_expanded(char **str, int start, char *str_in, char *str_out);
 char	*get_parameter_expansion(char *str);
 char	*get_parameter(char *parameter_expansion);
 int		update_quote(char c, int quote);
-
-char	*get_pathname(char *arg, char *envp[]);
-char	**get_paths(char *envp[]);
 
 #endif

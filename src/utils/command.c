@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:36:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:46:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_cmd	*new_command(int number)
 	command->status = 0;
 	command->number = number;
 	command->isbuiltin = FALSE;
-	command->subshell = TRUE;
 	return (command);
 }
 
@@ -52,18 +51,4 @@ void	destroy_command(t_cmd *command)
 	free(command->pathname);
 	free_string_list(command->envp);
 	free(command);
-}
-
-int	initialize_command(t_cmd *command)
-{
-	if (command->argc > 0)
-	{
-		if (isbuiltin(command->argv[0]))
-		{
-			command->isbuiltin = TRUE;
-			configure_builtin(command);
-			return (OK);
-		}
-	}
-	return (OK);
 }

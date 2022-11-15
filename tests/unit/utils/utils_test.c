@@ -33,7 +33,6 @@ void test_function_new_command() {
 	TEST_ASSERT_EQUAL(FALSE, cmd->isbuiltin);
 	TEST_ASSERT_EQUAL(0, cmd->pid);
 	TEST_ASSERT_EQUAL(0, cmd->status);
-	TEST_ASSERT_EQUAL(TRUE, cmd->subshell);
 	destroy_command(cmd);
 }
 

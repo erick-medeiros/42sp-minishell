@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:50:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:38:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 		subshell_redirect(command);
 		close_pipeline(minishell->root);
 		if (command->isbuiltin)
+		{
 			execute_builtin(minishell, command);
+			exit_subshell(minishell, 0);
+		}
 		else
 			execute_program(minishell, command);
 		exit_subshell(minishell, 1);
@@ -54,17 +57,14 @@ void	execute_builtin(t_minishell *minishell, t_cmd *command)
 		destroy_minishell(minishell);
 		builtin_exit();
 	}
-	if (command->subshell)
-		exit_subshell(minishell, 0);
 }
 
 void	execute_program(t_minishell *minishell, t_cmd *command)
 {
-	command->envp = list_to_envp(&minishell->env_list, NULL, 0);
-	free(command->pathname);
-	command->pathname = get_pathname(command->argv[0], command->envp);
 	if (!command->pathname)
 		exit_subshell(minishell, 127);
+	if (access(command->pathname, X_OK) != 0)
+		exit_subshell(minishell, 126);
 	if (execve(command->pathname, command->argv, command->envp) == -1)
 		exit_subshell(minishell, errno);
 }

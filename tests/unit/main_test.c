@@ -6,7 +6,6 @@ int file_prompt_test(void);
 int file_builtins_test(void);
 int file_environment_test(void);
 int file_parser_test(void);
-int file_pathname_test(void);
 int file_subshell_test(void);
 int file_utils_test(void);
 int file_executor_test(void);
@@ -29,7 +28,6 @@ void run_all_test() {
 	file_lexer_test();
 	file_list_test();
 	file_parser_test();
-	file_pathname_test();
 	file_pipeline_test();
 	file_postfix_test();
 	file_prompt_test();
@@ -57,8 +55,6 @@ int main(int argc, char *argv[]) {
 			return file_list_test();
 		if (strcmp("parser", file) == 0)
 			return file_parser_test();
-		if (strcmp("pathname", file) == 0)
-			return file_pathname_test();
 		if (strcmp("pipeline", file) == 0)
 			file_pipeline_test();
 		if (strcmp("postfix", file) == 0)
