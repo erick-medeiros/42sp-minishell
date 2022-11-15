@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 18:40:11 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 20:43:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 		subshell_redirect(command);
 		close_pipeline(minishell->root);
 		status = 0;
+		command->envp = list_to_envp(&minishell->env_list, NULL, 0);
 		if (command->isbuiltin)
 			status = execute_builtin(minishell, command);
 		else
