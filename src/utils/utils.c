@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:38:59 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:50:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:53:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,6 @@ int	ft_streq(char *str1, char *str2)
 
 	len = ft_max(ft_strlen(str1), ft_strlen(str2));
 	if (ft_strncmp(str1, str2, len) == 0)
-		return (TRUE);
-	return (FALSE);
-}
-
-int	command_ends_with(char *cmd, char c)
-{
-	int	index;
-
-	if (cmd == NULL)
-		return (FALSE);
-	index = ft_strlen(cmd) - 1;
-	if (index < 0)
-		return (FALSE);
-	if (cmd[index] == c)
 		return (TRUE);
 	return (FALSE);
 }

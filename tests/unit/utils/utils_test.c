@@ -42,14 +42,6 @@ void test_function_ft_streq(void) {
 	TEST_ASSERT_FALSE(ft_streq("exi", "exit"));
 }
 
-void test_function_command_ends_with(void) {
-	TEST_ASSERT_TRUE(command_ends_with("cmd |", '|'));
-	TEST_ASSERT_TRUE(command_ends_with("|", '|'));
-	TEST_ASSERT_FALSE(command_ends_with("cmd", '|'));
-	TEST_ASSERT_FALSE(command_ends_with("", '|'));
-	TEST_ASSERT_FALSE(command_ends_with(NULL, '|'));
-}
-
 void test_function_get_content_fd(void) {
 	const char *expected = "test";
 	char *content;
@@ -70,7 +62,6 @@ int file_utils_test(void) {
 	RUN_TEST(test_function_init_minishell);
 	RUN_TEST(test_function_new_command);
 	RUN_TEST(test_function_ft_streq);
-	RUN_TEST(test_function_command_ends_with);
 	RUN_TEST(test_function_get_content_fd);
 	return (UNITY_END());
 }

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:50:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:54:14 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ void		destroy_queue(t_queue *queue, void (*del_node)(void *));
 
 // Prompt
 
-int			command_ends_with(char *cmd, char c);
 int			ft_streq(char *cmd, char *str);
 char		*get_content_fd(int fd);
 int			here_doc(char	*limiter);
