@@ -57,7 +57,6 @@ void test_function_subshell_redirect(void) {
 void test_function_execute_program(void) {
 	char *expected = "oi";
 	t_cmd *cmd = new_command(0);
-	t_minishell minishell;
 	int pipefd[2];
 
 	cmd->pathname = strdup("/usr/bin/echo");
@@ -75,8 +74,7 @@ void test_function_execute_program(void) {
 	else if (pid == 0) {
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
-		init_minishell(&minishell, NULL);
-		execute_program(&minishell, cmd);
+		execute_program(cmd);
 		exit(1);
 	} else {
 		close(pipefd[1]);

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 13:38:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 18:40:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 void	subshell(t_minishell *minishell, t_cmd *command)
 {
+	int	status;
+
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
 	command->pid = fork();
@@ -27,18 +29,17 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 	{
 		subshell_redirect(command);
 		close_pipeline(minishell->root);
+		status = 0;
 		if (command->isbuiltin)
-		{
-			execute_builtin(minishell, command);
-			exit_subshell(minishell, 0);
-		}
+			status = execute_builtin(minishell, command);
 		else
-			execute_program(minishell, command);
-		exit_subshell(minishell, 1);
+			status = execute_program(command);
+		destroy_minishell(minishell);
+		exit(status);
 	}
 }
 
-void	execute_builtin(t_minishell *minishell, t_cmd *command)
+int	execute_builtin(t_minishell *minishell, t_cmd *command)
 {
 	if (ft_streq(command->argv[0], "echo"))
 		builtin_echo(command);
@@ -57,16 +58,33 @@ void	execute_builtin(t_minishell *minishell, t_cmd *command)
 		destroy_minishell(minishell);
 		builtin_exit();
 	}
+	if (command->status == 2)
+	{
+		ft_putstr_fd(command->argv[0], STDERR);
+		ft_putendl_fd(": misuse of shell builtins", STDERR);
+	}
+	return (0);
 }
 
-void	execute_program(t_minishell *minishell, t_cmd *command)
+int	execute_program(t_cmd *command)
 {
 	if (!command->pathname)
-		exit_subshell(minishell, 127);
+	{
+		ft_putstr_fd(command->argv[0], STDERR);
+		ft_putendl_fd(": command not found", STDERR);
+		return (127);
+	}
 	if (access(command->pathname, X_OK) != 0)
-		exit_subshell(minishell, 126);
-	if (execve(command->pathname, command->argv, command->envp) == -1)
-		exit_subshell(minishell, errno);
+	{
+		ft_putstr_fd(command->argv[0], STDERR);
+		ft_putendl_fd(": command invoked cannot execute", STDERR);
+		return (126);
+	}
+	errno = 0;
+	execve(command->pathname, command->argv, command->envp);
+	if (errno)
+		perror(command->argv[0]);
+	return (1);
 }
 
 void	subshell_redirect(t_cmd *command)
