@@ -14,6 +14,7 @@ SRC += ft_strappend.c ft_strchr.c ft_strcmp.c
 SRC += ft_strdup.c ft_strjoin.c ft_strlcpy.c
 SRC += ft_strlen.c ft_strncasecmp.c ft_strncmp.c
 SRC += ft_strnstr.c ft_strrchr.c ft_substr.c
+SRC += get_next_line.c
 
 OBJ = $(addprefix obj/, $(SRC:.c=.o))
 
