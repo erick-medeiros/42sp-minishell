@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/14 22:28:43 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:36:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	execute_program(t_minishell *minishell, t_cmd *command)
 
 void	subshell_redirect(t_cmd *command)
 {
-	dup2(command->pipefd[READ_PIPE], STDIN);
-	dup2(command->pipefd[WRITE_PIPE], STDOUT);
+	dup2(command->piping[READ_PIPE], STDIN);
+	dup2(command->piping[WRITE_PIPE], STDOUT);
 	dup2(command->input, STDIN);
 	dup2(command->output, STDOUT);
 	if (command->input > STDERR)

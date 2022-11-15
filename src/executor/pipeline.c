@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 13:36:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/14 22:24:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:37:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ void	connect_pipeline(t_cmd *cmd, t_tree *grandparent, t_tree *parent,
 	if (parent && parent->left == node)
 	{
 		pipefd = (int *) parent->content;
-		cmd->pipefd[READ_PIPE] = STDIN;
-		cmd->pipefd[WRITE_PIPE] = pipefd[1];
+		cmd->piping[READ_PIPE] = STDIN;
+		cmd->piping[WRITE_PIPE] = pipefd[1];
 	}
 	else if (grandparent && parent && parent->right == node)
 	{
 		pipefd = (int *) parent->content;
-		cmd->pipefd[READ_PIPE] = pipefd[0];
+		cmd->piping[READ_PIPE] = pipefd[0];
 		pipefd = (int *) grandparent->content;
-		cmd->pipefd[WRITE_PIPE] = pipefd[1];
+		cmd->piping[WRITE_PIPE] = pipefd[1];
 	}
 	else if (parent)
 	{
 		pipefd = (int *) parent->content;
-		cmd->pipefd[READ_PIPE] = pipefd[0];
-		cmd->pipefd[WRITE_PIPE] = STDOUT;
+		cmd->piping[READ_PIPE] = pipefd[0];
+		cmd->piping[WRITE_PIPE] = STDOUT;
 	}
 }
 
