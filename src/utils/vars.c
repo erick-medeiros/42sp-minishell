@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 17:51:42 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/15 01:20:37 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/15 13:44:09 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	init_system_vars(t_minishell *ms)
 	{
 		shlvl = ft_atoi(((t_var *)node->content)->val);
 		s = ft_itoa(shlvl + 1);
-		change_or_create_var(&(ms->env_list), "SHLVL", ft_itoa(shlvl + 1));
+		change_or_create_var(&(ms->env_list), "SHLVL", s);
 		free(s);
 	}
 }
