@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 09:04:46 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 19:16:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,15 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		line = ft_strdup(argv[2]);
 		shell(&minishell, &line);
+	}
+	else if (isatty(STDIN) == 0)
+	{
+		line = get_next_line(STDIN);
+		while (line)
+		{
+			shell(&minishell, &line);
+			line = get_next_line(STDIN);
+		}
 	}
 	else
 		shell_loop(&minishell);
