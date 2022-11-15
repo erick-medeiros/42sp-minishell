@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/14 19:41:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 22:20:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ typedef struct s_cmd
 	int		status;
 	int		input;
 	int		output;
-	t_node	*redirect_input;
-	t_node	*redirect_output;
+	int		pipefd[2];
 	int		number;
 	char	**envp;
 	t_bool	subshell;
@@ -84,11 +83,6 @@ typedef struct s_node_funcs
 	void	(*clear)(void *content);
 	int		(*cmp)(void *a, void *b);
 }	t_node_funcs;
-
-typedef struct s_redirect {
-	char	*path;
-	int		operator;
-}	t_redirect;
 
 typedef struct s_token
 {

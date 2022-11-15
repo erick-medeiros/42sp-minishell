@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:55:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 22:19:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@
 # define PROMPT_EXTRA_PIPE "continue pipe> "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
+
+// Pipe
+
+# define PIPE_SIZE 2
+# define READ_PIPE 0
+# define WRITE_PIPE 1
 
 // Error definitions
 # define OK 0
@@ -99,7 +105,6 @@ void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
-void		destroy_redirect(t_redirect *redirect);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
 void		free_string_list(char **str);

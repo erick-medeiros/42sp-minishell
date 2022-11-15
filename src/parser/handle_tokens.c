@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 20:56:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/14 22:04:03 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
 	{
 		if (cmd->input != STDIN)
 			close(cmd->input);
-		cmd->input = open_fd(filename, IN_MODE);
+		cmd->input = open_redirect_fd(filename, TOKEN_INPUT);
 		if (cmd->input == -1)
 			return (ERR_FILE_OPEN);
 	}
@@ -124,9 +124,9 @@ static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
 		if (cmd->output != STDOUT && cmd->output != STDERR)
 			close(cmd->output);
 		if (redir_type == TOKEN_OUTPUT)
-			cmd->output = open_fd(filename, OUT_MODE);
+			cmd->output = open_redirect_fd(filename, TOKEN_OUTPUT);
 		else
-			cmd->output = open_fd(filename, APPEND_MODE);
+			cmd->output = open_redirect_fd(filename, TOKEN_APPEND);
 		if (cmd->output == -1)
 			return (ERR_FILE_OPEN);
 	}

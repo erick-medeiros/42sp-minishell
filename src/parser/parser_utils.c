@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 15:24:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/14 21:57:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,19 @@ int	new_op_node(t_tree	**op_node, t_tree_type op_type)
 	return (OK);
 }
 
-int	open_fd(char *pathname, int mode)
+int	open_redirect_fd(char *pathname, int token_type)
 {
 	int	fd;
 	int	permissions;
 
 	permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	if (mode == IN_MODE)
+	fd = -1;
+	if (token_type == TOKEN_INPUT)
 		fd = open(pathname, O_RDONLY);
-	else if (mode == OUT_MODE)
+	else if (token_type == TOKEN_OUTPUT)
 		fd = open(pathname, O_WRONLY | O_CREAT | O_TRUNC, permissions);
-	else if (mode == APPEND_MODE)
+	else if (token_type == TOKEN_APPEND)
 		fd = open(pathname, O_WRONLY | O_CREAT | O_APPEND, permissions);
-	else
-		fd = open(pathname, O_RDWR | O_WRONLY | O_CREAT | O_TRUNC, permissions);
 	return (fd);
 }
 

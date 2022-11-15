@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:38:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 03:45:47 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/14 21:59:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,4 @@ void	destroy_execution_tree(void *root)
 {
 	if (((t_tree *)root)->type == TREE_TYPE_CMD)
 		destroy_command(((t_tree *)root)->content);
-}
-
-void	destroy_redirect(t_redirect *redirect)
-{
-	if (!redirect)
-		return ;
-	free(redirect->path);
-	free(redirect);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   subshell.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 22:17:57 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/14 22:28:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 		panic_error("executor: fork");
 	else if (command->pid == 0)
 	{
-		command->input = dup(command->input);
-		command->output = dup(command->output);
+		subshell_redirect(command);
 		close_pipeline(minishell->root);
-		subshell_redirect(minishell, command);
 		if (command->isbuiltin)
 			execute_builtin(minishell, command);
 		else
@@ -71,32 +69,16 @@ void	execute_program(t_minishell *minishell, t_cmd *command)
 		exit_subshell(minishell, errno);
 }
 
-void	subshell_redirect(t_minishell *minishell, t_cmd *command)
+void	subshell_redirect(t_cmd *command)
 {
+	dup2(command->pipefd[READ_PIPE], STDIN);
+	dup2(command->pipefd[WRITE_PIPE], STDOUT);
 	dup2(command->input, STDIN);
 	dup2(command->output, STDOUT);
 	if (command->input > STDERR)
 		close(command->input);
 	if (command->output > STDERR)
 		close(command->output);
-	if (command->redirect_input)
-	{
-		command->input = open_redirects(command->redirect_input);
-		if (command->input == -1)
-			exit_subshell(minishell, errno);
-		dup2(command->input, STDIN);
-		if (command->input > STDERR)
-			close(command->input);
-	}
-	if (command->redirect_output)
-	{
-		command->output = open_redirects(command->redirect_output);
-		if (command->output == -1)
-			exit_subshell(minishell, errno);
-		dup2(command->output, STDOUT);
-		if (command->output > STDERR)
-			close(command->output);
-	}
 }
 
 void	exit_subshell(t_minishell *minishell, int status)

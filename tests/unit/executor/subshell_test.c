@@ -28,7 +28,7 @@ void test_function_subshell_redirect(void) {
 		command->output = dup(pipefd_out[1]);
 		ut_close_pipefd(pipefd_in);
 		ut_close_pipefd(pipefd_out);
-		subshell_redirect(&minishell, command);
+		subshell_redirect(command);
 		char *content = get_content_fd(STDIN);
 		printf("%s", content);
 		free(content);
