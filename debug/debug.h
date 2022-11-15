@@ -5,7 +5,6 @@
 #include "executor.h"
 
 void debug_token(t_minishell *minishell);
-void debug_content_fd(int fd, char *prompt, int debug);
 void debug_command(t_cmd *command);
 void debug_tree(t_tree *root);
 void debug_queue_cmds(t_queue *cmds);

@@ -25,19 +25,6 @@ void debug_token(t_minishell *minishell) {
   }
 }
 
-// debug return heredoc and endsinpipe
-void debug_content_fd(int fd, char *prompt, int debug) {
-  char *content;
-
-  content = get_content_fd(fd);
-  if (debug == 1)
-    printf("%s", content);
-  else
-    printf("exec: %s %s\n", prompt, content);
-  free(content);
-  close(fd);
-}
-
 void debug_command(t_cmd *command) {
   int i;
 
@@ -58,10 +45,6 @@ void debug_command(t_cmd *command) {
     printf("isbuiltin) yes\n");
   else
     printf("isbuiltin) no\n");
-  if (command->subshell)
-    printf("subshell) yes\n");
-  else
-    printf("subshell) no\n");
   printf("----------\n\n");
 }
 
