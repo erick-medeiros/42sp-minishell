@@ -279,10 +279,12 @@ void test_line_continuation_dquote_alone(void) {
 	idx = vi.len;
 	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
 	next_state = handle_dquote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
+	next_state = handle_dquote_state(idx++, &tokens, &vi);
 	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
 	next_state = handle_word_state(idx++, &tokens, &vi);
 	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
-	TEST_ASSERT_EQUAL_STRING("\"abc\"", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL_STRING("\"abc\n\"", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
 	clear_list(tokens, del_token_node);
@@ -306,10 +308,68 @@ void test_line_continuation_word_dquote(void) {
 	next_state = handle_dquote_state(idx++, &tokens, &vi);
 	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
 	next_state = handle_dquote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_DQUOTE, next_state);
+	next_state = handle_dquote_state(idx++, &tokens, &vi);
 	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
 	next_state = handle_word_state(idx++, &tokens, &vi);
 	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
-	TEST_ASSERT_EQUAL_STRING("\"abcd\"", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL_STRING("\"abc\nd\"", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
+	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
+	clear_list(tokens, del_token_node);
+	free(vi.line);
+}
+
+void test_line_continuation_squote_alone(void) {
+	char *prompt = ft_strdup("'");
+	t_node *tokens = NULL;
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .line = "'abc"};
+	size_t idx;
+	t_lex_state next_state = STATE_CONTINUE;
+
+	new_token_with_val(&tokens, TOKEN_SQINCOMP, &old_vi);
+	TEST_ASSERT_EQUAL_STRING("'abc", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_SQINCOMP, ((t_token *)tokens->content)->type);
+	next_state = handle_continue_state(&tokens, &vi);
+	idx = vi.len;
+	TEST_ASSERT_EQUAL(STATE_SQUOTE, next_state);
+	next_state = handle_squote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_SQUOTE, next_state);
+	next_state = handle_squote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
+	next_state = handle_word_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
+	TEST_ASSERT_EQUAL_STRING("'abc\n'", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
+	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
+	clear_list(tokens, del_token_node);
+	free(vi.line);
+}
+
+void test_line_continuation_word_squote(void) {
+	char *prompt = ft_strdup("d'");
+	t_node *tokens = NULL;
+	t_val_info vi = (t_val_info){.start = 0, .len = 0, .line = prompt};
+	t_val_info old_vi = (t_val_info){.start = 0, .len = 4, .line = "'abc"};
+	size_t idx;
+	t_lex_state next_state = STATE_CONTINUE;
+
+	new_token_with_val(&tokens, TOKEN_SQINCOMP, &old_vi);
+	TEST_ASSERT_EQUAL_STRING("'abc", ((t_token *)tokens->content)->value);
+	TEST_ASSERT_EQUAL(TOKEN_SQINCOMP, ((t_token *)tokens->content)->type);
+	next_state = handle_continue_state(&tokens, &vi);
+	idx = vi.len;
+	TEST_ASSERT_EQUAL(STATE_SQUOTE, next_state);
+	next_state = handle_squote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_SQUOTE, next_state);
+	next_state = handle_squote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_SQUOTE, next_state);
+	next_state = handle_squote_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_WORD, next_state);
+	next_state = handle_word_state(idx++, &tokens, &vi);
+	TEST_ASSERT_EQUAL(STATE_COMPLETE, next_state);
+	TEST_ASSERT_EQUAL_STRING("'abc\nd'", ((t_token *)tokens->content)->value);
 	TEST_ASSERT_EQUAL(TOKEN_WORD, ((t_token *)tokens->content)->type);
 	TEST_ASSERT_EQUAL_PTR(NULL, tokens->next);
 	clear_list(tokens, del_token_node);
@@ -336,5 +396,7 @@ int file_lexer_test(void) {
 	RUN_TEST(test_handle_word);
 	RUN_TEST(test_line_continuation_dquote_alone);
 	RUN_TEST(test_line_continuation_word_dquote);
+	RUN_TEST(test_line_continuation_squote_alone);
+	RUN_TEST(test_line_continuation_word_squote);
 	return UNITY_END();
 }

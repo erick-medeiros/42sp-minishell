@@ -156,7 +156,7 @@ void test_handle_output_pipe(void) {
 }
 
 void test_get_complete_command(void) {
-	TEST_IGNORE();
+	// TEST_IGNORE();
 	t_tree *cmd_node = NULL;
 	t_minishell ms;
 	init_minishell(&ms, NULL);
@@ -193,9 +193,9 @@ void test_get_complete_command(void) {
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
 	TEST_ASSERT_EQUAL_INT(4, ((t_cmd *)cmd_node->content)->argc);
 	TEST_ASSERT_EQUAL_STRING(cmd, ((t_cmd *)cmd_node->content)->argv[0]);
-	TEST_ASSERT_EQUAL_STRING(arg1, ((t_cmd *)cmd_node->content)->argv[1]);
-	TEST_ASSERT_EQUAL_STRING(arg2, ((t_cmd *)cmd_node->content)->argv[2]);
-	TEST_ASSERT_EQUAL_STRING(arg3, ((t_cmd *)cmd_node->content)->argv[3]);
+	TEST_ASSERT_EQUAL_STRING("a", ((t_cmd *)cmd_node->content)->argv[1]);
+	TEST_ASSERT_EQUAL_STRING("b", ((t_cmd *)cmd_node->content)->argv[2]);
+	TEST_ASSERT_EQUAL_STRING("c", ((t_cmd *)cmd_node->content)->argv[3]);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_cmd *)cmd_node->content)->argv[4]);
 	TEST_ASSERT_NOT_EQUAL(STDIN, ((t_cmd *)cmd_node->content)->input);
 	TEST_ASSERT_NOT_EQUAL(STDOUT, ((t_cmd *)cmd_node->content)->output);
@@ -208,7 +208,7 @@ void test_get_complete_command(void) {
 }
 
 void test_get_complete_command_pipe(void) {
-	TEST_IGNORE();
+	// TEST_IGNORE();
 	t_tree *cmd_node = NULL;
 	t_minishell ms =
 		(t_minishell){.env_list = {.list = NULL, .len = 0},
@@ -239,9 +239,9 @@ void test_get_complete_command_pipe(void) {
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
 	TEST_ASSERT_EQUAL_INT(4, ((t_cmd *)cmd_node->content)->argc);
 	TEST_ASSERT_EQUAL_STRING(cmd_a, ((t_cmd *)cmd_node->content)->argv[0]);
-	TEST_ASSERT_EQUAL_STRING(arg_a1, ((t_cmd *)cmd_node->content)->argv[1]);
-	TEST_ASSERT_EQUAL_STRING(arg_a2, ((t_cmd *)cmd_node->content)->argv[2]);
-	TEST_ASSERT_EQUAL_STRING(arg_a3, ((t_cmd *)cmd_node->content)->argv[3]);
+	TEST_ASSERT_EQUAL_STRING("a", ((t_cmd *)cmd_node->content)->argv[1]);
+	TEST_ASSERT_EQUAL_STRING("b", ((t_cmd *)cmd_node->content)->argv[2]);
+	TEST_ASSERT_EQUAL_STRING("c", ((t_cmd *)cmd_node->content)->argv[3]);
 	TEST_ASSERT_EQUAL_PTR(NULL, ((t_cmd *)cmd_node->content)->argv[4]);
 	TEST_ASSERT_NOT_EQUAL(NULL, ms.token_list);
 	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)ms.token_list->content)->type);
