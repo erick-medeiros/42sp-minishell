@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:16:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/10/04 10:53:57 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:51:02 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	child_here_doc(int pipefd[2], char *limiter)
 	while (TRUE)
 	{
 		line = readline(HEREDOC_STRING);
-		if (!line || command_is_equal(line, limiter))
+		if (!line || ft_streq(line, limiter))
 			break ;
 		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);

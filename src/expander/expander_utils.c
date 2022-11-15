@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:14:41 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 10:04:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:50:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int	find_env_var(void *str, void *var)
 {
-	if (command_is_equal(str, ((t_var *)var)->name))
+	if (ft_streq(str, ((t_var *)var)->name))
 		return (0);
 	return (1);
 }

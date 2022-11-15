@@ -36,10 +36,10 @@ void test_function_new_command() {
 	destroy_command(cmd);
 }
 
-void test_function_command_is_equal(void) {
-	TEST_ASSERT_TRUE(command_is_equal("exit", "exit"));
-	TEST_ASSERT_FALSE(command_is_equal("exita", "exit"));
-	TEST_ASSERT_FALSE(command_is_equal("exi", "exit"));
+void test_function_ft_streq(void) {
+	TEST_ASSERT_TRUE(ft_streq("exit", "exit"));
+	TEST_ASSERT_FALSE(ft_streq("exita", "exit"));
+	TEST_ASSERT_FALSE(ft_streq("exi", "exit"));
 }
 
 void test_function_command_ends_with(void) {
@@ -69,7 +69,7 @@ int file_utils_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_init_minishell);
 	RUN_TEST(test_function_new_command);
-	RUN_TEST(test_function_command_is_equal);
+	RUN_TEST(test_function_ft_streq);
 	RUN_TEST(test_function_command_ends_with);
 	RUN_TEST(test_function_get_content_fd);
 	return (UNITY_END());

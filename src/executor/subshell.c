@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:36:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:50:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,19 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 
 void	execute_builtin(t_minishell *minishell, t_cmd *command)
 {
-	if (command_is_equal(command->argv[0], "echo"))
+	if (ft_streq(command->argv[0], "echo"))
 		builtin_echo(command);
-	else if (command_is_equal(command->argv[0], "cd") && command->argc == 2)
+	else if (ft_streq(command->argv[0], "cd") && command->argc == 2)
 		builtin_cd(command->argv[1], &minishell->env_list);
-	else if (command_is_equal(command->argv[0], "pwd"))
+	else if (ft_streq(command->argv[0], "pwd"))
 		builtin_pwd();
-	else if (command_is_equal(command->argv[0], "export"))
+	else if (ft_streq(command->argv[0], "export"))
 		builtin_export(command->argc, command->argv, &minishell->env_list);
-	else if (command_is_equal(command->argv[0], "unset"))
+	else if (ft_streq(command->argv[0], "unset"))
 		builtin_unset(command->argc, command->argv, &minishell->env_list);
-	else if (command_is_equal(command->argv[0], "env"))
+	else if (ft_streq(command->argv[0], "env"))
 		builtin_env(&minishell->env_list);
-	else if (command_is_equal(command->argv[0], "exit"))
+	else if (ft_streq(command->argv[0], "exit"))
 	{
 		destroy_minishell(minishell);
 		builtin_exit();

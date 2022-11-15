@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 00:46:57 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/15 08:50:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char		*line;
 
 	init_minishell(&minishell, envp);
-	if (argc == 3 && command_is_equal(argv[1], "-c"))
+	if (argc == 3 && ft_streq(argv[1], "-c"))
 	{
 		line = ft_strdup(argv[2]);
 		shell(&minishell, &line);
