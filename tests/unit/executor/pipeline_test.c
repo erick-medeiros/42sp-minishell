@@ -36,7 +36,7 @@ void test_open_pipes_one_pipe() {
 	write(pipeline->pipefds[0][1], expected, strlen(expected));
 	fd = dup(pipeline->pipefds[0][0]);
 	close_pipes(pipeline);
-	content = get_content_fd(fd);
+	content = ut_get_content_fd(fd);
 	close(fd);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
 	free(content);
@@ -63,8 +63,8 @@ void test_open_pipes_two_pipes() {
 	fd = dup(pipeline->pipefds[0][0]);
 	fd2 = dup(pipeline->pipefds[1][0]);
 	close_pipes(pipeline);
-	content = get_content_fd(fd);
-	content2 = get_content_fd(fd2);
+	content = ut_get_content_fd(fd);
+	content2 = ut_get_content_fd(fd2);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
 	TEST_ASSERT_EQUAL_STRING(expected2, content2);
 	free(content);

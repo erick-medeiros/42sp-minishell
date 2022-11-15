@@ -29,7 +29,7 @@ void test_function_subshell_redirect(void) {
 		ut_close_pipefd(pipefd_in);
 		ut_close_pipefd(pipefd_out);
 		subshell_redirect(command);
-		char *content = get_content_fd(STDIN);
+		char *content = ut_get_content_fd(STDIN);
 		printf("%s", content);
 		free(content);
 		destroy_command(command);
@@ -45,7 +45,7 @@ void test_function_subshell_redirect(void) {
 		ut_exit_status(&status);
 		if (status != 0)
 			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
-		char *content = get_content_fd(pipefd_out[0]);
+		char *content = ut_get_content_fd(pipefd_out[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
 		destroy_command(command);
@@ -83,7 +83,7 @@ void test_function_execute_program(void) {
 		int status = ut_wait();
 		if (status != 0)
 			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
-		char *content = get_content_fd(pipefd[0]);
+		char *content = ut_get_content_fd(pipefd[0]);
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);
 		destroy_command(cmd);

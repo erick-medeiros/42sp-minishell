@@ -28,7 +28,7 @@ void test_here_doc(void) {
 		dup2(pipefd[0], STDIN);
 		ut_close_pipefd(pipefd);
 		int fd = here_doc("EOF");
-		char *content = get_content_fd(fd);
+		char *content = ut_get_content_fd(fd);
 		strncpy(string, content, len);
 		free(content);
 		close(fd);

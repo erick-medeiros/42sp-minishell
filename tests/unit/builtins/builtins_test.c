@@ -45,7 +45,7 @@ char *simulate_cmd_echo(char *argv[]) {
 	status = ut_wait();
 	if (status != 0)
 		TEST_IGNORE_MESSAGE(UT_ERR_PROC);
-	content = get_content_fd(pipefd[0]);
+	content = ut_get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	return (content);
 }
@@ -124,7 +124,7 @@ void test_builtin_pwd(void) {
 		if (status != 0)
 			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
 		current_dir = ut_getcwd();
-		content = get_content_fd(pipefd[0]);
+		content = ut_get_content_fd(pipefd[0]);
 		expected = ft_strjoin(current_dir, "\n");
 		TEST_ASSERT_EQUAL_STRING(expected, content);
 		free(content);

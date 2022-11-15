@@ -60,3 +60,29 @@ int ut_wait() {
 	ut_exit_status(&status);
 	return (status);
 }
+
+char	*ut_get_content_fd(int fd)
+{
+	char	buffer[101];
+	int		i;
+	int		bytes;
+	char	*tmp;
+	char	*content;
+
+	i = -1;
+	while (++i < 101)
+		buffer[i] = '\0';
+	content = ft_strdup("");
+	while (TRUE)
+	{
+		bytes = read(fd, buffer, 100);
+		buffer[bytes] = '\0';
+		buffer[bytes] = '\0';
+		if (bytes <= 0)
+			break ;
+		tmp = content;
+		content = ft_strjoin(tmp, buffer);
+		free(tmp);
+	}
+	return (content);
+}

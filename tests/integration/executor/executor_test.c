@@ -47,13 +47,13 @@ void test_connect_pipes() {
 	close(link1[1]);
 	close(link2[1]);
 	close(link3[1]);
-	content = get_content_fd(link1[0]);
+	content = ut_get_content_fd(link1[0]);
 	TEST_ASSERT_EQUAL_STRING(expected1, content);
 	free(content);
-	content = get_content_fd(link2[0]);
+	content = ut_get_content_fd(link2[0]);
 	TEST_ASSERT_EQUAL_STRING(expected2, content);
 	free(content);
-	content = get_content_fd(link3[0]);
+	content = ut_get_content_fd(link3[0]);
 	TEST_ASSERT_EQUAL_STRING(expected3, content);
 	free(content);
 	close(link1[0]);

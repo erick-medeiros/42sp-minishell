@@ -2,6 +2,7 @@
 #include "minishell.h"
 #include "parser.h"
 #include "structs.h"
+#include "unit_tests_utils.h"
 
 void test_function_init_minishell(void) {
 	t_minishell minishell;
@@ -42,7 +43,7 @@ void test_function_ft_streq(void) {
 	TEST_ASSERT_FALSE(ft_streq("exi", "exit"));
 }
 
-void test_function_get_content_fd(void) {
+void test_function_ut_get_content_fd(void) {
 	const char *expected = "test";
 	char *content;
 	int pipefd[2];
@@ -51,7 +52,7 @@ void test_function_get_content_fd(void) {
 		TEST_IGNORE_MESSAGE("Error pipe");
 	write(pipefd[1], expected, strlen(expected));
 	close(pipefd[1]);
-	content = get_content_fd(pipefd[0]);
+	content = ut_get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	TEST_ASSERT_EQUAL_STRING(expected, content);
 	free(content);
@@ -62,6 +63,6 @@ int file_utils_test(void) {
 	RUN_TEST(test_function_init_minishell);
 	RUN_TEST(test_function_new_command);
 	RUN_TEST(test_function_ft_streq);
-	RUN_TEST(test_function_get_content_fd);
+	RUN_TEST(test_function_ut_get_content_fd);
 	return (UNITY_END());
 }

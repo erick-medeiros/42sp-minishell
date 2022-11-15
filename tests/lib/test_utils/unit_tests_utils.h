@@ -14,5 +14,6 @@ void *ut_mmap(size_t len);
 char **ut_fake_envp_path(void);
 void ut_exit_status(int *status);
 int ut_wait();
+char *ut_get_content_fd(int fd);
 
 #endif

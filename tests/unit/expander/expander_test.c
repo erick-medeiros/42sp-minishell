@@ -64,7 +64,7 @@ char *simulate_bash_exec(char *exec) {
 	close(pipefd[1]);
 	waitpid(pid, &status, 0);
 	ut_exit_status(&status);
-	result = get_content_fd(pipefd[0]);
+	result = ut_get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	return (result);
 }
