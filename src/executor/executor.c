@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 18:08:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 21:37:18 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	process_exit_status(t_cmd *command)
 	if (WIFEXITED(command->status))
 		command->status = WEXITSTATUS(command->status);
 	else if (WIFSIGNALED(command->status))
-		command->status = WTERMSIG(command->status);
+		command->status = 128 + WTERMSIG(command->status);
 }
 
 int	execute_command(t_minishell *minishell, t_cmd *command)
