@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 21:37:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/16 13:06:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static void	error_invalid_id(char *id);
 static void	error_cant_update_var(char *name);
 
-void	builtin_export(int argc, char *argv[], t_vlst *vars)
+int	builtin_export(int argc, char *argv[], t_vlst *vars)
 {
 	int		idx;
 	char	*name;
@@ -26,7 +26,7 @@ void	builtin_export(int argc, char *argv[], t_vlst *vars)
 	if (argc == 1)
 	{
 		print_sorted_vars(vars, " declare - x ");
-		return ;
+		return (OK);
 	}
 	idx = 1;
 	while (idx < argc)
@@ -40,6 +40,7 @@ void	builtin_export(int argc, char *argv[], t_vlst *vars)
 		free(val);
 		idx++;
 	}
+	return (OK);
 }
 
 static void	error_invalid_id(char *id)

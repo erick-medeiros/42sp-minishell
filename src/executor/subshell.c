@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 12:46:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 14:08:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,23 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 	}
 }
 
-int	execute_builtin(t_minishell *minishell, t_cmd *command)
+int	execute_builtin(t_minishell *ms, t_cmd *cmd)
 {
-	if (ft_streq(command->argv[0], "echo"))
-		builtin_echo(command);
-	else if (ft_streq(command->argv[0], "cd") && command->argc == 2)
-		builtin_cd(command->argv[1], &minishell->env_list);
-	else if (ft_streq(command->argv[0], "pwd"))
-		builtin_pwd();
-	else if (ft_streq(command->argv[0], "export"))
-		builtin_export(command->argc, command->argv, &minishell->env_list);
-	else if (ft_streq(command->argv[0], "unset"))
-		builtin_unset(command->argc, command->argv, &minishell->env_list);
-	else if (ft_streq(command->argv[0], "env"))
-		builtin_env(&minishell->env_list);
-	else if (ft_streq(command->argv[0], "exit"))
-	{
-		destroy_minishell(minishell);
-		builtin_exit();
-	}
-	if (command->status == 2)
-	{
-		ft_putstr_fd(command->argv[0], STDERR);
-		ft_putendl_fd(": misuse of shell builtins", STDERR);
-	}
-	return (0);
+	if (ft_streq(cmd->argv[0], "echo"))
+		cmd->status = builtin_echo(cmd);
+	else if (ft_streq(cmd->argv[0], "cd") && cmd->argc == 2)
+		cmd->status = builtin_cd(cmd->argv[1], &ms->env_list);
+	else if (ft_streq(cmd->argv[0], "pwd"))
+		cmd->status = builtin_pwd();
+	else if (ft_streq(cmd->argv[0], "export"))
+		cmd->status = builtin_export(cmd->argc, cmd->argv, &ms->env_list);
+	else if (ft_streq(cmd->argv[0], "unset"))
+		cmd->status = builtin_unset(cmd->argc, cmd->argv, &ms->env_list);
+	else if (ft_streq(cmd->argv[0], "env"))
+		cmd->status = builtin_env(&ms->env_list);
+	else if (ft_streq(cmd->argv[0], "exit"))
+		builtin_exit(ms->exit_status, ms, cmd);
+	return (cmd->status);
 }
 
 int	execute_program(t_cmd *command)

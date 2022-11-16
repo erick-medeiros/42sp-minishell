@@ -213,7 +213,7 @@ void test_builtin_exit(void) {
 		TEST_FAIL();
 	else if (pid == 0) {
 		ut_stds_devnull();
-		builtin_exit();
+		builtin_exit(0, NULL, NULL);
 		exit(1);
 	}
 	expected = 0;

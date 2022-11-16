@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:56 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/13 01:28:08 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/16 13:07:13 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,17 @@
 
 // pwd - print name of current/working directory
 
-void	builtin_pwd(void)
+int	builtin_pwd(void)
 {
 	char	*retptr;
 
 	retptr = get_pwd();
 	if (retptr == NULL)
-		return ;
+		return (ERR_BUILTIN);
 	write(STDOUT, retptr, ft_strlen(retptr));
 	write(STDOUT, "\n", 1);
 	free(retptr);
+	return (OK);
 }
 
 char	*get_pwd(void)

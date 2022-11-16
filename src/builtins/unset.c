@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 01:10:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 19:48:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/16 13:07:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "expander.h"
 #include "builtins.h"
 
-void	builtin_unset(int argc, char *argv[], t_vlst *vars)
+int	builtin_unset(int argc, char *argv[], t_vlst *vars)
 {
 	t_var	*content;
 	int		removed;
 	int		idx;
 
 	if (argc < 2)
-		return ;
+		return (OK);
 	idx = 0;
 	while (idx++ < argc)
 	{
@@ -34,4 +34,5 @@ void	builtin_unset(int argc, char *argv[], t_vlst *vars)
 			vars->len--;
 		del_var_node(content);
 	}
+	return (OK);
 }

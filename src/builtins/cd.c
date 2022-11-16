@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/08 18:39:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 13:04:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 //cd — change the working directory
 
-void	builtin_cd(char *path, t_vlst *vars)
+int	builtin_cd(char *path, t_vlst *vars)
 {
 	char	*retptr;
 	t_node	*node;
@@ -36,4 +36,5 @@ void	builtin_cd(char *path, t_vlst *vars)
 		}
 		free(retptr);
 	}
+	return (OK);
 }
