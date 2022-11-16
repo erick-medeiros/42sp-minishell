@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 20:52:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 21:24:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	sort_list(t_node *list)
 		node2 = node->next;
 		while (node2)
 		{
-			if (ft_strncasecmp(node->content, node2->content,
+			if (ft_strncmp(node->content, node2->content,
 					ft_strlen(node->content)) > 0)
 			{
 				content = node->content;

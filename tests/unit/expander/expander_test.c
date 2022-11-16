@@ -57,7 +57,8 @@ char *simulate_bash_exec(char *exec) {
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
 		char *argv[] = {"bash", "-c", exec, NULL};
-		execv("/usr/bin/bash", argv);
+		char *envp[] = {"LC_ALL=C", NULL};
+		execve("/usr/bin/bash", argv, envp);
 		exit(1);
 	}
 	int status;
