@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 14:16:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 16:20:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	parser(t_minishell *ms, int cmd_num)
 	static t_node	*tmp_stack = NULL;
 	int				result;
 
+	ms->pipeline = FALSE;
 	result = OK;
 	if (ms->token_list
 		&& is_op(tok_to_tree_type(((t_token *)ms->token_list->content))))
