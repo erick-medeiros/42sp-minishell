@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 20:43:11 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 12:46:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,8 @@ int	execute_program(t_cmd *command)
 		ft_putendl_fd(": command not found", STDERR);
 		return (127);
 	}
-	if (access(command->pathname, X_OK) != 0)
-	{
-		ft_putstr_fd(command->argv[0], STDERR);
-		ft_putendl_fd(": command invoked cannot execute", STDERR);
-		return (126);
-	}
-	errno = 0;
 	execve(command->pathname, command->argv, command->envp);
-	if (errno)
-		perror(command->argv[0]);
-	return (1);
+	return (errno_handler(1, command->argv[0]));
 }
 
 void	subshell_redirect(t_cmd *command)
@@ -98,10 +89,4 @@ void	subshell_redirect(t_cmd *command)
 		close(command->input);
 	if (command->output > STDERR)
 		close(command->output);
-}
-
-void	exit_subshell(t_minishell *minishell, int status)
-{
-	destroy_minishell(minishell);
-	exit(status);
 }

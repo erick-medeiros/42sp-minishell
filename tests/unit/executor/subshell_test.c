@@ -89,6 +89,7 @@ void test_function_execute_program(void) {
 	}
 }
 
+/*
 void test_function_exit_subshell(void) {
 	t_minishell minishell;
 	pid_t pid;
@@ -109,11 +110,12 @@ void test_function_exit_subshell(void) {
 		destroy_minishell(&minishell);
 	}
 }
+*/
 
 int file_subshell_test() {
 	UNITY_BEGIN();
 	RUN_TEST(test_function_subshell_redirect);
 	RUN_TEST(test_function_execute_program);
-	RUN_TEST(test_function_exit_subshell);
+	// RUN_TEST(test_function_exit_subshell);
 	return UNITY_END();
 }
