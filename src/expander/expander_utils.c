@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:14:41 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 19:58:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 21:04:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,24 @@ int	find_env_var(void *str, void *var)
 	return (1);
 }
 
-int	concat_expanded(char **str, int start, char *str_in, char *str_out)
+int	concat_expanded(char **str, int start, char *expanded)
 {
 	char	*next;
 	char	*previous;
 	char	*concat;
+	char	*str_out;
 	int		len;
 
+	str_out = get_parameter_expansion(&(*str)[start]);
 	previous = *str;
 	previous[start] = '\0';
 	next = &previous[start + ft_strlen(str_out)];
-	concat = ft_strjoin(previous, str_in);
+	concat = ft_strjoin(previous, expanded);
 	len = ft_strlen(concat);
 	*str = ft_strjoin(concat, next);
 	free(concat);
 	free(previous);
-	free(str_in);
+	free(expanded);
 	free(str_out);
 	return (len);
 }

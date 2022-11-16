@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 13:48:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/15 20:35:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
 # define ERR_INCOMP_BRC_SQ 10
 # define ERR_BAD_TOKEN 11
 # define ERR_FILE_OPEN 12
+# define ERR_BAD_SUBST 13
 
 // List-related functions
 
