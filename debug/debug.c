@@ -1,22 +1,18 @@
 #include "debug.h"
+#include "minishell.h"
 #include "structs.h"
 
-void debug_token(t_minishell *minishell) {
+void debug_token(t_node *token_list) {
   t_node *node;
   t_token *token;
-  char *types[10];
-
-  types[0] = "TOKEN_APPEND";
-  types[1] = "TOKEN_DQUOTE";
-  types[2] = "TOKEN_DQINCOMP";
-  types[3] = "TOKEN_HEREDOC";
-  types[4] = "TOKEN_INPUT";
-  types[5] = "TOKEN_OUTPUT";
-  types[6] = "TOKEN_PIPE";
-  types[7] = "TOKEN_SQUOTE";
-  types[8] = "TOKEN_SQINCOMP";
-  types[9] = "TOKEN_WORD";
-  node = minishell->token_list;
+  char *types[] = {"TOKEN_APPEND",   "TOKEN_BRCINCOMP",
+                   "TOKEN_DQUOTE",   "TOKEN_DQBRACE",
+                   "TOKEN_DQINCOMP", "TOKEN_HEREDOC",
+                   "TOKEN_INPUT",    "TOKEN_OUTPUT",
+                   "TOKEN_PIPE",     "TOKEN_SQUOTE",
+                   "TOKEN_SQBRACE",  "TOKEN_SQINCOMP",
+                   "TOKEN_WORD",     NULL};
+  node = token_list;
   printf("token list:\n");
   while (node) {
     token = node->content;
@@ -41,6 +37,10 @@ void debug_command(t_cmd *command) {
   printf("status) %d\n", command->status);
   printf("input) %d\n", command->input);
   printf("output) %d\n", command->output);
+  printf("piping read) %d\n", command->piping[READ_PIPE]);
+  printf("piping write) %d\n", command->piping[WRITE_PIPE]);
+  printf("redirect %p\n", command->redirect);
+  printf("envp %p\n", command->envp);
   if (command->isbuiltin)
     printf("isbuiltin) yes\n");
   else
