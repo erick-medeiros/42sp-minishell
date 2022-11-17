@@ -40,6 +40,7 @@ void debug_command(t_cmd *command) {
   printf("output) %d\n", command->output);
   printf("piping read) %d\n", command->piping[READ_PIPE]);
   printf("piping write) %d\n", command->piping[WRITE_PIPE]);
+  printf("word_tokens %p\n", command->word_tokens);
   printf("redirect %p\n", command->redirect);
   printf("envp %p\n", command->envp);
   if (command->isbuiltin)
