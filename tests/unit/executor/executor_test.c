@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
-void test_function_process_exit_status(void) {
+void test_function_command_exit_status(void) {
 	t_cmd *cmd;
 	int size = 3;
 	int test_list[3] = {1, 2, 127};
@@ -26,7 +26,7 @@ void test_function_process_exit_status(void) {
 		} else {
 			waitpid(cmd->pid, &cmd->status, 0);
 			TEST_ASSERT_NOT_EQUAL(status, cmd->status);
-			process_exit_status(cmd);
+			command_exit_status(cmd);
 			TEST_ASSERT_EQUAL(status, cmd->status);
 			destroy_command(cmd);
 		}
@@ -43,7 +43,7 @@ void test_function_process_exit_status(void) {
 	} else {
 		waitpid(cmd->pid, &cmd->status, 0);
 		TEST_ASSERT_EQUAL(status, cmd->status);
-		process_exit_status(cmd);
+		command_exit_status(cmd);
 		TEST_ASSERT_EQUAL(status, cmd->status);
 		destroy_command(cmd);
 	}
@@ -51,6 +51,6 @@ void test_function_process_exit_status(void) {
 
 int file_executor_test(void) {
 	UNITY_BEGIN();
-	RUN_TEST(test_function_process_exit_status);
+	RUN_TEST(test_function_command_exit_status);
 	return UNITY_END();
 }
