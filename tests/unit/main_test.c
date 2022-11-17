@@ -15,12 +15,14 @@ int file_postfix_test(void);
 int file_heredoc_test(void);
 int file_expander_test(void);
 int file_debug_fd(void);
+int file_atoll_test(void);
 
 void setUp(void) {}
 
 void tearDown(void) {}
 
 void run_all_test() {
+	file_atoll_test();
 	file_builtins_test();
 	file_environment_test();
 	file_executor_test();
@@ -41,6 +43,8 @@ int main(int argc, char *argv[]) {
 		run_all_test();
 	else {
 		char *file = argv[1];
+		if (strcmp("atoll", file) == 0)
+			return file_atoll_test();
 		if (strcmp("builtins", file) == 0)
 			return file_builtins_test();
 		if (strcmp("environment", file) == 0)

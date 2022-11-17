@@ -25,7 +25,7 @@ RM = rm -fr
 FORMAT = clang-format -i
 
 UNIT_FILES = main_test.c
-UNIT_FILES += builtins/builtins_test.c
+UNIT_FILES += ${addprefix builtins/, builtins_test.c ft_checked_atoll_test.c}
 UNIT_FILES += ${addprefix executor/, executor_test.c pipeline_test.c subshell_test.c}
 UNIT_FILES += ${addprefix expander/, expander_test.c}
 UNIT_FILES += lexer/lexer_test.c
