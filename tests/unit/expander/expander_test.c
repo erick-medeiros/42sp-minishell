@@ -11,19 +11,20 @@ void test_expansor_vars(void) {
 	char *envp[] = {"a=bc", "c=de", NULL};
 	char *str;
 	init_minishell(&ms, envp);
-	expander("$a", &str, &ms);
+
+	str = parameter_expansion("$a", &ms.env_list, 0);
 	TEST_ASSERT_EQUAL_STRING("bc", str);
 	free(str);
-	expander("${a}d", &str, &ms);
+	str = parameter_expansion("${a}d", &ms.env_list, 0);
 	TEST_ASSERT_EQUAL_STRING("bcd", str);
 	free(str);
-	expander("$a d", &str, &ms);
+	str = parameter_expansion("$a d", &ms.env_list, 0);
 	TEST_ASSERT_EQUAL_STRING("bc d", str);
 	free(str);
-	expander("d $a e", &str, &ms);
+	str = parameter_expansion("d $a e", &ms.env_list, 0);
 	TEST_ASSERT_EQUAL_STRING("d bc e", str);
 	free(str);
-	expander("a$a${c}f", &str, &ms);
+	str = parameter_expansion("a$a${c}f", &ms.env_list, 0);
 	TEST_ASSERT_EQUAL_STRING("abcdef", str);
 	free(str);
 	destroy_minishell(&ms);
@@ -111,10 +112,40 @@ void test_expand_filename(void) {
 	// integ_leak.log integration in.txt
 }
 
+void test_convert_list_to_string() {
+	t_node *list;
+	const char *expected = "abcdef";
+	char *result;
+
+	list = NULL;
+	//
+	result = convert_list_to_string(list);
+	TEST_ASSERT_EQUAL_STRING("", result);
+	free(result);
+	//
+	add_node(&list, strdup("abc"));
+	add_node(&list, strdup("de"));
+	add_node(&list, strdup("f"));
+	result = convert_list_to_string(list);
+	TEST_ASSERT_EQUAL_STRING(expected, result);
+	free(result);
+}
+
+void test_parameter_expansion() {
+	t_vlst vars;
+	envp_to_list((char *[]){"SHELL=minishell", NULL}, &vars);
+	char *result = parameter_expansion("echo $SHELL $? ${SHELL}abc", &vars, 0);
+	TEST_ASSERT_EQUAL_STRING("echo minishell 0 minishellabc", result);
+	free(result);
+	clear_list(vars.list, del_var_node);
+}
+
 int file_expander_test(void) {
 	UNITY_BEGIN();
 	RUN_TEST(test_expansor_vars);
 	RUN_TEST(test_remove_quote);
 	RUN_TEST(test_expand_filename);
+	RUN_TEST(test_convert_list_to_string);
+	RUN_TEST(test_parameter_expansion);
 	return UNITY_END();
 }

@@ -6,14 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 13:04:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:48:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "executor.h"
-#include "builtins.h"
-#include "structs.h"
+#include "expander.h"
+#include "minishell.h"
 
 void	executor(t_minishell *minishell)
 {
@@ -71,17 +70,18 @@ int	command_exit_status(t_cmd *cmd)
 	return (cmd->status);
 }
 
-int	execute_command(t_minishell *minishell, t_cmd *command)
+int	execute_command(t_minishell *ms, t_cmd *cmd)
 {
-	if (command->argc == 0)
+	command_expansion(ms, cmd);
+	if (cmd->argc == 0)
 		return (0);
-	command->status = command_redirect(command);
-	if (command->status != OK)
-		return (command->status);
-	command_search(command, &minishell->env_list);
-	if (command->isbuiltin && !minishell->pipeline)
-		command->status = execute_builtin(minishell, command);
+	cmd->status = command_redirect(cmd);
+	if (cmd->status != OK)
+		return (cmd->status);
+	command_search(cmd, &ms->env_list);
+	if (cmd->isbuiltin && !ms->pipeline)
+		cmd->status = execute_builtin(ms, cmd);
 	else
-		subshell(minishell, command);
+		subshell(ms, cmd);
 	return (0);
 }

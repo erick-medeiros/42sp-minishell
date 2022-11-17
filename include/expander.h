@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 21:04:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 18:05:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,14 @@ int		find_env_var(void *str, void *var);
 
 // Expander
 
-char	*expand_parameter(char *str, t_minishell *ms);
+char	*parameter_expansion(char *src, t_vlst *env_list, int status);
+char	*expand_parameter(char *str, t_vlst *env_list, int status);
 char	*expand_variable(t_vlst *env_list, char *str);
 char	*expand_filename(char *str);
 char	*remove_quote(char *str);
 
 // Utils
-int		concat_expanded(char **str, int start, char *expanded);
-char	*get_parameter_expansion(char *str);
-char	*get_parameter(char *parameter_expansion);
 int		update_quote(char c, int quote);
+char	*convert_list_to_string(t_node *list);
 
 #endif

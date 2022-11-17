@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 19:57:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:52:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_cmd
 	int		output;
 	int		piping[2];
 	t_node	*redirect;
+	t_node	*word_tokens;
 	int		number;
 	char	**envp;
 	t_bool	isbuiltin;
