@@ -13,7 +13,7 @@ SRC += ft_isspace.c ft_itoa.c ft_math.c ft_put.c
 SRC += ft_split.c ft_strappend.c ft_strchr.c
 SRC += ft_strcmp.c ft_strdup.c ft_strjoin.c
 SRC += ft_strlcpy.c ft_strlen.c ft_strncasecmp.c
-SRC += ft_strncmp.c ft_strnstr.c ft_strrchr.c
+SRC += ft_strncmp.c ft_strndup.c ft_strnstr.c ft_strrchr.c
 SRC += ft_substr.c get_next_line.c
 
 OBJ = $(addprefix obj/, $(SRC:.c=.o))
