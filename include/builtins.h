@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:38:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 14:07:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:43:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 
 int		builtin_cd(char *path, t_vlst *vars);
 int		builtin_echo(t_cmd *command);
-int		builtin_env(t_vlst *vars);
+int		builtin_env(int fd_out, t_vlst *vars);
 void	builtin_exit(int status, t_minishell *ms, t_cmd *cmd);
 int		builtin_export(int argc, char *argv[], t_vlst *vars);
-int		builtin_pwd(void);
+int		builtin_pwd(int fd_out);
 int		builtin_unset(int argc, char *argv[], t_vlst *vars);
 char	*get_pwd(void);
 t_bool	is_valid_name(char *name);

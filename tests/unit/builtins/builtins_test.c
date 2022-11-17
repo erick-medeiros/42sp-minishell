@@ -116,7 +116,7 @@ void test_builtin_pwd(void) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
-		builtin_pwd();
+		builtin_pwd(STDOUT);
 		exit(0);
 	} else {
 		close(pipefd[1]);
@@ -192,7 +192,7 @@ void test_builtin_pwd_overflow(void) {
 		cd_temp_dir_overflow(dir);
 		free(dir);
 		errno = 0;
-		builtin_pwd();
+		builtin_pwd(STDOUT);
 		exit(errno);
 	}
 	int status = ut_wait();

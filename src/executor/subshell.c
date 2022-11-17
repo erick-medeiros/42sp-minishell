@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 14:08:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:45:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "executor.h"
 #include "expander.h"
 #include "builtins.h"
-#include "structs.h"
 
 void	subshell(t_minishell *minishell, t_cmd *command)
 {
@@ -47,13 +46,13 @@ int	execute_builtin(t_minishell *ms, t_cmd *cmd)
 	else if (ft_streq(cmd->argv[0], "cd") && cmd->argc == 2)
 		cmd->status = builtin_cd(cmd->argv[1], &ms->env_list);
 	else if (ft_streq(cmd->argv[0], "pwd"))
-		cmd->status = builtin_pwd();
+		cmd->status = builtin_pwd(cmd->output);
 	else if (ft_streq(cmd->argv[0], "export"))
 		cmd->status = builtin_export(cmd->argc, cmd->argv, &ms->env_list);
 	else if (ft_streq(cmd->argv[0], "unset"))
 		cmd->status = builtin_unset(cmd->argc, cmd->argv, &ms->env_list);
 	else if (ft_streq(cmd->argv[0], "env"))
-		cmd->status = builtin_env(&ms->env_list);
+		cmd->status = builtin_env(cmd->output, &ms->env_list);
 	else if (ft_streq(cmd->argv[0], "exit"))
 		builtin_exit(ms->exit_status, ms, cmd);
 	return (cmd->status);
