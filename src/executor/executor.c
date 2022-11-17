@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 01:33:12 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/17 13:04:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,32 +46,29 @@ void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 	execute_command(minishell, cmd);
 }
 
-void	sync_tree_execution(t_tree *root, int *exit_status)
+void	sync_tree_execution(t_tree *root, int *status)
 {
-	t_cmd	*cmd;
-
 	if (!root)
 		return ;
 	if (root->left)
-		sync_tree_execution(root->left, exit_status);
+		sync_tree_execution(root->left, status);
 	if (root->right)
-		sync_tree_execution(root->right, exit_status);
+		sync_tree_execution(root->right, status);
 	if (root->type == TREE_TYPE_CMD)
-	{
-		cmd = (t_cmd *) root->content;
-		if (cmd->pid > 0)
-			process_exit_status(cmd);
-		*exit_status = cmd->status;
-	}
+		*status = command_exit_status(root->content);
 }
 
-void	process_exit_status(t_cmd *command)
+int	command_exit_status(t_cmd *cmd)
 {
-	waitpid(command->pid, &command->status, 0);
-	if (WIFEXITED(command->status))
-		command->status = WEXITSTATUS(command->status);
-	else if (WIFSIGNALED(command->status))
-		command->status = 128 + WTERMSIG(command->status);
+	if (cmd->pid > 0)
+	{
+		waitpid(cmd->pid, &cmd->status, 0);
+		if (WIFEXITED(cmd->status))
+			cmd->status = WEXITSTATUS(cmd->status);
+		else if (WIFSIGNALED(cmd->status))
+			cmd->status = 128 + WTERMSIG(cmd->status);
+	}
+	return (cmd->status);
 }
 
 int	execute_command(t_minishell *minishell, t_cmd *command)
