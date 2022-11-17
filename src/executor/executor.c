@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 21:37:18 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:26:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ void	process_exit_status(t_cmd *command)
 
 int	execute_command(t_minishell *minishell, t_cmd *command)
 {
+	command->status = command_redirect(command);
+	if (command->status != OK)
+		return (command->status);
 	command_search(command, &minishell->env_list);
 	if (command->isbuiltin && !minishell->pipeline)
 		command->status = execute_builtin(minishell, command);

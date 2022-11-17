@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/14 22:04:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:32:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "parser.h"
 #include "structs.h"
 #include "expander.h"
+#include <stdlib.h>
 
 static int	add_arg(int argc, char ***argv, char *new_arg);
 static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd);
@@ -109,26 +110,16 @@ int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
 	return (enqueue(&ms->heredoc_queue, content));
 }
 
-static int	set_redir(t_tok_type redir_type, char *filename, t_cmd *cmd)
+static int	set_redir(t_tok_type type, char *filename, t_cmd *cmd)
 {
-	if (redir_type == TOKEN_INPUT)
+	t_token	*token;
+
+	if (type == TOKEN_INPUT || type == TOKEN_OUTPUT || type == TOKEN_APPEND)
 	{
-		if (cmd->input != STDIN)
-			close(cmd->input);
-		cmd->input = open_redirect_fd(filename, TOKEN_INPUT);
-		if (cmd->input == -1)
-			return (ERR_FILE_OPEN);
-	}
-	else
-	{
-		if (cmd->output != STDOUT && cmd->output != STDERR)
-			close(cmd->output);
-		if (redir_type == TOKEN_OUTPUT)
-			cmd->output = open_redirect_fd(filename, TOKEN_OUTPUT);
-		else
-			cmd->output = open_redirect_fd(filename, TOKEN_APPEND);
-		if (cmd->output == -1)
-			return (ERR_FILE_OPEN);
+		token = malloc(sizeof(t_token));
+		token->value = ft_strdup(filename);
+		token->type = type;
+		add_node(&cmd->redirect, token);
 	}
 	return (OK);
 }

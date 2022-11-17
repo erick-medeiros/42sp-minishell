@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 12:12:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 21:01:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define EXECUTOR_H
 
 # include "minishell.h"
-# include <stddef.h>
 
 // Executor
 
@@ -22,6 +21,11 @@ void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 			t_tree *parent, t_tree *root);
 void	sync_tree_execution(t_tree *root, int *exit_status);
 void	process_exit_status(t_cmd *command);
+
+// Redirect
+
+int		command_redirect(t_cmd *cmd);
+int		open_redirect_fd(char *pathname, int token_type);
 
 // Search
 

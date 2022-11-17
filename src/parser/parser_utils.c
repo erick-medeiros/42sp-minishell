@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/14 21:57:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 18:41:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,6 @@ int	new_op_node(t_tree	**op_node, t_tree_type op_type)
 	(*op_node)->right = NULL;
 	(*op_node)->content = NULL;
 	return (OK);
-}
-
-int	open_redirect_fd(char *pathname, int token_type)
-{
-	int	fd;
-	int	permissions;
-
-	permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	fd = -1;
-	if (token_type == TOKEN_INPUT)
-		fd = open(pathname, O_RDONLY);
-	else if (token_type == TOKEN_OUTPUT)
-		fd = open(pathname, O_WRONLY | O_CREAT | O_TRUNC, permissions);
-	else if (token_type == TOKEN_APPEND)
-		fd = open(pathname, O_WRONLY | O_CREAT | O_APPEND, permissions);
-	return (fd);
 }
 
 void	process_heredoc(t_queue *heredoc_queue)

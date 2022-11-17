@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 14:02:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/16 20:12:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 // Utils
 int			print_parse_error(int parse_result);
-int			open_redirect_fd(char *pathname, int token_type);
 
 int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);
