@@ -33,7 +33,8 @@ void debug_command(t_cmd *command) {
   i = -1;
   while (command->argv && command->argv[++i])
     printf("argv%d) %s\n", i, command->argv[i]);
-  printf("argv%d) %s\n", i, command->argv[i]);
+  if (command->argv)
+    printf("argv%d) %s\n", i, command->argv[i]);
   printf("status) %d\n", command->status);
   printf("input) %d\n", command->input);
   printf("output) %d\n", command->output);
