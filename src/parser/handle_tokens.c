@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/17 17:53:14 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:54:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,21 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 
 int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 {
+	char		*filename;
 	int			result;
 	t_cmd		*cmd;
-	t_token		*tok;
+	t_tok_type	redir_type;
 
 	cmd = ((t_cmd *)cmd_node->content);
-	tok = ((t_token *)ms->token_list->content);
+	redir_type = ((t_token *)ms->token_list->content)->type;
 	ms->token_list = remove_node(ms->token_list, del_token_node);
 	if (ms->token_list == NULL)
 		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
-	result = set_redir(tok->type, tok->value, cmd);
+	filename = ft_strdup(((t_token *)ms->token_list->content)->value);
+	result = set_redir(redir_type, filename, cmd);
+	free(filename);
 	if (result != OK)
 		return (result);
 	return (OK);
