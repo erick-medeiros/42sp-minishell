@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 02:52:31 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/17 02:01:13 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/17 13:25:55 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	builtin_export(int argc, char *argv[], t_vlst *vars)
 	result = 0;
 	if (argc == 1)
 	{
-		print_sorted_vars(vars, " declare - x ");
+		print_sorted_vars(vars, "declare -x ");
 		return (OK);
 	}
 	idx = 1;
