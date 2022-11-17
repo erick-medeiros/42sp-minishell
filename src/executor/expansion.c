@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 19:26:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 20:43:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,24 @@
 #include "minishell.h"
 
 static int	create_argv(t_cmd *cmd);
+static void	update_content(void **src, void *content);
+static int	command_word_expansion(t_minishell *ms, t_cmd *cmd);
+static int	command_redirect_expansion(t_minishell *ms, t_cmd *cmd);
 
 int	command_expansion(t_minishell *ms, t_cmd *cmd)
+{
+	int	status;
+
+	status = command_word_expansion(ms, cmd);
+	if (status != 0)
+		return (status);
+	status = command_redirect_expansion(ms, cmd);
+	if (status != 0)
+		return (status);
+	return (0);
+}
+
+static int	command_word_expansion(t_minishell *ms, t_cmd *cmd)
 {
 	t_node	*node;
 	char	*src;
@@ -27,14 +43,41 @@ int	command_expansion(t_minishell *ms, t_cmd *cmd)
 				&ms->env_list, ms->exit_status);
 		if (!src)
 			return (1);
-		free(node->content);
-		node->content = src;
+		update_content(&node->content, src);
 		src = remove_quote(node->content);
-		free(node->content);
-		node->content = src;
+		if (!src)
+			return (1);
+		update_content(&node->content, src);
 		node = node->next;
 	}
 	return (create_argv(cmd));
+}
+
+static int	command_redirect_expansion(t_minishell *ms, t_cmd *cmd)
+{
+	t_node	*node;
+	t_token	*token;
+	char	*src;
+
+	(void)ms;
+	(void)token;
+	(void)src;
+	node = cmd->redirect;
+	while (node)
+	{
+		token = node->content;
+		src = parameter_expansion(token->value,
+				&ms->env_list, ms->exit_status);
+		if (!src)
+			return (1);
+		update_content((void **)&token->value, src);
+		src = remove_quote(token->value);
+		if (!src)
+			return (1);
+		update_content((void **)&token->value, src);
+		node = node->next;
+	}
+	return (0);
 }
 
 static int	create_argv(t_cmd *cmd)
@@ -62,4 +105,15 @@ static int	create_argv(t_cmd *cmd)
 	}
 	cmd->argv[i] = NULL;
 	return (0);
+}
+
+static void	update_content(void **src, void *content)
+{
+	if (src)
+	{
+		free(*src);
+		*src = NULL;
+		if (content)
+			*src = content;
+	}
 }
