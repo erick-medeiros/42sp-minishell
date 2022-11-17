@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 20:26:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 01:33:12 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	process_exit_status(t_cmd *command)
 
 int	execute_command(t_minishell *minishell, t_cmd *command)
 {
+	if (command->argc == 0)
+		return (0);
 	command->status = command_redirect(command);
 	if (command->status != OK)
 		return (command->status);
