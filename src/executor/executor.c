@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 17:48:32 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 18:50:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ int	command_exit_status(t_cmd *cmd)
 
 int	execute_command(t_minishell *ms, t_cmd *cmd)
 {
-	command_expansion(ms, cmd);
+	cmd->status = command_expansion(ms, cmd);
+	if (cmd->status != OK)
+		return (cmd->status);
 	if (cmd->argc == 0)
 		return (0);
 	cmd->status = command_redirect(cmd);

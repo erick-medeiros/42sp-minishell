@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 17:53:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 18:49:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	destroy_command(t_cmd *command)
 	if (command == NULL)
 		return ;
 	i = 0;
-	while (command->argv && i < command->argc + 1)
+	while (command->argv && command->argv[i] && i < command->argc + 1)
 	{
 		free(command->argv[i]);
 		++i;
