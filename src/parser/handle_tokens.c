@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/17 19:54:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 20:42:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_BAD_SYNTAX);
 	if (((t_token *)ms->token_list->content)->type != TOKEN_WORD)
 		return (ERR_BAD_SYNTAX);
-	filename = ft_strdup(((t_token *)ms->token_list->content)->value);
+	filename = ((t_token *)ms->token_list->content)->value;
 	result = set_redir(redir_type, filename, cmd);
-	free(filename);
 	if (result != OK)
 		return (result);
 	return (OK);
