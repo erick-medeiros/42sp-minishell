@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 15:00:50 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 19:10:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,39 +61,44 @@ void	sync_tree_execution(t_tree *root, int *status, int *coredump)
 		*status = command_exit_status(root->content, coredump);
 }
 
-int	command_exit_status(t_cmd *cmd, int *coredump)
+void	connect_pipeline(t_cmd *cmd, t_tree *grandparent, t_tree *parent,
+			t_tree *node)
 {
-	if (cmd->pid > 0)
+	int	*pipefd;
+
+	if (parent && parent->left == node)
 	{
-		waitpid(cmd->pid, &cmd->status, 0);
-		if (WIFEXITED(cmd->status))
-			cmd->status = WEXITSTATUS(cmd->status);
-		else if (WIFSIGNALED(cmd->status))
-		{
-			if (coredump)
-				*coredump = WCOREDUMP(cmd->status);
-			cmd->status = 128 + WTERMSIG(cmd->status);
-		}
+		pipefd = (int *) parent->content;
+		cmd->piping[READ_PIPE] = STDIN;
+		cmd->piping[WRITE_PIPE] = pipefd[1];
 	}
-	return (cmd->status);
+	else if (grandparent && parent && parent->right == node)
+	{
+		pipefd = (int *) parent->content;
+		cmd->piping[READ_PIPE] = pipefd[0];
+		pipefd = (int *) grandparent->content;
+		cmd->piping[WRITE_PIPE] = pipefd[1];
+	}
+	else if (parent)
+	{
+		pipefd = (int *) parent->content;
+		cmd->piping[READ_PIPE] = pipefd[0];
+		cmd->piping[WRITE_PIPE] = STDOUT;
+	}
 }
 
-int	execute_command(t_minishell *ms, t_cmd *cmd)
+void	close_pipeline(t_tree *root)
 {
-	cmd->status = command_expansion(ms, cmd);
-	if (cmd->status != OK)
-		return (cmd->status);
-	if (cmd->argc == 0)
-		return (0);
-	cmd->status = command_redirect(cmd);
-	if (cmd->status != OK)
-		return (cmd->status);
-	cmd->status = command_search(cmd, &ms->env_list);
-	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
-		return (cmd->status);
-	if (cmd->isbuiltin && !ms->pipeline)
-		cmd->status = execute_builtin(ms, cmd);
-	else
-		subshell(ms, cmd);
-	return (0);
+	if (!root)
+		return ;
+	if (root->left)
+		close_pipeline(root->left);
+	if (root->right)
+		close_pipeline(root->right);
+	if (root->type == TREE_TYPE_PIPE)
+	{
+		close(((int *)root->content)[0]);
+		close(((int *)root->content)[1]);
+		free(root->content);
+	}
 }

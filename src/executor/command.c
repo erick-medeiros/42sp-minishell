@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   subshell.c                                         :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 17:51:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 19:10:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,26 @@
 #include "executor.h"
 #include "expander.h"
 #include "builtins.h"
+
+int	execute_command(t_minishell *ms, t_cmd *cmd)
+{
+	cmd->status = command_expansion(ms, cmd);
+	if (cmd->status != OK)
+		return (cmd->status);
+	if (cmd->argc == 0)
+		return (0);
+	cmd->status = command_redirect(cmd);
+	if (cmd->status != OK)
+		return (cmd->status);
+	cmd->status = command_search(cmd, &ms->env_list);
+	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
+		return (cmd->status);
+	if (cmd->isbuiltin && !ms->pipeline)
+		cmd->status = execute_builtin(ms, cmd);
+	else
+		subshell(ms, cmd);
+	return (0);
+}
 
 void	subshell(t_minishell *minishell, t_cmd *command)
 {
@@ -67,4 +87,21 @@ int	execute_program(t_cmd *cmd)
 		return (command_not_found_handle(cmd->argv[0]));
 	execve(cmd->pathname, cmd->argv, cmd->envp);
 	return (error_message2(1, cmd->argv[0], strerror(errno)));
+}
+
+int	command_exit_status(t_cmd *cmd, int *coredump)
+{
+	if (cmd->pid > 0)
+	{
+		waitpid(cmd->pid, &cmd->status, 0);
+		if (WIFEXITED(cmd->status))
+			cmd->status = WEXITSTATUS(cmd->status);
+		else if (WIFSIGNALED(cmd->status))
+		{
+			if (coredump)
+				*coredump = WCOREDUMP(cmd->status);
+			cmd->status = 128 + WTERMSIG(cmd->status);
+		}
+	}
+	return (cmd->status);
 }
