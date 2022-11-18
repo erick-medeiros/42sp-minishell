@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 04:24:06 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 12:31:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,54 @@
 #include "minishell.h"
 #include <signal.h>
 
-void	print_signal_error(int exit_status)
+static void	print_signal_error_msg(char *msg, int coredump);
+
+void	print_signal_error(int exit_status, int coredump)
 {
+	char	*msg;
+
+	msg = NULL;
 	if (exit_status == 128 + SIGALRM)
-		write(STDERR, "Alarm clock\n", 12);
+		msg = "Alarm clock";
 	else if (exit_status == 128 + SIGHUP)
-		write(STDERR, "Hangup\n", 7);
+		msg = "Hangup";
 	else if (exit_status == 128 + SIGSEGV)
-		write(STDERR, "Segmentation fault\n", 19);
+		msg = "Segmentation fault";
 	else if (exit_status == 128 + SIGTRAP)
-		write(STDERR, "Trace/breakpoint trap\n", 22);
+		msg = "Trace/breakpoint trap";
 	else if (exit_status == 128 + SIGABRT)
-		write(STDERR, "Aborted\n", 8);
+		msg = "Aborted";
 	else if (exit_status == 128 + SIGFPE)
-		write(STDERR, "Floating point exception\n", 25);
+		msg = "Floating point exception";
 	else if (exit_status == 128 + SIGILL)
-		write(STDERR, "Illegal instruction\n", 20);
+		msg = "Illegal instruction";
 	else if (exit_status == 128 + SIGKILL)
-		write(STDERR, "Killed\n", 7);
+		msg = "Killed";
 	else if (exit_status == 128 + SIGQUIT)
-		write(STDERR, "Quit\n", 5);
+		msg = "Quit";
 	else if (exit_status == 128 + SIGTERM)
-		write(STDERR, "Terminated\n", 11);
+		msg = "Terminated";
+	print_signal_error_msg(msg, coredump);
+}
+
+static void	print_signal_error_msg(char *msg, int coredump)
+{
+	const short	buffer_size = 37;
+	const short	coredump_size = 13;
+	int			len_msg;
+	int			i;
+
+	if (!coredump)
+	{
+		ft_putendl_fd(msg, STDERR);
+		return ;
+	}
+	len_msg = ft_strlen(msg);
+	ft_putstr_fd(msg, STDERR);
+	i = -1;
+	while (++i < (int)(buffer_size - coredump_size - len_msg))
+		ft_putstr_fd(" ", STDERR);
+	ft_putstr_fd("(core dumped)\n", STDERR);
 }
 
 int	print_file_error(char *path, int error_number)

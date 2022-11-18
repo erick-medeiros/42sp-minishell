@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 04:22:25 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 12:23:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 #include "expander.h"
 #include "minishell.h"
 
-void	executor(t_minishell *minishell)
+void	executor(t_minishell *ms)
 {
-	tree_executor(minishell, NULL, NULL, minishell->root);
-	close_pipeline(minishell->root);
-	if (minishell->exit_status == OK)
-		sync_tree_execution(minishell->root, &minishell->exit_status);
-	print_signal_error(minishell->exit_status);
+	int	coredump;
+
+	coredump = 0;
+	tree_executor(ms, NULL, NULL, ms->root);
+	close_pipeline(ms->root);
+	if (ms->exit_status == OK)
+		sync_tree_execution(ms->root, &ms->exit_status, &coredump);
+	print_signal_error(ms->exit_status, coredump);
 }
 
 void	tree_executor(t_minishell *minishell, t_tree *grandparent,
@@ -47,19 +50,19 @@ void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 	execute_command(minishell, cmd);
 }
 
-void	sync_tree_execution(t_tree *root, int *status)
+void	sync_tree_execution(t_tree *root, int *status, int *coredump)
 {
 	if (!root)
 		return ;
 	if (root->left)
-		sync_tree_execution(root->left, status);
+		sync_tree_execution(root->left, status, coredump);
 	if (root->right)
-		sync_tree_execution(root->right, status);
+		sync_tree_execution(root->right, status, coredump);
 	if (root->type == TREE_TYPE_CMD)
-		*status = command_exit_status(root->content);
+		*status = command_exit_status(root->content, coredump);
 }
 
-int	command_exit_status(t_cmd *cmd)
+int	command_exit_status(t_cmd *cmd, int *coredump)
 {
 	if (cmd->pid > 0 && cmd->status == 0)
 	{
@@ -67,7 +70,11 @@ int	command_exit_status(t_cmd *cmd)
 		if (WIFEXITED(cmd->status))
 			cmd->status = WEXITSTATUS(cmd->status);
 		else if (WIFSIGNALED(cmd->status))
+		{
+			if (coredump)
+				*coredump = WCOREDUMP(cmd->status);
 			cmd->status = 128 + WTERMSIG(cmd->status);
+		}
 	}
 	return (cmd->status);
 }

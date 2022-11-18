@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 03:53:08 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 11:35:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 void	tree_executor(t_minishell *minishell, t_tree *grandparent,
 			t_tree *parent, t_tree *root);
-void	sync_tree_execution(t_tree *root, int *exit_status);
-int		command_exit_status(t_cmd *cmd);
+void	sync_tree_execution(t_tree *root, int *exit_status, int *coredump);
+int		command_exit_status(t_cmd *cmd, int *coredump);
 
 // Expander
 
@@ -53,7 +53,7 @@ int		execute_builtin(t_minishell *minishell, t_cmd *command);
 int		execute_program(t_cmd *command);
 
 // Error handling
-void	print_signal_error(int exit_status);
+void	print_signal_error(int exit_status, int coredump);
 int		set_exit_code(t_minishell *ms, int error_number);
 
 #endif
