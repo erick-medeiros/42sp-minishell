@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 23:54:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 03:53:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int		execute_command(t_minishell *minishell, t_cmd *command);
 int		execute_builtin(t_minishell *minishell, t_cmd *command);
 int		execute_program(t_cmd *command);
 
-// Print errors
+// Error handling
 void	print_signal_error(int exit_status);
+int		set_exit_code(t_minishell *ms, int error_number);
 
 #endif

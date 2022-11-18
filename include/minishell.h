@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 18:18:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 03:46:02 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@
 # define ERR_BAD_TOKEN 11
 # define ERR_FILE_OPEN 12
 # define ERR_BAD_SUBST 13
+# define ERR_IS_DIR 14
+# define ERR_TOO_LONG 15
+# define ERR_OTHER 16
+# define ERR_ACCESS 17
+# define ERR_NO_PATH 18
+# define ERR_CMD_NOT_FOUND 19
 
 // List-related functions
 

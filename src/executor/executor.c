@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 23:54:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 04:22:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	executor(t_minishell *minishell)
 {
 	tree_executor(minishell, NULL, NULL, minishell->root);
 	close_pipeline(minishell->root);
-	sync_tree_execution(minishell->root, &minishell->exit_status);
+	if (minishell->exit_status == OK)
+		sync_tree_execution(minishell->root, &minishell->exit_status);
 	print_signal_error(minishell->exit_status);
 }
 
@@ -60,7 +61,7 @@ void	sync_tree_execution(t_tree *root, int *status)
 
 int	command_exit_status(t_cmd *cmd)
 {
-	if (cmd->pid > 0)
+	if (cmd->pid > 0 && cmd->status == 0)
 	{
 		waitpid(cmd->pid, &cmd->status, 0);
 		if (WIFEXITED(cmd->status))
@@ -73,6 +74,8 @@ int	command_exit_status(t_cmd *cmd)
 
 int	execute_command(t_minishell *ms, t_cmd *cmd)
 {
+	int	result;
+
 	cmd->status = command_expansion(ms, cmd);
 	if (cmd->status != OK)
 		return (cmd->status);
@@ -81,7 +84,9 @@ int	execute_command(t_minishell *ms, t_cmd *cmd)
 	cmd->status = command_redirect(cmd);
 	if (cmd->status != OK)
 		return (cmd->status);
-	command_search(cmd, &ms->env_list);
+	result = command_search(cmd, &ms->env_list);
+	if (result != OK && result != ERR_CMD_NOT_FOUND)
+		return (set_exit_code(ms, result));
 	if (cmd->isbuiltin && !ms->pipeline)
 		cmd->status = execute_builtin(ms, cmd);
 	else

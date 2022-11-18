@@ -1,15 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_errors.c                                    :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/17 23:52:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 04:24:06 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include <signal.h>
 
@@ -35,4 +36,36 @@ void	print_signal_error(int exit_status)
 		write(STDERR, "Quit\n", 5);
 	else if (exit_status == 128 + SIGTERM)
 		write(STDERR, "Terminated\n", 11);
+}
+
+int	print_file_error(char *path, int error_number)
+{
+	ft_putstr_fd("minishell: ", STDERR);
+	ft_putstr_fd(path, STDERR);
+	if (error_number == ERR_IS_DIR)
+		ft_putstr_fd(": Is a directory\n", STDERR);
+	else if (error_number == ERR_NOT_FOUND)
+		ft_putstr_fd(": No such file or directory\n", STDERR);
+	else if (error_number == ERR_ACCESS)
+		ft_putstr_fd(": Permission denied\n", STDERR);
+	else if (error_number == ERR_TOO_LONG)
+		ft_putstr_fd(": File name too long\n", STDERR);
+	else if (error_number == ERR_OTHER)
+		ft_putstr_fd(": File error\n", STDERR);
+	return (error_number);
+}
+
+int	set_exit_code(t_minishell *ms, int error_number)
+{
+	if (error_number == ERR_IS_DIR)
+		ms->exit_status = 126;
+	else if (error_number == ERR_NOT_FOUND)
+		ms->exit_status = 127;
+	else if (error_number == ERR_ACCESS)
+		ms->exit_status = 126;
+	else if (error_number == ERR_TOO_LONG)
+		ms->exit_status = 126;
+	else if (error_number == ERR_OTHER)
+		ms->exit_status = 126;
+	return (error_number);
 }

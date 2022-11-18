@@ -3,28 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:51:23 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 14:21:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 04:32:42 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 #include "minishell.h"
+#include <asm-generic/errno-base.h>
+#include <asm-generic/errno.h>
+#include <sys/stat.h>
+
+static int	check_runnable(char *path);
 
 static int	defined_path(t_cmd *command)
 {
+	int	result;
+
 	command->pathname = NULL;
 	if (ft_strrchr(command->argv[0], '/'))
 	{
-		if (access(command->argv[0], F_OK) == 0)
-		{
+		result = check_runnable(command->argv[0]);
+		if (result == OK)
 			command->pathname = ft_strdup(command->argv[0]);
-			return (OK);
-		}
+		return (result);
 	}
-	return (ERR_NOT_FOUND);
+	return (ERR_NO_PATH);
 }
 
 static int	command_is_builtin(t_cmd *command)
@@ -64,23 +70,47 @@ static int	search_in_directories(t_cmd *command, t_vlst *env_list)
 		if (access(command->pathname, F_OK) == 0)
 		{
 			free_string_list(path_list);
-			return (OK);
+			return (check_runnable(command->pathname));
 		}
 		free(command->pathname);
 		++i;
 	}
 	free_string_list(path_list);
 	command->pathname = NULL;
-	return (ERR_NOT_FOUND);
+	return (ERR_CMD_NOT_FOUND);
 }
 
 int	command_search(t_cmd *command, t_vlst *env_list)
 {
-	if (defined_path(command) == OK)
+	int	result;
+
+	result = defined_path(command);
+	if (result == OK)
 		return (OK);
 	if (command_is_builtin(command) == OK)
 		return (OK);
-	if (search_in_directories(command, env_list) == OK)
-		return (OK);
-	return (ERR_NOT_FOUND);
+	if (result == ERR_NO_PATH)
+		result = search_in_directories(command, env_list);
+	return (result);
+}
+
+static int	check_runnable(char *path)
+{
+	struct stat	buf;
+
+	if (stat(path, &buf))
+	{
+		if (errno == ENOENT || errno == ENOTDIR)
+			return (print_file_error(path, ERR_NOT_FOUND));
+		if (errno == ENAMETOOLONG)
+			return (print_file_error(path, ERR_TOO_LONG));
+		if (errno == EACCES)
+			return (print_file_error(path, ERR_ACCESS));
+		return (print_file_error(path, ERR_OTHER));
+	}
+	if (S_ISDIR(buf.st_mode))
+		return (print_file_error(path, ERR_IS_DIR));
+	if (access(path, X_OK))
+		return (print_file_error(path, ERR_ACCESS));
+	return (OK);
 }

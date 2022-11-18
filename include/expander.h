@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 18:05:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 04:34:41 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
+# include <sys/stat.h>
 # include "minishell.h"
 
 # define SINGLE_QUOTE 39
@@ -38,5 +39,6 @@ char	*remove_quote(char *str);
 // Utils
 int		update_quote(char c, int quote);
 char	*convert_list_to_string(t_node *list);
+int		print_file_error(char *path, int error_number);
 
 #endif
