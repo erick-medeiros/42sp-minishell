@@ -26,7 +26,7 @@ void test_function_command_exit_status(void) {
 		} else {
 			waitpid(cmd->pid, &cmd->status, 0);
 			TEST_ASSERT_NOT_EQUAL(status, cmd->status);
-			command_exit_status(cmd);
+			command_exit_status(cmd, 0);
 			TEST_ASSERT_EQUAL(status, cmd->status);
 			destroy_command(cmd);
 		}
@@ -43,7 +43,7 @@ void test_function_command_exit_status(void) {
 	} else {
 		waitpid(cmd->pid, &cmd->status, 0);
 		TEST_ASSERT_EQUAL(status, cmd->status);
-		command_exit_status(cmd);
+		command_exit_status(cmd, 0);
 		TEST_ASSERT_EQUAL(status, cmd->status);
 		destroy_command(cmd);
 	}

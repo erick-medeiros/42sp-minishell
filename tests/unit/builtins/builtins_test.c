@@ -11,8 +11,6 @@ char *simulate_cmd_echo(char *argv[]) {
 	pid_t pid;
 	char *content;
 	int status;
-	t_cmd *cmd;
-	int i;
 
 	if (pipe(pipefd) == -1)
 		TEST_FAIL();
@@ -23,28 +21,13 @@ char *simulate_cmd_echo(char *argv[]) {
 		ut_stds_devnull();
 		dup2(pipefd[1], STDOUT);
 		ut_close_pipefd(pipefd);
-		//
-		cmd = new_command(0);
-		i = 0;
-		while (argv[i])
-			++i;
-		cmd->argc = i;
-		cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-		i = 0;
-		while (argv[i]) {
-			cmd->argv[i] = strdup(argv[i]);
-			++i;
-		}
-		cmd->argv[i] = NULL;
-		//
-		builtin_echo(cmd);
-		destroy_command(cmd);
+		builtin_echo(STDOUT, argv);
 		exit(0);
 	}
 	close(pipefd[1]);
 	status = ut_wait();
 	if (status != 0)
-		TEST_IGNORE_MESSAGE(UT_ERR_PROC);
+		TEST_FAIL();
 	content = ut_get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	return (content);
@@ -69,6 +52,9 @@ void test_builtin_echo(void) {
 		simulate_cmd_echo(((char *[]){"echo", "-n", "echo", "echo", NULL}));
 	TEST_ASSERT_EQUAL_STRING("echo echo", output);
 	free(output);
+	output = simulate_cmd_echo(((char *[]){"echo", NULL}));
+	TEST_ASSERT_EQUAL_STRING("\n", output);
+	free(output);
 }
 
 void test_builtin_cd(void) {
@@ -86,7 +72,7 @@ void test_builtin_cd(void) {
 		TEST_FAIL();
 	else if (pid == 0) {
 		ut_stds_devnull();
-		builtin_cd(expected, NULL);
+		builtin_cd(2, (char *[]){"cd", expected, 0}, NULL);
 		char *new_dir = ut_getcwd();
 		strncpy(content, new_dir, len);
 		free(new_dir);

@@ -7,6 +7,8 @@
 #include <string.h>
 #include <unistd.h>
 
+/*
+// subshell redirect deprecated
 void test_function_subshell_redirect(void) {
 	t_minishell minishell;
 	t_cmd *command;
@@ -28,7 +30,7 @@ void test_function_subshell_redirect(void) {
 		command->output = dup(pipefd_out[1]);
 		ut_close_pipefd(pipefd_in);
 		ut_close_pipefd(pipefd_out);
-		subshell_redirect(command);
+		subshell(&minishell, command);
 		char *content = ut_get_content_fd(STDIN);
 		printf("%s", content);
 		free(content);
@@ -53,6 +55,7 @@ void test_function_subshell_redirect(void) {
 		close(pipefd_out[0]);
 	}
 }
+*/
 
 void test_function_execute_program(void) {
 	char *expected = "oi";
@@ -114,7 +117,7 @@ void test_function_exit_subshell(void) {
 
 int file_subshell_test() {
 	UNITY_BEGIN();
-	RUN_TEST(test_function_subshell_redirect);
+	// RUN_TEST(test_function_subshell_redirect);
 	RUN_TEST(test_function_execute_program);
 	// RUN_TEST(test_function_exit_subshell);
 	return UNITY_END();

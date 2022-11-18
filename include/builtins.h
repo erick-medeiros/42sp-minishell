@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:38:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 16:30:19 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:44:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 // Builtins
 
 int		builtin_cd(int argc, char *argv[], t_vlst *vars);
-int		builtin_echo(t_cmd *command);
+int		builtin_echo(int fd_out, char *argv[]);
 int		builtin_env(int fd_out, t_vlst *vars);
 void	builtin_exit(int status, t_minishell *ms, t_cmd *cmd);
 int		builtin_export(int argc, char *argv[], t_vlst *vars);
