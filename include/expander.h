@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 04:34:41 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:18:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		find_env_var(void *str, void *var);
 // Expander
 
 char	*parameter_expansion(char *src, t_vlst *env_list, int status);
-char	*expand_parameter(char *str, t_vlst *env_list, int status);
+char	*expand_parameter(char *str, int quote, t_vlst *env_list, int status);
 char	*expand_variable(t_vlst *env_list, char *str);
 char	*expand_filename(char *str);
 char	*remove_quote(char *str);

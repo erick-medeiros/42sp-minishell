@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   parameter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 18:05:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 09:27:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ char	*parameter_expansion(char *src, t_vlst *env_list, int status)
 	start = 0;
 	while (src[i])
 	{
-		if (ft_isquote(src[i]) && (!quote || src[i] == quote))
-			quote = update_quote(src[i], quote);
+		quote = update_quote(src[i], quote);
 		if (src[i] == '$' && (!quote || quote == DOUBLE_QUOTE))
 		{
 			add_node(&list, ft_strndup(&src[start], i - start));
-			add_node(&list, expand_parameter(&src[i], env_list, status));
+			add_node(&list, expand_parameter(&src[i], quote, env_list, status));
 			i += parameter_size(&src[i]);
 			start = i;
 		}
@@ -46,12 +45,23 @@ char	*parameter_expansion(char *src, t_vlst *env_list, int status)
 	return (convert_list_to_string(list));
 }
 
-char	*expand_parameter(char *str, t_vlst *env_list, int status)
+char	*expand_parameter(char *str, int quote, t_vlst *env_list, int status)
 {
 	int	len;
 
 	len = parameter_size(str);
-	if (ft_strncmp(str, "$", len) == 0)
+	if (ft_strncmp(str, "$ ", 2) == 0)
+	{
+		if (!quote)
+			return (ft_strdup("$ "));
+		else
+			return (ft_strdup("$"));
+	}
+	else if (ft_strncmp(str, "$", 2) == 0)
+		return (ft_strdup("$"));
+	else if (quote == DOUBLE_QUOTE && ft_strncmp(str, "$\"", 2) == 0)
+		return (ft_strdup("$"));
+	else if (ft_strncmp(str, "$", len) == 0)
 		return (ft_strdup(""));
 	else if (ft_strncmp(str, "$?", len) == 0)
 		return (ft_itoa(status));
@@ -68,8 +78,7 @@ char	*expand_variable(t_vlst *env_list, char *str)
 	if (!is_valid_name(expand))
 	{
 		free(expand);
-		ft_putstr_fd(str, STDERR);
-		ft_putendl_fd(": bad substitution", STDERR);
+		error_message(1, (char *[]){str, "bad substitution", NULL});
 		return (NULL);
 	}
 	node = find_node_by_content(env_list->list, expand, find_env_var);
@@ -86,7 +95,7 @@ static int	parameter_size(char *str)
 	i = 0;
 	if (str[i++] != '$')
 		return (0);
-	if (ft_isquote(str[i]))
+	if (ft_isquote(str[i]) || !str[i])
 		return (i);
 	if (str[i] == '{')
 	{
