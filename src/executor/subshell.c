@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 12:06:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:31:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 	handle_signal(SIGQUIT, command_signal_handler);
 	command->pid = fork();
 	if (command->pid < 0)
-		panic_error("executor: fork");
+		command->status = error_message(1, (char *[]){strerror(errno), NULL});
 	else if (command->pid == 0)
 	{
 		subshell_redirect(command);
@@ -74,7 +74,7 @@ int	execute_program(t_cmd *command)
 		return (127);
 	}
 	execve(command->pathname, command->argv, command->envp);
-	return (errno_handler(1, command->argv[0]));
+	return (error_message(1, (char *[]){command->argv[0], strerror(errno), 0}));
 }
 
 void	subshell_redirect(t_cmd *command)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 03:46:02 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:28:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
 // Error
 
 void		panic_error(char *msg);
-int			errno_handler(int status, char *field);
 int			error_message(int status, char *fields[]);
 
 // Signal
