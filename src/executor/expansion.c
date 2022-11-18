@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 20:43:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 13:13:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,6 @@ static int	command_redirect_expansion(t_minishell *ms, t_cmd *cmd)
 	t_token	*token;
 	char	*src;
 
-	(void)ms;
-	(void)token;
-	(void)src;
 	node = cmd->redirect;
 	while (node)
 	{
@@ -89,7 +86,8 @@ static int	create_argv(t_cmd *cmd)
 	node = cmd->word_tokens;
 	while (node)
 	{
-		++cmd->argc;
+		if (ft_strlen(node->content) > 0)
+			++cmd->argc;
 		node = node->next;
 	}
 	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
@@ -99,8 +97,8 @@ static int	create_argv(t_cmd *cmd)
 	node = cmd->word_tokens;
 	while (node)
 	{
-		cmd->argv[i] = ft_strdup(node->content);
-		++i;
+		if (ft_strlen(node->content) > 0)
+			cmd->argv[i++] = ft_strdup(node->content);
 		node = node->next;
 	}
 	cmd->argv[i] = NULL;
