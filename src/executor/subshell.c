@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 16:33:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:00:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 	handle_signal(SIGQUIT, command_signal_handler);
 	command->pid = fork();
 	if (command->pid < 0)
-		command->status = error_message(1, (char *[]){strerror(errno), NULL});
+		command->status = error_message1(1, strerror(errno));
 	else if (command->pid == 0)
 	{
 		subshell_redirect(command);
@@ -58,16 +58,12 @@ int	execute_builtin(t_minishell *ms, t_cmd *cmd)
 	return (cmd->status);
 }
 
-int	execute_program(t_cmd *command)
+int	execute_program(t_cmd *cmd)
 {
-	if (!command->pathname)
-	{
-		ft_putstr_fd(command->argv[0], STDERR);
-		ft_putendl_fd(": command not found", STDERR);
-		return (127);
-	}
-	execve(command->pathname, command->argv, command->envp);
-	return (error_message(1, (char *[]){command->argv[0], strerror(errno), 0}));
+	if (!cmd->pathname)
+		return (command_not_found_handle(cmd->argv[0]));
+	execve(cmd->pathname, cmd->argv, cmd->envp);
+	return (error_message2(1, cmd->argv[0], strerror(errno)));
 }
 
 void	subshell_redirect(t_cmd *command)

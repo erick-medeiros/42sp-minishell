@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 15:28:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:52:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,10 @@ int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
 
 void		panic_error(char *msg);
 int			error_message(int status, char *fields[]);
-
+int			error_message1(int status, char *field1);
+int			error_message2(int status, char *field1, char *field2);
+int			error_message3(int status, char *field1, char *field2,
+				char *field3);
 // Signal
 
 void		handle_signal(int sig, void *handler);

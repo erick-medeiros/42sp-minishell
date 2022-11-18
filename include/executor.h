@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 15:05:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:00:18 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ int		execute_program(t_cmd *command);
 
 // Error handling
 void	print_signal_error(int exit_status, int coredump);
+int		command_not_found_handle(char *name);
 
 #endif

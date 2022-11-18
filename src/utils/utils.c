@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:38:59 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 15:35:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:48:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,4 @@ void	panic_error(char *msg)
 	write(STDERR, err, ft_strlen(err));
 	write(STDERR, msg, ft_strlen(msg));
 	write(STDERR, "\n", 1);
-}
-
-int	error_message(int status, char *fields[])
-{
-	if (!fields)
-		return (status);
-	ft_putstr_fd("minishell", STDERR);
-	while (*fields)
-	{
-		ft_putstr_fd(": ", STDERR);
-		ft_putstr_fd(*fields, STDERR);
-		++fields;
-	}
-	ft_putstr_fd("\n", STDERR);
-	return (status);
 }

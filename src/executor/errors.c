@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 15:05:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:02:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,21 @@ static void	print_signal_error_msg(char *msg, int coredump)
 int	print_file_error(char *path, int error_number)
 {
 	if (error_number == ERR_IS_DIR)
-		return (error_message(126, (char *[]){path, "Is a directory", 0}));
+		return (error_message2(126, path, "Is a directory"));
 	else if (error_number == ERR_NOT_FOUND)
-		return (error_message(127, (char *[]){
-				path, "No such file or directory", 0
-			}));
+		return (error_message2(127, path, "No such file or directory"));
 	else if (error_number == ERR_ACCESS)
-		return (error_message(126, (char *[]){path, "Permission denied", 0}));
+		return (error_message2(126, path, "Permission denied"));
 	else if (error_number == ERR_TOO_LONG)
-		return (error_message(126, (char *[]){path, "File name too long", 0}));
+		return (error_message2(126, path, "File name too long"));
 	else if (error_number == ERR_OTHER)
-		return (error_message(126, (char *[]){path, "File error", 0}));
+		return (error_message2(126, path, "File error"));
 	return (1);
+}
+
+int	command_not_found_handle(char *name)
+{
+	ft_putstr_fd(name, STDERR);
+	ft_putendl_fd(": command not found", STDERR);
+	return (127);
 }
