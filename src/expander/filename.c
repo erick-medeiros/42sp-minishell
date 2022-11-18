@@ -6,15 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 21:24:36 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 19:50:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
-#include "structs.h"
 
-t_bool	matching(char *match, char **match_list, int i, struct dirent *direntp)
+t_bool	matching(char *match, char **list, int i, struct dirent *direntp)
 {
 	char	*tmp;
 	t_bool	check;
@@ -22,18 +20,22 @@ t_bool	matching(char *match, char **match_list, int i, struct dirent *direntp)
 	check = TRUE;
 	if (i == 0 && match[0] != '*')
 	{
-		if (ft_strncmp(direntp->d_name, match_list[i],
-				ft_strlen(match_list[i])))
+		if (ft_strncmp(direntp->d_name, list[i], ft_strlen(list[i])))
 			check = FALSE;
 	}
-	else if (!match_list[i + 1] && match[ft_strlen(match) - 1] != '*')
+	else if (!list[i + 1] && match[ft_strlen(match) - 1] != '*')
 	{
-		tmp = &direntp->d_name[ft_strlen(direntp->d_name)
-			- ft_strlen(match_list[i])];
-		if (ft_strncmp(tmp, match_list[i], ft_strlen(tmp)))
+		if (ft_strlen(direntp->d_name) < ft_strlen(list[i]))
 			check = FALSE;
+		else
+		{
+			tmp = &direntp->d_name[ft_strlen(direntp->d_name)
+				- ft_strlen(list[i])];
+			if (ft_strncmp(tmp, list[i], ft_strlen(tmp)))
+				check = FALSE;
+		}
 	}
-	else if (!ft_strnstr(direntp->d_name, match_list[i],
+	else if (!ft_strnstr(direntp->d_name, list[i],
 			ft_strlen(direntp->d_name)))
 		check = FALSE;
 	return (check);

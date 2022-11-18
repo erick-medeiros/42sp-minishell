@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 14:08:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 19:46:14 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ static int	expand_token(char **src, char *content, t_minishell *ms)
 	char	*tmp;
 
 	tmp = parameter_expansion(content, &ms->env_list, ms->exit_status);
+	if (!tmp)
+		return (1);
+	content = tmp;
+	tmp = expand_filename(content);
+	free(content);
 	if (!tmp)
 		return (1);
 	content = tmp;

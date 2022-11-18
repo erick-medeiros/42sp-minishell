@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 19:10:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 19:51:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	execute_command(t_minishell *ms, t_cmd *cmd)
 	cmd->status = command_expansion(ms, cmd);
 	if (cmd->status != OK)
 		return (cmd->status);
-	if (cmd->argc == 0)
-		return (0);
 	cmd->status = command_redirect(cmd);
 	if (cmd->status != OK)
 		return (cmd->status);
+	if (cmd->argc == 0)
+		return (0);
 	cmd->status = command_search(cmd, &ms->env_list);
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
 		return (cmd->status);
