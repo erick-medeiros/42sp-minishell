@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 12:31:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 13:54:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static void	print_signal_error_msg(char *msg, int coredump)
 	int			len_msg;
 	int			i;
 
+	if (!msg)
+		return ;
 	if (!coredump)
 	{
 		ft_putendl_fd(msg, STDERR);
