@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 03:47:03 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:35:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@
 //cd — change the working directory
 static int	cd_error(char *path);
 
-int	builtin_cd(char *path, t_vlst *vars)
+int	builtin_cd(int argc, char *argv[], t_vlst *vars)
 {
 	char	*retptr;
+	char	*path;
 	t_node	*node;
 
+	if (argc != 2)
+		return (error_message(1, (char *[]){"too many arguments", NULL}));
+	path = argv[1];
 	if (chdir(path) == -1)
 		return (cd_error(path));
 	retptr = get_pwd();
