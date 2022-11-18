@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/15 01:02:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:15:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	process_line(char **line, t_minishell *minishell)
 void	handle_parse_result(int result, char **line,
 			char **history, t_minishell *ms)
 {
-	if (result == ERR_BAD_SYNTAX || result == ERR_ALLOC)
-		print_parse_error(result);
 	if (ms->heredoc_queue.front)
 	{
 		ms->set_history = FALSE;
@@ -66,7 +64,11 @@ void	handle_parse_result(int result, char **line,
 		|| result == ERR_INCOMP_BRC_DQ)
 		*line = readline(PROMPT_EXTRA_BRC);
 	else
+	{
+		if (result == ERR_BAD_SYNTAX || result == ERR_ALLOC)
+			ms->exit_status = 2;
 		return ;
+	}
 	ft_strappend(history, "\n");
 	ft_strappend(history, *line);
 }
@@ -78,14 +80,4 @@ t_lex_state	get_lex_state(int result)
 		|| result == ERR_INCOMP_BRC_DQ)
 		return (STATE_CONTINUE);
 	return (STATE_SKIP);
-}
-
-int	print_parse_error(int parse_result)
-{
-	if (parse_result == ERR_BAD_SYNTAX)
-		write(STDERR, MSG_SYNTAX_ERR, ft_strlen(MSG_SYNTAX_ERR));
-	else if (parse_result == ERR_ALLOC)
-		write(STDERR, MSG_ALLOC_ERR, ft_strlen(MSG_ALLOC_ERR));
-	write(STDERR, "\n", 1);
-	return (parse_result);
 }

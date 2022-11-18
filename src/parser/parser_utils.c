@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/16 18:41:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:25:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 {
-	t_token	*tok;
+	t_token		*tok;
+	const char	*invalid_token[] = {"Invalid token", NULL};
 
 	tok = ((t_token *)(ms->token_list->content));
 	if (tok->type == TOKEN_PIPE)
@@ -39,7 +40,8 @@ int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_INCOMP_BRC_DQ);
 	if (tok->type == TOKEN_SQBRACE)
 		return (ERR_INCOMP_BRC_SQ);
-	return (ERR_BAD_SYNTAX);
+	ms->exit_status = 2;
+	return (error_message(ERR_BAD_SYNTAX, (char **)invalid_token));
 }
 
 t_tree	*new_cmd_node(int num)
@@ -81,4 +83,24 @@ void	process_heredoc(t_queue *heredoc_queue)
 		free(heredoc->delimiter);
 		free(heredoc);
 	}
+}
+
+int	print_token_error(int status, t_tok_type tok_type)
+{
+	ft_putstr_fd("minishell: syntax error", STDERR);
+	if (tok_type == TOKEN_PIPE)
+		ft_putstr_fd(" near unexpected token `|'\n", STDERR);
+	else if (tok_type == TOKEN_NL)
+		ft_putstr_fd(" near unexpected token `newline'\n", STDERR);
+	else if (tok_type == TOKEN_APPEND)
+		ft_putstr_fd(" near unexpected token `>>'\n", STDERR);
+	else if (tok_type == TOKEN_INPUT)
+		ft_putstr_fd(" near unexpected token `<'\n", STDERR);
+	else if (tok_type == TOKEN_OUTPUT)
+		ft_putstr_fd(" near unexpected token `>'\n", STDERR);
+	else if (tok_type == TOKEN_HEREDOC)
+		ft_putstr_fd(" near unexpected token `<<'\n", STDERR);
+	else
+		ft_putstr_fd("\n", STDERR);
+	return (status);
 }

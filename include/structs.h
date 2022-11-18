@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 17:52:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 00:32:34 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ typedef enum e_tok_type {
 	TOKEN_SQUOTE,
 	TOKEN_SQBRACE,
 	TOKEN_SQINCOMP,
-	TOKEN_WORD
+	TOKEN_WORD,
+	TOKEN_NL
 }	t_tok_type;
 
 typedef enum e_lex_state {
