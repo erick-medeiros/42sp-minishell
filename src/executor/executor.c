@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 18:50:36 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/17 23:54:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	executor(t_minishell *minishell)
 	tree_executor(minishell, NULL, NULL, minishell->root);
 	close_pipeline(minishell->root);
 	sync_tree_execution(minishell->root, &minishell->exit_status);
+	print_signal_error(minishell->exit_status);
 }
 
 void	tree_executor(t_minishell *minishell, t_tree *grandparent,
