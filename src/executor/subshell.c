@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 17:00:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:21:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 
 void	subshell(t_minishell *minishell, t_cmd *command)
 {
-	int	status;
-
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
 	command->pid = fork();
@@ -26,16 +24,21 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 		command->status = error_message1(1, strerror(errno));
 	else if (command->pid == 0)
 	{
-		subshell_redirect(command);
+		dup2(command->piping[READ_PIPE], STDIN);
+		dup2(command->piping[WRITE_PIPE], STDOUT);
+		dup2(command->input, STDIN);
+		dup2(command->output, STDOUT);
+		close_safe(command->input);
+		close_safe(command->output);
+		command->input = STDIN;
+		command->output = STDOUT;
 		close_pipeline(minishell->root);
-		status = 0;
 		command->envp = list_to_envp(&minishell->env_list, NULL, 0);
 		if (command->isbuiltin)
-			status = execute_builtin(minishell, command);
+			command->status = execute_builtin(minishell, command);
 		else
-			status = execute_program(command);
-		destroy_minishell(minishell);
-		exit(status);
+			command->status = execute_program(command);
+		builtin_exit(command->status, minishell, NULL);
 	}
 }
 
@@ -64,18 +67,4 @@ int	execute_program(t_cmd *cmd)
 		return (command_not_found_handle(cmd->argv[0]));
 	execve(cmd->pathname, cmd->argv, cmd->envp);
 	return (error_message2(1, cmd->argv[0], strerror(errno)));
-}
-
-void	subshell_redirect(t_cmd *command)
-{
-	dup2(command->piping[READ_PIPE], STDIN);
-	dup2(command->piping[WRITE_PIPE], STDOUT);
-	dup2(command->input, STDIN);
-	dup2(command->output, STDOUT);
-	if (command->input > STDERR)
-		close(command->input);
-	if (command->output > STDERR)
-		close(command->output);
-	command->input = STDIN;
-	command->output = STDOUT;
 }

@@ -6,14 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 12:47:15 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:18:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
-
-static void	close_safe(int fd);
 
 int	command_redirect(t_cmd *cmd)
 {
@@ -58,10 +56,4 @@ int	open_redirect_fd(char *pathname, int token_type)
 	else if (token_type == TOKEN_APPEND)
 		fd = open(pathname, O_WRONLY | O_CREAT | O_APPEND, permissions);
 	return (fd);
-}
-
-static void	close_safe(int fd)
-{
-	if (fd > STDERR)
-		close(fd);
 }
