@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 01:25:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:46:29 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 		return (ERR_INCOMP_BRC_DQ);
 	if (tok->type == TOKEN_SQBRACE)
 		return (ERR_INCOMP_BRC_SQ);
-	ms->exit_status = 2;
+	ms->env_list.last_status = 2;
 	return (error_message(ERR_BAD_SYNTAX, (char **)invalid_token));
 }
 

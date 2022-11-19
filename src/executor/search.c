@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:51:23 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 04:32:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:22:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ static int	command_is_builtin(t_cmd *command)
 	return (ERR_NOT_FOUND);
 }
 
-static int	search_in_directories(t_cmd *command, t_vlst *env_list)
+static int	search_in_directories(t_cmd *command, t_vlst *env)
 {
 	char	*env_path;
 	char	**path_list;
 	char	*path;
 	int		i;
 
-	env_path = expand_variable(env_list, "$PATH");
+	env_path = expand_variable("$PATH", env);
 	path_list = ft_split(env_path, ':');
 	free(env_path);
 	i = 0;
@@ -80,7 +80,7 @@ static int	search_in_directories(t_cmd *command, t_vlst *env_list)
 	return (ERR_CMD_NOT_FOUND);
 }
 
-int	command_search(t_cmd *command, t_vlst *env_list)
+int	command_search(t_cmd *command, t_vlst *env)
 {
 	int	result;
 
@@ -90,7 +90,7 @@ int	command_search(t_cmd *command, t_vlst *env_list)
 	if (command_is_builtin(command) == OK)
 		return (OK);
 	if (result == ERR_NO_PATH)
-		result = search_in_directories(command, env_list);
+		result = search_in_directories(command, env);
 	return (result);
 }
 

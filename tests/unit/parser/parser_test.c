@@ -230,8 +230,7 @@ void test_get_complete_command_pipe(void) {
 					  .heredoc_queue = {.front = NULL, .rear = NULL},
 					  .cmd_list.front = NULL,
 					  .cmd_list.rear = NULL,
-					  .root = NULL,
-					  .exit_status = 0};
+					  .root = NULL};
 	t_val_info vi;
 	char *cmd_a = "echo";
 	char *arg_a1 = "'a'";

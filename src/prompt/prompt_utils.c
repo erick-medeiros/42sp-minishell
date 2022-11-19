@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 01:15:16 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:18:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
 
 void	process_line(char **line, t_minishell *minishell)
 {
@@ -66,7 +64,7 @@ void	handle_parse_result(int result, char **line,
 	else
 	{
 		if (result == ERR_BAD_SYNTAX || result == ERR_ALLOC)
-			ms->exit_status = 2;
+			ms->env_list.last_status = 2;
 		return ;
 	}
 	ft_strappend(history, "\n");

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 11:35:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:01:23 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	executor(t_minishell *ms)
 
 	coredump = 0;
 	tree_executor(ms, ms->root, STDIN, STDOUT);
-	sync_tree_execution(ms->root, &ms->exit_status, &coredump);
-	print_signal_error(ms->exit_status, coredump);
+	sync_tree_execution(ms->root, (&ms->env_list.last_status), &coredump);
+	print_signal_error((ms->env_list.last_status), coredump);
 }
 
 void	tree_executor(t_minishell *ms, t_tree *root, int input, int output)
@@ -49,7 +49,7 @@ void	tree_executor(t_minishell *ms, t_tree *root, int input, int output)
 	cmd = (t_cmd *) root->content;
 	cmd->input = input;
 	cmd->output = output;
-	execute_command(ms, cmd);
+	execute_command(ms, cmd, &ms->env_list);
 }
 
 void	sync_tree_execution(t_tree *root, int *status, int *coredump)

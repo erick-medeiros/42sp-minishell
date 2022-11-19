@@ -6,17 +6,18 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 22:55:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:21:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "executor.h"
 #include "expander.h"
 #include "minishell.h"
 
 static int	create_argv(t_cmd *cmd);
-static int	expand_token(t_token **token, t_minishell *ms);
+static int	expand_token(t_token **token, t_vlst *env);
 
-int	command_expansion(t_minishell *ms, t_cmd *cmd)
+int	command_expansion(t_cmd *cmd, t_vlst *env)
 {
 	t_token	*token;
 	t_node	*node;
@@ -25,7 +26,7 @@ int	command_expansion(t_minishell *ms, t_cmd *cmd)
 	while (node)
 	{
 		token = node->content;
-		if (expand_token(&token, ms) != 0)
+		if (expand_token(&token, env) != 0)
 			return (1);
 		node = node->next;
 	}
@@ -35,7 +36,7 @@ int	command_expansion(t_minishell *ms, t_cmd *cmd)
 	while (node)
 	{
 		token = node->content;
-		if (expand_token(&token, ms) != 0)
+		if (expand_token(&token, env) != 0)
 			return (1);
 		node = node->next;
 	}
@@ -70,13 +71,13 @@ static int	create_argv(t_cmd *cmd)
 	return (0);
 }
 
-static int	expand_token(t_token **token, t_minishell *ms)
+static int	expand_token(t_token **token, t_vlst *env)
 {
 	char	*tmp;
 	char	*content;
 
 	content = (*token)->value;
-	tmp = parameter_expansion(content, &ms->env_list, ms->exit_status);
+	tmp = parameter_expansion(content, env);
 	if (!tmp)
 		return (1);
 	if (!ft_streq(content, tmp) && ft_strlen(tmp) == 0
