@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 11:01:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 11:35:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 	handle_signal(SIGQUIT, command_signal_handler);
 	command->pid = fork();
 	if (command->pid < 0)
-		command->status = error_message1(1, strerror(errno));
+		command->status = error_message2(1, "fork failed", strerror(errno));
 	else if (command->pid == 0)
 	{
 		dup2(command->input, STDIN);

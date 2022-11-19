@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 11:08:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 11:35:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	tree_executor(t_minishell *ms, t_tree *root, int input, int output)
 	{
 		root->content = malloc(sizeof(int) * 2);
 		if (pipe(root->content) == -1)
-			panic_error("tree executor ~ pipe");
+			error_message2(1, "pipe failed", strerror(errno));
 		pipefd = (int *)root->content;
 		if (root->left)
 			tree_executor(ms, root->left, input, pipefd[WRITE_PIPE]);
