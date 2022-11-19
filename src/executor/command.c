@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:01:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:54:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,32 @@ int	execute_command(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 	if (cmd->isbuiltin && !ms->pipeline)
 		cmd->status = execute_builtin(ms, cmd, env);
 	else
-		subshell(ms, cmd);
+		subshell(ms, cmd, env);
 	return (0);
 }
 
-void	subshell(t_minishell *ms, t_cmd *command)
+void	subshell(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 {
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
-	command->pid = fork();
-	if (command->pid < 0)
-		command->status = error_message2(1, "fork failed", strerror(errno));
-	else if (command->pid == 0)
+	cmd->pid = fork();
+	if (cmd->pid < 0)
+		cmd->status = error_message2(1, "fork failed", strerror(errno));
+	else if (cmd->pid == 0)
 	{
-		dup2(command->input, STDIN);
-		dup2(command->output, STDOUT);
-		close_safe(command->input);
-		close_safe(command->output);
-		command->input = STDIN;
-		command->output = STDOUT;
+		dup2(cmd->input, STDIN);
+		dup2(cmd->output, STDOUT);
+		close_safe(cmd->input);
+		close_safe(cmd->output);
+		cmd->input = STDIN;
+		cmd->output = STDOUT;
 		close_pipeline(ms->root);
-		command->envp = list_to_envp(&ms->env_list, NULL, 0);
-		if (command->isbuiltin)
-			command->status = execute_builtin(ms, command, &ms->env_list);
+		cmd->envp = list_to_envp(env, NULL, 0);
+		if (cmd->isbuiltin)
+			cmd->status = execute_builtin(ms, cmd, env);
 		else
-			command->status = execute_program(command);
-		builtin_exit(command->status, ms, NULL);
+			cmd->status = execute_program(cmd);
+		builtin_exit(cmd->status, ms, NULL);
 	}
 }
 
