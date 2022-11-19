@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 09:27:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 21:15:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ char	*expand_variable(t_vlst *env_list, char *str)
 	if (!is_valid_name(expand))
 	{
 		free(expand);
-		error_message(1, (char *[]){str, "bad substitution", NULL});
+		error_message2(1, str, "bad substitution");
 		return (NULL);
 	}
 	node = find_node_by_content(env_list->list, expand, find_env_var);
 	free(expand);
 	if (!node)
-		return (NULL);
+		return (ft_strdup(""));
 	return (ft_strdup((((t_var *)node->content)->val)));
 }
 
