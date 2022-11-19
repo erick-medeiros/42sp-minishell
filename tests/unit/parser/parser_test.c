@@ -241,7 +241,6 @@ void test_get_complete_command_pipe(void) {
 	char *arg_a3 = "\"c\"";
 	int result;
 	t_node *word_tokens;
-	t_token *token;
 
 	vi = (t_val_info){.line = cmd_a, .start = 0, .len = ft_strlen(cmd_a)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
@@ -257,17 +256,13 @@ void test_get_complete_command_pipe(void) {
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
 	TEST_ASSERT_EQUAL_INT(0, ((t_cmd *)cmd_node->content)->argc);
 	word_tokens = ((t_cmd *)cmd_node->content)->word_tokens;
-	token = word_tokens->content;
-	TEST_ASSERT_EQUAL_STRING(cmd_a, token->value);
+	TEST_ASSERT_EQUAL_STRING(cmd_a, ((t_token *)word_tokens->content)->value);
 	word_tokens = word_tokens->next;
-	token = word_tokens->content;
-	TEST_ASSERT_EQUAL_STRING(arg_a1, token->value);
+	TEST_ASSERT_EQUAL_STRING(arg_a1, ((t_token *)word_tokens->content)->value);
 	word_tokens = word_tokens->next;
-	token = word_tokens->content;
-	TEST_ASSERT_EQUAL_STRING(arg_a2, token->value);
+	TEST_ASSERT_EQUAL_STRING(arg_a2, ((t_token *)word_tokens->content)->value);
 	word_tokens = word_tokens->next;
-	token = word_tokens->content;
-	TEST_ASSERT_EQUAL_STRING(arg_a3, word_tokens->content);
+	TEST_ASSERT_EQUAL_STRING(arg_a3, ((t_token *)word_tokens->content)->value);
 	TEST_ASSERT_EQUAL_PTR(NULL, word_tokens->next);
 	TEST_ASSERT_NOT_EQUAL(NULL, ms.token_list);
 	TEST_ASSERT_EQUAL(TOKEN_PIPE, ((t_token *)ms.token_list->content)->type);
