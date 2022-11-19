@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 18:49:01 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 22:00:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,11 @@ void	destroy_command(t_cmd *command)
 		return ;
 	i = 0;
 	while (command->argv && command->argv[i] && i < command->argc + 1)
-	{
-		free(command->argv[i]);
-		++i;
-	}
-	if (command->redirect)
-	{
-		clear_list(command->redirect, free_token);
-		command->redirect = NULL;
-	}
+		free(command->argv[i++]);
+	clear_list(command->redirect, free_token);
 	free(command->argv);
 	free(command->pathname);
 	free_string_list(command->envp);
-	if (command->word_tokens)
-		clear_list(command->word_tokens, free);
+	clear_list(command->word_tokens, free_token);
 	free(command);
 }

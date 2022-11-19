@@ -12,6 +12,7 @@ void test_handle_word_tokens(void) {
 	t_tree *cmd_node = new_cmd_node(0);
 	t_minishell ms;
 	t_node *word_tokens;
+	t_token *token;
 	init_minishell(&ms, NULL);
 	t_token *cmd_token = malloc(sizeof(*cmd_token));
 	t_token *arg_token = malloc(sizeof(*arg_token));
@@ -27,9 +28,11 @@ void test_handle_word_tokens(void) {
 	handle_word_token(cmd_node, &ms);
 	TEST_ASSERT_EQUAL_INT(0, ((t_cmd *)cmd_node->content)->argc);
 	word_tokens = ((t_cmd *)cmd_node->content)->word_tokens;
-	TEST_ASSERT_EQUAL_STRING("cmd", word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING("cmd", token->value);
 	word_tokens = ((t_node *)word_tokens->next);
-	TEST_ASSERT_EQUAL_STRING("arg", word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING("arg", token->value);
 	clear_list(ms.token_list, del_token_node);
 	del_cmd_tree_node(cmd_node);
 }
@@ -174,6 +177,7 @@ void test_get_complete_command(void) {
 	int result;
 	int fd;
 	t_node *word_tokens;
+	t_token *token;
 
 	fd = open(in_filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	close(fd);
@@ -198,13 +202,17 @@ void test_get_complete_command(void) {
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
 	TEST_ASSERT_EQUAL_INT(0, ((t_cmd *)cmd_node->content)->argc);
 	word_tokens = ((t_cmd *)cmd_node->content)->word_tokens;
-	TEST_ASSERT_EQUAL_STRING(cmd, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(cmd, token->value);
 	word_tokens = word_tokens->next;
-	TEST_ASSERT_EQUAL_STRING(arg1, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(arg1, token->value);
 	word_tokens = word_tokens->next;
-	TEST_ASSERT_EQUAL_STRING(arg2, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(arg2, token->value);
 	word_tokens = word_tokens->next;
-	TEST_ASSERT_EQUAL_STRING(arg3, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(arg3, token->value);
 	TEST_ASSERT_EQUAL_PTR(NULL, word_tokens->next);
 	TEST_ASSERT_EQUAL(STDIN, ((t_cmd *)cmd_node->content)->input);
 	TEST_ASSERT_EQUAL(STDOUT, ((t_cmd *)cmd_node->content)->output);
@@ -233,6 +241,7 @@ void test_get_complete_command_pipe(void) {
 	char *arg_a3 = "\"c\"";
 	int result;
 	t_node *word_tokens;
+	t_token *token;
 
 	vi = (t_val_info){.line = cmd_a, .start = 0, .len = ft_strlen(cmd_a)};
 	new_token_with_val(&(ms.token_list), TOKEN_WORD, &vi);
@@ -248,12 +257,16 @@ void test_get_complete_command_pipe(void) {
 	TEST_ASSERT_NOT_EQUAL(NULL, cmd_node);
 	TEST_ASSERT_EQUAL_INT(0, ((t_cmd *)cmd_node->content)->argc);
 	word_tokens = ((t_cmd *)cmd_node->content)->word_tokens;
-	TEST_ASSERT_EQUAL_STRING(cmd_a, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(cmd_a, token->value);
 	word_tokens = word_tokens->next;
-	TEST_ASSERT_EQUAL_STRING(arg_a1, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(arg_a1, token->value);
 	word_tokens = word_tokens->next;
-	TEST_ASSERT_EQUAL_STRING(arg_a2, word_tokens->content);
+	token = word_tokens->content;
+	TEST_ASSERT_EQUAL_STRING(arg_a2, token->value);
 	word_tokens = word_tokens->next;
+	token = word_tokens->content;
 	TEST_ASSERT_EQUAL_STRING(arg_a3, word_tokens->content);
 	TEST_ASSERT_EQUAL_PTR(NULL, word_tokens->next);
 	TEST_ASSERT_NOT_EQUAL(NULL, ms.token_list);

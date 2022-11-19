@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 19:46:14 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/18 22:55:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 
 static int	create_argv(t_cmd *cmd);
-static int	expand_token(char **src, char *content, t_minishell *ms);
+static int	expand_token(t_token **token, t_minishell *ms);
 
 int	command_expansion(t_minishell *ms, t_cmd *cmd)
 {
@@ -24,7 +24,8 @@ int	command_expansion(t_minishell *ms, t_cmd *cmd)
 	node = cmd->word_tokens;
 	while (node)
 	{
-		if (expand_token((char **)&node->content, node->content, ms) != 0)
+		token = node->content;
+		if (expand_token(&token, ms) != 0)
 			return (1);
 		node = node->next;
 	}
@@ -34,7 +35,7 @@ int	command_expansion(t_minishell *ms, t_cmd *cmd)
 	while (node)
 	{
 		token = node->content;
-		if (expand_token(&token->value, token->value, ms) != 0)
+		if (expand_token(&token, ms) != 0)
 			return (1);
 		node = node->next;
 	}
@@ -50,7 +51,7 @@ static int	create_argv(t_cmd *cmd)
 	node = cmd->word_tokens;
 	while (node)
 	{
-		if (ft_strlen(node->content) > 0)
+		if (((t_token *)node->content)->type == TOKEN_WORD)
 			++cmd->argc;
 		node = node->next;
 	}
@@ -61,21 +62,27 @@ static int	create_argv(t_cmd *cmd)
 	node = cmd->word_tokens;
 	while (node)
 	{
-		if (ft_strlen(node->content) > 0)
-			cmd->argv[i++] = ft_strdup(node->content);
+		if (((t_token *)node->content)->type == TOKEN_WORD)
+			cmd->argv[i++] = ft_strdup(((t_token *)node->content)->value);
 		node = node->next;
 	}
 	cmd->argv[i] = NULL;
 	return (0);
 }
 
-static int	expand_token(char **src, char *content, t_minishell *ms)
+static int	expand_token(t_token **token, t_minishell *ms)
 {
 	char	*tmp;
+	char	*content;
 
+	content = (*token)->value;
 	tmp = parameter_expansion(content, &ms->env_list, ms->exit_status);
 	if (!tmp)
 		return (1);
+	if (!ft_streq(content, tmp) && ft_strlen(tmp) == 0
+		&& (*token)->type == TOKEN_WORD)
+		(*token)->type = TOKEN_IGNORE;
+	free(content);
 	content = tmp;
 	tmp = expand_filename(content);
 	free(content);
@@ -86,6 +93,6 @@ static int	expand_token(char **src, char *content, t_minishell *ms)
 	free(content);
 	if (!tmp)
 		return (1);
-	*src = tmp;
+	(*token)->value = tmp;
 	return (0);
 }

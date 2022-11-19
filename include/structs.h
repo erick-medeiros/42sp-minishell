@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 00:32:34 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/18 22:02:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum e_tok_type {
 	TOKEN_DQBRACE,
 	TOKEN_DQINCOMP,
 	TOKEN_HEREDOC,
+	TOKEN_IGNORE,
 	TOKEN_INPUT,
 	TOKEN_OUTPUT,
 	TOKEN_PIPE,
