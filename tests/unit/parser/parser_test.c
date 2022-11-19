@@ -217,8 +217,6 @@ void test_get_complete_command(void) {
 	TEST_ASSERT_EQUAL(STDIN, ((t_cmd *)cmd_node->content)->input);
 	TEST_ASSERT_EQUAL(STDOUT, ((t_cmd *)cmd_node->content)->output);
 	TEST_ASSERT_EQUAL_PTR(NULL, ms.token_list);
-	close(((t_cmd *)cmd_node->content)->input);
-	close(((t_cmd *)cmd_node->content)->output);
 	remove(in_filename);
 	remove(out_filename);
 	del_cmd_tree_node(cmd_node);
