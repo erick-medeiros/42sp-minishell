@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 22:00:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 11:02:04 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ t_cmd	*new_command(int number)
 	command->envp = NULL;
 	command->input = STDIN;
 	command->output = STDOUT;
-	command->piping[READ_PIPE] = STDIN;
-	command->piping[WRITE_PIPE] = STDOUT;
 	command->pid = 0;
 	command->status = 0;
 	command->number = number;

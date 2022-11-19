@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 19:51:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 11:01:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	subshell(t_minishell *minishell, t_cmd *command)
 		command->status = error_message1(1, strerror(errno));
 	else if (command->pid == 0)
 	{
-		dup2(command->piping[READ_PIPE], STDIN);
-		dup2(command->piping[WRITE_PIPE], STDOUT);
 		dup2(command->input, STDIN);
 		dup2(command->output, STDOUT);
 		close_safe(command->input);
