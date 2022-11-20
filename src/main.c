@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:10:29 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 19:16:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:07:15 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_minishell	minishell;
 	char		*line;
+	int			status;
 
 	init_minishell(&minishell, envp);
-	init_system_vars(&minishell);
+	init_system_vars(&minishell.env_list);
 	if (argc == 3 && ft_streq(argv[1], "-c"))
 	{
 		line = ft_strdup(argv[2]);
@@ -35,6 +36,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	else
 		shell_loop(&minishell);
+	status = minishell.env_list.last_status;
 	destroy_minishell(&minishell);
-	return (minishell.exit_status);
+	return (status);
 }

@@ -8,26 +8,12 @@
 
 char *simulate_cmd_echo(char *argv[]) {
 	int pipefd[2];
-	pid_t pid;
 	char *content;
-	int status;
 
 	if (pipe(pipefd) == -1)
 		TEST_FAIL();
-	pid = fork();
-	if (pid < 0)
-		TEST_FAIL();
-	else if (pid == 0) {
-		ut_stds_devnull();
-		dup2(pipefd[1], STDOUT);
-		ut_close_pipefd(pipefd);
-		builtin_echo(STDOUT, argv);
-		exit(0);
-	}
+	builtin_echo(pipefd[1], argv);
 	close(pipefd[1]);
-	status = ut_wait();
-	if (status != 0)
-		TEST_FAIL();
 	content = ut_get_content_fd(pipefd[0]);
 	close(pipefd[0]);
 	return (content);

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 17:51:42 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/15 13:44:09 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:06:36 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_bool	is_valid_name(char *name)
 	return (TRUE);
 }
 
-void	init_system_vars(t_minishell *ms)
+void	init_system_vars(t_vlst *env)
 {
 	int		shlvl;
 	t_var	content;
@@ -105,12 +105,12 @@ void	init_system_vars(t_minishell *ms)
 
 	content.name = "SHLVL";
 	content.val = NULL;
-	node = find_node_by_content(ms->env_list.list, &content, cmp_vars_by_name);
+	node = find_node_by_content(env->list, &content, cmp_vars_by_name);
 	if (node != NULL)
 	{
 		shlvl = ft_atoi(((t_var *)node->content)->val);
 		s = ft_itoa(shlvl + 1);
-		change_or_create_var(&(ms->env_list), "SHLVL", s);
+		change_or_create_var(env, "SHLVL", s);
 		free(s);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 21:15:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:22:09 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static int	parameter_size(char *str);
 static char	*get_parameter_name(char *parameter);
 
-char	*parameter_expansion(char *src, t_vlst *env_list, int status)
+char	*parameter_expansion(char *src, t_vlst *env)
 {
 	int		i;
 	int		quote;
@@ -34,7 +34,7 @@ char	*parameter_expansion(char *src, t_vlst *env_list, int status)
 		if (src[i] == '$' && (!quote || quote == DOUBLE_QUOTE))
 		{
 			add_node(&list, ft_strndup(&src[start], i - start));
-			add_node(&list, expand_parameter(&src[i], quote, env_list, status));
+			add_node(&list, expand_parameter(&src[i], quote, env));
 			i += parameter_size(&src[i]);
 			start = i;
 		}
@@ -45,7 +45,7 @@ char	*parameter_expansion(char *src, t_vlst *env_list, int status)
 	return (convert_list_to_string(list));
 }
 
-char	*expand_parameter(char *str, int quote, t_vlst *env_list, int status)
+char	*expand_parameter(char *str, int quote, t_vlst *env)
 {
 	int	len;
 
@@ -64,12 +64,12 @@ char	*expand_parameter(char *str, int quote, t_vlst *env_list, int status)
 	else if (ft_strncmp(str, "$", len) == 0)
 		return (ft_strdup(""));
 	else if (ft_strncmp(str, "$?", len) == 0)
-		return (ft_itoa(status));
+		return (ft_itoa(env->last_status));
 	else
-		return (expand_variable(env_list, str));
+		return (expand_variable(str, env));
 }
 
-char	*expand_variable(t_vlst *env_list, char *str)
+char	*expand_variable(char *str, t_vlst *env)
 {
 	char	*expand;
 	t_node	*node;
@@ -81,7 +81,7 @@ char	*expand_variable(t_vlst *env_list, char *str)
 		error_message2(1, str, "bad substitution");
 		return (NULL);
 	}
-	node = find_node_by_content(env_list->list, expand, find_env_var);
+	node = find_node_by_content(env->list, expand, find_env_var);
 	free(expand);
 	if (!node)
 		return (ft_strdup(""));

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 19:50:36 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 11:40:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_node	*directory_files(char *match)
 	list = NULL;
 	dirp = opendir(".");
 	if (dirp == NULL)
-		panic_error("Cannot open directory");
+		error_message3(1, "opendir failed", ".", strerror(errno));
 	while (1 && dirp)
 	{
 		errno = 0;
@@ -78,7 +78,7 @@ t_node	*directory_files(char *match)
 		if (!direntp)
 		{
 			if (errno != 0)
-				panic_error(strerror(errno));
+				error_message2(1, "readdir failed", strerror(errno));
 			break ;
 		}
 		if (pattern_matching(match, direntp))

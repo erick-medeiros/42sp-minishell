@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 19:51:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:54:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "expander.h"
 #include "builtins.h"
 
-int	execute_command(t_minishell *ms, t_cmd *cmd)
+int	execute_command(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 {
-	cmd->status = command_expansion(ms, cmd);
+	cmd->status = command_expansion(cmd, env);
 	if (cmd->status != OK)
 		return (cmd->status);
 	cmd->status = command_redirect(cmd);
@@ -25,59 +25,57 @@ int	execute_command(t_minishell *ms, t_cmd *cmd)
 		return (cmd->status);
 	if (cmd->argc == 0)
 		return (0);
-	cmd->status = command_search(cmd, &ms->env_list);
+	cmd->status = command_search(cmd, env);
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
 		return (cmd->status);
 	if (cmd->isbuiltin && !ms->pipeline)
-		cmd->status = execute_builtin(ms, cmd);
+		cmd->status = execute_builtin(ms, cmd, env);
 	else
-		subshell(ms, cmd);
+		subshell(ms, cmd, env);
 	return (0);
 }
 
-void	subshell(t_minishell *minishell, t_cmd *command)
+void	subshell(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 {
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
-	command->pid = fork();
-	if (command->pid < 0)
-		command->status = error_message1(1, strerror(errno));
-	else if (command->pid == 0)
+	cmd->pid = fork();
+	if (cmd->pid < 0)
+		cmd->status = error_message2(1, "fork failed", strerror(errno));
+	else if (cmd->pid == 0)
 	{
-		dup2(command->piping[READ_PIPE], STDIN);
-		dup2(command->piping[WRITE_PIPE], STDOUT);
-		dup2(command->input, STDIN);
-		dup2(command->output, STDOUT);
-		close_safe(command->input);
-		close_safe(command->output);
-		command->input = STDIN;
-		command->output = STDOUT;
-		close_pipeline(minishell->root);
-		command->envp = list_to_envp(&minishell->env_list, NULL, 0);
-		if (command->isbuiltin)
-			command->status = execute_builtin(minishell, command);
+		dup2(cmd->input, STDIN);
+		dup2(cmd->output, STDOUT);
+		close_safe(cmd->input);
+		close_safe(cmd->output);
+		cmd->input = STDIN;
+		cmd->output = STDOUT;
+		close_pipeline(ms->root);
+		cmd->envp = list_to_envp(env, NULL, 0);
+		if (cmd->isbuiltin)
+			cmd->status = execute_builtin(ms, cmd, env);
 		else
-			command->status = execute_program(command);
-		builtin_exit(command->status, minishell, NULL);
+			cmd->status = execute_program(cmd);
+		builtin_exit(cmd->status, ms, NULL);
 	}
 }
 
-int	execute_builtin(t_minishell *ms, t_cmd *cmd)
+int	execute_builtin(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 {
 	if (ft_streq(cmd->argv[0], "echo"))
 		cmd->status = builtin_echo(cmd->output, cmd->argv);
 	else if (ft_streq(cmd->argv[0], "cd"))
-		cmd->status = builtin_cd(cmd->argc, cmd->argv, &ms->env_list);
+		cmd->status = builtin_cd(cmd->argc, cmd->argv, env);
 	else if (ft_streq(cmd->argv[0], "pwd"))
 		cmd->status = builtin_pwd(cmd->output);
 	else if (ft_streq(cmd->argv[0], "export"))
-		cmd->status = builtin_export(cmd->argc, cmd->argv, &ms->env_list);
+		cmd->status = builtin_export(cmd->argc, cmd->argv, env);
 	else if (ft_streq(cmd->argv[0], "unset"))
-		cmd->status = builtin_unset(cmd->argc, cmd->argv, &ms->env_list);
+		cmd->status = builtin_unset(cmd->argc, cmd->argv, env);
 	else if (ft_streq(cmd->argv[0], "env"))
-		cmd->status = builtin_env(cmd->output, &ms->env_list);
+		cmd->status = builtin_env(cmd->output, env);
 	else if (ft_streq(cmd->argv[0], "exit"))
-		builtin_exit(ms->exit_status, ms, cmd);
+		builtin_exit(env->last_status, ms, cmd);
 	return (cmd->status);
 }
 

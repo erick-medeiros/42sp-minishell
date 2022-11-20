@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 22:02:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:52:23 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_cmd
 	int		status;
 	int		input;
 	int		output;
-	int		piping[2];
 	t_node	*redirect;
 	t_node	*word_tokens;
 	int		number;
@@ -111,6 +110,7 @@ typedef struct s_vlst
 {
 	t_node	*list;
 	size_t	len;
+	int		last_status;
 }	t_vlst;
 
 typedef enum e_tree_type {
@@ -138,7 +138,6 @@ typedef struct s_minishell
 	t_queue	heredoc_queue;
 	t_queue	cmd_list;
 	t_tree	*root;
-	int		exit_status;
 	t_bool	set_history;
 	t_bool	pipeline;
 }	t_minishell;
