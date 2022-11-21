@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/20 23:58:22 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/21 03:59:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "lexer_bonus.h"
-#include "structs_bonus.h"
 
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);

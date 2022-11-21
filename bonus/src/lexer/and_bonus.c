@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   or_bonus.c                                         :+:      :+:    :+:   */
+/*   and_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/20 04:24:55 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/20 21:54:14 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/20 04:13:05 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/20 23:26:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "lexer_bonus.h"
 
-t_lex_state	handle_or_state(size_t idx, t_node **tokens, t_val_info *vi)
+t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
 	const char	next_ch = vi->line[idx];
 
-	if (new_token(tokens, TOKEN_OR))
+	if (new_token(tokens, TOKEN_AND))
 		return (STATE_INVALID);
 	if (next_ch == '|')
 		return (STATE_PIPE);

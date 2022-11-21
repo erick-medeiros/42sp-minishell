@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   or_bonus.c                                         :+:      :+:    :+:   */
+/*   brace_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/20 04:24:55 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/20 21:54:14 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/12 01:40:20 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/20 21:52:34 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "lexer_bonus.h"
 
-t_lex_state	handle_or_state(size_t idx, t_node **tokens, t_val_info *vi)
+t_lex_state	handle_brace_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
 	const char	next_ch = vi->line[idx];
 
-	if (new_token(tokens, TOKEN_OR))
-		return (STATE_INVALID);
 	if (next_ch == '|')
-		return (STATE_PIPE);
+		return (new_word_token(tokens, vi, STATE_PIPE));
 	if (next_ch == '>')
-		return (STATE_OUTPUT);
+		return (new_word_token(tokens, vi, STATE_OUTPUT));
 	if (next_ch == '<')
-		return (STATE_INPUT);
+		return (new_word_token(tokens, vi, STATE_INPUT));
 	if (next_ch == '&')
-		return (STATE_AMPERSAND);
+		return (new_word_token(tokens, vi, STATE_AMPERSAND));
 	if (ft_isspace(next_ch))
-		return (STATE_SKIP);
+		return (new_word_token(tokens, vi, STATE_SKIP));
 	if (next_ch == '\0')
-		return (STATE_COMPLETE);
-	if (next_ch == '$')
-		return (init_word_value(idx, vi, STATE_BRACE));
+		return (new_word_token(tokens, vi, STATE_INCOMPLETE));
+	vi->len++;
 	if (next_ch == '"')
-		return (init_word_value(idx, vi, STATE_DQUOTE));
+		return (STATE_DQUOTE);
 	if (next_ch == '\'')
-		return (init_word_value(idx, vi, STATE_SQUOTE));
-	return (init_word_value(idx, vi, STATE_WORD));
+		return (STATE_SQUOTE);
+	if (next_ch == '{')
+		vi->in_braces = TRUE;
+	return (STATE_WORD);
 }
