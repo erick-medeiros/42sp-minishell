@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 11:56:49 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 18:53:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,15 @@ typedef struct s_cmd
 	int		number;
 	char	**envp;
 	t_bool	isbuiltin;
+	t_bool	ispipeline;
 }	t_cmd;
 
 // execution tree
 
 typedef struct s_etree
 {
-	int				id;
 	t_op			operator;
-	t_cmd			*cmd;
-	pid_t			pid;
-	int				status;
-	int				input;
-	int				output;
-	t_bool			ispipeline;
+	t_cmd			cmd;
 	struct s_etree	*next;
 	struct s_etree	*group;
 }	t_etree;

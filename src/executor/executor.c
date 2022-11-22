@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 15:22:07 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:13:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,41 +33,38 @@ void	etree_executor(t_exec *exec, t_vlst *env, t_etree *node)
 	if (node->next && node->next->operator == OP_PIPE)
 	{
 		pipe(pipefd);
-		node->output = pipefd[WRITE_PIPE];
-		node->next->input = pipefd[READ_PIPE];
-		node->ispipeline = TRUE;
-		node->next->ispipeline = TRUE;
+		node->cmd.output = pipefd[WRITE_PIPE];
+		node->next->cmd.input = pipefd[READ_PIPE];
+		node->cmd.ispipeline = TRUE;
+		node->next->cmd.ispipeline = TRUE;
 	}
 	if (node->group)
 		group_executor(exec, env, node);
 	else
-		execute_command(exec, node, env);
-	close_safe(node->input);
-	close_safe(node->output);
+		execute_command(exec, &node->cmd, env);
+	close_safe(node->cmd.input);
+	close_safe(node->cmd.output);
 	enqueue(exec->pipeline, node);
 	if (!node->next || node->next->operator != OP_PIPE)
 		pipeline_sync(exec->pipeline);
 	if (node->next && ((node->next->operator == OP_PIPE)
-			|| (node->next->operator == OP_AND && node->status == 0)
-			|| (node->next->operator == OP_OR && node->status != 0)))
+			|| (node->next->operator == OP_AND && node->cmd.status == 0)
+			|| (node->next->operator == OP_OR && node->cmd.status != 0)))
 		etree_executor(exec, env, node->next);
 }
 
 void	group_executor(t_exec *exec, t_vlst *env, t_etree *node)
 {
-	t_etree	*tmp;
+	t_etree	*last;
 
-	node->pid = fork();
-	if (node->pid == 0)
+	node->cmd.pid = fork();
+	if (node->cmd.pid == 0)
 	{
-		node->group->input = node->input;
-		tmp = node->group;
-		while (tmp)
-		{
-			if (!tmp->next)
-				tmp->output = node->output;
-			tmp = tmp->next;
-		}
+		node->group->cmd.input = node->cmd.input;
+		last = node->group;
+		while (last && last->next)
+			last = last->next;
+		last->cmd.output = node->cmd.output;
 		etree_executor(exec, env, node->group);
 		destroy_exec(exec);
 		exit(0);
@@ -85,18 +82,18 @@ void	pipeline_sync(t_queue *queue)
 	while (node)
 	{
 		coredump = FALSE;
-		if (node->pid > 0)
+		if (node->cmd.pid > 0)
 		{
-			waitpid(node->pid, &node->status, 0);
-			if (WIFEXITED(node->status))
-				node->status = WEXITSTATUS(node->status);
-			else if (WIFSIGNALED(node->status))
+			waitpid(node->cmd.pid, &node->cmd.status, 0);
+			if (WIFEXITED(node->cmd.status))
+				node->cmd.status = WEXITSTATUS(node->cmd.status);
+			else if (WIFSIGNALED(node->cmd.status))
 			{
-				coredump = WCOREDUMP(node->status);
-				node->status = 128 + WTERMSIG(node->status);
+				coredump = WCOREDUMP(node->cmd.status);
+				node->cmd.status = 128 + WTERMSIG(node->cmd.status);
 			}
 		}
-		status = node->status;
+		status = node->cmd.status;
 		node = dequeue(queue);
 	}
 	print_signal_error(status, coredump);

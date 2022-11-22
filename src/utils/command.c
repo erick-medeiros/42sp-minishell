@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 11:02:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:09:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,49 @@
 
 void	free_token(void *content);
 
-t_cmd	*new_command(int number)
+void	init_command(t_cmd *cmd)
 {
-	t_cmd	*command;
-
-	command = malloc(sizeof(t_cmd));
-	command->pathname = NULL;
-	command->argc = 0;
-	command->argv = NULL;
-	command->envp = NULL;
-	command->input = STDIN;
-	command->output = STDOUT;
-	command->pid = 0;
-	command->status = 0;
-	command->number = number;
-	command->isbuiltin = FALSE;
-	command->redirect = NULL;
-	command->word_tokens = NULL;
-	return (command);
+	cmd->pathname = NULL;
+	cmd->argc = 0;
+	cmd->argv = NULL;
+	cmd->envp = NULL;
+	cmd->input = STDIN;
+	cmd->output = STDOUT;
+	cmd->pid = 0;
+	cmd->status = 0;
+	cmd->isbuiltin = FALSE;
+	cmd->ispipeline = FALSE;
+	cmd->redirect = NULL;
+	cmd->word_tokens = NULL;
 }
 
-void	destroy_command(t_cmd *command)
+void	clear_command(t_cmd *cmd)
 {
 	int	i;
 
-	if (command == NULL)
+	if (cmd == NULL)
 		return ;
 	i = 0;
-	while (command->argv && command->argv[i] && i < command->argc + 1)
-		free(command->argv[i++]);
-	clear_list(command->redirect, free_token);
-	free(command->argv);
-	free(command->pathname);
-	free_string_list(command->envp);
-	clear_list(command->word_tokens, free_token);
-	free(command);
+	while (cmd->argv && cmd->argv[i] && i < cmd->argc + 1)
+		free(cmd->argv[i++]);
+	clear_list(cmd->redirect, free_token);
+	free(cmd->argv);
+	free(cmd->pathname);
+	free_string_list(cmd->envp);
+	clear_list(cmd->word_tokens, free_token);
+}
+
+t_cmd	*new_command(void)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	init_command(cmd);
+	return (cmd);
+}
+
+void	destroy_command(t_cmd *cmd)
+{
+	clear_command(cmd);
+	free(cmd);
 }

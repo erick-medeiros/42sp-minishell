@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 14:31:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:08:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,10 @@ t_etree	*new_etree(void)
 	t_etree	*etree;
 
 	etree = malloc(sizeof(t_etree));
+	init_command(&etree->cmd);
 	etree->operator = OP_NONE;
-	etree->cmd = NULL;
-	etree->pid = 0;
-	etree->status = 0;
-	etree->input = STDIN;
-	etree->output = STDOUT;
 	etree->next = NULL;
 	etree->group = NULL;
-	etree->ispipeline = FALSE;
 	return (etree);
 }
 
@@ -38,8 +33,7 @@ void	*destroy_etree(t_etree *node)
 		node->group = destroy_etree(node->group);
 	if (node->next)
 		node->next = destroy_etree(node->next);
-	if (node->cmd)
-		destroy_command(node->cmd);
+	clear_command(&node->cmd);
 	free(node);
 	return (NULL);
 }

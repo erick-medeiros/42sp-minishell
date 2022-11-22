@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/19 13:46:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:18:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ t_tree	*new_cmd_node(int num)
 {
 	t_tree	*cmd_node;
 
+	(void)num;
 	cmd_node = malloc(sizeof(*cmd_node));
 	if (!cmd_node)
 		return (NULL);
 	cmd_node->type = TREE_TYPE_CMD;
 	cmd_node->left = NULL;
 	cmd_node->right = NULL;
-	cmd_node->content = new_command(num);
+	cmd_node->content = new_command();
 	return (cmd_node);
 }
 

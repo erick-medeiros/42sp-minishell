@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 14:32:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:09:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,14 @@ void		del_cmd_tree_node(void *tree);
 
 // Init
 
-t_cmd		*new_command(int number);
+void		init_command(t_cmd *cmd);
+t_cmd		*new_command(void);
 void		init_minishell(t_minishell *minishell, char **envp);
 void		init_system_vars(t_vlst *env);
 
 // Cleanup functions
 
+void		clear_command(t_cmd *cmd);
 void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
