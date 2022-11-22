@@ -6,76 +6,107 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:01:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 15:22:07 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-#include "expander.h"
 #include "minishell.h"
 
 void	executor(t_minishell *ms)
 {
-	int	coredump;
+	t_exec	*exec;
 
-	coredump = 0;
-	tree_executor(ms, ms->root, STDIN, STDOUT);
-	sync_tree_execution(ms->root, (&ms->env_list.last_status), &coredump);
-	print_signal_error((ms->env_list.last_status), coredump);
+	exec = malloc(sizeof(t_exec));
+	exec->commands = NULL;
+	exec->pipeline = NULL;
+	etree_executor(exec, &ms->env_list, exec->commands);
+	destroy_exec(exec);
 }
 
-void	tree_executor(t_minishell *ms, t_tree *root, int input, int output)
+void	etree_executor(t_exec *exec, t_vlst *env, t_etree *node)
 {
-	t_cmd	*cmd;
-	int		*pipefd;
+	int	pipefd[2];
 
-	if (!root)
+	if (!node)
 		return ;
-	if (root->type == TREE_TYPE_PIPE)
+	if (node->next && node->next->operator == OP_PIPE)
 	{
-		root->content = malloc(sizeof(int) * 2);
-		if (pipe(root->content) == -1)
-			error_message2(1, "pipe failed", strerror(errno));
-		pipefd = (int *)root->content;
-		if (root->left)
-			tree_executor(ms, root->left, input, pipefd[WRITE_PIPE]);
-		close(pipefd[WRITE_PIPE]);
-		if (root->right)
-			tree_executor(ms, root->right, pipefd[READ_PIPE], output);
-		close(pipefd[READ_PIPE]);
+		pipe(pipefd);
+		node->output = pipefd[WRITE_PIPE];
+		node->next->input = pipefd[READ_PIPE];
+		node->ispipeline = TRUE;
+		node->next->ispipeline = TRUE;
 	}
-	if (root->type != TREE_TYPE_CMD)
-		return ;
-	cmd = (t_cmd *) root->content;
-	cmd->input = input;
-	cmd->output = output;
-	execute_command(ms, cmd, &ms->env_list);
+	if (node->group)
+		group_executor(exec, env, node);
+	else
+		execute_command(exec, node, env);
+	close_safe(node->input);
+	close_safe(node->output);
+	enqueue(exec->pipeline, node);
+	if (!node->next || node->next->operator != OP_PIPE)
+		pipeline_sync(exec->pipeline);
+	if (node->next && ((node->next->operator == OP_PIPE)
+			|| (node->next->operator == OP_AND && node->status == 0)
+			|| (node->next->operator == OP_OR && node->status != 0)))
+		etree_executor(exec, env, node->next);
 }
 
-void	sync_tree_execution(t_tree *root, int *status, int *coredump)
+void	group_executor(t_exec *exec, t_vlst *env, t_etree *node)
 {
-	if (!root)
-		return ;
-	if (root->left)
-		sync_tree_execution(root->left, status, coredump);
-	if (root->right)
-		sync_tree_execution(root->right, status, coredump);
-	if (root->type == TREE_TYPE_CMD)
-		*status = command_exit_status(root->content, coredump);
-}
+	t_etree	*tmp;
 
-void	close_pipeline(t_tree *root)
-{
-	if (!root)
-		return ;
-	if (root->left)
-		close_pipeline(root->left);
-	if (root->right)
-		close_pipeline(root->right);
-	if (root->type == TREE_TYPE_PIPE)
+	node->pid = fork();
+	if (node->pid == 0)
 	{
-		close(((int *)root->content)[0]);
-		close(((int *)root->content)[1]);
-		free(root->content);
+		node->group->input = node->input;
+		tmp = node->group;
+		while (tmp)
+		{
+			if (!tmp->next)
+				tmp->output = node->output;
+			tmp = tmp->next;
+		}
+		etree_executor(exec, env, node->group);
+		destroy_exec(exec);
+		exit(0);
 	}
+}
+
+void	pipeline_sync(t_queue *queue)
+{
+	t_etree	*node;
+	t_bool	coredump;
+	int		status;
+
+	coredump = FALSE;
+	node = dequeue(queue);
+	while (node)
+	{
+		coredump = FALSE;
+		if (node->pid > 0)
+		{
+			waitpid(node->pid, &node->status, 0);
+			if (WIFEXITED(node->status))
+				node->status = WEXITSTATUS(node->status);
+			else if (WIFSIGNALED(node->status))
+			{
+				coredump = WCOREDUMP(node->status);
+				node->status = 128 + WTERMSIG(node->status);
+			}
+		}
+		status = node->status;
+		node = dequeue(queue);
+	}
+	print_signal_error(status, coredump);
+}
+
+void	destroy_exec(t_exec *exec)
+{
+	if (exec->commands)
+		destroy_etree(exec->commands);
+	if (exec->pipeline)
+		destroy_queue(exec->pipeline, NULL);
+	free(exec);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:54:16 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/17 04:34:33 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/22 13:42:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,9 @@ static int	get_command_status(int status, t_cmd *cmd)
 	return (status);
 }
 
-void	builtin_exit(int status, t_minishell *ms, t_cmd *cmd)
+void	builtin_exit(int status, t_cmd *cmd)
 {
 	if (cmd)
 		status = get_command_status(status, cmd);
-	if (ms)
-		destroy_minishell(ms);
 	exit(status);
 }

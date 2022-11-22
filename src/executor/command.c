@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:54:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 15:18:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,49 @@
 #include "expander.h"
 #include "builtins.h"
 
-int	execute_command(t_minishell *ms, t_cmd *cmd, t_vlst *env)
+int	execute_command(t_exec *exec, t_etree *node, t_vlst *env)
 {
-	cmd->status = command_expansion(cmd, env);
-	if (cmd->status != OK)
-		return (cmd->status);
-	cmd->status = command_redirect(cmd);
-	if (cmd->status != OK)
-		return (cmd->status);
-	if (cmd->argc == 0)
+	node->cmd->input = node->input;
+	node->cmd->output = node->output;
+	node->cmd->status = command_expansion(node->cmd, env);
+	if (node->cmd->status != OK)
+		return (node->cmd->status);
+	node->cmd->status = command_redirect(node->cmd);
+	if (node->cmd->status != OK)
+		return (node->cmd->status);
+	if (node->cmd->argc == 0)
 		return (0);
-	cmd->status = command_search(cmd, env);
-	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
-		return (cmd->status);
-	if (cmd->isbuiltin && !ms->pipeline)
-		cmd->status = execute_builtin(ms, cmd, env);
+	node->cmd->status = command_search(node->cmd, env);
+	if (node->cmd->status != OK && node->cmd->status != ERR_CMD_NOT_FOUND)
+		return (node->cmd->status);
+	if (node->cmd->isbuiltin && !node->ispipeline)
+		node->status = execute_builtin(node->cmd, env);
 	else
-		subshell(ms, cmd, env);
+		subshell(exec, node, env);
 	return (0);
 }
 
-void	subshell(t_minishell *ms, t_cmd *cmd, t_vlst *env)
+void	subshell(t_exec *exec, t_etree *node, t_vlst *env)
 {
+	int	status;
+
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
-	cmd->pid = fork();
-	if (cmd->pid < 0)
-		cmd->status = error_message2(1, "fork failed", strerror(errno));
-	else if (cmd->pid == 0)
+	node->pid = fork();
+	if (node->pid < 0)
+		node->status = error_message2(1, "fork failed", strerror(errno));
+	else if (node->pid == 0)
 	{
-		dup2(cmd->input, STDIN);
-		dup2(cmd->output, STDOUT);
-		close_safe(cmd->input);
-		close_safe(cmd->output);
-		cmd->input = STDIN;
-		cmd->output = STDOUT;
-		close_pipeline(ms->root);
-		cmd->envp = list_to_envp(env, NULL, 0);
-		if (cmd->isbuiltin)
-			cmd->status = execute_builtin(ms, cmd, env);
+		if (node->cmd->isbuiltin)
+			status = execute_builtin(node->cmd, env);
 		else
-			cmd->status = execute_program(cmd);
-		builtin_exit(cmd->status, ms, NULL);
+			status = execute_program(node, env);
+		destroy_exec(exec);
+		builtin_exit(status, NULL);
 	}
 }
 
-int	execute_builtin(t_minishell *ms, t_cmd *cmd, t_vlst *env)
+int	execute_builtin(t_cmd *cmd, t_vlst *env)
 {
 	if (ft_streq(cmd->argv[0], "echo"))
 		cmd->status = builtin_echo(cmd->output, cmd->argv);
@@ -75,16 +72,21 @@ int	execute_builtin(t_minishell *ms, t_cmd *cmd, t_vlst *env)
 	else if (ft_streq(cmd->argv[0], "env"))
 		cmd->status = builtin_env(cmd->output, env);
 	else if (ft_streq(cmd->argv[0], "exit"))
-		builtin_exit(env->last_status, ms, cmd);
+		builtin_exit(env->last_status, cmd);
 	return (cmd->status);
 }
 
-int	execute_program(t_cmd *cmd)
+int	execute_program(t_etree *node, t_vlst *env)
 {
-	if (!cmd->pathname)
-		return (command_not_found_handle(cmd->argv[0]));
-	execve(cmd->pathname, cmd->argv, cmd->envp);
-	return (error_message2(1, cmd->argv[0], strerror(errno)));
+	dup2(node->input, STDIN);
+	dup2(node->output, STDOUT);
+	close_safe(node->input);
+	close_safe(node->output);
+	if (!node->cmd->pathname)
+		return (command_not_found_handle(node->cmd->argv[0]));
+	node->cmd->envp = list_to_envp(env, NULL, 0);
+	execve(node->cmd->pathname, node->cmd->argv, node->cmd->envp);
+	return (error_message2(1, node->cmd->argv[0], strerror(errno)));
 }
 
 int	command_exit_status(t_cmd *cmd, int *coredump)

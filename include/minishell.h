@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:07:06 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 14:32:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void		*dequeue(t_queue *queue);
 
 // Tree
 
+t_etree		*new_etree(void);
+void		*destroy_etree(t_etree *node);
 t_tree		*new_tree_node(t_tree_type type);
 void		destroy_execution_tree(void *root);
 void		*destroy_tree(t_tree *root, void (*destroy_content)(void *));

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 13:52:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/22 11:56:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,20 @@
 # include <sys/types.h>
 
 typedef struct s_node	t_node;
+typedef struct s_queue	t_queue;
+typedef struct s_tree	t_tree;
 
 typedef enum e_bool {
 	FALSE,
 	TRUE
 }	t_bool;
+
+typedef enum e_op {
+	OP_AND,
+	OP_NONE,
+	OP_OR,
+	OP_PIPE
+}	t_op;
 
 typedef enum e_tok_type {
 	TOKEN_APPEND,
@@ -73,6 +82,28 @@ typedef struct s_cmd
 	char	**envp;
 	t_bool	isbuiltin;
 }	t_cmd;
+
+// execution tree
+
+typedef struct s_etree
+{
+	int				id;
+	t_op			operator;
+	t_cmd			*cmd;
+	pid_t			pid;
+	int				status;
+	int				input;
+	int				output;
+	t_bool			ispipeline;
+	struct s_etree	*next;
+	struct s_etree	*group;
+}	t_etree;
+
+typedef struct s_exec
+{
+	t_etree	*commands;
+	t_queue	*pipeline;
+}	t_exec;
 
 typedef struct s_node
 {
