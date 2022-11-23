@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 19:10:57 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:32:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	close_pipeline(t_tree *root);
 
 int		execute_command(t_exec *exec, t_cmd *cmd, t_vlst *env);
 void	subshell(t_exec *exec, t_cmd *cmd, t_vlst *env);
-int		execute_builtin(t_cmd *cmd, t_vlst *env);
+int		execute_builtin(t_exec *exec, t_cmd *cmd, t_vlst *env);
 int		execute_program(t_cmd *cmd, t_vlst *env);
 
 // Error handling

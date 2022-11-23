@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 19:11:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:34:51 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	execute_command(t_exec *exec, t_cmd *cmd, t_vlst *env)
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
 		return (cmd->status);
 	if (cmd->isbuiltin && !cmd->ispipeline)
-		cmd->status = execute_builtin(cmd, env);
+		cmd->status = execute_builtin(exec, cmd, env);
 	else
 		subshell(exec, cmd, env);
 	return (0);
@@ -37,8 +37,6 @@ int	execute_command(t_exec *exec, t_cmd *cmd, t_vlst *env)
 
 void	subshell(t_exec *exec, t_cmd *cmd, t_vlst *env)
 {
-	int	status;
-
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
 	cmd->pid = fork();
@@ -47,15 +45,14 @@ void	subshell(t_exec *exec, t_cmd *cmd, t_vlst *env)
 	else if (cmd->pid == 0)
 	{
 		if (cmd->isbuiltin)
-			status = execute_builtin(cmd, env);
+			env->last_status = execute_builtin(exec, cmd, env);
 		else
-			status = execute_program(cmd, env);
-		destroy_exec(exec);
-		builtin_exit(status, NULL);
+			env->last_status = execute_program(cmd, env);
+		builtin_exit(exec, 0, NULL, env);
 	}
 }
 
-int	execute_builtin(t_cmd *cmd, t_vlst *env)
+int	execute_builtin(t_exec *exec, t_cmd *cmd, t_vlst *env)
 {
 	if (ft_streq(cmd->argv[0], "echo"))
 		cmd->status = builtin_echo(cmd->output, cmd->argv);
@@ -70,7 +67,7 @@ int	execute_builtin(t_cmd *cmd, t_vlst *env)
 	else if (ft_streq(cmd->argv[0], "env"))
 		cmd->status = builtin_env(cmd->output, env);
 	else if (ft_streq(cmd->argv[0], "exit"))
-		builtin_exit(env->last_status, cmd);
+		builtin_exit(exec, cmd->argc, cmd->argv, env);
 	return (cmd->status);
 }
 
