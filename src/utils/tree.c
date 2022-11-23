@@ -3,15 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/10 03:34:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/22 19:08:49 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "structs.h"
+
+t_etree	*new_etree(void)
+{
+	t_etree	*etree;
+
+	etree = malloc(sizeof(t_etree));
+	init_command(&etree->cmd);
+	etree->operator = OP_NONE;
+	etree->next = NULL;
+	etree->group = NULL;
+	return (etree);
+}
+
+void	*destroy_etree(t_etree *node)
+{
+	if (!node)
+		return (NULL);
+	if (node->group)
+		node->group = destroy_etree(node->group);
+	if (node->next)
+		node->next = destroy_etree(node->next);
+	clear_command(&node->cmd);
+	free(node);
+	return (NULL);
+}
 
 t_tree	*new_tree_node(t_tree_type type)
 {

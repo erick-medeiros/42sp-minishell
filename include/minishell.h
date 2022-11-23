@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/21 00:39:27 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 12:11:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void		*dequeue(t_queue *queue);
 
 // Tree
 
+t_etree		*new_etree(void);
+void		*destroy_etree(t_etree *node);
 t_tree		*new_tree_node(t_tree_type type);
 void		destroy_execution_tree(void *root);
 void		*destroy_tree(t_tree *root, void (*destroy_content)(void *));
@@ -100,12 +102,14 @@ void		del_cmd_tree_node(void *tree);
 
 // Init
 
-t_cmd		*new_command(int number);
+void		init_command(t_cmd *cmd);
+t_cmd		*new_command(void);
 void		init_minishell(t_minishell *minishell, char **envp);
 void		init_system_vars(t_vlst *env);
 
 // Cleanup functions
 
+void		clear_command(t_cmd *cmd);
 void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);

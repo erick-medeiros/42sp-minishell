@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:55:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/23 10:32:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 
 // Executor
 
-void	tree_executor(t_minishell *ms, t_tree *root, int input, int output);
-void	sync_tree_execution(t_tree *root, int *exit_status, int *coredump);
+void	etree_executor(t_exec *exec, t_vlst *env, t_etree *node);
+void	group_executor(t_exec *exec, t_vlst *env, t_etree *node);
+void	pipeline_sync(t_queue *queue);
+void	destroy_exec(t_exec *exec);
 
 // Expander
 
@@ -39,11 +41,10 @@ void	close_pipeline(t_tree *root);
 
 // Command
 
-int		execute_command(t_minishell *ms, t_cmd *cmd, t_vlst *env);
-void	subshell(t_minishell *ms, t_cmd *cmd, t_vlst *env);
-int		execute_builtin(t_minishell *ms, t_cmd *cmd, t_vlst *env);
-int		execute_program(t_cmd *cmd);
-int		command_exit_status(t_cmd *cmd, int *coredump);
+int		execute_command(t_exec *exec, t_cmd *cmd, t_vlst *env);
+void	subshell(t_exec *exec, t_cmd *cmd, t_vlst *env);
+int		execute_builtin(t_exec *exec, t_cmd *cmd, t_vlst *env);
+int		execute_program(t_cmd *cmd, t_vlst *env);
 
 // Error handling
 void	print_signal_error(int exit_status, int coredump);
