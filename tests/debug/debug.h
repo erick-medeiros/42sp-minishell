@@ -1,7 +1,7 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "executor.h"
+#include "libft.h"
 #include "minishell.h"
 
 void debug_token(t_node *token_list);

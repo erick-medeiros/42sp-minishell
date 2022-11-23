@@ -1,15 +1,13 @@
 NAME = minishell
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -Ilibft
+CFLAGS += -Ilibft -g
 LIBFLAGS = -Llibft -lft -lreadline
-DEBUGFLAGS = -Idebug -g
 CC = cc
 RM = rm -fr
 
 LIBFT_DIR = libft/
 LIBFT = libft/libft.a
-LIBDEBUG = debug/debug.a
 
 SRC_DIR = src/
 OBJ_DIR = obj/
@@ -40,25 +38,22 @@ $(REQUIRED_DIRS):
 	@mkdir -p $@
 
 $(OBJ_DIR_BONUS)%_bonus.o: $(SRC_DIR_BONUS)%_bonus.c
-	$(CC) $(CFLAGS) -I$(INC_DIR_BONUS) $(DEBUGFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INC_DIR_BONUS) -c $< -o $@
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	$(CC) $(CFLAGS) -I$(INC_DIR) $(DEBUGFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
 
 libft:
 	make -C $(LIBFT_DIR)
 
-libdebug:
-	make -C debug
-
-$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft libdebug
-	$(CC) $(CFLAGS) $(DEBUGFLAGS) -o $(NAME) $(OBJ) $(LIBDEBUG) $(LIBFLAGS)
+$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
 	$(RM) $(OBJ_DIR) $(OBJ_DIR_BONUS)
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS) $(LIBFT) $(LIBDEBUG)
+	$(RM) $(NAME) $(NAME_BONUS) $(LIBFT)
 
 re: fclean all
 
@@ -80,4 +75,4 @@ compile_tests: re
 unit_tests:
 	./tests/unit/run_test.out
 
-.PHONY: all clean compile_tests fclean install libdebug libft norm leaks re unit_tests
+.PHONY: all clean compile_tests fclean install libft norm leaks re unit_tests

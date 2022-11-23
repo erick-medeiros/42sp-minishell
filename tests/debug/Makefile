@@ -1,5 +1,7 @@
 NAME = debug.a
 
+CFLAGS = -I../../libft -I../../include -g
+
 HEADER = debug.h
 SRC = debug.c
 SRC += debug_tree.c
@@ -9,7 +11,7 @@ all: $(NAME)
 
 %.o: %.c
 	@clang-format -i $<
-	cc -g -I../include -I../libft -c $< -o $@
+	cc $(CFLAGS) -c $< -o $@
 
 $(NAME): $(HEADER) $(OBJ)
 	ar -rcs $(NAME) $(OBJ)
