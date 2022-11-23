@@ -3,26 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   skip.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:28:58 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 02:05:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:43:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
 
-t_lex_state	handle_skip_state(size_t idx, t_val_info *vi)
+t_lex_state	handle_skip_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
 	const char	next_ch = vi->line[idx];
 
+	(void)tokens;
 	if (next_ch == '|')
 		return (STATE_PIPE);
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
 	if (next_ch == '<')
 		return (STATE_INPUT);
+	if (next_ch == '&')
+		return (STATE_AMPERSAND);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')

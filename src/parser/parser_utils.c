@@ -6,14 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/19 13:46:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:41:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
-#include <unistd.h>
 
 int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 {
@@ -90,6 +88,10 @@ int	print_token_error(int status, t_tok_type tok_type)
 	ft_putstr_fd("minishell: syntax error", STDERR);
 	if (tok_type == TOKEN_PIPE)
 		ft_putstr_fd(" near unexpected token `|'\n", STDERR);
+	else if (tok_type == TOKEN_AND)
+		ft_putstr_fd(" near unexpected token `&&'\n", STDERR);
+	else if (tok_type == TOKEN_OR)
+		ft_putstr_fd(" near unexpected token `||'\n", STDERR);
 	else if (tok_type == TOKEN_NL)
 		ft_putstr_fd(" near unexpected token `newline'\n", STDERR);
 	else if (tok_type == TOKEN_APPEND)

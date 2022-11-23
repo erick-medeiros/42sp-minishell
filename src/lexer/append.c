@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   append.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:20:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 02:28:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:45:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_INPUT);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
+	if (next_ch == '&')
+		return (STATE_AMPERSAND);
 	if (next_ch == '\0')
 		return (STATE_COMPLETE);
 	if (next_ch == '$')

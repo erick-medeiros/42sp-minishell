@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:21:39 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 02:04:28 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:44:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_PIPE);
 	if (next_ch == '<')
 		return (STATE_INPUT);
+	if (next_ch == '&')
+		return (STATE_AMPERSAND);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')

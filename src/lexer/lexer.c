@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 04:14:59 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 12:09:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
-#include "structs.h"
-#include <stddef.h>
 
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
+						t_lex_state st, t_val_info *vi);
+static t_lex_state	get_next_state2(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
 
 int	lexer(char **line, t_node **tokens, t_lex_state st)
@@ -50,10 +50,18 @@ int	lexer(char **line, t_node **tokens, t_lex_state st)
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 	t_lex_state st, t_val_info *vi)
 {
+	if (st == STATE_AMPERSAND)
+		return (handle_amp_state(idx, tokens, vi));
+	if (st == STATE_AND)
+		return (handle_and_state(idx, tokens, vi));
+	if (st == STATE_APPEND)
+		return (handle_append_state(idx, tokens, vi));
+	if (st == STATE_OR)
+		return (handle_or_state(idx, tokens, vi));
 	if (st == STATE_WORD)
 		return (handle_word_state(idx, tokens, vi));
 	if (st == STATE_SKIP)
-		return (handle_skip_state(idx, vi));
+		return (handle_skip_state(idx, tokens, vi));
 	if (st == STATE_DQUOTE)
 		return (handle_dquote_state(idx, tokens, vi));
 	if (st == STATE_SQUOTE)
@@ -64,6 +72,12 @@ static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 		return (handle_input_state(idx, tokens, vi));
 	if (st == STATE_OUTPUT)
 		return (handle_output_state(idx, tokens, vi));
+	return (get_next_state2(idx, tokens, st, vi));
+}
+
+static t_lex_state	get_next_state2(size_t idx, t_node **tokens,
+	t_lex_state st, t_val_info *vi)
+{
 	if (st == STATE_PIPE)
 		return (handle_pipe_state(idx, tokens, vi));
 	if (st == STATE_APPEND)

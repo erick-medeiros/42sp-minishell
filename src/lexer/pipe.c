@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:00 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 02:04:49 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:42:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
 	const char	next_ch = vi->line[idx];
 
-	new_token(tokens, TOKEN_PIPE);
 	if (next_ch == '|')
-		return (STATE_PIPE);
+		return (STATE_OR);
+	new_token(tokens, TOKEN_PIPE);
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
 	if (next_ch == '<')
 		return (STATE_INPUT);
+	if (next_ch == '&')
+		return (STATE_AMPERSAND);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')

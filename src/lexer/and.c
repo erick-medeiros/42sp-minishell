@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output_bonus.c                                     :+:      :+:    :+:   */
+/*   and.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/20 03:21:39 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/20 21:54:57 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/20 04:13:05 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/23 11:48:44 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
-#include "lexer_bonus.h"
+#include "minishell.h"
+#include "lexer.h"
 
-t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi)
+t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
 	const char	next_ch = vi->line[idx];
 
-	if (next_ch == '>')
-		return (STATE_APPEND);
-	new_token(tokens, TOKEN_OUTPUT);
+	if (new_token(tokens, TOKEN_AND))
+		return (STATE_INVALID);
 	if (next_ch == '|')
 		return (STATE_PIPE);
+	if (next_ch == '>')
+		return (STATE_OUTPUT);
 	if (next_ch == '<')
 		return (STATE_INPUT);
 	if (next_ch == '&')

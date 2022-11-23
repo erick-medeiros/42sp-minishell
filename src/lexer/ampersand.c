@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   and_bonus.c                                        :+:      :+:    :+:   */
+/*   ampersand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/20 04:13:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/20 23:26:43 by gmachado         ###   ########.fr       */
+/*   Created: 2022/11/20 04:17:32 by gmachado          #+#    #+#             */
+/*   Updated: 2022/11/23 11:48:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_bonus.h"
-#include "lexer_bonus.h"
+#include "minishell.h"
+#include "lexer.h"
 
-t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi)
+t_lex_state	handle_amp_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
-	const char	next_ch = vi->line[idx];
+	const char			next_ch = vi->line[idx];
+	const t_val_info	amp_vi = (t_val_info){"&", 0, 1, 0};
 
-	if (new_token(tokens, TOKEN_AND))
-		return (STATE_INVALID);
-	if (next_ch == '|')
-		return (STATE_PIPE);
+	if (next_ch == '&')
+		return (STATE_AND);
+	new_token_with_val(tokens, TOKEN_WORD, (t_val_info *)&amp_vi);
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
+	if (next_ch == '|')
+		return (STATE_PIPE);
 	if (next_ch == '<')
 		return (STATE_INPUT);
-	if (next_ch == '&')
-		return (STATE_AMPERSAND);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')

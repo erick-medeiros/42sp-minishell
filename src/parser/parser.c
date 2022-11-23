@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/21 00:39:45 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:56:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
-#include "debug.h"
 
 static int			parse_token(t_minishell *ms, t_tree **tree, int cmd_num);
 static t_tree_type	tok_to_tree_type(t_token *tok);
@@ -101,10 +99,14 @@ static t_tree_type	tok_to_tree_type(t_token *tok)
 {
 	if (tok->type == TOKEN_PIPE)
 		return (TREE_TYPE_PIPE);
+	if (tok->type == TOKEN_AND)
+		return (TREE_TYPE_AND);
+	if (tok->type == TOKEN_OR)
+		return (TREE_TYPE_OR);
 	return (TREE_TYPE_CMD);
 }
 
 int	is_op(t_tree_type t)
 {
-	return (t == TREE_TYPE_PIPE);
+	return (t != TREE_TYPE_CMD);
 }

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 13:52:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/23 11:39:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum e_bool {
 }	t_bool;
 
 typedef enum e_tok_type {
+	TOKEN_AND,
 	TOKEN_APPEND,
 	TOKEN_BRCINCOMP,
 	TOKEN_DQUOTE,
@@ -32,16 +33,20 @@ typedef enum e_tok_type {
 	TOKEN_HEREDOC,
 	TOKEN_IGNORE,
 	TOKEN_INPUT,
+	TOKEN_OR,
 	TOKEN_OUTPUT,
 	TOKEN_PIPE,
 	TOKEN_SQUOTE,
 	TOKEN_SQBRACE,
 	TOKEN_SQINCOMP,
+	TOKEN_SUBSHELL,
 	TOKEN_WORD,
 	TOKEN_NL
 }	t_tok_type;
 
 typedef enum e_lex_state {
+	STATE_AMPERSAND,
+	STATE_AND,
 	STATE_APPEND,
 	STATE_BRACE,
 	STATE_COMPLETE,
@@ -51,6 +56,7 @@ typedef enum e_lex_state {
 	STATE_INCOMPLETE,
 	STATE_INPUT,
 	STATE_INVALID,
+	STATE_OR,
 	STATE_OUTPUT,
 	STATE_PIPE,
 	STATE_SKIP,
@@ -114,7 +120,9 @@ typedef struct s_vlst
 }	t_vlst;
 
 typedef enum e_tree_type {
+	TREE_TYPE_AND,
 	TREE_TYPE_CMD,
+	TREE_TYPE_OR,
 	TREE_TYPE_PIPE
 }		t_tree_type;
 
