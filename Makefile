@@ -37,9 +37,6 @@ all: $(NAME)
 $(REQUIRED_DIRS):
 	@mkdir -p $@
 
-$(OBJ_DIR_BONUS)%_bonus.o: $(SRC_DIR_BONUS)%_bonus.c
-	$(CC) $(CFLAGS) -I$(INC_DIR_BONUS) -c $< -o $@
-
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
 
@@ -50,10 +47,10 @@ $(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:
-	$(RM) $(OBJ_DIR) $(OBJ_DIR_BONUS)
+	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_BONUS) $(LIBFT)
+	$(RM) $(NAME) $(LIBFT)
 
 re: fclean all
 
