@@ -6,13 +6,12 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:20:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/23 11:45:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/24 12:08:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
-#include "structs.h"
 
 t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi)
 {
@@ -22,6 +21,8 @@ t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_INVALID);
 	if (next_ch == '|')
 		return (STATE_PIPE);
+	if (lexer_parenthesis(next_ch) != STATE_SKIP)
+		return (lexer_parenthesis(next_ch));
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
 	if (next_ch == '<')

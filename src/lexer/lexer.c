@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/23 12:09:44 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/24 11:26:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
-static t_lex_state	get_next_state2(size_t idx, t_node **tokens,
+static t_lex_state	get_next_state_bonus(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
 
 int	lexer(char **line, t_node **tokens, t_lex_state st)
@@ -50,14 +50,12 @@ int	lexer(char **line, t_node **tokens, t_lex_state st)
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 	t_lex_state st, t_val_info *vi)
 {
-	if (st == STATE_AMPERSAND)
-		return (handle_amp_state(idx, tokens, vi));
-	if (st == STATE_AND)
-		return (handle_and_state(idx, tokens, vi));
+	if (st == STATE_PIPE)
+		return (handle_pipe_state(idx, tokens, vi));
+	if (st == STATE_HEREDOC)
+		return (handle_heredoc_state(idx, tokens, vi));
 	if (st == STATE_APPEND)
 		return (handle_append_state(idx, tokens, vi));
-	if (st == STATE_OR)
-		return (handle_or_state(idx, tokens, vi));
 	if (st == STATE_WORD)
 		return (handle_word_state(idx, tokens, vi));
 	if (st == STATE_SKIP)
@@ -72,17 +70,23 @@ static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 		return (handle_input_state(idx, tokens, vi));
 	if (st == STATE_OUTPUT)
 		return (handle_output_state(idx, tokens, vi));
-	return (get_next_state2(idx, tokens, st, vi));
+	return (get_next_state_bonus(idx, tokens, st, vi));
 }
 
-static t_lex_state	get_next_state2(size_t idx, t_node **tokens,
+static t_lex_state	get_next_state_bonus(size_t idx, t_node **tokens,
 	t_lex_state st, t_val_info *vi)
 {
-	if (st == STATE_PIPE)
-		return (handle_pipe_state(idx, tokens, vi));
-	if (st == STATE_APPEND)
-		return (handle_append_state(idx, tokens, vi));
-	if (st == STATE_HEREDOC)
-		return (handle_heredoc_state(idx, tokens, vi));
+	if (st == STATE_AMPERSAND)
+		return (handle_amp_state(idx, tokens, vi));
+	if (st == STATE_AND)
+		return (handle_and_state(idx, tokens, vi));
+	if (st == STATE_OR)
+		return (handle_or_state(idx, tokens, vi));
+	if (st == STATE_BRACE)
+		return (handle_brace_state(idx, tokens, vi));
+	if (st == STATE_OPARENTHESIS)
+		return (handle_oparenthesis_state(idx, tokens, vi));
+	if (st == STATE_CPARENTHESIS)
+		return (handle_cparenthesis_state(idx, tokens, vi));
 	return (STATE_INVALID);
 }

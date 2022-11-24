@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:21:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/23 11:47:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/24 12:08:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_lex_state	handle_input_state(size_t idx, t_node **tokens, t_val_info *vi)
 	new_token(tokens, TOKEN_INPUT);
 	if (next_ch == '|')
 		return (STATE_PIPE);
+	if (lexer_parenthesis(next_ch) != STATE_SKIP)
+		return (lexer_parenthesis(next_ch));
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
 	if (next_ch == '&')

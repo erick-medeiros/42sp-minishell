@@ -3,11 +3,14 @@
 void debug_token(t_node *token_list) {
 	t_node *node;
 	t_token *token;
-	char *types[] = {"TOKEN_APPEND",  "TOKEN_BRCINCOMP", "TOKEN_DQUOTE",
-					 "TOKEN_DQBRACE", "TOKEN_DQINCOMP",	 "TOKEN_HEREDOC",
-					 "TOKEN_INPUT",	  "TOKEN_OUTPUT",	 "TOKEN_PIPE",
-					 "TOKEN_SQUOTE",  "TOKEN_SQBRACE",	 "TOKEN_SQINCOMP",
-					 "TOKEN_WORD",	  "TOKEN_NL",		 NULL};
+	char *types[] = {
+		"TOKEN_AND",		  "TOKEN_APPEND",	"TOKEN_BRCINCOMP",
+		"TOKEN_DQUOTE",		  "TOKEN_DQBRACE",	"TOKEN_DQINCOMP",
+		"TOKEN_HEREDOC",	  "TOKEN_IGNORE",	"TOKEN_INPUT",
+		"TOKEN_OR",			  "TOKEN_OUTPUT",	"TOKEN_OPARENTHESIS",
+		"TOKEN_CPARENTHESIS", "TOKEN_PIPE",		"TOKEN_SQUOTE",
+		"TOKEN_SQBRACE",	  "TOKEN_SQINCOMP", "TOKEN_SUBSHELL",
+		"TOKEN_WORD",		  "TOKEN_NL",		NULL};
 	node = token_list;
 	printf("token list:\n");
 	while (node) {

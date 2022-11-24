@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/23 12:11:20 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/24 12:21:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef enum e_tok_type {
 	TOKEN_INPUT,
 	TOKEN_OR,
 	TOKEN_OUTPUT,
+	TOKEN_OPARENTHESIS,
+	TOKEN_CPARENTHESIS,
 	TOKEN_PIPE,
 	TOKEN_SQUOTE,
 	TOKEN_SQBRACE,
@@ -67,6 +69,8 @@ typedef enum e_lex_state {
 	STATE_INVALID,
 	STATE_OR,
 	STATE_OUTPUT,
+	STATE_OPARENTHESIS,
+	STATE_CPARENTHESIS,
 	STATE_PIPE,
 	STATE_SKIP,
 	STATE_SQUOTE,
