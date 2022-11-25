@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 00:36:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/25 11:18:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);
 int			is_op(t_tree_type t);
+int			is_optoken(t_token *token);
 int			print_token_error(int status, t_tok_type tok_type);
+t_tree_type	tok_to_tree_type(t_token *tok);
 
 // postfix list utils
 

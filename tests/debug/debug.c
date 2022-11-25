@@ -1,9 +1,7 @@
 #include "debug.h"
 
 void debug_token(t_node *token_list) {
-	t_node *node;
-	t_token *token;
-	char *types[] = {
+	const char *types[] = {
 		"TOKEN_AND",		  "TOKEN_APPEND",	"TOKEN_BRCINCOMP",
 		"TOKEN_DQUOTE",		  "TOKEN_DQBRACE",	"TOKEN_DQINCOMP",
 		"TOKEN_HEREDOC",	  "TOKEN_IGNORE",	"TOKEN_INPUT",
@@ -11,6 +9,9 @@ void debug_token(t_node *token_list) {
 		"TOKEN_CPARENTHESIS", "TOKEN_PIPE",		"TOKEN_SQUOTE",
 		"TOKEN_SQBRACE",	  "TOKEN_SQINCOMP", "TOKEN_SUBSHELL",
 		"TOKEN_WORD",		  "TOKEN_NL",		NULL};
+	t_node *node;
+	t_token *token;
+
 	node = token_list;
 	printf("token list:\n");
 	while (node) {
@@ -18,6 +19,17 @@ void debug_token(t_node *token_list) {
 		printf("value (%s) type (%s)\n", token->value, types[token->type]);
 		node = node->next;
 	}
+}
+
+void debug_cmd_list(t_node *list) {
+	t_node *nodetmp;
+
+	nodetmp = list;
+	while (nodetmp) {
+		printf("cmdl[%d]", ((t_tree *)nodetmp->content)->type);
+		nodetmp = nodetmp->next;
+	}
+	printf("\n");
 }
 
 void debug_command(t_cmd *command) {

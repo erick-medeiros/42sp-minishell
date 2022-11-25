@@ -21,7 +21,7 @@ FILES += $(addprefix expander/, env_conv.c env_utils.c expander_utils.c filename
 FILES += $(addprefix lexer/, ampersand.c and.c or.c append.c brace.c continue.c double_quote.c heredoc.c)
 FILES += $(addprefix lexer/, input.c lexer.c lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
 FILES += $(addprefix lexer/, parenthesis.c)
-FILES += $(addprefix parser/, build_tree.c handle_tokens.c parser.c parser_utils.c postfix.c)
+FILES += $(addprefix parser/, build_tree.c handle_tokens.c parser.c parser_utils.c postfix.c type.c)
 FILES += $(addprefix prompt/, here_doc.c prompt.c prompt_utils.c signal.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c)
 FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)
@@ -65,7 +65,9 @@ norm:
 	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=./tests/readline.supp ./minishell
+	valgrind --leak-check=full --show-leak-kinds=all \
+	--suppressions=./tests/readline.supp --track-fds=yes --track-origins=yes \
+	./minishell
 
 compile_tests: re
 	make re -C tests/unit/

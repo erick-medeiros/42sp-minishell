@@ -153,7 +153,9 @@ typedef enum e_tree_type {
 	TREE_TYPE_AND,
 	TREE_TYPE_CMD,
 	TREE_TYPE_OR,
-	TREE_TYPE_PIPE
+	TREE_TYPE_PIPE,
+	TREE_TYPE_OPAR,
+	TREE_TYPE_CPAR
 }		t_tree_type;
 
 typedef struct s_tree {
