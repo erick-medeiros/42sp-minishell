@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:52:30 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:13:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void	tree_pipe_executor(t_exec *exec, t_tree *node, int in, int out)
 	node->content = pfd;
 	if (node->left && node->left->type == TREE_TYPE_CMD)
 		((t_cmd *)node->left->content)->ispipeline = TRUE;
-	tree_executor(exec, node->left, in, pfd[WRITE_PIPE]);
+	tree_executor(exec, node->left, in, pfd[1]);
 	if (node->right && node->right->type == TREE_TYPE_CMD)
 		((t_cmd *)node->right->content)->ispipeline = TRUE;
-	tree_right_executor(exec, node->right, pfd[READ_PIPE], out);
+	tree_right_executor(exec, node->right, pfd[0], out);
 }
 
 void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)

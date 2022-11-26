@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:50:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:13:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@
 # define PROMPT_EXTRA_OP "continue pipe> "
 # define HEREDOC_STRING "here_doc> "
 # define ENDSINPIPE_STRING "> "
-
-// Pipe
-
-# define PIPE_SIZE 2
-# define READ_PIPE 0
-# define WRITE_PIPE 1
 
 // Error definitions
 # define OK 0
@@ -84,6 +78,7 @@ void		*pop_node(t_node **src);
 int			change_or_create_var(t_vlst *vars, char *name, char *val);
 void		print_sorted_vars(t_vlst *vars, char *prefix);
 int			split_name_val(char *str, char **name, char **val);
+t_bool		is_valid_name(char *name);
 
 // Queue
 

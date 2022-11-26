@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/25 20:29:48 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:16:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	free_token(void *content);
 
 void	init_minishell(t_minishell *minishell, char **envp)
 {
-	minishell->root = NULL;
 	minishell->token_list = NULL;
 	minishell->heredoc_queue.front = NULL;
 	minishell->heredoc_queue.rear = NULL;
@@ -50,11 +49,6 @@ void	free_minishell(t_minishell *minishell)
 		clear_list(minishell->cmd_list.front, del_cmd_tree_node);
 		minishell->cmd_list.front = NULL;
 		minishell->cmd_list.rear = NULL;
-	}
-	if (minishell->root)
-	{
-		destroy_tree(minishell->root, destroy_execution_tree);
-		minishell->root = NULL;
 	}
 }
 

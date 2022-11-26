@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:46:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:16:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ typedef enum e_bool {
 	FALSE,
 	TRUE
 }	t_bool;
-
-typedef enum e_op {
-	OP_AND,
-	OP_NONE,
-	OP_OR,
-	OP_PIPE
-}	t_op;
 
 typedef enum e_tok_type {
 	TOKEN_AND,
@@ -170,7 +163,6 @@ typedef struct s_minishell
 	t_node	*token_list;
 	t_queue	heredoc_queue;
 	t_queue	cmd_list;
-	t_tree	*root;
 	t_bool	set_history;
 }	t_minishell;
 

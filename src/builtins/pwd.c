@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:56 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/16 20:52:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 14:11:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_pwd(int fd_out)
 
 	retptr = get_pwd();
 	if (retptr == NULL)
-		return (ERR_BUILTIN);
+		return (2);
 	ft_putendl_fd(retptr, fd_out);
 	free(retptr);
 	return (OK);
@@ -34,12 +34,11 @@ char	*get_pwd(void)
 	retptr = getcwd(NULL, 1024);
 	if (retptr == NULL)
 	{
-		ft_putstr_fd(MSG_PWD_ERR, STDERR);
+		ft_putendl_fd("Error: get working directory failed", STDERR);
 		if (errno == ERANGE)
-			ft_putstr_fd(MSG_PATH_MAX_ERR, STDERR);
+			ft_putendl_fd("Error: path max buffer", STDERR);
 		else if (errno == ENOMEM)
-			ft_putstr_fd(MSG_PWD_ALLOC_ERR, STDERR);
-		ft_putstr_fd("\n", STDERR);
+			ft_putendl_fd("Error: memory cannot be allocated", STDERR);
 		return (NULL);
 	}
 	return (retptr);
