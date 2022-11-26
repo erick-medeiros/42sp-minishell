@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 10:26:41 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 16:02:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	free_token(void *content);
 
-void	init_command(t_cmd *cmd)
+t_cmd	*new_command(void)
 {
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
 	cmd->pathname = NULL;
 	cmd->argc = 0;
 	cmd->argv = NULL;
@@ -29,9 +32,10 @@ void	init_command(t_cmd *cmd)
 	cmd->die_in_queue = FALSE;
 	cmd->redirect = NULL;
 	cmd->word_tokens = NULL;
+	return (cmd);
 }
 
-void	clear_command(t_cmd *cmd)
+void	destroy_command(t_cmd *cmd)
 {
 	int	i;
 
@@ -45,19 +49,5 @@ void	clear_command(t_cmd *cmd)
 	free(cmd->pathname);
 	free_string_list(cmd->envp);
 	clear_list(cmd->word_tokens, free_token);
-}
-
-t_cmd	*new_command(void)
-{
-	t_cmd	*cmd;
-
-	cmd = malloc(sizeof(t_cmd));
-	init_command(cmd);
-	return (cmd);
-}
-
-void	destroy_command(t_cmd *cmd)
-{
-	clear_command(cmd);
 	free(cmd);
 }
