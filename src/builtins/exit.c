@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:54:16 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/23 10:53:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 13:52:17 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,20 @@
 #include "minishell.h"
 
 static int	get_status(int argc, char *argv[], int last_status);
-static void	clean_exit(t_exec *exec, t_vlst *env);
+static void	clean_exit(t_exec *exec);
 
-void	builtin_exit(t_exec *exec, int argc, char *argv[], t_vlst *env)
+void	builtin_exit(t_exec *exec, int status)
+{
+	clean_exit(exec);
+	exit(status);
+}
+
+void	builtin_exit_arg(t_exec *exec, int argc, char *argv[])
 {
 	int	status;
 
-	status = get_status(argc, argv, env->last_status);
-	clean_exit(exec, env);
-	exit(status);
+	status = get_status(argc, argv, exec->env->last_status);
+	builtin_exit(exec, status);
 }
 
 static int	get_status(int argc, char *argv[], int last_status)
@@ -45,10 +50,13 @@ static int	get_status(int argc, char *argv[], int last_status)
 		return (last_status);
 }
 
-static void	clean_exit(t_exec *exec, t_vlst *env)
+static void	clean_exit(t_exec *exec)
 {
-	if (env)
-		clear_list(env->list, del_var_node);
 	if (exec)
+	{
+		if (exec->env)
+			clear_list(exec->env->list, del_var_node);
 		destroy_exec(exec);
+	}
+	rl_clear_history();
 }

@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/21 00:39:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/26 13:59:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
+
+static void	execution_process(t_minishell *ms);
 
 void	process_line(char **line, t_minishell *minishell)
 {
@@ -36,10 +38,16 @@ void	process_line(char **line, t_minishell *minishell)
 		add_history(history);
 	free(history);
 	if (parse_result == OK)
-	{
-		minishell->root = build_tree_postfix(minishell);
-		executor(minishell);
-	}
+		execution_process(minishell);
+}
+
+static void	execution_process(t_minishell *ms)
+{
+	t_tree	*root;
+
+	root = build_tree_postfix(ms);
+	free_minishell(ms);
+	executor(root, &ms->env_list);
 }
 
 void	handle_parse_result(int result, char **line,

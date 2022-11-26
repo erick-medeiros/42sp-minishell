@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/22 19:09:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 10:26:41 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_command(t_cmd *cmd)
 	cmd->status = 0;
 	cmd->isbuiltin = FALSE;
 	cmd->ispipeline = FALSE;
+	cmd->die_in_queue = FALSE;
 	cmd->redirect = NULL;
 	cmd->word_tokens = NULL;
 }

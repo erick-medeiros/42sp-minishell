@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/24 12:21:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 13:46:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef struct s_node	t_node;
 typedef struct s_queue	t_queue;
 typedef struct s_tree	t_tree;
+typedef struct s_vlst	t_vlst;
 
 typedef enum e_bool {
 	FALSE,
@@ -92,22 +93,14 @@ typedef struct s_cmd
 	char	**envp;
 	t_bool	isbuiltin;
 	t_bool	ispipeline;
+	t_bool	die_in_queue;
 }	t_cmd;
-
-// execution tree
-
-typedef struct s_etree
-{
-	t_op			operator;
-	t_cmd			cmd;
-	struct s_etree	*next;
-	struct s_etree	*group;
-}	t_etree;
 
 typedef struct s_exec
 {
-	t_etree	*commands;
-	t_queue	*pipeline;
+	t_tree	*commands;
+	t_queue	*queue;
+	t_vlst	*env;
 }	t_exec;
 
 typedef struct s_node
@@ -179,7 +172,6 @@ typedef struct s_minishell
 	t_queue	cmd_list;
 	t_tree	*root;
 	t_bool	set_history;
-	t_bool	pipeline;
 }	t_minishell;
 
 typedef struct s_heredoc

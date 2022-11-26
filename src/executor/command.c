@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/23 10:34:51 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 13:09:57 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,16 @@ void	subshell(t_exec *exec, t_cmd *cmd, t_vlst *env)
 		cmd->status = error_message2(1, "fork failed", strerror(errno));
 	else if (cmd->pid == 0)
 	{
+		dup2(cmd->input, STDIN);
+		dup2(cmd->output, STDOUT);
+		close_pipeline(exec->commands);
+		cmd->input = STDIN;
+		cmd->output = STDOUT;
 		if (cmd->isbuiltin)
 			env->last_status = execute_builtin(exec, cmd, env);
 		else
 			env->last_status = execute_program(cmd, env);
-		builtin_exit(exec, 0, NULL, env);
+		builtin_exit(exec, env->last_status);
 	}
 }
 
@@ -67,16 +72,17 @@ int	execute_builtin(t_exec *exec, t_cmd *cmd, t_vlst *env)
 	else if (ft_streq(cmd->argv[0], "env"))
 		cmd->status = builtin_env(cmd->output, env);
 	else if (ft_streq(cmd->argv[0], "exit"))
-		builtin_exit(exec, cmd->argc, cmd->argv, env);
+	{
+		if (cmd->argc > 1)
+			builtin_exit_arg(exec, cmd->argc, cmd->argv);
+		else
+			builtin_exit(exec, env->last_status);
+	}
 	return (cmd->status);
 }
 
 int	execute_program(t_cmd *cmd, t_vlst *env)
 {
-	dup2(cmd->input, STDIN);
-	dup2(cmd->output, STDOUT);
-	close_safe(cmd->input);
-	close_safe(cmd->output);
 	if (!cmd->pathname)
 		return (command_not_found_handle(cmd->argv[0]));
 	cmd->envp = list_to_envp(env, NULL, 0);

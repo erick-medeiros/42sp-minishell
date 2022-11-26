@@ -6,12 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/12 23:54:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 12:53:39 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 static t_bool	is_operand(t_tree *t);
 static int		build_tree_node(t_node **tmp_stack, t_tree *root);
@@ -51,7 +50,6 @@ static int	build_tree_node(t_node **tmp_stack, t_tree *root)
 	{
 		root->right = pop_node(tmp_stack);
 		root->left = pop_node(tmp_stack);
-		root->content = (void *)1;
 		result = push_node(tmp_stack, root);
 		if (!root->left || !root->right)
 			result = ERR_ALLOC;

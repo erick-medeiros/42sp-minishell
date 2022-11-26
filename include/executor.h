@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/23 10:32:24 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 13:43:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 
 // Executor
 
-void	etree_executor(t_exec *exec, t_vlst *env, t_etree *node);
-void	group_executor(t_exec *exec, t_vlst *env, t_etree *node);
-void	pipeline_sync(t_queue *queue);
+void	tree_executor(t_exec *exec, t_tree *node, int in, int out);
+void	tree_pipe_executor(t_exec *exec, t_tree *node, int in, int out);
+void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out);
+void	tree_right_executor(t_exec *exec, t_tree *node, int in, int out);
 void	destroy_exec(t_exec *exec);
 
 // Expander
@@ -37,6 +38,7 @@ int		command_search(t_cmd *cmd, t_vlst *env);
 
 // Pipeline
 
+void	execution_sync(t_exec *exec);
 void	close_pipeline(t_tree *root);
 
 // Command

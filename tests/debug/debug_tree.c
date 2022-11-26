@@ -6,6 +6,8 @@
 #define COUNT 10
 
 void debug_tree_recursive(t_tree *root, int space) {
+	t_cmd *cmd;
+	t_token *token;
 	if (root == NULL)
 		return;
 
@@ -14,40 +16,17 @@ void debug_tree_recursive(t_tree *root, int space) {
 	printf("\n");
 	for (int i = COUNT; i < space; i++)
 		printf(" ");
-	if (root->type == TREE_TYPE_CMD)
-		printf("(cmd%d)\n", ((t_cmd *)root->content)->number);
-	else if (root->type == TREE_TYPE_PIPE)
+	if (root->type == TREE_TYPE_CMD) {
+		cmd = root->content;
+		token = (t_token *)cmd->word_tokens->content;
+		printf("(%s)\n", token->value);
+	} else if (root->type == TREE_TYPE_PIPE)
 		printf("(|)\n");
+	else if (root->type == TREE_TYPE_OR)
+		printf("(||)\n");
+	else if (root->type == TREE_TYPE_AND)
+		printf("(&&)\n");
 	debug_tree_recursive(root->left, space);
 }
 
 void debug_tree(t_tree *root) { debug_tree_recursive(root, 0); }
-
-void debug_etree(t_etree *root) {
-	const char *op[] = {"OP_AND", "OP_NONE", "OP_OR", "OP_PIPE", NULL};
-	t_etree *node;
-	t_queue groups;
-
-	groups.front = NULL;
-	groups.rear = NULL;
-	printf("===== debug etree =====\n");
-	node = root;
-	while (node) {
-		if (node->group) {
-			enqueue(&groups, node->group);
-			printf("[group]");
-		} else if (node->cmd.word_tokens != NULL)
-			printf("%s", ((t_token *)node->cmd.word_tokens->content)->value);
-		else
-			printf("[cmd]");
-		node = node->next;
-		if (node)
-			printf(" %s ", op[node->operator]);
-	}
-	printf("\n");
-	node = dequeue(&groups);
-	while (node) {
-		debug_etree(node);
-		node = dequeue(&groups);
-	}
-}

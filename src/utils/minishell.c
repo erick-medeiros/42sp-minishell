@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 13:50:29 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/25 20:29:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 	minishell->cmd_list.front = NULL;
 	minishell->cmd_list.rear = NULL;
 	minishell->set_history = TRUE;
-	minishell->pipeline = FALSE;
 	minishell->env_list.last_status = 0;
 	if (envp)
 		envp_to_list(envp, &minishell->env_list);
