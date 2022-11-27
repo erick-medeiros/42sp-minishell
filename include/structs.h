@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 14:16:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 17:54:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ typedef enum e_lex_state {
 	STATE_BRACE,
 	STATE_COMPLETE,
 	STATE_CONTINUE,
+	STATE_CPARENTHESIS,
 	STATE_DQUOTE,
 	STATE_HEREDOC,
 	STATE_INCOMPLETE,
 	STATE_INPUT,
 	STATE_INVALID,
+	STATE_OPARENTHESIS,
 	STATE_OR,
 	STATE_OUTPUT,
-	STATE_OPARENTHESIS,
-	STATE_CPARENTHESIS,
 	STATE_PIPE,
 	STATE_SKIP,
 	STATE_SQUOTE,

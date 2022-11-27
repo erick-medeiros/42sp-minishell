@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:24:50 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/24 12:06:19 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 17:57:36 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define LEXER_H
 
 # include "minishell.h"
+
+typedef t_lex_state	(*t_st_func)(size_t a, t_node **b, t_val_info *c);
 
 t_lex_state	handle_amp_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi);

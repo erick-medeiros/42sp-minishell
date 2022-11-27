@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/24 11:26:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 18:12:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "lexer.h"
 
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
-						t_lex_state st, t_val_info *vi);
-static t_lex_state	get_next_state_bonus(size_t idx, t_node **tokens,
 						t_lex_state st, t_val_info *vi);
 
 int	lexer(char **line, t_node **tokens, t_lex_state st)
@@ -50,43 +48,18 @@ int	lexer(char **line, t_node **tokens, t_lex_state st)
 static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 	t_lex_state st, t_val_info *vi)
 {
-	if (st == STATE_PIPE)
-		return (handle_pipe_state(idx, tokens, vi));
-	if (st == STATE_HEREDOC)
-		return (handle_heredoc_state(idx, tokens, vi));
-	if (st == STATE_APPEND)
-		return (handle_append_state(idx, tokens, vi));
-	if (st == STATE_WORD)
-		return (handle_word_state(idx, tokens, vi));
-	if (st == STATE_SKIP)
-		return (handle_skip_state(idx, tokens, vi));
-	if (st == STATE_DQUOTE)
-		return (handle_dquote_state(idx, tokens, vi));
-	if (st == STATE_SQUOTE)
-		return (handle_squote_state(idx, tokens, vi));
-	if (st == STATE_BRACE)
-		return (handle_brace_state(idx, tokens, vi));
-	if (st == STATE_INPUT)
-		return (handle_input_state(idx, tokens, vi));
-	if (st == STATE_OUTPUT)
-		return (handle_output_state(idx, tokens, vi));
-	return (get_next_state_bonus(idx, tokens, st, vi));
-}
+	t_st_func		f;
+	const t_st_func	state_funcs[] = {
+		handle_amp_state, handle_and_state, handle_append_state,
+		handle_brace_state, NULL, NULL, handle_cparenthesis_state,
+		handle_dquote_state, handle_heredoc_state, NULL,
+		handle_input_state, NULL, handle_oparenthesis_state,
+		handle_or_state, handle_output_state, handle_pipe_state,
+		handle_skip_state, handle_squote_state, handle_word_state
+	};
 
-static t_lex_state	get_next_state_bonus(size_t idx, t_node **tokens,
-	t_lex_state st, t_val_info *vi)
-{
-	if (st == STATE_AMPERSAND)
-		return (handle_amp_state(idx, tokens, vi));
-	if (st == STATE_AND)
-		return (handle_and_state(idx, tokens, vi));
-	if (st == STATE_OR)
-		return (handle_or_state(idx, tokens, vi));
-	if (st == STATE_BRACE)
-		return (handle_brace_state(idx, tokens, vi));
-	if (st == STATE_OPARENTHESIS)
-		return (handle_oparenthesis_state(idx, tokens, vi));
-	if (st == STATE_CPARENTHESIS)
-		return (handle_cparenthesis_state(idx, tokens, vi));
+	f = state_funcs[st];
+	if (f != NULL)
+		return (f(idx, tokens, vi));
 	return (STATE_INVALID);
 }
