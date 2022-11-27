@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:09:57 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/27 09:41:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ int	execute_builtin(t_exec *exec, t_cmd *cmd, t_vlst *env)
 		else
 			builtin_exit(exec, env->last_status);
 	}
+	else if (ft_streq(cmd->argv[0], "true"))
+		cmd->status = 0;
+	else if (ft_streq(cmd->argv[0], "false"))
+		cmd->status = 1;
 	return (cmd->status);
 }
 
