@@ -3,6 +3,7 @@
 #include "debug.h"
 #include <malloc.h>
 #include <stdio.h>
+
 #define COUNT 10
 
 void debug_tree_recursive(t_tree *root, int space) {
@@ -19,7 +20,11 @@ void debug_tree_recursive(t_tree *root, int space) {
 	if (root->type == TREE_TYPE_CMD) {
 		cmd = root->content;
 		token = (t_token *)cmd->word_tokens->content;
-		printf("(%s)\n", token->value);
+		if (cmd->word_tokens && cmd->word_tokens->next)
+			printf("(%s %s)\n", token->value,
+				   ((t_token *)cmd->word_tokens->next->content)->value);
+		else
+			printf("(%s)\n", token->value);
 	} else if (root->type == TREE_TYPE_PIPE)
 		printf("(|)\n");
 	else if (root->type == TREE_TYPE_OR)
