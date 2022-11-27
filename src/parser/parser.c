@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/25 11:23:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/26 18:31:22 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	parser(t_minishell *ms, int cmd_num)
 	int				result;
 
 	result = OK;
-	if (ms->token_list && is_optoken(ms->token_list->content)
-		&& ((t_token *)ms->token_list->content)->type == TOKEN_CPARENTHESIS)
+	if (ms->token_list && is_optoken(ms->token_list->content))
 	{
 		return (print_token_error(ERR_BAD_SYNTAX,
 				((t_token *)ms->token_list->content)->type));
