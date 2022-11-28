@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 21:59:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/28 04:27:47 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 	redir_type = ((t_token *)ms->token_list->content)->type;
 	ms->token_list = remove_node(ms->token_list, del_token_node);
 	if (ms->token_list == NULL)
-		return (print_token_error(ERR_BAD_SYNTAX, TOKEN_NL));
+		return (print_token_error(ERR_BAD_SYNTAX, NULL));
 	next_type = ((t_token *)ms->token_list->content)->type;
 	if (next_type != TOKEN_WORD)
-		return (print_token_error(ERR_BAD_SYNTAX, next_type));
+		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	filename = ((t_token *)ms->token_list->content)->value;
 	result = set_redir(redir_type, filename, cmd);
 	if (result != OK)
@@ -61,10 +61,10 @@ int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
 
 	ms->token_list = remove_node(ms->token_list, del_token_node);
 	if (ms->token_list == NULL)
-		return (print_token_error(ERR_BAD_SYNTAX, TOKEN_NL));
+		return (print_token_error(ERR_BAD_SYNTAX, NULL));
 	next_type = ((t_token *)ms->token_list->content)->type;
 	if (next_type != TOKEN_WORD)
-		return (print_token_error(ERR_BAD_SYNTAX, next_type));
+		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	content = malloc(sizeof(*content));
 	if (content == NULL)
 		return (ERR_ALLOC);

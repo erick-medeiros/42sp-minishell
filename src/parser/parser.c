@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 17:09:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/28 04:29:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	parser(t_minishell *ms, int cmd_num)
 	int				result;
 
 	if (ms->token_list && is_optoken(ms->token_list->content))
-	{
-		return (print_token_error(ERR_BAD_SYNTAX,
-				((t_token *)ms->token_list->content)->type));
-	}
+		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	result = validate_tokens(ms->token_list);
 	while (ms->token_list && result == OK)
 	{
@@ -75,10 +72,7 @@ static int	parse_optoken(t_minishell *ms, t_tree **tree)
 		return (ERR_INCOMP_OP);
 	}
 	if (is_optoken(ms->token_list->next->content))
-	{
-		return (print_token_error(ERR_BAD_SYNTAX,
-				((t_token *)ms->token_list->content)->type));
-	}
+		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	ms->token_list = remove_node(ms->token_list, del_token_node);
 	return (new_op_node(tree, tree_type));
 }

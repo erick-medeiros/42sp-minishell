@@ -41,7 +41,7 @@ void	tree_executor(t_exec *exec, t_tree *node, int in, int out)
 		cmd = node->content;
 		cmd->input = in;
 		cmd->output = out;
-		execute_command(exec, cmd, exec->env);
+		execute_command(exec, cmd);
 		enqueue(exec->queue, cmd);
 	}
 	else if (node->type == TREE_TYPE_PIPE)

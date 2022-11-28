@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/18 16:35:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/27 19:24:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ int	builtin_cd(int argc, char *argv[], t_vlst *vars)
 	t_node	*node;
 
 	if (argc != 2)
-		return (error_message(1, (char *[]){"too many arguments", NULL}));
+		return (error_message1(1, "too many arguments"));
 	path = argv[1];
 	if (chdir(path) == -1)
 		return (cd_error(path));
-	retptr = get_pwd();
+	retptr = getcwd(NULL, PATH_MAX);
+	if (!retptr)
+		error_message2(2, "cd", strerror(errno));
 	if (retptr)
 	{
 		if (vars)

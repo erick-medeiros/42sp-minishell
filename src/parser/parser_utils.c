@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/27 05:12:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/28 04:37:52 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "structs.h"
 
 static int	handle_next_token_error(t_minishell *ms);
+static int	print_token_type_error(int status, t_tok_type tok_type);
 
 int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 {
@@ -69,7 +70,23 @@ void	process_heredoc(t_queue *heredoc_queue)
 	}
 }
 
-int	print_token_error(int status, t_tok_type tok_type)
+int	print_token_error(int status, t_token *tok)
+{
+	ft_putstr_fd("minishell: syntax error", STDERR);
+	if (tok == NULL)
+		ft_putstr_fd(" near unexpected token `newline'\n", STDERR);
+	else if (tok->type == TOKEN_WORD)
+	{
+		ft_putstr_fd(" near unexpected token `", STDERR);
+		ft_putstr_fd(tok->value, STDERR);
+		ft_putstr_fd("'\n", STDERR);
+	}
+	else
+		return (print_token_type_error(status, tok->type));
+	return (status);
+}
+
+static int	print_token_type_error(int status, t_tok_type tok_type)
 {
 	ft_putstr_fd("minishell: syntax error", STDERR);
 	if (tok_type == TOKEN_PIPE)
@@ -88,6 +105,10 @@ int	print_token_error(int status, t_tok_type tok_type)
 		ft_putstr_fd(" near unexpected token `>'\n", STDERR);
 	else if (tok_type == TOKEN_HEREDOC)
 		ft_putstr_fd(" near unexpected token `<<'\n", STDERR);
+	else if (tok_type == TOKEN_OPARENTHESIS)
+		ft_putstr_fd(" near unexpected token `('\n", STDERR);
+	else if (tok_type == TOKEN_CPARENTHESIS)
+		ft_putstr_fd(" near unexpected token `)'\n", STDERR);
 	else
 		ft_putstr_fd("\n", STDERR);
 	return (status);
