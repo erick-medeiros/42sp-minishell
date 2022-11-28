@@ -6,17 +6,31 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:51:23 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:22:39 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/27 09:36:16 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 #include "minishell.h"
-#include <asm-generic/errno-base.h>
-#include <asm-generic/errno.h>
-#include <sys/stat.h>
 
+static int	defined_path(t_cmd *command);
+static int	command_is_builtin(t_cmd *command);
+static int	search_in_directories(t_cmd *command, t_vlst *env);
 static int	check_runnable(char *path);
+
+int	command_search(t_cmd *command, t_vlst *env)
+{
+	int	result;
+
+	result = defined_path(command);
+	if (result == OK)
+		return (OK);
+	if (command_is_builtin(command) == OK)
+		return (OK);
+	if (result == ERR_NO_PATH)
+		result = search_in_directories(command, env);
+	return (result);
+}
 
 static int	defined_path(t_cmd *command)
 {
@@ -44,6 +58,12 @@ static int	command_is_builtin(t_cmd *command)
 		|| ft_streq(command->argv[0], "unset")
 		|| ft_streq(command->argv[0], "env")
 		|| ft_streq(command->argv[0], "exit"))
+	{
+		command->isbuiltin = TRUE;
+		return (OK);
+	}
+	if (ft_streq(command->argv[0], "true")
+		|| ft_streq(command->argv[0], "false"))
 	{
 		command->isbuiltin = TRUE;
 		return (OK);
@@ -78,20 +98,6 @@ static int	search_in_directories(t_cmd *command, t_vlst *env)
 	free_string_list(path_list);
 	command->pathname = NULL;
 	return (ERR_CMD_NOT_FOUND);
-}
-
-int	command_search(t_cmd *command, t_vlst *env)
-{
-	int	result;
-
-	result = defined_path(command);
-	if (result == OK)
-		return (OK);
-	if (command_is_builtin(command) == OK)
-		return (OK);
-	if (result == ERR_NO_PATH)
-		result = search_in_directories(command, env);
-	return (result);
 }
 
 static int	check_runnable(char *path)

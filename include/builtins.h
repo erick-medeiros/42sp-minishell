@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:38:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 14:12:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/27 19:21:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ void	builtin_exit_arg(t_exec *exec, int argc, char *argv[]);
 int		builtin_export(int argc, char *argv[], t_vlst *vars);
 int		builtin_pwd(int fd_out);
 int		builtin_unset(int argc, char *argv[], t_vlst *vars);
-char	*get_pwd(void);
 
 #endif
