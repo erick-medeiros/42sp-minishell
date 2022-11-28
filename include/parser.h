@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 16:17:57 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/28 04:26:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);
 int			is_op(t_tree_type t);
 int			is_optoken(t_token *token);
-int			print_token_error(int status, t_tok_type tok_type);
+int			print_token_error(int status, t_token *tok);
 t_tree_type	tok_to_tree_type(t_token *tok);
 
 // postfix list utils
