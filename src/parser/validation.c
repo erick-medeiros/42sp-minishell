@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 05:12:15 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/28 05:30:41 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/28 11:13:20 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int	validate_tokens(t_node	*c_node)
 	return (OK);
 }
 
+// Indices in the structure below correspond to token values in the enum
+// e_tok_type (see structs.h). First index is current token, second one is
+// next token. 1 means the combination is valid, 0 means it's invalid.
 static int	is_valid_pair(t_tok_type cur, t_tok_type next)
 {
 	const int	valid_pair[20][20] = {
