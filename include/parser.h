@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/25 11:18:50 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/27 16:17:57 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,8 @@ int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
 int			enqueue_heredoc(t_tree *cmd_node, t_minishell *ms);
+
+// Validation
+int			validate_tokens(t_node	*cur_node);
 
 #endif

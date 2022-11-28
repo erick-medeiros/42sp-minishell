@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 18:31:22 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/27 17:09:32 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	parser(t_minishell *ms, int cmd_num)
 	static t_node	*opstack = NULL;
 	int				result;
 
-	result = OK;
 	if (ms->token_list && is_optoken(ms->token_list->content))
 	{
 		return (print_token_error(ERR_BAD_SYNTAX,
 				((t_token *)ms->token_list->content)->type));
 	}
+	result = validate_tokens(ms->token_list);
 	while (ms->token_list && result == OK)
 	{
 		result = parse_token(ms, &tree, cmd_num);
