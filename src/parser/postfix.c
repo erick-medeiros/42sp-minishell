@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   postfix.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:42:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/27 06:28:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:02:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	push_postfix(t_node **opstack, t_queue *cmds, t_tree *tree)
 				if (transfer_node(opstack, cmds))
 					return (ERR_ALLOC);
 			}
+			else
+				break ;
 		}
 		return (push_node(opstack, tree));
 	}
