@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 09:30:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:17:37 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ void	tree_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (node->type == TREE_TYPE_CMD)
 	{
 		cmd = node->content;
-		cmd->input = in;
-		cmd->output = out;
+		if (in != STDIN)
+			update_command_input(cmd, in);
+		if (out != STDOUT)
+			update_command_output(cmd, out);
 		execute_command(exec, cmd);
 		enqueue(exec->queue, cmd);
 	}
@@ -92,25 +94,23 @@ void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)
 void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 {
 	t_cmd	*cmd;
-	pid_t	pid;
 
 	if (!node || !node->left)
 		return ;
+	cmd = node->content;
+	redirect_command_list(exec, node->left, cmd->redirect);
 	if (node->left->type == TREE_TYPE_CMD)
 	{
 		tree_executor(exec, node->left, in, out);
 		return ;
 	}
-	pid = fork();
-	if (pid == 0)
+	cmd->pid = fork();
+	if (cmd->pid == 0)
 	{
 		tree_executor(exec, node->left, in, out);
 		close_pipeline(exec->commands);
 		execution_sync(exec);
 		builtin_exit(exec, 0);
 	}
-	cmd = new_command();
-	cmd->die_in_queue = TRUE;
-	cmd->pid = pid;
 	enqueue(exec->queue, cmd);
 }

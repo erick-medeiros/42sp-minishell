@@ -24,7 +24,7 @@ FILES += $(addprefix lexer/, parenthesis.c)
 FILES += $(addprefix parser/, build_tree.c handle_tokens.c parser.c)
 FILES += $(addprefix parser/, parser_utils.c postfix.c type.c validation.c)
 FILES += $(addprefix prompt/, here_doc.c prompt.c prompt_utils.c signal.c)
-FILES += $(addprefix utils/, cleanup.c command.c error.c free.c list.c minishell.c)
+FILES += $(addprefix utils/, cleanup.c command.c error.c list.c minishell.c)
 FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)
 
 SRC = $(addprefix $(SRC_DIR), $(FILES))

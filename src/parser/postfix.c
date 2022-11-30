@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:42:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/29 19:32:30 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:15:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ static int	push_postfix_parenthesis(t_node **opstack, t_queue *cmds,
 		new_op_node(&op_node, TREE_TYPE_IGNORE);
 		enqueue(cmds, op_node);
 		new_op_node(&op_node, TREE_TYPE_GROUP);
-		op_node->content = redir;
+		op_node->content = new_command();
+		((t_cmd *)op_node->content)->redirect = redir;
 		enqueue(cmds, op_node);
 		return (OK);
 	}

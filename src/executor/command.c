@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 16:02:21 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:40:18 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 		dup2(cmd->input, STDIN);
 		dup2(cmd->output, STDOUT);
 		close_pipeline(exec->commands);
-		cmd->input = STDIN;
-		cmd->output = STDOUT;
+		update_command_input(cmd, STDIN);
+		update_command_output(cmd, STDOUT);
 		if (cmd->isbuiltin)
 			exec->env->last_status = execute_builtin(exec, cmd);
 		else

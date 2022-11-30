@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:48:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:16:26 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@ void	*destroy_tree(t_tree *root, void (*destroy_content)(void *))
 		destroy_content(root);
 	free(root);
 	return (NULL);
+}
+
+void	destroy_execution_tree(void *root)
+{
+	t_tree	*node;
+
+	node = root;
+	if (!node->content)
+		return ;
+	if ((node->type == TREE_TYPE_CMD || node->type == TREE_TYPE_GROUP))
+		destroy_command(node->content);
 }
 
 void	del_cmd_tree_node(void *tree)

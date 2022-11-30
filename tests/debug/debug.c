@@ -71,3 +71,13 @@ void debug_queue_cmds(t_queue *cmds) {
 		node = node->next;
 	}
 }
+
+void debug_redir(t_node *redir) {
+	t_token *token;
+
+	while (redir) {
+		token = redir->content;
+		dprintf(2, "redir: %d file: %s\n", token->type, token->value);
+		redir = redir->next;
+	}
+}

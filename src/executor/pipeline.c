@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:33:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 09:38:18 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 13:18:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	execution_sync(t_exec *exec)
 			}
 		}
 		exec->env->last_status = cmd->status;
-		if (cmd->die_in_queue)
-			destroy_command(cmd);
 		cmd = dequeue(exec->queue);
 	}
 	print_signal_error(exec->env->last_status, coredump);
