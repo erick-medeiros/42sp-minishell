@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:42:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/29 15:02:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/29 19:32:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,27 @@ int	push_postfix(t_node **opstack, t_queue *cmds, t_tree *tree)
 static int	push_postfix_parenthesis(t_node **opstack, t_queue *cmds,
 				t_tree *tree)
 {
+	t_tree	*op_node;
+	t_node	*redir;
+
 	if (tree->type == TREE_TYPE_OPAR)
 		return (push_node(opstack, tree));
 	if (tree->type == TREE_TYPE_CPAR)
 	{
+		redir = tree->content;
 		del_cmd_tree_node(tree);
 		while (*opstack != NULL
 			&& ((t_tree*)(*opstack)->content)->type != TREE_TYPE_OPAR)
-		{
 			if (transfer_node(opstack, cmds))
 				return (ERR_ALLOC);
-		}
 		if (*opstack != NULL
 			&& ((t_tree*)(*opstack)->content)->type == TREE_TYPE_OPAR)
 			*opstack = remove_node(*opstack, del_cmd_tree_node);
+		new_op_node(&op_node, TREE_TYPE_IGNORE);
+		enqueue(cmds, op_node);
+		new_op_node(&op_node, TREE_TYPE_GROUP);
+		op_node->content = redir;
+		enqueue(cmds, op_node);
 		return (OK);
 	}
 	return (ERR_BAD_SYNTAX);

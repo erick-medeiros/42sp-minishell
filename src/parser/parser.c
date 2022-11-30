@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/28 04:29:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/30 09:35:52 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num);
 static int	parse_optoken(t_minishell *ms, t_tree **tree);
+static int	get_parenthesis(t_minishell *ms, t_tree **tree);
 
 int	parser(t_minishell *ms, int cmd_num)
 {
@@ -42,18 +43,13 @@ int	parser(t_minishell *ms, int cmd_num)
 
 static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num)
 {
-	t_tree_type	tree_type;
-	t_token		*token;
+	t_token	*token;
 
 	token = ms->token_list->content;
-	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
 	if (is_optoken(ms->token_list->content))
 		return (parse_optoken(ms, tree));
 	if (token->type == TOKEN_OPARENTHESIS || token->type == TOKEN_CPARENTHESIS)
-	{
-		ms->token_list = remove_node(ms->token_list, del_token_node);
-		return (new_op_node(tree, tree_type));
-	}
+		return (get_parenthesis(ms, tree));
 	return (get_command(tree, ms, cmd_num));
 }
 
@@ -96,4 +92,33 @@ int	get_command(t_tree **cmd_node, t_minishell *ms, int num)
 		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
 	return (OK);
+}
+
+static int	get_parenthesis(t_minishell *ms, t_tree **tree)
+{
+	t_tree_type	tree_type;
+	int			result;
+
+	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
+	if (((t_token *)ms->token_list->content)->type == TOKEN_OPARENTHESIS)
+	{
+		ms->token_list = remove_node(ms->token_list, del_token_node);
+		return (new_op_node(tree, tree_type));
+	}
+	else
+	{
+		ms->token_list = remove_node(ms->token_list, del_token_node);
+		result = new_op_node(tree, tree_type);
+		if (result != OK)
+			return (result);
+		while (ms->token_list
+			&& is_redir_token(((t_token *)ms->token_list->content)->type))
+		{
+			result = handle_group_redirect_token(*tree, ms);
+			if (result != OK)
+				return (result);
+			ms->token_list = remove_node(ms->token_list, del_token_node);
+		}
+		return (OK);
+	}
 }

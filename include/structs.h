@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 17:54:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:04:15 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,9 @@ typedef enum e_tree_type {
 	TREE_TYPE_OR,
 	TREE_TYPE_PIPE,
 	TREE_TYPE_OPAR,
-	TREE_TYPE_CPAR
+	TREE_TYPE_CPAR,
+	TREE_TYPE_IGNORE,
+	TREE_TYPE_GROUP
 }		t_tree_type;
 
 typedef struct s_tree {

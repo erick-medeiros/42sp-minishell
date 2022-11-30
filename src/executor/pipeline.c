@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:33:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 13:44:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 09:38:18 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	execution_sync(t_exec *exec)
 	t_bool	coredump;
 
 	coredump = FALSE;
-	close_pipeline(exec->commands);
 	cmd = dequeue(exec->queue);
 	while (cmd)
 	{

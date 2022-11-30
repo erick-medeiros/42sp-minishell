@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 11:17:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/25 11:19:26 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/29 19:04:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,7 @@ int	is_optoken(t_token *token)
 	return (FALSE);
 }
 
-t_tree	*new_cmd_node(int num)
+t_bool	is_redir_token(t_tok_type t)
 {
-	t_tree	*cmd_node;
-
-	(void)num;
-	cmd_node = malloc(sizeof(*cmd_node));
-	if (!cmd_node)
-		return (NULL);
-	cmd_node->type = TREE_TYPE_CMD;
-	cmd_node->left = NULL;
-	cmd_node->right = NULL;
-	cmd_node->content = new_command();
-	return (cmd_node);
-}
-
-int	new_op_node(t_tree	**op_node, t_tree_type op_type)
-{
-	*op_node = malloc(sizeof(**op_node));
-	if (!op_node)
-		return (ERR_ALLOC);
-	(*op_node)->type = op_type;
-	(*op_node)->left = NULL;
-	(*op_node)->right = NULL;
-	(*op_node)->content = NULL;
-	return (OK);
+	return (t == TOKEN_INPUT || t == TOKEN_OUTPUT || t == TOKEN_APPEND);
 }

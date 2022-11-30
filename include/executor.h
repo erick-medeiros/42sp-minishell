@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 16:00:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 09:30:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 void	tree_executor(t_exec *exec, t_tree *node, int in, int out);
 void	tree_pipe_executor(t_exec *exec, t_tree *node, int in, int out);
 void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out);
-void	tree_right_executor(t_exec *exec, t_tree *node, int in, int out);
+void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out);
 void	destroy_exec(t_exec *exec);
 
 // Expander

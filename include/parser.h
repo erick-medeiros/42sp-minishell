@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/28 04:26:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/11/29 19:11:13 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int			new_op_node(t_tree	**op_node, t_tree_type op_type);
 t_tree		*new_cmd_node(int num);
 int			is_op(t_tree_type t);
 int			is_optoken(t_token *token);
+t_bool		is_redir_token(t_tok_type t);
 int			print_token_error(int status, t_token *tok);
 t_tree_type	tok_to_tree_type(t_token *tok);
 
@@ -43,6 +44,7 @@ int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
 int			enqueue_heredoc(t_tree *cmd_node, t_minishell *ms);
+int			handle_group_redirect_token(t_tree *group_node, t_minishell *ms);
 
 // Validation
 int			validate_tokens(t_node	*cur_node);
