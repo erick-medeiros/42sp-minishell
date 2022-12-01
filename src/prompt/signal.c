@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/04 18:37:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 19:56:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ void	prompt_signal_handler(int sig)
 
 void	command_signal_handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		write(STDERR, "\n", 1);
-	}
 	if (sig == SIGQUIT)
 	{
 		write(STDERR, "\n", 1);
