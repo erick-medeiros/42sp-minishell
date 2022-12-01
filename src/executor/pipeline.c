@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:33:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 13:18:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:36:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 void	close_pipeline(t_tree *root)
 {
+	int	*pfd;
+
 	if (!root)
 		return ;
 	if (root->left)
@@ -23,8 +25,31 @@ void	close_pipeline(t_tree *root)
 		close_pipeline(root->right);
 	if (root->type == TREE_TYPE_PIPE && root->content)
 	{
-		close_safe(((int *)root->content)[0]);
-		close_safe(((int *)root->content)[1]);
+		pfd = root->content;
+		close_safe(pfd[0]);
+		close_safe(pfd[1]);
+		free(root->content);
+		root->content = NULL;
+	}
+}
+
+void	close_safe_pipeline(t_tree *root, int in, int out)
+{
+	int	*pfd;
+
+	if (!root)
+		return ;
+	if (root->left)
+		close_safe_pipeline(root->left, in, out);
+	if (root->right)
+		close_safe_pipeline(root->right, in, out);
+	if (root->type == TREE_TYPE_PIPE && root->content)
+	{
+		pfd = root->content;
+		if (pfd[0] != in && pfd[0] != out)
+			close_safe(pfd[0]);
+		if (pfd[1] != in && pfd[1] != out)
+			close_safe(pfd[1]);
 		free(root->content);
 		root->content = NULL;
 	}

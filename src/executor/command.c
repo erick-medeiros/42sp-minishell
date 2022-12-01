@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 12:40:18 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 16:10:01 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 {
 	handle_signal(SIGINT, command_signal_handler);
 	handle_signal(SIGQUIT, command_signal_handler);
+	handle_signal(SIGPIPE, SIG_IGN);
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 		cmd->status = error_message2(1, "fork failed", strerror(errno));

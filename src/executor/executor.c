@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 13:17:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:36:25 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (node->type == TREE_TYPE_AND)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_pipeline(node->left);
+		close_safe_pipeline(exec->commands, in, out);
 		execution_sync(exec);
 		if (exec->env->last_status == 0)
 			tree_executor(exec, node->right, in, out);
@@ -84,7 +84,7 @@ void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)
 	else if (node->type == TREE_TYPE_OR)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_pipeline(node->left);
+		close_safe_pipeline(exec->commands, in, out);
 		execution_sync(exec);
 		if (exec->env->last_status != 0)
 			tree_executor(exec, node->right, in, out);
@@ -108,9 +108,9 @@ void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (cmd->pid == 0)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_pipeline(exec->commands);
+		close_safe_pipeline(exec->commands, in, out);
 		execution_sync(exec);
-		builtin_exit(exec, 0);
+		builtin_exit(exec, exec->env->last_status);
 	}
 	enqueue(exec->queue, cmd);
 }

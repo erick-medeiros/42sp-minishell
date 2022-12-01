@@ -44,6 +44,7 @@ int		command_search(t_cmd *cmd, t_vlst *env);
 
 void	execution_sync(t_exec *exec);
 void	close_pipeline(t_tree *root);
+void	close_safe_pipeline(t_tree *root, int in, int out);
 
 // Command
 
