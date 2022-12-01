@@ -40,10 +40,8 @@ void	tree_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (node->type == TREE_TYPE_CMD)
 	{
 		cmd = node->content;
-		if (in != STDIN)
-			update_command_input(cmd, in);
-		if (out != STDOUT)
-			update_command_output(cmd, out);
+		cmd->piping[0] = in;
+		cmd->piping[1] = out;
 		execute_command(exec, cmd);
 		enqueue(exec->queue, cmd);
 	}

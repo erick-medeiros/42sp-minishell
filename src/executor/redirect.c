@@ -6,12 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 12:15:45 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 20:35:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
+#include "structs.h"
 
 int	command_redirect(t_cmd *cmd)
 {
@@ -24,13 +25,13 @@ int	command_redirect(t_cmd *cmd)
 		token = node->content;
 		if (token->type == TOKEN_INPUT)
 		{
-			close_safe(cmd->input);
-			cmd->input = open_redir(token->value, token->type);
+			close_safe(cmd->redir[0]);
+			cmd->redir[0] = open_redir(token->value, token->type);
 		}
 		else if (token->type == TOKEN_OUTPUT || token->type == TOKEN_APPEND)
 		{
-			close_safe(cmd->output);
-			cmd->output = open_redir(token->value, token->type);
+			close_safe(cmd->redir[1]);
+			cmd->redir[1] = open_redir(token->value, token->type);
 		}
 		if (errno)
 			return (error_message2(1, token->value, strerror(errno)));
@@ -74,18 +75,26 @@ void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
 		cmd->redirect = redir;
 		expand_redirects(cmd->redirect, exec->env);
 		command_redirect(cmd);
+		cmd->group_redir[0] = cmd->redir[0];
+		cmd->group_redir[1] = cmd->redir[1];
+		cmd->redir[0] = STDIN;
+		cmd->redir[1] = STDOUT;
 		cmd->redirect = backup;
 	}
 }
 
-void	update_command_input(t_cmd *cmd, int new_input)
+void	define_stds(t_cmd *cmd)
 {
-	close_safe(cmd->input);
-	cmd->input = new_input;
-}
-
-void	update_command_output(t_cmd *cmd, int new_output)
-{
-	close_safe(cmd->output);
-	cmd->output = new_output;
+	if (cmd->group_redir[0] != STDIN)
+		cmd->input = cmd->group_redir[0];
+	if (cmd->group_redir[1] != STDOUT)
+		cmd->output = cmd->group_redir[1];
+	if (cmd->piping[0] != STDIN)
+		cmd->input = cmd->piping[0];
+	if (cmd->piping[1] != STDOUT)
+		cmd->output = cmd->piping[1];
+	if (cmd->redir[0] != STDIN)
+		cmd->input = cmd->redir[0];
+	if (cmd->redir[1] != STDOUT)
+		cmd->output = cmd->redir[1];
 }

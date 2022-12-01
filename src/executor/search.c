@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:51:23 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 09:36:16 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:07:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	command_search(t_cmd *command, t_vlst *env)
 {
 	int	result;
 
+	if (command->argc == 0)
+		return (0);
 	result = defined_path(command);
 	if (result == OK)
 		return (OK);
