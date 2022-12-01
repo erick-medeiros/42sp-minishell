@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/18 17:02:07 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/01 19:33:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,28 @@ static void	print_signal_error_msg(char *msg, int coredump);
 
 void	print_signal_error(int exit_status, int coredump)
 {
-	char	*msg;
-
-	msg = NULL;
 	if (exit_status == 128 + SIGALRM)
-		msg = "Alarm clock";
+		print_signal_error_msg("Alarm clock", coredump);
 	else if (exit_status == 128 + SIGHUP)
-		msg = "Hangup";
+		print_signal_error_msg("Hangup", coredump);
 	else if (exit_status == 128 + SIGSEGV)
-		msg = "Segmentation fault";
+		print_signal_error_msg("Segmentation fault", coredump);
 	else if (exit_status == 128 + SIGTRAP)
-		msg = "Trace/breakpoint trap";
+		print_signal_error_msg("Trace/breakpoint trap", coredump);
 	else if (exit_status == 128 + SIGABRT)
-		msg = "Aborted";
+		print_signal_error_msg("Aborted", coredump);
 	else if (exit_status == 128 + SIGFPE)
-		msg = "Floating point exception";
+		print_signal_error_msg("Floating point exception", coredump);
 	else if (exit_status == 128 + SIGILL)
-		msg = "Illegal instruction";
+		print_signal_error_msg("Illegal instruction", coredump);
 	else if (exit_status == 128 + SIGKILL)
-		msg = "Killed";
+		print_signal_error_msg("Killed", coredump);
 	else if (exit_status == 128 + SIGQUIT)
-		msg = "Quit";
+		print_signal_error_msg("Quit", coredump);
 	else if (exit_status == 128 + SIGTERM)
-		msg = "Terminated";
-	print_signal_error_msg(msg, coredump);
+		print_signal_error_msg("Terminated", coredump);
+	else if (exit_status == 128 + SIGINT)
+		print_signal_error_msg("", coredump);
 }
 
 static void	print_signal_error_msg(char *msg, int coredump)
