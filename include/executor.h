@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 09:30:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:11:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,15 @@ void	destroy_exec(t_exec *exec);
 // Expander
 
 int		command_expansion(t_cmd *cmd, t_vlst *env);
+int		expand_redirects(t_node	*redir, t_vlst *env);
 
 // Redirect
 
 int		command_redirect(t_cmd *cmd);
-int		open_redirect_fd(char *pathname, int token_type);
+int		open_redir(char *pathname, int token_type);
+void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redirs);
+void	update_command_input(t_cmd *cmd, int new_input);
+void	update_command_output(t_cmd *cmd, int new_output);
 
 // Search
 

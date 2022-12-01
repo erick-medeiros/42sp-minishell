@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:21:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/11/30 12:04:12 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,17 @@ int	command_expansion(t_cmd *cmd, t_vlst *env)
 	}
 	if (create_argv(cmd) != 0)
 		return (1);
-	node = cmd->redirect;
+	if (expand_redirects(cmd->redirect, env) != 0)
+		return (1);
+	return (0);
+}
+
+int	expand_redirects(t_node	*redir, t_vlst *env)
+{
+	t_token	*token;
+	t_node	*node;
+
+	node = redir;
 	while (node)
 	{
 		token = node->content;
