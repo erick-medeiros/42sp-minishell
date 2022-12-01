@@ -32,9 +32,11 @@ $(NAME): obj $(OBJ) $(HEADER)
 clean:
 	$(RM) obj *.o
 
-fclean: clean
+nclean:
 	$(RM) $(NAME)
+
+fclean: clean nclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean nclean re

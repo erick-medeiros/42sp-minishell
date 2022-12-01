@@ -50,9 +50,12 @@ $(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft
 
 clean:
 	$(RM) $(OBJ_DIR)
+	make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	$(RM) $(NAME) $(LIBFT)
+	$(RM) $(NAME)
+	make -C $(LIBFT_DIR) nclean
+
 
 re: fclean all
 
