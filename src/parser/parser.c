@@ -6,18 +6,18 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 09:35:52 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 12:33:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num);
-static int	parse_optoken(t_minishell *ms, t_tree **tree);
-static int	get_parenthesis(t_minishell *ms, t_tree **tree);
+static int	parse_token(t_ms *ms, t_tree **tree, int cmd_num);
+static int	parse_optoken(t_ms *ms, t_tree **tree);
+static int	get_parenthesis(t_ms *ms, t_tree **tree);
 
-int	parser(t_minishell *ms, int cmd_num)
+int	parser(t_ms *ms, int cmd_num)
 {
 	static t_tree	*tree;
 	static t_node	*opstack = NULL;
@@ -41,7 +41,7 @@ int	parser(t_minishell *ms, int cmd_num)
 	return (result);
 }
 
-static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num)
+static int	parse_token(t_ms *ms, t_tree **tree, int cmd_num)
 {
 	t_token	*token;
 
@@ -53,7 +53,7 @@ static int	parse_token(t_minishell *ms, t_tree **tree, int cmd_num)
 	return (get_command(tree, ms, cmd_num));
 }
 
-static int	parse_optoken(t_minishell *ms, t_tree **tree)
+static int	parse_optoken(t_ms *ms, t_tree **tree)
 {
 	t_tree_type	tree_type;
 	int			result;
@@ -73,7 +73,7 @@ static int	parse_optoken(t_minishell *ms, t_tree **tree)
 	return (new_op_node(tree, tree_type));
 }
 
-int	get_command(t_tree **cmd_node, t_minishell *ms, int num)
+int	get_command(t_tree **cmd_node, t_ms *ms, int num)
 {
 	int		result;
 
@@ -94,7 +94,7 @@ int	get_command(t_tree **cmd_node, t_minishell *ms, int num)
 	return (OK);
 }
 
-static int	get_parenthesis(t_minishell *ms, t_tree **tree)
+static int	get_parenthesis(t_ms *ms, t_tree **tree)
 {
 	t_tree_type	tree_type;
 	int			result;

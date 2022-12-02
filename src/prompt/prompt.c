@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 11:42:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 12:31:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static char	*get_prompt(t_vlst *env)
 	return (prompt);
 }
 
-void	shell(t_minishell *minishell, char **line)
+void	shell(t_ms *ms, char **line)
 {
-	minishell->set_history = FALSE;
-	process_line(line, minishell);
-	free_minishell(minishell);
+	ms->set_history = FALSE;
+	process_line(line, ms);
+	free_minishell(ms);
 }
 
-void	shell_loop(t_minishell *minishell)
+void	shell_loop(t_ms *ms)
 {
 	char	*line;
 
@@ -45,14 +45,14 @@ void	shell_loop(t_minishell *minishell)
 		handle_signal(SIGINT, prompt_signal_handler);
 		handle_signal(SIGQUIT, SIG_IGN);
 		handle_signal(SIGPIPE, SIG_IGN);
-		minishell->set_history = TRUE;
-		line = readline(get_prompt(&minishell->env_list));
+		ms->set_history = TRUE;
+		line = readline(get_prompt(&ms->env_list));
 		if (!line)
 		{
 			write(STDOUT, "exit\n", 5);
 			break ;
 		}
-		process_line(&line, minishell);
-		free_minishell(minishell);
+		process_line(&line, ms);
+		free_minishell(ms);
 	}
 }

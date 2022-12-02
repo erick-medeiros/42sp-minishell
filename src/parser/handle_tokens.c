@@ -6,14 +6,14 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/29 19:26:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 12:33:28 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
+int	handle_word_token(t_tree *cmd_node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	t_token	*tok;
@@ -28,7 +28,7 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 	return (OK);
 }
 
-int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
+int	handle_redirect_token(t_tree *cmd_node, t_ms *ms)
 {
 	char		*filename;
 	t_cmd		*cmd;
@@ -55,7 +55,7 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 	return (OK);
 }
 
-int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
+int	enqueue_heredoc(t_tree *cmd_node, t_ms *ms)
 {
 	t_heredoc	*content;
 	t_tok_type	next_type;
@@ -74,7 +74,7 @@ int	enqueue_heredoc(t_tree *cmd_node, t_minishell *ms)
 	return (enqueue(&ms->heredoc_queue, content));
 }
 
-int	handle_group_redirect_token(t_tree *group_node, t_minishell *ms)
+int	handle_group_redirect_token(t_tree *group_node, t_ms *ms)
 {
 	char		*filename;
 	t_tok_type	redir_type;

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 20:15:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 12:28:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,14 @@ typedef struct s_queue
 	t_node	*rear;
 }	t_queue;
 
-typedef struct s_minishell
+typedef struct s_ms
 {
 	t_vlst	env_list;
 	t_node	*token_list;
 	t_queue	heredoc_queue;
 	t_queue	cmd_list;
 	t_bool	set_history;
-}	t_minishell;
+}	t_ms;
 
 typedef struct s_heredoc
 {
