@@ -6,17 +6,17 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 14:45:00 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:10:06 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static int	handle_next_token_error(t_minishell *ms);
+static int	handle_next_token_error(t_ms *ms);
 static int	print_token_type_error(int status, t_tok_type tok_type);
 
-int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
+int	handle_next_token(t_tree *cmd_node, t_ms *ms)
 {
 	t_token		*tok;
 
@@ -33,7 +33,7 @@ int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 	return (handle_next_token_error(ms));
 }
 
-static int	handle_next_token_error(t_minishell *ms)
+static int	handle_next_token_error(t_ms *ms)
 {
 	t_token		*tok;
 

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 15:08:38 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:13:19 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,12 +161,18 @@ typedef struct s_queue
 	t_node	*rear;
 }	t_queue;
 
-typedef struct s_minishell
+typedef struct s_ms
 {
 	t_vlst	env_list;
 	t_node	*token_list;
 	t_queue	cmd_list;
 	t_bool	set_history;
-}	t_minishell;
+}	t_ms;
+
+typedef struct s_heredoc
+{
+	char	*delimiter;
+	t_cmd	*cmd;
+}	t_heredoc;
 
 #endif

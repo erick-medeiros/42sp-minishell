@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 16:33:03 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:08:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ int			heredoc(char *delimiter, t_vlst *env);
 
 // Tree
 
-t_tree		*build_tree_postfix(t_minishell *ms);
+t_tree		*build_tree_postfix(t_ms *ms);
 
 // Token parsing
 
-int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
-int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
-int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
-int			handle_group_redirect_token(t_tree *group_node, t_minishell *ms);
+int			handle_next_token(t_tree *cmd_node, t_ms *ms);
+int			handle_word_token(t_tree *cmd_node, t_ms *ms);
+int			handle_redirect_token(t_tree *cmd_node, t_ms *ms);
+int			enqueue_heredoc(t_tree *cmd_node, t_ms *ms);
+int			handle_group_redirect_token(t_tree *group_node, t_ms *ms);
 
 // Validation
 int			validate_tokens(t_node	*cur_node);

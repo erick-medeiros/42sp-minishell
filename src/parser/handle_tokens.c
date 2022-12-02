@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 16:35:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:14:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #include <readline/chardefs.h>
 
 static int	save_redirect(t_node **lst, t_tok_type rd_type,
-				char *filename, t_minishell *ms);
+				char *filename, t_ms *ms);
 
-int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
+int	handle_word_token(t_tree *cmd_node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	t_token	*tok;
@@ -33,7 +33,7 @@ int	handle_word_token(t_tree *cmd_node, t_minishell *ms)
 	return (OK);
 }
 
-int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
+int	handle_redirect_token(t_tree *cmd_node, t_ms *ms)
 {
 	char		*filename;
 	t_cmd		*cmd;
@@ -55,7 +55,7 @@ int	handle_redirect_token(t_tree *cmd_node, t_minishell *ms)
 	return (result);
 }
 
-int	handle_group_redirect_token(t_tree *group_node, t_minishell *ms)
+int	handle_group_redirect_token(t_tree *group_node, t_ms *ms)
 {
 	char		*filename;
 	t_tok_type	rd_type;
@@ -77,7 +77,7 @@ int	handle_group_redirect_token(t_tree *group_node, t_minishell *ms)
 }
 
 static int	save_redirect(t_node **lst, t_tok_type rd_type,
-				char *filename, t_minishell *ms)
+				char *filename, t_ms *ms)
 {
 	t_token	*token;
 

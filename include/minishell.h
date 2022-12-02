@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 15:07:14 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:08:24 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void		del_cmd_tree_node(void *tree);
 // Init
 
 t_cmd		*new_command(void);
-void		init_minishell(t_minishell *minishell, char **envp);
+void		init_minishell(t_ms *ms, char **envp);
 void		init_system_vars(t_vlst *env);
 
 // Cleanup functions
@@ -106,8 +106,8 @@ void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		destroy_command(t_cmd *command);
-void		destroy_minishell(t_minishell *minishell);
-void		free_minishell(t_minishell *minishell);
+void		destroy_minishell(t_ms *ms);
+void		free_minishell(t_ms *ms);
 void		free_string_list(char **str);
 void		free_token(void *content);
 void		destroy_queue(t_queue *queue, void (*del_node)(void *));
@@ -116,18 +116,19 @@ void		close_safe(int fd);
 // Prompt
 
 int			ft_streq(char *cmd, char *str);
-void		miniprompt(t_minishell *minishell);
+int			here_doc(char	*limiter);
+void		miniprompt(t_ms *ms);
 t_lex_state	get_lex_state(int result);
 void		handle_parse_result(int result, char **line,
-				char **history, t_minishell *ms);
+				char **history, t_ms *ms);
 
 // Commands
 
-void		process_line(char **line, t_minishell *minishell);
+void		process_line(char **line, t_ms *ms);
 int			lexer(char **line, t_node **tokens, t_lex_state st);
 void		executor(t_tree *root, t_vlst *env);
-int			parser(t_minishell *ms, int cmd_num);
-int			get_command(t_tree **cmd_node, t_minishell *ms, int num);
+int			parser(t_ms *ms, int cmd_num);
+int			get_command(t_tree **cmd_node, t_ms *ms, int num);
 
 // Error
 
@@ -144,8 +145,8 @@ void		command_signal_handler(int sig);
 
 // Interactive
 
-void		shell(t_minishell *minishell, char **line);
-void		shell_loop(t_minishell *minishell);
+void		shell(t_ms *ms, char **line);
+void		shell_loop(t_ms *ms);
 
 // Quicksort string list
 

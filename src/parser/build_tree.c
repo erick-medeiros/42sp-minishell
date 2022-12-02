@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/29 19:03:44 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 12:33:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_bool	is_operand(t_tree *t);
 static int		build_tree_node(t_node **tmp_stack, t_tree *root);
 
-t_tree	*build_tree_postfix(t_minishell *ms)
+t_tree	*build_tree_postfix(t_ms *ms)
 {
 	t_node	*tmp_stack;
 	t_tree	*root;

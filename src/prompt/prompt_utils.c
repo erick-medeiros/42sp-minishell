@@ -6,42 +6,42 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 13:55:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:10:28 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static void	execution_process(t_minishell *ms);
+static void	execution_process(t_ms *ms);
 
-void	process_line(char **line, t_minishell *minishell)
+void	process_line(char **line, t_ms *ms)
 {
-	int			parse_result;
-	int			cmd_num;
-	char		*history;
+	int		parse_result;
+	int		cmd_num;
+	char	*history;
 
 	parse_result = ERR_INCOMP_OP;
 	cmd_num = 0;
 	history = strdup(*line);
-	minishell->cmd_list.front = NULL;
-	minishell->cmd_list.rear = NULL;
+	ms->cmd_list.front = NULL;
+	ms->cmd_list.rear = NULL;
 	while (parse_result != OK && parse_result != ERR_BAD_SYNTAX
 		&& parse_result != ERR_ALLOC)
 	{
-		lexer(line, &minishell->token_list, get_lex_state(parse_result));
-		parse_result = parser(minishell, cmd_num++);
-		handle_parse_result(parse_result, line, &history, minishell);
+		lexer(line, &ms->token_list, get_lex_state(parse_result));
+		parse_result = parser(ms, cmd_num++);
+		handle_parse_result(parse_result, line, &history, ms);
 	}
 	free(*line);
-	if (minishell->set_history)
+	if (ms->set_history)
 		add_history(history);
 	free(history);
 	if (parse_result == OK)
-		execution_process(minishell);
+		execution_process(ms);
 }
 
-static void	execution_process(t_minishell *ms)
+static void	execution_process(t_ms *ms)
 {
 	t_tree	*root;
 
@@ -50,8 +50,7 @@ static void	execution_process(t_minishell *ms)
 	executor(root, &ms->env_list);
 }
 
-void	handle_parse_result(int result, char **line,
-			char **history, t_minishell *ms)
+void	handle_parse_result(int result, char **line, char **history, t_ms *ms)
 {
 	free(*line);
 	*line = NULL;
