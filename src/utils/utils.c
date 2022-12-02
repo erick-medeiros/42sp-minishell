@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:38:59 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 12:31:22 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:02:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "structs.h"
 
 void	close_safe(int fd)
 {
@@ -33,8 +34,14 @@ int	ft_streq(char *str1, char *str2)
 void	free_token(void *content)
 {
 	t_token	*token;
+	int		*p_int;
 
 	token = (t_token *)content;
+	if (token->type == TOKEN_HEREDOC && token->value != NULL)
+	{
+		p_int = (int *)token->value;
+		close(*p_int);
+	}
 	free(token->value);
 	free(token);
 }

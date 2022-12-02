@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 10:42:50 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:07:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void		*clear_envp(char **envp);
 void		clear_list(t_node *lst, void (*del_node)(void *));
 void		del_token_node(void *content);
 void		del_var_node(void *content);
-void		del_heredoc_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_minishell(t_minishell *minishell);
 void		free_minishell(t_minishell *minishell);
@@ -117,7 +116,6 @@ void		close_safe(int fd);
 // Prompt
 
 int			ft_streq(char *cmd, char *str);
-int			here_doc(char	*limiter);
 void		miniprompt(t_minishell *minishell);
 t_lex_state	get_lex_state(int result);
 void		handle_parse_result(int result, char **line,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 10:28:01 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 14:45:00 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ int	handle_next_token(t_tree *cmd_node, t_minishell *ms)
 	if (tok->type == TOKEN_WORD)
 		return (handle_word_token(cmd_node, ms));
 	if (tok->type == TOKEN_INPUT || tok->type == TOKEN_OUTPUT
-		|| tok->type == TOKEN_APPEND)
+		|| tok->type == TOKEN_APPEND || tok->type == TOKEN_HEREDOC)
 		return (handle_redirect_token(cmd_node, ms));
-	if (tok->type == TOKEN_HEREDOC)
-		return (enqueue_heredoc(cmd_node, ms));
 	return (handle_next_token_error(ms));
 }
 
@@ -52,21 +50,6 @@ static int	handle_next_token_error(t_minishell *ms)
 		return (ERR_INCOMP_BRC_SQ);
 	ms->env_list.last_status = 2;
 	return (error_message1(ERR_BAD_SYNTAX, "Invalid token"));
-}
-
-void	process_heredoc(t_queue *heredoc_queue)
-{
-	t_heredoc	*heredoc;
-
-	while (heredoc_queue->front != NULL)
-	{
-		heredoc = dequeue(heredoc_queue);
-		if (heredoc->cmd->input != STDIN)
-			close(heredoc->cmd->input);
-		heredoc->cmd->input = here_doc(heredoc->delimiter);
-		free(heredoc->delimiter);
-		free(heredoc);
-	}
 }
 
 int	print_token_error(int status, t_token *tok)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/29 19:11:13 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:33:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int			flush_postfix(t_node **tmp_stack, t_queue *cmds);
 
 // Heredoc
 
-void		process_heredoc(t_queue *heredoc_queue);
+int			process_heredoc(t_token *token, char *delimiter, t_vlst *env);
+int			heredoc(char *delimiter, t_vlst *env);
 
 // Tree
 
@@ -43,7 +44,6 @@ t_tree		*build_tree_postfix(t_minishell *ms);
 int			handle_next_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_word_token(t_tree *cmd_node, t_minishell *ms);
 int			handle_redirect_token(t_tree *cmd_node, t_minishell *ms);
-int			enqueue_heredoc(t_tree *cmd_node, t_minishell *ms);
 int			handle_group_redirect_token(t_tree *group_node, t_minishell *ms);
 
 // Validation

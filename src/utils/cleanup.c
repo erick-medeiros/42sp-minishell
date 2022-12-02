@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/09 18:56:42 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:33:26 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,4 @@ void	del_token_node(void *content)
 		return ;
 	free(((t_token *)content)->value);
 	free(((t_token *)content));
-}
-
-void	del_heredoc_node(void *content)
-{
-	if (!content)
-		return ;
-	free(((t_heredoc *)content)->delimiter);
-	free(((t_heredoc *)content));
 }

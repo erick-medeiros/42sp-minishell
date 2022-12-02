@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 11:17:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/29 19:04:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:38:51 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ int	is_optoken(t_token *token)
 
 t_bool	is_redir_token(t_tok_type t)
 {
-	return (t == TOKEN_INPUT || t == TOKEN_OUTPUT || t == TOKEN_APPEND);
+	return (t == TOKEN_INPUT || t == TOKEN_OUTPUT
+		|| t == TOKEN_APPEND || t == TOKEN_HEREDOC);
 }

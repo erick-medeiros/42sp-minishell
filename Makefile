@@ -21,9 +21,9 @@ FILES += $(addprefix expander/, env_conv.c env_utils.c expander_utils.c filename
 FILES += $(addprefix lexer/, ampersand.c and.c or.c append.c brace.c continue.c double_quote.c heredoc.c)
 FILES += $(addprefix lexer/, input.c lexer.c lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
 FILES += $(addprefix lexer/, parenthesis.c)
-FILES += $(addprefix parser/, build_tree.c handle_tokens.c parser.c)
+FILES += $(addprefix parser/, build_tree.c handle_tokens.c heredoc.c parser.c)
 FILES += $(addprefix parser/, parser_utils.c postfix.c type.c validation.c)
-FILES += $(addprefix prompt/, here_doc.c prompt.c prompt_utils.c signal.c)
+FILES += $(addprefix prompt/, prompt.c prompt_utils.c signal.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c list.c minishell.c)
 FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)
 

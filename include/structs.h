@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 20:15:47 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:08:38 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,15 +165,8 @@ typedef struct s_minishell
 {
 	t_vlst	env_list;
 	t_node	*token_list;
-	t_queue	heredoc_queue;
 	t_queue	cmd_list;
 	t_bool	set_history;
 }	t_minishell;
-
-typedef struct s_heredoc
-{
-	char	*delimiter;
-	t_cmd	*cmd;
-}	t_heredoc;
 
 #endif

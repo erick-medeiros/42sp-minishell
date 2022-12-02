@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 20:35:33 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:12:30 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	command_redirect(t_cmd *cmd)
 	while (node)
 	{
 		token = node->content;
-		if (token->type == TOKEN_INPUT)
+		if (token->type == TOKEN_INPUT || token->type == TOKEN_HEREDOC)
 		{
 			close_safe(cmd->redir[0]);
 			cmd->redir[0] = open_redir(token->value, token->type);
@@ -44,6 +44,7 @@ int	open_redir(char *pathname, int token_type)
 {
 	int	fd;
 	int	permissions;
+	int	*p_int;
 
 	permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	fd = -1;
@@ -54,6 +55,11 @@ int	open_redir(char *pathname, int token_type)
 		fd = open(pathname, O_WRONLY | O_CREAT | O_TRUNC, permissions);
 	else if (token_type == TOKEN_APPEND)
 		fd = open(pathname, O_WRONLY | O_CREAT | O_APPEND, permissions);
+	else if (token_type == TOKEN_HEREDOC)
+	{
+		p_int = (int *)pathname;
+		fd = *p_int;
+	}
 	return (fd);
 }
 

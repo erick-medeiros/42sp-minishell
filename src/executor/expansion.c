@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 12:04:12 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:26:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "expander.h"
 #include "minishell.h"
+#include "structs.h"
 
 static int	create_argv(t_cmd *cmd);
 static int	expand_token(t_token **token, t_vlst *env);
@@ -46,7 +47,7 @@ int	expand_redirects(t_node	*redir, t_vlst *env)
 	while (node)
 	{
 		token = node->content;
-		if (expand_token(&token, env) != 0)
+		if (token->type != TOKEN_HEREDOC && expand_token(&token, env) != 0)
 			return (1);
 		node = node->next;
 	}

@@ -1,51 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:16:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/15 08:51:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 16:34:26 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expander.h"
 #include "minishell.h"
+#include "parser.h"
+#include "structs.h"
 
-static void	child_here_doc(int pipefd[2], char *limiter);
-
-int	here_doc(char	*limiter)
+int	heredoc(char *delimiter, t_vlst *env)
 {
 	int		pipefd[2];
-	pid_t	pid;
+	char	*line;
+	char	*expd;
 
 	if (pipe(pipefd) < 0)
+	{
 		write(STDERR, "Error", 5);
-	pid = fork();
-	if (pid < 0)
-		write(STDERR, "Error", 5);
-	if (pid == 0)
-		child_here_doc(pipefd, limiter);
-	waitpid(pid, NULL, 0);
-	close(pipefd[1]);
-	return (pipefd[0]);
-}
-
-static void	child_here_doc(int pipefd[2], char *limiter)
-{
-	char	*line;
-
-	close(pipefd[0]);
+		return (-1);
+	}
 	while (TRUE)
 	{
 		line = readline(HEREDOC_STRING);
-		if (!line || ft_streq(line, limiter))
+		if (!line || ft_streq(line, delimiter))
 			break ;
-		write(pipefd[1], line, ft_strlen(line));
+		expd = parameter_expansion(line, env);
+		write(pipefd[1], expd, ft_strlen(expd));
 		write(pipefd[1], "\n", 1);
+		free(expd);
 		free(line);
 	}
 	free(line);
 	close(pipefd[1]);
-	exit(0);
+	return (pipefd[0]);
+}
+
+int	process_heredoc(t_token *token, char *delimiter, t_vlst *env)
+{
+	int	fd;
+	int	*p_int;
+
+	fd = heredoc(delimiter, env);
+	if (fd < 0)
+		return (ERR_BAD_SUBST);
+	p_int = malloc(sizeof(int));
+	if (p_int == NULL)
+		return (ERR_ALLOC);
+	*p_int = fd;
+	token->value = (char *)p_int;
+	return (OK);
 }

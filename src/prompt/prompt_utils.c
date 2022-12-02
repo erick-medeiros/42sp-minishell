@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/26 13:59:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 13:55:36 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,6 @@ static void	execution_process(t_minishell *ms)
 void	handle_parse_result(int result, char **line,
 			char **history, t_minishell *ms)
 {
-	if (ms->heredoc_queue.front)
-	{
-		ms->set_history = FALSE;
-		process_heredoc(&ms->heredoc_queue);
-	}
 	free(*line);
 	*line = NULL;
 	if (result == ERR_INCOMP_OP)

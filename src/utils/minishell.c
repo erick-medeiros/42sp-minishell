@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 14:16:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:08:08 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	free_token(void *content);
 void	init_minishell(t_minishell *minishell, char **envp)
 {
 	minishell->token_list = NULL;
-	minishell->heredoc_queue.front = NULL;
-	minishell->heredoc_queue.rear = NULL;
 	minishell->env_list.len = 0;
 	minishell->env_list.list = NULL;
 	minishell->cmd_list.front = NULL;
@@ -33,12 +31,6 @@ void	init_minishell(t_minishell *minishell, char **envp)
 
 void	free_minishell(t_minishell *minishell)
 {
-	if (minishell->heredoc_queue.front)
-	{
-		clear_list(minishell->heredoc_queue.front, del_heredoc_node);
-		minishell->heredoc_queue.front = NULL;
-		minishell->heredoc_queue.rear = NULL;
-	}
 	if (minishell->token_list)
 	{
 		clear_list(minishell->token_list, free_token);
@@ -57,7 +49,5 @@ void	destroy_minishell(t_minishell *minishell)
 	free_minishell(minishell);
 	if (minishell->env_list.list)
 		clear_list(minishell->env_list.list, del_var_node);
-	if (minishell->heredoc_queue.front)
-		clear_list(minishell->heredoc_queue.front, del_heredoc_node);
 	rl_clear_history();
 }
