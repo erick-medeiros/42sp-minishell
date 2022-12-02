@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/27 19:24:30 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 09:53:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,54 +16,53 @@
 #include "structs.h"
 
 //cd — change the working directory
-static int	cd_error(char *path);
+
+static char	*get_home(t_vlst *vars);
+static void	sets_env_vars(t_vlst *vars, char *wdir);
 
 int	builtin_cd(int argc, char *argv[], t_vlst *vars)
 {
-	char	*retptr;
+	char	*wdir;
 	char	*path;
-	t_node	*node;
 
-	if (argc != 2)
+	if (argc > 2)
 		return (error_message1(1, "too many arguments"));
-	path = argv[1];
-	if (chdir(path) == -1)
-		return (cd_error(path));
-	retptr = getcwd(NULL, PATH_MAX);
-	if (!retptr)
-		error_message2(2, "cd", strerror(errno));
-	if (retptr)
+	else if (argc == 2)
+		path = argv[1];
+	else
 	{
-		if (vars)
-		{
-			node = find_node_by_content(vars->list, "PWD", find_env_var);
-			if (node)
-				update_var(vars, new_var_node_from_name_val("OLDPWD",
-						((t_var *)node->content)->val));
-			update_var(vars, new_var_node_from_name_val("PWD", retptr));
-		}
-		free(retptr);
+		path = get_home(vars);
+		if (!path)
+			return (error_message2(1, "cd", "HOME not set"));
 	}
+	if (chdir(path) == -1)
+		return (error_message3(1, "cd", path, strerror(errno)));
+	wdir = getcwd(NULL, PATH_MAX);
+	if (!wdir)
+		return (error_message2(1, "cd", strerror(errno)));
+	if (vars)
+		sets_env_vars(vars, wdir);
+	free(wdir);
 	return (OK);
 }
 
-static int	cd_error(char *path)
+static char	*get_home(t_vlst *vars)
 {
-	const char	*access_err[] = {"cd", path, "Permission denied", NULL};
-	const char	*loop_err[] = {"cd", path, "Loop in directory", NULL};
-	const char	*too_long_err[] = {"cd", path, "File name too long", NULL};
-	const char	*n_fnd_err[] = {"cd", path, "No such file or directory", NULL};
-	const char	*not_dir_err[] = {"cd", path, "Not a directory", NULL};
+	t_node	*node;
 
-	if (errno == EACCES)
-		return (error_message(1, (char **)access_err));
-	if (errno == ELOOP)
-		return (error_message(1, (char **)loop_err));
-	if (errno == ENAMETOOLONG)
-		return (error_message(1, (char **)too_long_err));
-	if (errno == ENOENT)
-		return (error_message(1, (char **)n_fnd_err));
-	if (errno == ENOTDIR)
-		return (error_message(1, (char **)not_dir_err));
-	return (2);
+	node = find_node_by_content(vars->list, "HOME", find_env_var);
+	if (node)
+		return (((t_var *)node->content)->val);
+	return (NULL);
+}
+
+static void	sets_env_vars(t_vlst *vars, char *wdir)
+{
+	t_node	*node;
+
+	node = find_node_by_content(vars->list, "PWD", find_env_var);
+	if (node)
+		update_var(vars, new_var_node_from_name_val("OLDPWD",
+				((t_var *)node->content)->val));
+	update_var(vars, new_var_node_from_name_val("PWD", wdir));
 }
