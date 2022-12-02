@@ -19,13 +19,6 @@ void ut_close_pipefd(int pipefd[2]) {
 	close(pipefd[1]);
 }
 
-char *ut_getcwd() {
-	char *cwd = getcwd(NULL, PATH_MAX);
-	if (!cwd)
-		TEST_IGNORE_MESSAGE("Error: get current working directory failed\n");
-	return (cwd);
-}
-
 void *ut_mmap(size_t len) {
 	int prot = PROT_READ | PROT_WRITE;
 	int flags = MAP_SHARED | MAP_ANON;

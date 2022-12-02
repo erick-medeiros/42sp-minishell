@@ -59,7 +59,7 @@ void test_builtin_cd(void) {
 	else if (pid == 0) {
 		ut_stds_devnull();
 		builtin_cd(2, (char *[]){"cd", expected, 0}, NULL);
-		char *new_dir = ut_getcwd();
+		char *new_dir = getcwd(NULL, 0);
 		strncpy(content, new_dir, len);
 		free(new_dir);
 		exit(0);
@@ -95,7 +95,7 @@ void test_builtin_pwd(void) {
 		wait(&status);
 		if (status != 0)
 			TEST_IGNORE_MESSAGE(UT_ERR_PROC);
-		current_dir = ut_getcwd();
+		current_dir = getcwd(NULL, 0);
 		content = ut_get_content_fd(pipefd[0]);
 		expected = ft_strjoin(current_dir, "\n");
 		TEST_ASSERT_EQUAL_STRING(expected, content);
@@ -185,7 +185,7 @@ void test_builtin_exit(void) {
 		TEST_FAIL();
 	else if (pid == 0) {
 		ut_stds_devnull();
-		builtin_exit(0, NULL, NULL);
+		builtin_exit(NULL, 0);
 		exit(1);
 	}
 	expected = 0;

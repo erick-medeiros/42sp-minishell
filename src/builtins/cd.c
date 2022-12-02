@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 10:08:10 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:42:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	builtin_cd(int argc, char *argv[], t_vlst *vars)
 	}
 	if (chdir(path) == -1)
 		return (error_message3(1, "cd", path, strerror(errno)));
-	wdir = getcwd(NULL, PATH_MAX);
+	wdir = getcwd(NULL, 0);
 	if (!wdir)
 		return (error_message2(1, "cd", strerror(errno)));
 	if (vars)

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/30 12:37:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:42:50 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
-
-# ifndef PATH_MAX
-#  define PATH_MAX 4096
-# endif
 
 # define PROMPT_STRING "minishell "
 # define PROMPT_EXTRA_SQ "continue single quote> "
