@@ -6,14 +6,13 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:53:49 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 09:53:58 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:08:10 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "builtins.h"
 #include "expander.h"
-#include "structs.h"
 
 //cd — change the working directory
 
@@ -26,7 +25,7 @@ int	builtin_cd(int argc, char *argv[], t_vlst *vars)
 	char	*path;
 
 	if (argc > 2)
-		return (error_message1(1, "too many arguments"));
+		return (error_message2(1, "cd", "too many arguments"));
 	else if (argc == 2)
 		path = argv[1];
 	else
