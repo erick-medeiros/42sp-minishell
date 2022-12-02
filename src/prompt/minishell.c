@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 17:12:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:22:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,32 @@ void	destroy_minishell(t_ms *ms)
 	if (ms->env_list.list)
 		clear_list(ms->env_list.list, del_var_node);
 	rl_clear_history();
+}
+
+void	shell(t_ms *ms, char **line)
+{
+	ms->set_history = FALSE;
+	process_line(line, ms);
+	free_minishell(ms);
+}
+
+void	shell_loop(t_ms *ms)
+{
+	char	*line;
+
+	while (1)
+	{
+		handle_signal(SIGINT, prompt_signal_handler);
+		handle_signal(SIGQUIT, SIG_IGN);
+		handle_signal(SIGPIPE, SIG_IGN);
+		ms->set_history = TRUE;
+		line = readline(get_prompt(&ms->env_list));
+		if (!line)
+		{
+			write(STDOUT, "exit\n", 5);
+			break ;
+		}
+		process_line(&line, ms);
+		free_minishell(ms);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 17:08:24 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:23:03 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
+// ANSI Colors
+# define GREEN "\e[38;5;46m"
+# define YELLOW "\e[38;5;226m"
+# define BLUE "\e[38;5;33m"
+# define WHITE "\e[38;5;15m"
+# define RESET "\e[0;0m"
+# define ANSI_PROMPT 1
+
+# define PROMPT_MAX_LEN 1000
 
 # define PROMPT_STRING "minishell "
 # define PROMPT_EXTRA_SQ "continue single quote> "
@@ -145,6 +155,7 @@ void		command_signal_handler(int sig);
 
 // Interactive
 
+char		*get_prompt(t_vlst *env);
 void		shell(t_ms *ms, char **line);
 void		shell_loop(t_ms *ms);
 

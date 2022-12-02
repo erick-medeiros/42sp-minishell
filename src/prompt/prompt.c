@@ -6,53 +6,108 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 12:31:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:25:09 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expander.h"
 #include "minishell.h"
 
-static char	*get_prompt(t_vlst *env)
-{
-	static char	prompt[100];
-	char		*custom;
-	char		*status;
-	char		*temp;
+static t_node	*get_prompt_list(t_vlst *env);
+static char		*get_user_prompt(void);
+static char		*get_hostname_prompt(void);
+static char		*get_pwd_prompt(t_vlst *env);
 
-	status = ft_itoa(env->last_status);
-	temp = ft_strjoin(PROMPT_STRING, status);
-	custom = ft_strjoin(temp, "> ");
-	ft_strlcpy(prompt, custom, ft_strlen(custom));
-	free(custom);
-	free(status);
-	free(temp);
+char	*get_prompt(t_vlst *env)
+{
+	static char	prompt[PROMPT_MAX_LEN];
+	char		*tmp;
+	t_node		*list;
+
+	list = get_prompt_list(env);
+	tmp = convert_list_to_string(list);
+	ft_strlcpy(prompt, tmp, ft_strlen(tmp));
+	free(tmp);
 	return (prompt);
 }
 
-void	shell(t_ms *ms, char **line)
+static t_node	*get_prompt_list(t_vlst *env)
 {
-	ms->set_history = FALSE;
-	process_line(line, ms);
-	free_minishell(ms);
+	t_node	*list;
+
+	list = NULL;
+	if (ANSI_PROMPT)
+		add_node(&list, ft_strdup(GREEN));
+	add_node(&list, get_user_prompt());
+	if (ANSI_PROMPT)
+		add_node(&list, ft_strdup(YELLOW));
+	add_node(&list, ft_strdup("@"));
+	add_node(&list, get_hostname_prompt());
+	add_node(&list, ft_strdup(" "));
+	if (ANSI_PROMPT)
+		add_node(&list, ft_strdup(BLUE));
+	add_node(&list, get_pwd_prompt(env));
+	if (ANSI_PROMPT)
+		add_node(&list, ft_strdup(WHITE));
+	add_node(&list, ft_strdup(" "));
+	add_node(&list, ft_itoa(env->last_status));
+	add_node(&list, ft_strdup("> "));
+	if (ANSI_PROMPT)
+		add_node(&list, ft_strdup(RESET));
+	add_node(&list, ft_strdup(" "));
+	return (list);
 }
 
-void	shell_loop(t_ms *ms)
+static char	*get_user_prompt(void)
 {
-	char	*line;
+	char	*user;
 
-	while (1)
+	user = getenv("USER");
+	if (!user)
+		user = getenv("LOGNAME");
+	if (!user)
+		user = "(unknown)";
+	return (ft_strdup(user));
+}
+
+static char	*get_hostname_prompt(void)
+{
+	char	*hostname;
+	int		fd;
+
+	fd = open("/etc/hostname", O_RDONLY);
+	if (fd < 0)
+		return (ft_strdup("(unknown)"));
+	hostname = get_next_line(fd);
+	close(fd);
+	if (!hostname)
+		return (ft_strdup("(unknown)"));
+	if (hostname[ft_strlen(hostname) - 1] == '\n')
+		hostname[ft_strlen(hostname) - 1] = '\0';
+	return (hostname);
+}
+
+static char	*get_pwd_prompt(t_vlst *env)
+{
+	size_t	len;
+	char	*homedir;
+	char	*pwd;
+	char	*tmp;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (ft_strdup("(unknown)"));
+	homedir = expand_variable("$HOME", env);
+	if (homedir)
+		len = ft_strlen(homedir);
+	if (homedir && ft_strncmp(pwd, homedir, len) == 0)
 	{
-		handle_signal(SIGINT, prompt_signal_handler);
-		handle_signal(SIGQUIT, SIG_IGN);
-		handle_signal(SIGPIPE, SIG_IGN);
-		ms->set_history = TRUE;
-		line = readline(get_prompt(&ms->env_list));
-		if (!line)
+		if (pwd[len] == '/' || pwd[len] == '\0')
 		{
-			write(STDOUT, "exit\n", 5);
-			break ;
+			tmp = ft_strjoin("~", &pwd[len]);
+			free(pwd);
+			pwd = tmp;
 		}
-		process_line(&line, ms);
-		free_minishell(ms);
 	}
+	return (pwd);
 }
