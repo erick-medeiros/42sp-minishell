@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 18:36:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 11:41:38 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,6 @@ void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 		return ;
 	cmd = node->content;
 	redirect_command_list(exec, node->left, cmd->redirect);
-	if (node->left->type == TREE_TYPE_CMD)
-	{
-		tree_executor(exec, node->left, in, out);
-		return ;
-	}
 	cmd->pid = fork();
 	if (cmd->pid == 0)
 	{

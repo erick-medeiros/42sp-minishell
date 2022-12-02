@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 10:04:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:18:53 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/02 11:42:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	shell_loop(t_minishell *minishell)
 	{
 		handle_signal(SIGINT, prompt_signal_handler);
 		handle_signal(SIGQUIT, SIG_IGN);
+		handle_signal(SIGPIPE, SIG_IGN);
 		minishell->set_history = TRUE;
 		line = readline(get_prompt(&minishell->env_list));
 		if (!line)
