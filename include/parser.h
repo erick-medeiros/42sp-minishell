@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 17:08:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/02 23:10:23 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			flush_postfix(t_node **tmp_stack, t_queue *cmds);
 // Heredoc
 
 int			process_heredoc(t_token *token, char *delimiter, t_vlst *env);
-int			heredoc(char *delimiter, t_vlst *env);
+int			heredoc(char *delimiter, t_vlst *env, t_bool * interrupted);
 
 // Tree
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 12:33:11 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/03 17:42:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,15 @@ int	parser(t_ms *ms, int cmd_num)
 		if (result == OK || result == ERR_INCOMP_OP)
 		{
 			if (push_postfix(&opstack, &ms->cmd_list, tree))
-				return (ERR_ALLOC);
-			tree = NULL;
+				result = ERR_ALLOC;
+			else
+				tree = NULL;
 		}
 	}
 	if (result == OK)
 		result = flush_postfix(&opstack, &ms->cmd_list);
+	else if (result < 0 || result == ERR_ALLOC)
+		clear_incomplete(&opstack, &tree);
 	return (result);
 }
 

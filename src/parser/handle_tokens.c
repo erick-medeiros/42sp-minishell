@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 17:14:03 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 00:07:06 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,27 +80,26 @@ static int	save_redirect(t_node **lst, t_tok_type rd_type,
 				char *filename, t_ms *ms)
 {
 	t_token	*token;
+	int		result;
 
-	if (is_redir_token(rd_type))
+	token = malloc(sizeof(t_token));
+	token->type = rd_type;
+	if (rd_type == TOKEN_HEREDOC)
 	{
-		token = malloc(sizeof(t_token));
-		token->type = rd_type;
-		if (rd_type == TOKEN_HEREDOC)
-		{
-			ms->set_history = FALSE;
-			if (process_heredoc(token, filename, &ms->env_list) != OK)
-			{
-				free(token);
-				return (ERR_BAD_SUBST);
-			}
-		}
-		else
-			token->value = ft_strdup(filename);
-		if (add_node(lst, token) != OK)
+		ms->set_history = FALSE;
+		result = process_heredoc(token, filename, &ms->env_list);
+		if (result != OK)
 		{
 			free(token);
-			return (ERR_ALLOC);
+			return (result);
 		}
+	}
+	else
+		token->value = ft_strdup(filename);
+	if (add_node(lst, token) != OK)
+	{
+		free(token);
+		return (ERR_ALLOC);
 	}
 	return (OK);
 }

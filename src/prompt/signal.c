@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 19:56:03 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:10:53 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,21 @@ void	command_signal_handler(int sig)
 	{
 		write(STDERR, "\n", 1);
 	}
+}
+
+void	incomplete_handler(int sig)
+{
+	(void)sig;
+	rl_replace_line("", TRUE);
+	rl_on_new_line();
+	incomplete_signal_receiver(TRUE);
+	rl_done = TRUE;
+}
+
+t_bool	*incomplete_signal_receiver(t_bool got_sigint)
+{
+	static t_bool	interrupted;
+
+	interrupted = got_sigint;
+	return (&interrupted);
 }

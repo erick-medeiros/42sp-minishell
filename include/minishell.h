@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 17:23:03 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/03 18:14:46 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@
 # define PROMPT_MAX_LEN 1000
 
 # define PROMPT_STRING "minishell "
-# define PROMPT_EXTRA_SQ "continue single quote> "
-# define PROMPT_EXTRA_DQ "continue double quote> "
-# define PROMPT_EXTRA_BRC "continue brace> "
-# define PROMPT_EXTRA_OP "continue pipe> "
-# define HEREDOC_STRING "here_doc> "
-# define ENDSINPIPE_STRING "> "
+# define PROMPT_EXTRA_SQ "continue single quote > "
+# define PROMPT_EXTRA_DQ "continue double quote > "
+# define PROMPT_EXTRA_BRC "continue brace > "
+# define PROMPT_EXTRA_OP "continue pipe > "
+# define PROMPT_HEREDOC "heredoc > "
+# define PROMPT_CONTINUE "> "
 
 // Error definitions
 # define OK 0
@@ -70,6 +70,8 @@
 # define ERR_ACCESS 17
 # define ERR_NO_PATH 18
 # define ERR_CMD_NOT_FOUND 19
+# define ERR_BAD_FD -1
+# define ERR_SIGINT -2
 
 // List-related functions
 
@@ -108,6 +110,7 @@ void		del_cmd_tree_node(void *tree);
 t_cmd		*new_command(void);
 void		init_minishell(t_ms *ms, char **envp);
 void		init_system_vars(t_vlst *env);
+t_bool		*init_incomplete(void);
 
 // Cleanup functions
 
@@ -122,6 +125,8 @@ void		free_string_list(char **str);
 void		free_token(void *content);
 void		destroy_queue(t_queue *queue, void (*del_node)(void *));
 void		close_safe(int fd);
+void		del_incomplete_tree_node(void *tree);
+void		clear_incomplete(t_node **opstack, t_tree **tree);
 
 // Prompt
 
@@ -129,7 +134,7 @@ int			ft_streq(char *cmd, char *str);
 int			here_doc(char	*limiter);
 void		miniprompt(t_ms *ms);
 t_lex_state	get_lex_state(int result);
-void		handle_parse_result(int result, char **line,
+int			handle_parse_result(int result, char **line,
 				char **history, t_ms *ms);
 
 // Commands
@@ -152,6 +157,9 @@ int			error_message3(int status, char *field1, char *field2,
 void		handle_signal(int sig, void *handler);
 void		prompt_signal_handler(int sig);
 void		command_signal_handler(int sig);
+void		incomplete_handler(int sig);
+t_bool		*incomplete_signal_receiver(t_bool got_sigint);
+int			event(void);
 
 // Interactive
 
