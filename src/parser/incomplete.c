@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:43:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/03 21:37:34 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 14:50:48 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	del_incomplete_tree_node(void *tree)
 {
 	t_cmd	*cmd;
 
-	if (((t_tree *)tree)->type == TREE_TYPE_CMD)
+	if (((t_tree *)tree)->type == TREE_TYPE_CMD
+		|| ((t_tree *)tree)->type == TREE_TYPE_GROUP)
 	{
 		cmd = ((t_tree *)tree)->content;
 		if (cmd->word_tokens)
@@ -25,11 +26,6 @@ void	del_incomplete_tree_node(void *tree)
 		if (cmd->redirect)
 			clear_list(cmd->redirect, del_token_node);
 		free(cmd);
-	}
-	else if (((t_tree *)tree)->type == TREE_TYPE_GROUP)
-	{
-		if (((t_tree *)tree)->content)
-			clear_list(((t_tree *)tree)->content, del_token_node);
 	}
 	free(tree);
 }

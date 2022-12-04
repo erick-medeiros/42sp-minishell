@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/03 00:07:06 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 15:12:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,17 @@ static int	save_redirect(t_node **lst, t_tok_type rd_type,
 		return (ERR_ALLOC);
 	}
 	return (OK);
+}
+
+int	handle_next_token(t_tree *cmd_node, t_ms *ms)
+{
+	t_token		*tok;
+
+	tok = ((t_token *)(ms->token_list->content));
+	if (tok->type == TOKEN_WORD)
+		return (handle_word_token(cmd_node, ms));
+	if (tok->type == TOKEN_INPUT || tok->type == TOKEN_OUTPUT
+		|| tok->type == TOKEN_APPEND || tok->type == TOKEN_HEREDOC)
+		return (handle_redirect_token(cmd_node, ms));
+	return (handle_next_token_error(ms));
 }

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 18:52:11 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 10:24:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ typedef struct s_ms
 	t_tree	*tmp_cmd;
 	t_node	*opstack;
 	t_queue	cmd_list;
+	int		num_pars;
 	t_bool	set_history;
 }	t_ms;
 

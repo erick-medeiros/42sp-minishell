@@ -6,32 +6,17 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/04 09:41:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 15:18:56 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
+#include "structs.h"
 
-static int	handle_next_token_error(t_ms *ms);
 static int	print_token_type_error(int status, t_tok_type tok_type);
 
-int	handle_next_token(t_tree *cmd_node, t_ms *ms)
-{
-	t_token		*tok;
-
-	tok = ((t_token *)(ms->token_list->content));
-	if (tok->type == TOKEN_OPARENTHESIS || tok->type == TOKEN_CPARENTHESIS)
-		return (OK);
-	if (tok->type == TOKEN_WORD)
-		return (handle_word_token(cmd_node, ms));
-	if (tok->type == TOKEN_INPUT || tok->type == TOKEN_OUTPUT
-		|| tok->type == TOKEN_APPEND || tok->type == TOKEN_HEREDOC)
-		return (handle_redirect_token(cmd_node, ms));
-	return (handle_next_token_error(ms));
-}
-
-static int	handle_next_token_error(t_ms *ms)
+int	handle_next_token_error(t_ms *ms)
 {
 	t_token		*tok;
 
@@ -46,7 +31,6 @@ static int	handle_next_token_error(t_ms *ms)
 		return (ERR_INCOMP_BRC_DQ);
 	if (tok->type == TOKEN_SQBRACE)
 		return (ERR_INCOMP_BRC_SQ);
-	ms->env_list.last_status = 2;
 	return (error_message1(ERR_BAD_SYNTAX, "Invalid token"));
 }
 
@@ -95,4 +79,47 @@ static int	print_token_type_error(int status, t_tok_type tok_type)
 	else
 		ft_putstr_fd("\n", STDERR);
 	return (status);
+}
+
+int	validate_line_start(t_ms *ms)
+{
+	t_tree_type	t;
+
+	if (ms->token_list)
+	{
+		if (ms->cmd_list.front == NULL && ms->tmp_cmd == NULL)
+		{
+			return (is_optoken(ms->token_list->content)
+				|| ((t_token *)ms->token_list->content)->type
+				== TOKEN_CPARENTHESIS);
+		}
+		if (ms->opstack)
+		{
+			t = ((t_tree *) ms->opstack->content)->type;
+			if (t == TREE_TYPE_AND || t == TREE_TYPE_OR || t == TREE_TYPE_PIPE)
+				return (is_optoken(ms->token_list->content));
+		}
+		return (!is_optoken(ms->token_list->content));
+	}
+	return (OK);
+}
+
+int	handle_close_parenthesis(t_ms *ms, t_tree_type tree_type, t_tree **tree)
+{
+	int	result;
+
+	ms->num_pars--;
+	ms->token_list = remove_node(ms->token_list, del_token_node);
+	result = new_op_node(tree, tree_type);
+	if (result != OK)
+		return (result);
+	while (ms->token_list
+		&& is_redir_token(((t_token *)ms->token_list->content)->type))
+	{
+		result = handle_group_redirect_token(*tree, ms);
+		if (result != OK)
+			return (result);
+		ms->token_list = remove_node(ms->token_list, del_token_node);
+	}
+	return (OK);
 }

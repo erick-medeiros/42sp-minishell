@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 20:35:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 15:19:21 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ static int	get_parenthesis(t_ms *ms, t_tree **tree);
 
 int	parser(t_ms *ms, int cmd_num)
 {
-	int	result;
+	int			result;
+	const char	*err_msg = "syntax error near unexpected token `)'";
 
-	if (ms->token_list && is_optoken(ms->token_list->content))
+	if (validate_line_start(ms))
 		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	result = validate_tokens(ms->token_list);
 	while (ms->token_list && result == OK)
@@ -35,6 +36,10 @@ int	parser(t_ms *ms, int cmd_num)
 				ms->tmp_cmd = NULL;
 		}
 	}
+	if (ms->num_pars > 0)
+		return (ERR_INCOMP_OP);
+	if (ms->num_pars < 0)
+		return (error_message1(ERR_BAD_SYNTAX, (char *)err_msg));
 	if (result == OK)
 		result = flush_postfix(&(ms->opstack), &(ms->cmd_list));
 	return (result);
@@ -96,28 +101,14 @@ int	get_command(t_tree **cmd_node, t_ms *ms, int num)
 static int	get_parenthesis(t_ms *ms, t_tree **tree)
 {
 	t_tree_type	tree_type;
-	int			result;
 
 	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
 	if (((t_token *)ms->token_list->content)->type == TOKEN_OPARENTHESIS)
 	{
+		ms->num_pars++;
 		ms->token_list = remove_node(ms->token_list, del_token_node);
 		return (new_op_node(tree, tree_type));
 	}
 	else
-	{
-		ms->token_list = remove_node(ms->token_list, del_token_node);
-		result = new_op_node(tree, tree_type);
-		if (result != OK)
-			return (result);
-		while (ms->token_list
-			&& is_redir_token(((t_token *)ms->token_list->content)->type))
-		{
-			result = handle_group_redirect_token(*tree, ms);
-			if (result != OK)
-				return (result);
-			ms->token_list = remove_node(ms->token_list, del_token_node);
-		}
-		return (OK);
-	}
+		return (handle_close_parenthesis(ms, tree_type, tree));
 }

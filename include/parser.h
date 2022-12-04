@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 18:42:28 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 15:20:00 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int			is_optoken(t_token *token);
 t_bool		is_redir_token(t_tok_type t);
 int			print_token_error(int status, t_token *tok);
 t_tree_type	tok_to_tree_type(t_token *tok);
+int			validate_line_start(t_ms *ms);
+int			handle_next_token_error(t_ms *ms);
+int			handle_close_parenthesis(t_ms *ms, t_tree_type tree_type,
+				t_tree **tree);
 
 // postfix list utils
 

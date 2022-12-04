@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/04 09:23:38 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 11:49:38 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	process_line(char **line, t_ms *ms)
 	int		cmd_num;
 	char	*history;
 
+	ms->num_pars = 0;
 	result = ERR_INCOMP_OP;
 	cmd_num = 0;
 	history = strdup(*line);
@@ -40,7 +41,7 @@ void	process_line(char **line, t_ms *ms)
 	free(history);
 	if (result == OK)
 		executor(ms);
-	else if (result < 0 || result == ERR_ALLOC)
+	else if (result < 0 || result == ERR_ALLOC || result == ERR_BAD_SYNTAX)
 		clear_incomplete(&(ms->opstack), &(ms->tmp_cmd));
 }
 
