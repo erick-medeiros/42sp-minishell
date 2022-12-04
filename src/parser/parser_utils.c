@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/02 17:10:06 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 09:41:09 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	handle_next_token(t_tree *cmd_node, t_ms *ms)
 	t_token		*tok;
 
 	tok = ((t_token *)(ms->token_list->content));
-	if (tok->type == TOKEN_PIPE)
-		return (OK);
 	if (tok->type == TOKEN_OPARENTHESIS || tok->type == TOKEN_CPARENTHESIS)
 		return (OK);
 	if (tok->type == TOKEN_WORD)

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 11:17:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 10:38:51 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 10:20:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,8 @@ int	is_op(t_tree_type t)
 
 int	is_optoken(t_token *token)
 {
-	if (token->type == TOKEN_PIPE)
-		return (TRUE);
-	if (token->type == TOKEN_AND)
-		return (TRUE);
-	if (token->type == TOKEN_OR)
-		return (TRUE);
-	return (FALSE);
+	return (token->type == TOKEN_PIPE || token->type == TOKEN_AND
+		|| token->type == TOKEN_OR);
 }
 
 t_bool	is_redir_token(t_tok_type t)

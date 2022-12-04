@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/03 22:33:50 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 09:23:38 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 
 static char	*get_continue_prompt(int err);
-static void	get_continuation(char **line, int err);
+static void	get_line_continuation(char **line, int err);
 
 void	process_line(char **line, t_ms *ms)
 {
@@ -55,7 +55,7 @@ int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 	else if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
 	{
 		interrupted = init_incomplete();
-		get_continuation(line, err);
+		get_line_continuation(line, err);
 		handle_signal(SIGINT, prompt_signal_handler);
 		if (*interrupted)
 		{
@@ -95,7 +95,7 @@ static char	*get_continue_prompt(int err)
 	return (PROMPT_CONTINUE);
 }
 
-static void	get_continuation(char **line, int err)
+static void	get_line_continuation(char **line, int err)
 {
 	while (TRUE)
 	{
