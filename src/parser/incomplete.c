@@ -1,21 +1,46 @@
-# include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   incomplete.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/03 18:43:34 by gmachado          #+#    #+#             */
+/*   Updated: 2022/12/03 21:37:34 by gmachado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+#include "structs.h"
 
 void	del_incomplete_tree_node(void *tree)
 {
 	t_cmd	*cmd;
 
-	cmd = ((t_tree *)tree)->content;
-	clear_list(cmd->word_tokens, del_token_node);
-	clear_list(cmd->redirect, del_token_node);
-	free(cmd);
+	if (((t_tree *)tree)->type == TREE_TYPE_CMD)
+	{
+		cmd = ((t_tree *)tree)->content;
+		if (cmd->word_tokens)
+			clear_list(cmd->word_tokens, del_token_node);
+		if (cmd->redirect)
+			clear_list(cmd->redirect, del_token_node);
+		free(cmd);
+	}
+	else if (((t_tree *)tree)->type == TREE_TYPE_GROUP)
+	{
+		if (((t_tree *)tree)->content)
+			clear_list(((t_tree *)tree)->content, del_token_node);
+	}
 	free(tree);
 }
 
 void	clear_incomplete(t_node **opstack, t_tree **tree)
 {
-	clear_list(*opstack, del_incomplete_tree_node);
+	if (*opstack)
+		clear_list(*opstack, del_incomplete_tree_node);
 	*opstack = NULL;
-	del_incomplete_tree_node(*tree);
+	if (*tree)
+		del_incomplete_tree_node(*tree);
 	*tree = NULL;
 }
 

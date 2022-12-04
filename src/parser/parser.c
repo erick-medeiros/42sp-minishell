@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 17:42:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 20:35:56 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,24 @@ static int	get_parenthesis(t_ms *ms, t_tree **tree);
 
 int	parser(t_ms *ms, int cmd_num)
 {
-	static t_tree	*tree;
-	static t_node	*opstack = NULL;
-	int				result;
+	int	result;
 
 	if (ms->token_list && is_optoken(ms->token_list->content))
 		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	result = validate_tokens(ms->token_list);
 	while (ms->token_list && result == OK)
 	{
-		result = parse_token(ms, &tree, cmd_num);
+		result = parse_token(ms, &(ms->tmp_cmd), cmd_num);
 		if (result == OK || result == ERR_INCOMP_OP)
 		{
-			if (push_postfix(&opstack, &ms->cmd_list, tree))
+			if (push_postfix(&(ms->opstack), &(ms->cmd_list), ms->tmp_cmd))
 				result = ERR_ALLOC;
 			else
-				tree = NULL;
+				ms->tmp_cmd = NULL;
 		}
 	}
 	if (result == OK)
-		result = flush_postfix(&opstack, &ms->cmd_list);
-	else if (result < 0 || result == ERR_ALLOC)
-		clear_incomplete(&opstack, &tree);
+		result = flush_postfix(&(ms->opstack), &(ms->cmd_list));
 	return (result);
 }
 

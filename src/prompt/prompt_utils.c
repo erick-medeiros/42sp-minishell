@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/03 18:24:23 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 20:35:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	process_line(char **line, t_ms *ms)
 	free(history);
 	if (result == OK)
 		execution_process(ms);
+	else if (result < 0 || result == ERR_ALLOC)
+		clear_incomplete(&(ms->opstack), &(ms->tmp_cmd));
 }
 
 static void	execution_process(t_ms *ms)
@@ -61,21 +63,20 @@ int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 		ms->env_list.last_status = 2;
 	else if (err == ERR_SIGINT)
 		ms->env_list.last_status = 130;
-	else
+	else if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
 	{
 		interrupted = init_incomplete();
-		if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
-			*line = readline(get_continue_prompt(err));
+		*line = readline(get_continue_prompt(err));
 		handle_signal(SIGINT, prompt_signal_handler);
 		if (*interrupted)
 		{
 			rl_done = FALSE;
-			return(ERR_SIGINT);
+			return (ERR_SIGINT);
 		}
 		ft_strappend(history, "\n");
 		ft_strappend(history, *line);
 	}
-	return (OK);
+	return (err);
 }
 
 t_lex_state	get_lex_state(int result)

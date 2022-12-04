@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 16:22:58 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 19:24:30 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	init_minishell(t_ms *ms, char **envp)
 	ms->env_list.list = NULL;
 	ms->cmd_list.front = NULL;
 	ms->cmd_list.rear = NULL;
+	ms->tmp_cmd = NULL;
+	ms->opstack = NULL;
 	ms->set_history = TRUE;
 	ms->env_list.last_status = 0;
 	if (envp)
@@ -74,7 +76,6 @@ void	shell_loop(t_ms *ms)
 			break ;
 		}
 		process_line(&line, ms);
-		dprintf(STDERR, "exited process line\n");
 		free_minishell(ms);
 	}
 }
