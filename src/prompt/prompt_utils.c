@@ -6,15 +6,15 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/03 20:35:54 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 22:33:50 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static void	execution_process(t_ms *ms);
 static char	*get_continue_prompt(int err);
+static void	get_continuation(char **line, int err);
 
 void	process_line(char **line, t_ms *ms)
 {
@@ -39,26 +39,15 @@ void	process_line(char **line, t_ms *ms)
 		add_history(history);
 	free(history);
 	if (result == OK)
-		execution_process(ms);
+		executor(ms);
 	else if (result < 0 || result == ERR_ALLOC)
 		clear_incomplete(&(ms->opstack), &(ms->tmp_cmd));
-}
-
-static void	execution_process(t_ms *ms)
-{
-	t_tree	*root;
-
-	root = build_tree_postfix(ms);
-	free_minishell(ms);
-	executor(root, &ms->env_list);
 }
 
 int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 {
 	t_bool	*interrupted;
 
-	free(*line);
-	*line = NULL;
 	if (err == ERR_BAD_SYNTAX || err == ERR_ALLOC || err == ERR_BAD_FD)
 		ms->env_list.last_status = 2;
 	else if (err == ERR_SIGINT)
@@ -66,14 +55,18 @@ int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 	else if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
 	{
 		interrupted = init_incomplete();
-		*line = readline(get_continue_prompt(err));
+		get_continuation(line, err);
 		handle_signal(SIGINT, prompt_signal_handler);
 		if (*interrupted)
 		{
 			rl_done = FALSE;
 			return (ERR_SIGINT);
 		}
-		ft_strappend(history, "\n");
+		if (err == ERR_INCOMP_SQ || err == ERR_INCOMP_DQ
+			|| err == ERR_INCOMP_BRC_SQ || err == ERR_INCOMP_BRC_DQ)
+			ft_strappend(history, "\n");
+		else
+			ft_strappend(history, " ");
 		ft_strappend(history, *line);
 	}
 	return (err);
@@ -100,4 +93,17 @@ static char	*get_continue_prompt(int err)
 		|| err == ERR_INCOMP_BRC_DQ)
 		return (PROMPT_EXTRA_BRC);
 	return (PROMPT_CONTINUE);
+}
+
+static void	get_continuation(char **line, int err)
+{
+	while (TRUE)
+	{
+		free(*line);
+		*line = readline(get_continue_prompt(err));
+		if (err == ERR_INCOMP_SQ || err == ERR_INCOMP_DQ
+			|| err == ERR_INCOMP_BRC_SQ || err == ERR_INCOMP_BRC_DQ
+			|| **line != '\0')
+			break ;
+	}
 }

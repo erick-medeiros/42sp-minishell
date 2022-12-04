@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 18:14:46 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/03 22:14:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int			handle_parse_result(int result, char **line,
 
 void		process_line(char **line, t_ms *ms);
 int			lexer(char **line, t_node **tokens, t_lex_state st);
-void		executor(t_tree *root, t_vlst *env);
+void		executor(t_ms *ms);
 int			parser(t_ms *ms, int cmd_num);
 int			get_command(t_tree **cmd_node, t_ms *ms, int num);
 

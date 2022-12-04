@@ -3,28 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 11:41:38 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/03 22:14:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "executor.h"
 #include "minishell.h"
+#include "parser.h"
 
-void	executor(t_tree *root, t_vlst *env)
+void	executor(t_ms *ms)
 {
 	t_exec	*exec;
 	t_queue	queue;
+	t_tree	*root;
 
+	root = build_tree_postfix(ms);
 	exec = malloc(sizeof(t_exec));
 	exec->commands = root;
 	queue.front = NULL;
 	queue.rear = NULL;
 	exec->queue = &queue;
-	exec->env = env;
+	exec->env = &ms->env_list;
+	free_minishell(ms);
 	tree_executor(exec, exec->commands, STDIN, STDOUT);
 	close_pipeline(exec->commands);
 	execution_sync(exec);
