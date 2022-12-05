@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 17:07:14 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 15:23:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/05 12:37:31 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ size_t			ft_strlen(const char *s);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strndup(const char *s, size_t len);
 char			*ft_strnstr(const char	*big, const char *little, size_t len);
+void			ft_strupd(char **str, char *newstr);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*get_next_line(int fd);
 
