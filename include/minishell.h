@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 22:14:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/05 12:08:30 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@
 # define STDERR 2
 
 // ANSI Colors
-# define GREEN "\e[38;5;46m"
-# define YELLOW "\e[38;5;226m"
-# define BLUE "\e[38;5;33m"
-# define WHITE "\e[38;5;15m"
-# define RESET "\e[0;0m"
 # define ANSI_PROMPT 1
+# define GREEN "\001\033[38;5;46m\002"
+# define YELLOW "\001\033[38;5;226m\002"
+# define BLUE "\001\033[38;5;33m\002"
+# define WHITE "\001\033[38;5;15m\002"
+# define RESET "\001\033[0;0m\002"
 
 # define PROMPT_MAX_LEN 1000
 
