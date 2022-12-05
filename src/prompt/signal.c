@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 18:10:53 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/05 20:07:31 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	command_signal_handler(int sig)
 void	incomplete_handler(int sig)
 {
 	(void)sig;
+	write(STDERR, "\n", 1);
 	rl_replace_line("", TRUE);
 	rl_on_new_line();
 	incomplete_signal_receiver(TRUE);

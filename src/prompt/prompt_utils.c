@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/04 18:53:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/05 20:26:05 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 
 static char	*get_continue_prompt(int err);
-static void	get_line_continuation(char **line, int err);
+static int	get_line_continuation(char **line, int err);
 
 void	process_line(char **line, t_ms *ms)
 {
@@ -45,22 +45,14 @@ void	process_line(char **line, t_ms *ms)
 
 int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 {
-	t_bool	*interrupted;
-
 	if (err == ERR_BAD_SYNTAX || err == ERR_ALLOC || err == ERR_BAD_FD)
 		ms->env_list.last_status = 2;
 	else if (err == ERR_SIGINT)
 		ms->env_list.last_status = 130;
 	else if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
 	{
-		interrupted = init_incomplete();
-		get_line_continuation(line, err);
-		handle_signal(SIGINT, prompt_signal_handler);
-		if (*interrupted)
-		{
-			rl_done = FALSE;
+		if (get_line_continuation(line, err))
 			return (ERR_SIGINT);
-		}
 		if (err == ERR_INCOMP_SQ || err == ERR_INCOMP_DQ
 			|| err == ERR_INCOMP_BRC_SQ || err == ERR_INCOMP_BRC_DQ)
 			ft_strappend(history, "\n");
@@ -94,9 +86,12 @@ static char	*get_continue_prompt(int err)
 	return (PROMPT_CONTINUE);
 }
 
-static void	get_line_continuation(char **line, int err)
+static int	get_line_continuation(char **line, int err)
 {
-	while (TRUE)
+	t_bool	*interrupted;
+
+	interrupted = init_incomplete();
+	while (*interrupted == FALSE)
 	{
 		free(*line);
 		*line = readline(get_continue_prompt(err));
@@ -105,4 +100,12 @@ static void	get_line_continuation(char **line, int err)
 			|| **line != '\0')
 			break ;
 	}
+	if (*interrupted)
+	{
+		rl_done = FALSE;
+		handle_signal(SIGINT, prompt_signal_handler);
+		return (ERR_SIGINT);
+	}
+	handle_signal(SIGINT, prompt_signal_handler);
+	return (OK);
 }

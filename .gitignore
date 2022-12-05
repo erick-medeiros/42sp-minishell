@@ -66,3 +66,6 @@ minishell
 
 # script to pull all branches
 pull_all.sh
+
+# testers
+tests/testers/
