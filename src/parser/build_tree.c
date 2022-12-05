@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 12:33:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/04 18:56:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,10 @@ static int	build_tree_node(t_node **tmp_stack, t_tree *root)
 	return (OK);
 }
 
-t_tree	*new_cmd_node(int num)
+t_tree	*new_cmd_node(void)
 {
 	t_tree	*cmd_node;
 
-	(void)num;
 	cmd_node = malloc(sizeof(*cmd_node));
 	if (!cmd_node)
 		return (NULL);

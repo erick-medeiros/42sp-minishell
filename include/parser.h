@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/04 15:20:00 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 18:56:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // Utils
 
 int			new_op_node(t_tree	**op_node, t_tree_type op_type);
-t_tree		*new_cmd_node(int num);
+t_tree		*new_cmd_node(void);
 int			is_op(t_tree_type t);
 int			is_optoken(t_token *token);
 t_bool		is_redir_token(t_tok_type t);

@@ -39,13 +39,13 @@ all: $(NAME)
 $(REQUIRED_DIRS):
 	@mkdir -p $@
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADERS)
 	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
 
 libft:
 	make -C $(LIBFT_DIR)
 
-$(NAME): $(REQUIRED_DIRS) $(HEADERS) $(OBJ) | libft
+$(NAME): $(REQUIRED_DIRS) $(OBJ) | libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFLAGS)
 
 clean:

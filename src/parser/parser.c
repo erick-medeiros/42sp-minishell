@@ -6,28 +6,27 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/04 15:19:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 18:56:40 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
 
-static int	parse_token(t_ms *ms, t_tree **tree, int cmd_num);
+static int	parse_token(t_ms *ms, t_tree **tree);
 static int	parse_optoken(t_ms *ms, t_tree **tree);
 static int	get_parenthesis(t_ms *ms, t_tree **tree);
 
-int	parser(t_ms *ms, int cmd_num)
+int	parser(t_ms *ms, int result)
 {
-	int			result;
 	const char	*err_msg = "syntax error near unexpected token `)'";
 
-	if (validate_line_start(ms))
+	if (result == ERR_INCOMP_OP && validate_line_start(ms))
 		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	result = validate_tokens(ms->token_list);
 	while (ms->token_list && result == OK)
 	{
-		result = parse_token(ms, &(ms->tmp_cmd), cmd_num);
+		result = parse_token(ms, &(ms->tmp_cmd));
 		if (result == OK || result == ERR_INCOMP_OP)
 		{
 			if (push_postfix(&(ms->opstack), &(ms->cmd_list), ms->tmp_cmd))
@@ -45,7 +44,7 @@ int	parser(t_ms *ms, int cmd_num)
 	return (result);
 }
 
-static int	parse_token(t_ms *ms, t_tree **tree, int cmd_num)
+static int	parse_token(t_ms *ms, t_tree **tree)
 {
 	t_token	*token;
 
@@ -54,7 +53,7 @@ static int	parse_token(t_ms *ms, t_tree **tree, int cmd_num)
 		return (parse_optoken(ms, tree));
 	if (token->type == TOKEN_OPARENTHESIS || token->type == TOKEN_CPARENTHESIS)
 		return (get_parenthesis(ms, tree));
-	return (get_command(tree, ms, cmd_num));
+	return (get_command(tree, ms));
 }
 
 static int	parse_optoken(t_ms *ms, t_tree **tree)
@@ -77,14 +76,14 @@ static int	parse_optoken(t_ms *ms, t_tree **tree)
 	return (new_op_node(tree, tree_type));
 }
 
-int	get_command(t_tree **cmd_node, t_ms *ms, int num)
+int	get_command(t_tree **cmd_node, t_ms *ms)
 {
 	int		result;
 
 	if (ms->token_list == NULL)
 		return (OK);
 	if (*cmd_node == NULL)
-		*cmd_node = new_cmd_node(num);
+		*cmd_node = new_cmd_node();
 	if (*cmd_node == NULL)
 		return (ERR_ALLOC);
 	while (ms->token_list != NULL

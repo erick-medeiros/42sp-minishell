@@ -23,10 +23,10 @@ all: $(NAME)
 obj:
 	mkdir -p obj
 
-obj/%.o: %.c
+obj/%.o: %.c $(HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): obj $(OBJ) $(HEADER)
+$(NAME): obj $(OBJ)
 	$(LIB) $(NAME) $(OBJ)
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/04 11:49:38 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/04 18:53:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ static void	get_line_continuation(char **line, int err);
 void	process_line(char **line, t_ms *ms)
 {
 	int		result;
-	int		cmd_num;
 	char	*history;
 
 	ms->num_pars = 0;
 	result = ERR_INCOMP_OP;
-	cmd_num = 0;
 	history = strdup(*line);
 	ms->cmd_list.front = NULL;
 	ms->cmd_list.rear = NULL;
@@ -32,7 +30,7 @@ void	process_line(char **line, t_ms *ms)
 		&& result != ERR_ALLOC)
 	{
 		lexer(line, &ms->token_list, get_lex_state(result));
-		result = parser(ms, cmd_num++);
+		result = parser(ms, result);
 		result = handle_parse_result(result, line, &history, ms);
 	}
 	free(*line);
