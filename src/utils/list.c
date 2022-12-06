@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 20:31:47 by gmachado          #+#    #+#             */
-/*   Updated: 2022/10/13 23:15:57 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 10:58:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ t_node	*remove_node(t_node *current, void (*del_node)(void *))
 	t_node	*tmp;
 
 	tmp = current->next;
-	del_node(current->content);
+	if (del_node)
+		del_node(current->content);
 	free(current);
 	return (tmp);
 }

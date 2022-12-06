@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/01 20:19:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:50:58 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ void	destroy_exec(t_exec *exec);
 
 // Expander
 
-int		command_expansion(t_cmd *cmd, t_vlst *env);
-int		expand_redirects(t_node	*redir, t_vlst *env);
+int		command_expansion_to_words(t_cmd *cmd, t_vlst *env);
+int		command_expansion_to_redirects(t_cmd *cmd, t_vlst *env);
+
+// Converter
+
+t_bool	expandable_token(t_tok_type type);
+int		convert_tokens_to_argv(t_cmd *cmd);
+t_node	*append_list(t_node *node, t_node *append);
 
 // Redirect
 

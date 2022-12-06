@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 02:11:33 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 02:10:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 08:56:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ int	new_token(t_node **tokens, t_tok_type tok_type)
 		return (ERR_ALLOC);
 	content->type = tok_type;
 	content->value = NULL;
+	return (add_node(tokens, content));
+}
+
+int	new_token_filled(t_node **tokens, t_tok_type type, char *value)
+{
+	t_token	*content;
+
+	content = malloc(sizeof(*content));
+	if (!content)
+		return (ERR_ALLOC);
+	content->type = type;
+	content->value = value;
 	return (add_node(tokens, content));
 }
 

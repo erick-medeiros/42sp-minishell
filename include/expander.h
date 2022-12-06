@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:28:19 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 14:22:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:14:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int		find_env_var(void *str, void *var);
 char	*parameter_expansion(char *src, t_vlst *env);
 char	*expand_parameter(char *str, int quote, t_vlst *env);
 char	*expand_variable(char *str, t_vlst *env);
-char	*expand_filename(char *str);
+t_node	*expand_filename(t_tok_type tok_type, char *match);
 char	*remove_quote(char *str);
 
 // Utils

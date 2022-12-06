@@ -3,108 +3,109 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 16:26:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:51:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "expander.h"
 #include "minishell.h"
-#include "structs.h"
 
-static int	create_argv(t_cmd *cmd);
-static int	expand_token(t_token **token, t_vlst *env);
+t_bool		ignore_token(t_tok_type type);
+static int	shell_expansion_parameter(t_node **tokens, t_vlst *env);
+static int	shell_expansion_filename(t_node **tokens, t_bool limited);
+static int	shell_expansion_quote_removal(t_node **tokens);
+//
 
-int	command_expansion(t_cmd *cmd, t_vlst *env)
+int	command_expansion_to_words(t_cmd *cmd, t_vlst *env)
 {
+	if (shell_expansion_parameter(&cmd->word_tokens, env) != 0)
+		return (1);
+	if (shell_expansion_filename(&cmd->word_tokens, FALSE) != 0)
+		return (1);
+	if (shell_expansion_quote_removal(&cmd->word_tokens) != 0)
+		return (1);
+	return (0);
+}
+
+int	command_expansion_to_redirects(t_cmd *cmd, t_vlst *env)
+{
+	if (shell_expansion_parameter(&cmd->redirect, env) != 0)
+		return (1);
+	if (shell_expansion_filename(&cmd->redirect, TRUE) != 0)
+		return (1);
+	if (shell_expansion_quote_removal(&cmd->redirect) != 0)
+		return (1);
+	return (0);
+}
+
+static int	shell_expansion_parameter(t_node **tokens, t_vlst *env)
+{
+	t_node	*node;
 	t_token	*token;
-	t_node	*node;
-
-	node = cmd->word_tokens;
-	while (node)
-	{
-		token = node->content;
-		if (expand_token(&token, env) != 0)
-			return (1);
-		node = node->next;
-	}
-	if (create_argv(cmd) != 0)
-		return (1);
-	if (expand_redirects(cmd->redirect, env) != 0)
-		return (1);
-	return (0);
-}
-
-int	expand_redirects(t_node	*redir, t_vlst *env)
-{
-	t_token	*token;
-	t_node	*node;
-
-	node = redir;
-	while (node)
-	{
-		token = node->content;
-		if (token->type != TOKEN_HEREDOC && expand_token(&token, env) != 0)
-			return (1);
-		node = node->next;
-	}
-	return (0);
-}
-
-static int	create_argv(t_cmd *cmd)
-{
-	t_node	*node;
-	int		i;
-
-	cmd->argc = 0;
-	node = cmd->word_tokens;
-	while (node)
-	{
-		if (((t_token *)node->content)->type == TOKEN_WORD)
-			++cmd->argc;
-		node = node->next;
-	}
-	cmd->argv = malloc(sizeof(char *) * (cmd->argc + 1));
-	if (!cmd->argv)
-		return (1);
-	i = 0;
-	node = cmd->word_tokens;
-	while (node)
-	{
-		if (((t_token *)node->content)->type == TOKEN_WORD)
-			cmd->argv[i++] = ft_strdup(((t_token *)node->content)->value);
-		node = node->next;
-	}
-	cmd->argv[i] = NULL;
-	return (0);
-}
-
-static int	expand_token(t_token **token, t_vlst *env)
-{
 	char	*tmp;
-	char	*content;
 
-	content = (*token)->value;
-	tmp = parameter_expansion(content, env);
-	if (!tmp)
-		return (1);
-	if (!ft_streq(content, tmp) && ft_strlen(tmp) == 0
-		&& (*token)->type == TOKEN_WORD)
-		(*token)->type = TOKEN_IGNORE;
-	free(content);
-	content = tmp;
-	tmp = expand_filename(content);
-	free(content);
-	if (!tmp)
-		return (1);
-	content = tmp;
-	tmp = remove_quote(content);
-	free(content);
-	if (!tmp)
-		return (1);
-	(*token)->value = tmp;
+	node = *tokens;
+	while (node)
+	{
+		token = node->content;
+		if (expandable_token(token->type))
+		{
+			tmp = parameter_expansion(token->value, env);
+			if (!tmp)
+				return (1);
+			if (!ft_streq(token->value, tmp) && ft_strlen(tmp) == 0
+				&& token->type == TOKEN_WORD)
+				token->type = TOKEN_IGNORE;
+			ft_strupd(&token->value, tmp);
+		}
+		node = node->next;
+	}
+	return (0);
+}
+
+static int	shell_expansion_filename(t_node **tokens, t_bool limited)
+{
+	t_node	*list;
+	t_node	*node;
+	t_token	*token;
+
+	node = *tokens;
+	while (node)
+	{
+		token = node->content;
+		if (expandable_token(token->type) && !ft_isquote(token->value[0]))
+		{
+			list = expand_filename(token->type, token->value);
+			if (list)
+			{
+				token->type = TOKEN_IGNORE;
+				node = append_list(node, list);
+				if (list && list->next && limited)
+					return (error_message2(1, token->value,
+							"ambiguous redirect"));
+			}
+		}
+		node = node->next;
+	}
+	return (0);
+}
+
+static int	shell_expansion_quote_removal(t_node **tokens)
+{
+	t_node	*node;
+	t_token	*token;
+
+	node = *tokens;
+	while (node)
+	{
+		token = node->content;
+		if (expandable_token(token->type))
+			ft_strupd(&token->value, remove_quote(token->value));
+		node = node->next;
+	}
 	return (0);
 }

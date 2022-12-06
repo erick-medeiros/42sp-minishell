@@ -15,8 +15,8 @@ INC_DIR = include/
 
 FILES = main.c
 FILES += $(addprefix builtins/, cd.c echo.c env.c exit.c export.c pwd.c unset.c)
-FILES += $(addprefix executor/, command.c executor.c expansion.c redirect.c)
-FILES += $(addprefix executor/, search.c errors.c pipeline.c)
+FILES += $(addprefix executor/, command.c converter.c errors.c executor.c)
+FILES += $(addprefix executor/, expansion.c pipeline.c redirect.c search.c)
 FILES += $(addprefix expander/, env_conv.c env_utils.c expander_utils.c filename.c parameter.c quotes.c)
 FILES += $(addprefix lexer/, ampersand.c and.c or.c append.c brace.c continue.c double_quote.c heredoc.c)
 FILES += $(addprefix lexer/, input.c lexer.c lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)

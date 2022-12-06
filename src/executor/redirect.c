@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 16:12:30 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:20:23 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	command_redirect(t_cmd *cmd)
 	t_token	*token;
 
 	node = cmd->redirect;
+	errno = 0;
 	while (node)
 	{
 		token = node->content;
@@ -79,7 +80,7 @@ void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
 		cmd = root->content;
 		backup = cmd->redirect;
 		cmd->redirect = redir;
-		expand_redirects(cmd->redirect, exec->env);
+		command_expansion_to_redirects(cmd, exec->env);
 		command_redirect(cmd);
 		cmd->group_redir[0] = cmd->redir[0];
 		cmd->group_redir[1] = cmd->redir[1];

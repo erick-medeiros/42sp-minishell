@@ -6,10 +6,11 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:32:33 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/19 11:40:07 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 10:59:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "lexer.h"
 #include "minishell.h"
 
 t_bool	matching(char *match, char **list, int i, struct dirent *direntp)
@@ -114,30 +115,28 @@ void	sort_list(t_node *list)
 	}
 }
 
-char	*expand_filename(char *match)
+t_node	*expand_filename(t_tok_type tok_type, char *match)
 {
-	t_node	*list;
 	t_node	*node;
-	char	*result;
+	t_node	*list;
 
-	result = NULL;
 	if (!match)
 		return (NULL);
 	if (!ft_strchr(match, '*'))
-		return (ft_strdup(match));
+		return (NULL);
 	list = directory_files(match);
 	sort_list(list);
 	node = list;
+	list = NULL;
 	while (node)
 	{
-		ft_strappend(&result, node->content);
-		node = node->next;
-		if (node)
-			ft_strappend(&result, " ");
+		if (new_token_filled(&list, tok_type, node->content) != 0)
+		{
+			clear_list(list, free_token);
+			clear_list(node, free);
+			return (NULL);
+		}
+		node = remove_node(node, NULL);
 	}
-	clear_list(list, free);
-	if (result)
-		return (result);
-	else
-		return (ft_strdup(match));
+	return (list);
 }

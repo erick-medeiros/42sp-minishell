@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:24:50 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/11/26 17:57:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 08:56:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	lexer_parenthesis(char next_ch);
 int			new_token(t_node **tokens, t_tok_type tok_type);
+int			new_token_filled(t_node **tokens, t_tok_type type, char *value);
 int			new_token_with_val(t_node **tokens, t_tok_type tok_type,
 				t_val_info *vi);
 t_lex_state	init_word_value(size_t idx, t_val_info *vi, t_lex_state st);

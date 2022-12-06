@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 11:46:13 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 11:20:05 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,14 @@
 
 int	execute_command(t_exec *exec, t_cmd *cmd)
 {
-	cmd->status = command_expansion(cmd, exec->env);
+	cmd->status = command_expansion_to_words(cmd, exec->env);
 	if (cmd->status != OK)
+		return (cmd->status);
+	cmd->status = command_expansion_to_redirects(cmd, exec->env);
+	if (cmd->status != OK)
+		return (cmd->status);
+	cmd->status = convert_tokens_to_argv(cmd);
+	if (cmd->status != 0)
 		return (cmd->status);
 	cmd->status = command_search(cmd, exec->env);
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
