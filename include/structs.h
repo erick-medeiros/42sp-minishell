@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/04 10:24:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:06:35 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef enum e_bool {
 }	t_bool;
 
 typedef enum e_tok_type {
-	TOKEN_AND,
 	TOKEN_APPEND,
 	TOKEN_BRCINCOMP,
 	TOKEN_DQUOTE,
@@ -36,34 +35,25 @@ typedef enum e_tok_type {
 	TOKEN_HEREDOC,
 	TOKEN_IGNORE,
 	TOKEN_INPUT,
-	TOKEN_OR,
 	TOKEN_OUTPUT,
-	TOKEN_OPARENTHESIS,
-	TOKEN_CPARENTHESIS,
 	TOKEN_PIPE,
 	TOKEN_SQUOTE,
 	TOKEN_SQBRACE,
 	TOKEN_SQINCOMP,
-	TOKEN_SUBSHELL,
 	TOKEN_WORD,
 	TOKEN_NL
 }	t_tok_type;
 
 typedef enum e_lex_state {
-	STATE_AMPERSAND,
-	STATE_AND,
 	STATE_APPEND,
 	STATE_BRACE,
 	STATE_COMPLETE,
 	STATE_CONTINUE,
-	STATE_CPARENTHESIS,
 	STATE_DQUOTE,
 	STATE_HEREDOC,
 	STATE_INCOMPLETE,
 	STATE_INPUT,
 	STATE_INVALID,
-	STATE_OPARENTHESIS,
-	STATE_OR,
 	STATE_OUTPUT,
 	STATE_PIPE,
 	STATE_SKIP,
@@ -82,7 +72,6 @@ typedef struct s_cmd
 	int		output;
 	int		piping[2];
 	int		redir[2];
-	int		group_redir[2];
 	t_node	*redirect;
 	t_node	*word_tokens;
 	int		number;
@@ -138,14 +127,9 @@ typedef struct s_vlst
 }	t_vlst;
 
 typedef enum e_tree_type {
-	TREE_TYPE_AND,
 	TREE_TYPE_CMD,
-	TREE_TYPE_OR,
 	TREE_TYPE_PIPE,
-	TREE_TYPE_OPAR,
-	TREE_TYPE_CPAR,
 	TREE_TYPE_IGNORE,
-	TREE_TYPE_GROUP
 }		t_tree_type;
 
 typedef struct s_tree {
@@ -168,7 +152,6 @@ typedef struct s_ms
 	t_tree	*tmp_cmd;
 	t_node	*opstack;
 	t_queue	cmd_list;
-	int		num_pars;
 	t_bool	set_history;
 }	t_ms;
 

@@ -6,19 +6,17 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 18:43:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/04 14:50:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:23:16 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 void	del_incomplete_tree_node(void *tree)
 {
 	t_cmd	*cmd;
 
-	if (((t_tree *)tree)->type == TREE_TYPE_CMD
-		|| ((t_tree *)tree)->type == TREE_TYPE_GROUP)
+	if (((t_tree *)tree)->type == TREE_TYPE_CMD)
 	{
 		cmd = ((t_tree *)tree)->content;
 		if (cmd->word_tokens)

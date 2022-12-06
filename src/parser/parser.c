@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/05 21:04:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:18:58 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,9 @@
 
 static int	parse_token(t_ms *ms, t_tree **tree);
 static int	parse_optoken(t_ms *ms, t_tree **tree);
-static int	get_parenthesis(t_ms *ms, t_tree **tree);
 
 int	parser(t_ms *ms, int result)
 {
-	const char	*err_msg = "syntax error near unexpected token `)'";
-
 	if (result == ERR_INCOMP_OP && validate_line_start(ms))
 		return (print_token_error(ERR_BAD_SYNTAX, ms->token_list->content));
 	result = validate_tokens(ms->token_list);
@@ -35,10 +32,6 @@ int	parser(t_ms *ms, int result)
 				ms->tmp_cmd = NULL;
 		}
 	}
-	if (result == OK && ms->num_pars > 0)
-		return (ERR_INCOMP_OP);
-	if (ms->num_pars < 0)
-		return (error_message1(ERR_BAD_SYNTAX, (char *)err_msg));
 	if (result == OK)
 		result = flush_postfix(&(ms->opstack), &(ms->cmd_list));
 	return (result);
@@ -46,13 +39,8 @@ int	parser(t_ms *ms, int result)
 
 static int	parse_token(t_ms *ms, t_tree **tree)
 {
-	t_token	*token;
-
-	token = ms->token_list->content;
 	if (is_optoken(ms->token_list->content))
 		return (parse_optoken(ms, tree));
-	if (token->type == TOKEN_OPARENTHESIS || token->type == TOKEN_CPARENTHESIS)
-		return (get_parenthesis(ms, tree));
 	return (get_command(tree, ms));
 }
 
@@ -95,19 +83,4 @@ int	get_command(t_tree **cmd_node, t_ms *ms)
 		ms->token_list = remove_node(ms->token_list, del_token_node);
 	}
 	return (OK);
-}
-
-static int	get_parenthesis(t_ms *ms, t_tree **tree)
-{
-	t_tree_type	tree_type;
-
-	tree_type = tok_to_tree_type((t_token *)ms->token_list->content);
-	if (((t_token *)ms->token_list->content)->type == TOKEN_OPARENTHESIS)
-	{
-		ms->num_pars++;
-		ms->token_list = remove_node(ms->token_list, del_token_node);
-		return (new_op_node(tree, tree_type));
-	}
-	else
-		return (handle_close_parenthesis(ms, tree_type, tree));
 }

@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/05 22:06:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:24:39 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/chardefs.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>

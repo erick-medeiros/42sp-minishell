@@ -109,7 +109,7 @@ norm:
 	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
-	valgrind --leak-check=full --show-leak-kinds=all \
+	valgrind -q --leak-check=full --show-leak-kinds=all \
 	--suppressions=./tests/readline.supp --track-fds=yes --track-origins=yes \
 	./minishell
 

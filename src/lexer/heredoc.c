@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 02:35:57 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/24 12:22:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:08:03 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,10 @@ t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (STATE_INVALID);
 	if (next_ch == '|')
 		return (STATE_PIPE);
-	if (lexer_parenthesis(next_ch) != STATE_SKIP)
-		return (lexer_parenthesis(next_ch));
 	if (next_ch == '>')
 		return (STATE_OUTPUT);
 	if (next_ch == '<')
 		return (STATE_INPUT);
-	if (next_ch == '&')
-		return (STATE_AMPERSAND);
 	if (ft_isspace(next_ch))
 		return (STATE_SKIP);
 	if (next_ch == '\0')

@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 11:20:23 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:30:09 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
-#include "structs.h"
 
 int	command_redirect(t_cmd *cmd)
 {
@@ -82,8 +81,6 @@ void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
 		cmd->redirect = redir;
 		command_expansion_to_redirects(cmd, exec->env);
 		command_redirect(cmd);
-		cmd->group_redir[0] = cmd->redir[0];
-		cmd->group_redir[1] = cmd->redir[1];
 		cmd->redir[0] = STDIN;
 		cmd->redir[1] = STDOUT;
 		cmd->redirect = backup;
@@ -92,10 +89,6 @@ void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
 
 void	define_stds(t_cmd *cmd)
 {
-	if (cmd->group_redir[0] != STDIN)
-		cmd->input = cmd->group_redir[0];
-	if (cmd->group_redir[1] != STDOUT)
-		cmd->output = cmd->group_redir[1];
 	if (cmd->piping[0] != STDIN)
 		cmd->input = cmd->piping[0];
 	if (cmd->piping[1] != STDOUT)

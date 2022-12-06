@@ -6,13 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/01 19:33:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:31:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
-#include <signal.h>
 
 static void	print_signal_error_msg(char *msg, int coredump);
 

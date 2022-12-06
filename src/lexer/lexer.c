@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:31 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/03 21:57:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:12:15 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ static t_lex_state	get_next_state(size_t idx, t_node **tokens,
 {
 	t_st_func		f;
 	const t_st_func	state_funcs[] = {
-		handle_amp_state, handle_and_state, handle_append_state,
-		handle_brace_state, NULL, NULL, handle_cparenthesis_state,
-		handle_dquote_state, handle_heredoc_state, NULL,
-		handle_input_state, NULL, handle_oparenthesis_state,
-		handle_or_state, handle_output_state, handle_pipe_state,
-		handle_skip_state, handle_squote_state, handle_word_state
+		handle_append_state, handle_brace_state, NULL,
+		NULL, handle_dquote_state, handle_heredoc_state,
+		NULL, handle_input_state, NULL, handle_output_state,
+		handle_pipe_state, handle_skip_state,
+		handle_squote_state, handle_word_state
 	};
 
 	f = state_funcs[st];

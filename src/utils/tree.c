@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/04 14:48:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:07:56 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	destroy_execution_tree(void *root)
 	node = root;
 	if (!node->content)
 		return ;
-	if ((node->type == TREE_TYPE_CMD || node->type == TREE_TYPE_GROUP))
+	if (node->type == TREE_TYPE_CMD)
 		destroy_command(node->content);
 }
 
@@ -57,10 +57,5 @@ void	del_cmd_tree_node(void *tree)
 	node = (t_tree *)tree;
 	if (node->type == TREE_TYPE_CMD && node->content != NULL)
 		destroy_command((t_cmd *)(node->content));
-	else if (node->type == TREE_TYPE_GROUP)
-	{
-		del_incomplete_tree_node(node);
-		node = NULL;
-	}
 	free(node);
 }

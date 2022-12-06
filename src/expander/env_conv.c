@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 00:59:25 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/12 22:22:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:30:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "expander.h"
-#include "structs.h"
 
 static char	*copy_to_str(t_var *content, int export);
 static char	*copy_to_str_null_val(t_var *content);

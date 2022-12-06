@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:24:50 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 08:56:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:56:10 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@
 
 typedef t_lex_state	(*t_st_func)(size_t a, t_node **b, t_val_info *c);
 
-t_lex_state	handle_amp_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi);
+// t_lex_state	handle_amp_state(size_t idx, t_node **tokens, t_val_info *vi);
+// t_lex_state	handle_and_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_append_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_brace_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_continue_state(t_node **tokens, t_val_info *vi);
 t_lex_state	handle_dquote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_heredoc_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_input_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_or_state(size_t idx, t_node **tokens, t_val_info *vi);
+// t_lex_state	handle_or_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_output_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	handle_oparenthesis_state(size_t idx, t_node **tokens,
-				t_val_info *vi);
-t_lex_state	handle_cparenthesis_state(size_t idx, t_node **tokens,
-				t_val_info *vi);
+// t_lex_state	handle_oparenthesis_state(size_t idx, t_node **tokens,
+				// t_val_info *vi);
+// t_lex_state	handle_cparenthesis_state(size_t idx, t_node **tokens,
+				// t_val_info *vi);
 t_lex_state	handle_pipe_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_skip_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi);
 t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi);
-t_lex_state	lexer_parenthesis(char next_ch);
+// t_lex_state	lexer_parenthesis(char next_ch);
 int			new_token(t_node **tokens, t_tok_type tok_type);
 int			new_token_filled(t_node **tokens, t_tok_type type, char *value);
 int			new_token_with_val(t_node **tokens, t_tok_type tok_type,

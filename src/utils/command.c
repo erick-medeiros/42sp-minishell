@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/02 17:04:47 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 19:06:52 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_cmd	*new_command(void)
 	cmd->piping[1] = STDOUT;
 	cmd->redir[0] = STDIN;
 	cmd->redir[1] = STDOUT;
-	cmd->group_redir[0] = STDIN;
-	cmd->group_redir[1] = STDOUT;
 	cmd->pid = 0;
 	cmd->status = 0;
 	cmd->isbuiltin = FALSE;
@@ -56,7 +54,5 @@ void	destroy_command(t_cmd *cmd)
 	close_safe(cmd->redir[1]);
 	close_safe(cmd->piping[0]);
 	close_safe(cmd->piping[1]);
-	close_safe(cmd->group_redir[0]);
-	close_safe(cmd->group_redir[1]);
 	free(cmd);
 }

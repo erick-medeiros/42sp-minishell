@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/05 20:26:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:04:56 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	process_line(char **line, t_ms *ms)
 	int		result;
 	char	*history;
 
-	ms->num_pars = 0;
 	result = ERR_INCOMP_OP;
 	history = strdup(*line);
 	ms->cmd_list.front = NULL;

@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 09:54:27 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:23:55 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
 
 static int	print_token_type_error(int status, t_tok_type tok_type);
 
@@ -58,10 +57,6 @@ static int	print_token_type_error(int status, t_tok_type tok_type)
 	ft_putstr_fd("minishell: syntax error", STDERR);
 	if (tok_type == TOKEN_PIPE)
 		ft_putstr_fd(" near unexpected token `|'\n", STDERR);
-	else if (tok_type == TOKEN_AND)
-		ft_putstr_fd(" near unexpected token `&&'\n", STDERR);
-	else if (tok_type == TOKEN_OR)
-		ft_putstr_fd(" near unexpected token `||'\n", STDERR);
 	else if (tok_type == TOKEN_NL)
 		ft_putstr_fd(" near unexpected token `newline'\n", STDERR);
 	else if (tok_type == TOKEN_APPEND)
@@ -72,10 +67,6 @@ static int	print_token_type_error(int status, t_tok_type tok_type)
 		ft_putstr_fd(" near unexpected token `>'\n", STDERR);
 	else if (tok_type == TOKEN_HEREDOC)
 		ft_putstr_fd(" near unexpected token `<<'\n", STDERR);
-	else if (tok_type == TOKEN_OPARENTHESIS)
-		ft_putstr_fd(" near unexpected token `('\n", STDERR);
-	else if (tok_type == TOKEN_CPARENTHESIS)
-		ft_putstr_fd(" near unexpected token `)'\n", STDERR);
 	else
 		ft_putstr_fd("\n", STDERR);
 	return (status);
@@ -83,45 +74,7 @@ static int	print_token_type_error(int status, t_tok_type tok_type)
 
 int	validate_line_start(t_ms *ms)
 {
-	t_tree_type	t;
-
 	if (ms->token_list)
-	{
-		if (ms->cmd_list.front == NULL && ms->tmp_cmd == NULL)
-		{
-			return (is_optoken(ms->token_list->content)
-				|| ((t_token *)ms->token_list->content)->type
-				== TOKEN_CPARENTHESIS);
-		}
-		if (ms->opstack)
-		{
-			t = ((t_tree *) ms->opstack->content)->type;
-			if (t == TREE_TYPE_AND || t == TREE_TYPE_OR || t == TREE_TYPE_PIPE)
-				return (is_optoken(ms->token_list->content));
-		}
-		return (!(is_optoken(ms->token_list->content)
-				|| ((t_token *)ms->token_list->content)->type
-				== TOKEN_CPARENTHESIS));
-	}
-	return (OK);
-}
-
-int	handle_close_parenthesis(t_ms *ms, t_tree_type tree_type, t_tree **tree)
-{
-	int	result;
-
-	ms->num_pars--;
-	ms->token_list = remove_node(ms->token_list, del_token_node);
-	result = new_op_node(tree, tree_type);
-	if (result != OK)
-		return (result);
-	while (ms->token_list
-		&& is_redir_token(((t_token *)ms->token_list->content)->type))
-	{
-		result = handle_group_redirect_token(*tree, ms);
-		if (result != OK)
-			return (result);
-		ms->token_list = remove_node(ms->token_list, del_token_node);
-	}
+		return (is_optoken(ms->token_list->content));
 	return (OK);
 }

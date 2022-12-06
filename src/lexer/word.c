@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:50 by gmachado          #+#    #+#             */
-/*   Updated: 2022/11/24 12:21:04 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/06 17:15:30 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,10 @@ t_lex_state	handle_word_state(size_t idx, t_node **tokens, t_val_info *vi)
 		return (handle_word_state_braces(next_ch, tokens, vi));
 	if (next_ch == '|')
 		return (new_word_token(tokens, vi, STATE_PIPE));
-	if (lexer_parenthesis(next_ch) != STATE_SKIP)
-		return (new_word_token(tokens, vi, lexer_parenthesis(next_ch)));
 	if (next_ch == '>')
 		return (new_word_token(tokens, vi, STATE_OUTPUT));
 	if (next_ch == '<')
 		return (new_word_token(tokens, vi, STATE_INPUT));
-	if (next_ch == '&')
-		return (new_word_token(tokens, vi, STATE_AMPERSAND));
 	if (ft_isspace(next_ch))
 		return (new_word_token(tokens, vi, STATE_SKIP));
 	if (next_ch == '\0')
