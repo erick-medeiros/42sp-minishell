@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 19:57:23 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/05 20:42:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 09:54:27 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ int	validate_line_start(t_ms *ms)
 				return (is_optoken(ms->token_list->content));
 		}
 		return (!(is_optoken(ms->token_list->content)
-			|| ((t_token *)ms->token_list->content)->type
-			== TOKEN_CPARENTHESIS));
+				|| ((t_token *)ms->token_list->content)->type
+				== TOKEN_CPARENTHESIS));
 	}
 	return (OK);
 }
