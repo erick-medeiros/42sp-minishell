@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/04 18:56:40 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/05 21:04:36 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	parser(t_ms *ms, int result)
 				ms->tmp_cmd = NULL;
 		}
 	}
-	if (ms->num_pars > 0)
+	if (result == OK && ms->num_pars > 0)
 		return (ERR_INCOMP_OP);
 	if (ms->num_pars < 0)
 		return (error_message1(ERR_BAD_SYNTAX, (char *)err_msg));

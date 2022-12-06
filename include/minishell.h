@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/05 12:11:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/05 22:06:29 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@
 # define PROMPT_MAX_LEN 1000
 
 # define PROMPT_STRING "minishell "
-# define PROMPT_EXTRA_SQ "continue single quote > "
-# define PROMPT_EXTRA_DQ "continue double quote > "
-# define PROMPT_EXTRA_BRC "continue brace > "
-# define PROMPT_EXTRA_OP "continue pipe > "
+# define PROMPT_EXTRA_SQ "single quote > "
+# define PROMPT_EXTRA_DQ "double quote > "
+# define PROMPT_EXTRA_BRC "var > "
+# define PROMPT_EXTRA_OP "command > "
 # define PROMPT_HEREDOC "heredoc > "
 # define PROMPT_CONTINUE "> "
 
