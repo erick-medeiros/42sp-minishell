@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 17:04:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:13:22 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	process_line(char **line, t_ms *ms)
 		result = handle_parse_result(result, line, &history, ms);
 	}
 	free(*line);
-	if (ms->set_history)
+	if (ms->set_history && *history != '\0')
 		add_history(history);
 	free(history);
 	if (result == OK)
