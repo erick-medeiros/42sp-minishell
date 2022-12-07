@@ -106,8 +106,8 @@ install:
 
 norm:
 	@clear
-	@echo "norminette include/ libft/ src/ | grep Error"
-	@norminette include/ libft/ src/ | grep Error || true
+	@echo "norminette include/ libft/ src/ bonus/ | grep Error"
+	@norminette include/ libft/ src/ bonus/ | grep Error || true
 
 leaks:
 	valgrind -q --leak-check=full --show-leak-kinds=all --trace-children=yes \
