@@ -98,6 +98,8 @@ fclean: clean
 
 re: fclean all
 
+rebonus: fclean bonus
+
 install:
 	sudo apt install libreadline-dev clang-format bear
 	bear -- make re
