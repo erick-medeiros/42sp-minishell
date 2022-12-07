@@ -6,12 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:24:50 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:23:47 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:49:15 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef LEXER_BONUS_H
+# define LEXER_BONUS_H
 
 # include "minishell_bonus.h"
 

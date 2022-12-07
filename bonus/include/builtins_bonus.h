@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef BUILTINS_BONUS_H
+# define BUILTINS_BONUS_H
 
 # include "minishell_bonus.h"
 

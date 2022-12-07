@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPANDER_H
-# define EXPANDER_H
+#ifndef EXPANDER_BONUS_H
+# define EXPANDER_BONUS_H
 
 # include <sys/stat.h>
 # include "minishell_bonus.h"

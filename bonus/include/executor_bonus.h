@@ -6,12 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 21:52:49 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:49:01 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
+#ifndef EXECUTOR_BONUS_H
+# define EXECUTOR_BONUS_H
 
 # include "minishell_bonus.h"
 
