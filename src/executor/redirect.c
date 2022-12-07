@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:30:09 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:14:42 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,30 +61,6 @@ int	open_redir(char *pathname, int token_type)
 		fd = *p_int;
 	}
 	return (fd);
-}
-
-void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
-{
-	t_cmd	*cmd;
-	t_node	*backup;
-
-	if (!root)
-		return ;
-	if (root->left)
-		redirect_command_list(exec, root->left, redir);
-	if (root->right)
-		redirect_command_list(exec, root->right, redir);
-	if (root->type == TREE_TYPE_CMD)
-	{
-		cmd = root->content;
-		backup = cmd->redirect;
-		cmd->redirect = redir;
-		command_expansion_to_redirects(cmd, exec->env);
-		command_redirect(cmd);
-		cmd->redir[0] = STDIN;
-		cmd->redir[1] = STDOUT;
-		cmd->redirect = backup;
-	}
 }
 
 void	define_stds(t_cmd *cmd)

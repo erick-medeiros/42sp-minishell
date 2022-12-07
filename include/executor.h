@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 22:03:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:14:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 void	tree_executor(t_exec *exec, t_tree *node, int in, int out);
 void	tree_pipe_executor(t_exec *exec, t_tree *node, int in, int out);
 void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out);
-// void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out);
 void	destroy_exec(t_exec *exec);
 
 // Expander
@@ -38,7 +37,6 @@ t_node	*append_list(t_node *node, t_node *append);
 
 int		command_redirect(t_cmd *cmd);
 int		open_redir(char *pathname, int token_type);
-void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redirs);
 void	define_stds(t_cmd *cmd);
 
 // Search
