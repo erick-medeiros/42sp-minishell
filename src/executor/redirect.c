@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 14:53:02 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:18:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	define_stds(t_cmd *cmd)
 		cmd->output = cmd->redir[1];
 }
 
-void close_command_redirects(t_cmd *cmd)
+void	close_command_redirects(t_cmd *cmd)
 {
 	close_safe(cmd->piping[0]);
 	close_safe(cmd->piping[1]);

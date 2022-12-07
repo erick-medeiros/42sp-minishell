@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   postfix_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:42:05 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 15:28:21 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 15:19:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "parser_bonus.h"
-
 
 static int	push_postfix_parenthesis(t_node **opstack, t_queue *cmds,
 				t_tree *tree);
