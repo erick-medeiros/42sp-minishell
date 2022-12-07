@@ -6,14 +6,13 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:16:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:28:07 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:52:04 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander_bonus.h"
 #include "minishell_bonus.h"
 #include "parser_bonus.h"
-#include <readline/readline.h>
 
 static int	read_heredoc_line(int fd, char *delim, t_vlst *env, char **line);
 

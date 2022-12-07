@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 01:40:20 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 17:06:59 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:53:25 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
-#include "structs.h"
 
 t_lex_state	handle_brace_state(size_t idx, t_node **tokens, t_val_info *vi)
 {

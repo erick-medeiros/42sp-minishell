@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/01 16:07:57 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:07:56 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:43 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 t_tree	*new_tree_node(t_tree_type type)
 {

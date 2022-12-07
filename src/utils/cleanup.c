@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:32:03 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 19:06:02 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:28 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 void	clear_list(t_node *lst, void (*del_node)(void *))
 {

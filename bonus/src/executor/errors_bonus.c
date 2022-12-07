@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 23:36:34 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 15:26:32 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:50:46 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
-#include <signal.h>
 
 static void	print_signal_error_msg(char *msg, int coredump);
 

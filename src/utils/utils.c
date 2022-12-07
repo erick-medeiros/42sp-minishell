@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 14:38:59 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:08:10 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:47 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 void	close_safe(int fd)
 {

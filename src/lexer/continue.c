@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 03:56:27 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 17:07:30 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:53:30 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "lexer.h"
-#include "structs.h"
 
 static t_lex_state	set_val_info(t_lex_state st, t_val_info *vi, t_bool braces);
 

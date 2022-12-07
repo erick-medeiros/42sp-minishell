@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 03:22:19 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 17:14:57 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:53:49 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 #include "lexer.h"
 
 t_lex_state	handle_squote_state(size_t idx, t_node **tokens, t_val_info *vi)

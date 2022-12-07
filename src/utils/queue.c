@@ -6,12 +6,11 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 00:56:53 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 19:07:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:37 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structs.h"
 
 t_queue	*new_queue(void)
 {

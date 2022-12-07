@@ -6,15 +6,13 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 17:51:42 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 19:08:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:54 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "libft.h"
 #include "minishell.h"
 #include "expander.h"
-#include "structs.h"
 
 void	print_sorted_vars(t_vlst *vars, char *prefix)
 {

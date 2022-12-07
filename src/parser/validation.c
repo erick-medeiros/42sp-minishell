@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 05:12:15 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 22:07:25 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:54:15 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser.h"
-#include "structs.h"
 
 static int	is_valid_pair(t_tok_type cur, t_tok_type next);
 

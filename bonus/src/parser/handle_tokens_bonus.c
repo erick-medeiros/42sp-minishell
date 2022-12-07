@@ -6,13 +6,12 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 04:23:02 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 15:27:59 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:55:14 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 #include "parser_bonus.h"
-#include <readline/chardefs.h>
 
 static int	save_redirect(t_node **lst, t_tok_type rd_type,
 				char *filename, t_ms *ms);
