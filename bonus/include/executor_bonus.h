@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:23:19 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 21:52:49 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	execute_in_shell(t_exec *exec, t_cmd *cmd);
 void	execute_in_subshell(t_exec *exec, t_cmd *cmd);
 int		execute_builtin(t_exec *exec, t_cmd *cmd);
 int		execute_program(t_exec *exec, t_cmd *cmd);
+void	dup_and_close(t_cmd *cmd);
 
 // Error handling
 void	print_signal_error(int exit_status, int coredump);

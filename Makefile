@@ -108,9 +108,14 @@ norm:
 	@norminette include/ libft/ src/ | grep Error || true
 
 leaks:
-	valgrind -q --leak-check=full --show-leak-kinds=all \
+	valgrind -q --leak-check=full --show-leak-kinds=all --trace-children=yes \
 	--suppressions=./tests/readline.supp --track-fds=yes --track-origins=yes \
 	./minishell
+
+b_leaks:
+	valgrind -q --leak-check=full --show-leak-kinds=all --trace-children=yes \
+	--suppressions=./tests/readline.supp --track-fds=yes --track-origins=yes \
+	./minishell_bonus
 
 compile_tests: re
 	make re -C tests/unit/
@@ -118,4 +123,4 @@ compile_tests: re
 unit_tests:
 	./tests/unit/run_test.out
 
-.PHONY: all clean compile_tests fclean install libft norm leaks re unit_tests
+.PHONY: all bonus b_leaks clean compile_tests fclean install libft norm leaks re unit_tests

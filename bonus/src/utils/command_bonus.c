@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:22:11 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 22:01:35 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,19 @@ void	destroy_command(t_cmd *cmd)
 	free(cmd->pathname);
 	free_string_list(cmd->envp);
 	clear_list(cmd->word_tokens, free_token);
+	free(cmd);
+}
+
+void	dup_and_close(t_cmd *cmd)
+{
+	dup2(cmd->input, STDIN);
+	dup2(cmd->output, STDOUT);
+	cmd->input = STDIN;
+	cmd->output = STDOUT;
 	close_safe(cmd->redir[0]);
 	close_safe(cmd->redir[1]);
 	close_safe(cmd->piping[0]);
 	close_safe(cmd->piping[1]);
 	close_safe(cmd->group_redir[0]);
 	close_safe(cmd->group_redir[1]);
-	free(cmd);
 }

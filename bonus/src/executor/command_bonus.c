@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:18:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/06 22:01:26 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 		if (cmd->argc == 0)
 			builtin_exit(exec, cmd->status);
 		define_stds(cmd);
-		dup2(cmd->input, STDIN);
-		dup2(cmd->output, STDOUT);
-		cmd->input = STDIN;
-		cmd->output = STDOUT;
+		dup_and_close(cmd);
 		if (cmd->isbuiltin)
 			exec->env->last_status = execute_builtin(exec, cmd);
 		else
