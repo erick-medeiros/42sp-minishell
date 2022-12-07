@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 12:49:01 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:49:55 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int		command_redirect(t_cmd *cmd);
 int		open_redir(char *pathname, int token_type);
 void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redirs);
 void	define_stds(t_cmd *cmd);
+void	close_command_redirects(t_cmd *cmd);
 
 // Search
 
@@ -58,7 +59,6 @@ void	execute_in_shell(t_exec *exec, t_cmd *cmd);
 void	execute_in_subshell(t_exec *exec, t_cmd *cmd);
 int		execute_builtin(t_exec *exec, t_cmd *cmd);
 int		execute_program(t_exec *exec, t_cmd *cmd);
-void	dup_and_close(t_cmd *cmd);
 
 // Error handling
 void	print_signal_error(int exit_status, int coredump);

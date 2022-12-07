@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:18:31 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:17:00 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (cmd->pid == 0)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_safe_pipeline(exec->commands, in, out);
+		close_pipeline(exec->commands);
 		execution_sync(exec);
 		builtin_exit(exec, exec->env->last_status);
 	}

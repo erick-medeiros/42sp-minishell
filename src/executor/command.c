@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 22:03:25 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:54:02 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 		if (cmd->argc == 0)
 			builtin_exit(exec, cmd->status);
 		define_stds(cmd);
-		dup_and_close(cmd);
+		dup2(cmd->input, STDIN);
+		dup2(cmd->output, STDOUT);
+		cmd->input = STDIN;
+		cmd->output = STDOUT;
+		close_command_redirects(cmd);
 		if (cmd->isbuiltin)
 			exec->env->last_status = execute_builtin(exec, cmd);
 		else
