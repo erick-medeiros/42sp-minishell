@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 20:28:17 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 18:25:29 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 10:17:15 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_tree	*build_tree_postfix(t_ms *ms)
 
 static t_bool	is_operand(t_tree *t)
 {
-	return (t->type == TREE_TYPE_CMD || t->type == TREE_TYPE_IGNORE);
+	return (t->type == TREE_TYPE_CMD);
 }
 
 static int	build_tree_node(t_node **tmp_stack, t_tree *root)
