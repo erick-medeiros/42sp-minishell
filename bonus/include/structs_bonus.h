@@ -6,7 +6,7 @@
 /*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:11:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:24:02 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:42:24 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ typedef struct s_cmd
 	int		group_redir[2];
 	t_node	*redirect;
 	t_node	*word_tokens;
-	int		number;
 	char	**envp;
 	t_bool	isbuiltin;
 	t_bool	ispipeline;
