@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:18:36 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 09:11:27 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 #include "expander_bonus.h"
 #include "minishell_bonus.h"
 
-t_bool		ignore_token(t_tok_type type);
 static int	shell_expansion_parameter(t_node **tokens, t_vlst *env);
 static int	shell_expansion_filename(t_node **tokens, t_bool limited);
 static int	shell_expansion_quote_removal(t_node **tokens);
-//
 
 int	command_expansion_to_words(t_cmd *cmd, t_vlst *env)
 {
