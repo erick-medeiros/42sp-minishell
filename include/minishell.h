@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 18:24:39 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:16:45 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void		free_minishell(t_ms *ms);
 void		free_string_list(char **str);
 void		free_token(void *content);
 void		destroy_queue(t_queue *queue, void (*del_node)(void *));
-void		close_safe(int fd);
+int			close_safe(int fd);
 void		del_incomplete_tree_node(void *tree);
 void		clear_incomplete(t_node **opstack, t_tree **tree);
 

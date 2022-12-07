@@ -3,46 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:33:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:26:50 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:05:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
 
-void	close_pipeline(t_tree *root)
+void	close_tree_redirects(t_tree *root, int in, int out)
 {
 	int	*pfd;
 
 	if (!root)
 		return ;
 	if (root->left)
-		close_pipeline(root->left);
+		close_tree_redirects(root->left, in, out);
 	if (root->right)
-		close_pipeline(root->right);
-	if (root->type == TREE_TYPE_PIPE && root->content)
-	{
-		pfd = root->content;
-		close_safe(pfd[0]);
-		close_safe(pfd[1]);
-		free(root->content);
-		root->content = NULL;
-	}
-}
-
-void	close_safe_pipeline(t_tree *root, int in, int out)
-{
-	int	*pfd;
-
-	if (!root)
-		return ;
-	if (root->left)
-		close_safe_pipeline(root->left, in, out);
-	if (root->right)
-		close_safe_pipeline(root->right, in, out);
+		close_tree_redirects(root->right, in, out);
 	if (root->type == TREE_TYPE_PIPE && root->content)
 	{
 		pfd = root->content;
@@ -55,11 +35,12 @@ void	close_safe_pipeline(t_tree *root, int in, int out)
 	}
 }
 
-void	execution_sync(t_exec *exec)
+void	execution_sync(t_exec *exec, int in, int out)
 {
 	t_cmd	*cmd;
 	t_bool	coredump;
 
+	close_tree_redirects(exec->commands, in, out);
 	coredump = FALSE;
 	cmd = dequeue(exec->queue);
 	while (cmd)
@@ -83,7 +64,7 @@ void	execution_sync(t_exec *exec)
 
 void	destroy_exec(t_exec *exec)
 {
-	close_pipeline(exec->commands);
+	close_tree_redirects(exec->commands, STDIN, STDOUT);
 	if (exec->commands)
 		destroy_tree(exec->commands, destroy_execution_tree);
 	if (exec->queue)

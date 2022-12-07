@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 14:49:59 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:13:35 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ t_cmd	*new_command(void)
 	cmd->piping[1] = STDOUT;
 	cmd->redir[0] = STDIN;
 	cmd->redir[1] = STDOUT;
-	cmd->group_redir[0] = STDIN;
-	cmd->group_redir[1] = STDOUT;
 	cmd->pid = 0;
 	cmd->status = 0;
 	cmd->isbuiltin = FALSE;

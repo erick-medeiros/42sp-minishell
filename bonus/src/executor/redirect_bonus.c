@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 15:19:31 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:10:47 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,38 +63,8 @@ int	open_redir(char *pathname, int token_type)
 	return (fd);
 }
 
-void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redir)
-{
-	t_cmd	*cmd;
-	t_node	*backup;
-
-	if (!root)
-		return ;
-	if (root->left)
-		redirect_command_list(exec, root->left, redir);
-	if (root->right)
-		redirect_command_list(exec, root->right, redir);
-	if (root->type == TREE_TYPE_CMD)
-	{
-		cmd = root->content;
-		backup = cmd->redirect;
-		cmd->redirect = redir;
-		command_expansion_to_redirects(cmd, exec->env);
-		command_redirect(cmd);
-		cmd->group_redir[0] = cmd->redir[0];
-		cmd->group_redir[1] = cmd->redir[1];
-		cmd->redir[0] = STDIN;
-		cmd->redir[1] = STDOUT;
-		cmd->redirect = backup;
-	}
-}
-
 void	define_stds(t_cmd *cmd)
 {
-	if (cmd->group_redir[0] != STDIN)
-		cmd->input = cmd->group_redir[0];
-	if (cmd->group_redir[1] != STDOUT)
-		cmd->output = cmd->group_redir[1];
 	if (cmd->piping[0] != STDIN)
 		cmd->input = cmd->piping[0];
 	if (cmd->piping[1] != STDOUT)
@@ -107,16 +77,8 @@ void	define_stds(t_cmd *cmd)
 
 void	close_command_redirects(t_cmd *cmd)
 {
-	close_safe(cmd->group_redir[0]);
-	close_safe(cmd->group_redir[1]);
-	cmd->group_redir[0] = -1;
-	cmd->group_redir[1] = -1;
-	close_safe(cmd->piping[0]);
-	close_safe(cmd->piping[1]);
-	cmd->piping[0] = -1;
-	cmd->piping[1] = -1;
-	close_safe(cmd->redir[0]);
-	close_safe(cmd->redir[1]);
-	cmd->redir[0] = -1;
-	cmd->redir[1] = -1;
+	cmd->piping[0] = close_safe(cmd->piping[0]);
+	cmd->piping[1] = close_safe(cmd->piping[1]);
+	cmd->redir[0] = close_safe(cmd->redir[0]);
+	cmd->redir[1] = close_safe(cmd->redir[1]);
 }

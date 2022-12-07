@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 14:35:38 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:19:24 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 		cmd->status = error_message2(1, "fork failed", strerror(errno));
 	else if (cmd->pid == 0)
 	{
-		close_safe_pipeline(exec->commands, cmd->piping[0], cmd->piping[1]);
+		dup2(cmd->piping[0], STDIN);
+		dup2(cmd->piping[1], STDOUT);
+		close_tree_redirects(exec->commands, STDIN, STDOUT);
 		cmd->status = command_redirect(cmd);
 		if (cmd->status != OK)
 			builtin_exit(exec, cmd->status);

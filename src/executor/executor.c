@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:29:48 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:06:09 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	executor(t_ms *ms)
 	exec->env = &ms->env_list;
 	free_minishell(ms);
 	tree_executor(exec, exec->commands, STDIN, STDOUT);
-	close_pipeline(exec->commands);
-	execution_sync(exec);
+	execution_sync(exec, STDIN, STDOUT);
 	destroy_exec(exec);
 }
 

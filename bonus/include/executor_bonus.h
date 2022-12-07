@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 14:49:55 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 19:59:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_node	*append_list(t_node *node, t_node *append);
 
 int		command_redirect(t_cmd *cmd);
 int		open_redir(char *pathname, int token_type);
-void	redirect_command_list(t_exec *exec, t_tree *root, t_node *redirs);
 void	define_stds(t_cmd *cmd);
 void	close_command_redirects(t_cmd *cmd);
 
@@ -48,9 +47,8 @@ int		command_search(t_cmd *cmd, t_vlst *env);
 
 // Pipeline
 
-void	execution_sync(t_exec *exec);
-void	close_pipeline(t_tree *root);
-void	close_safe_pipeline(t_tree *root, int in, int out);
+void	execution_sync(t_exec *exec, int in, int out);
+void	close_tree_redirects(t_tree *root, int in, int out);
 
 // Command
 

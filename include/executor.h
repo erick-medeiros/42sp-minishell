@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 14:54:34 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 20:03:54 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ int		command_search(t_cmd *cmd, t_vlst *env);
 
 // Pipeline
 
-void	execution_sync(t_exec *exec);
-void	close_pipeline(t_tree *root);
-void	close_safe_pipeline(t_tree *root, int in, int out);
+void	execution_sync(t_exec *exec, int in, int out);
+void	close_tree_redirects(t_tree *root, int in, int out);
 
 // Command
 

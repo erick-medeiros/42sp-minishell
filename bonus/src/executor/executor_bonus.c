@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 12:17:00 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 19:58:11 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	executor(t_ms *ms)
 	exec->env = &ms->env_list;
 	free_minishell(ms);
 	tree_executor(exec, exec->commands, STDIN, STDOUT);
-	close_pipeline(exec->commands);
-	execution_sync(exec);
+	execution_sync(exec, STDIN, STDOUT);
 	destroy_exec(exec);
 }
 
@@ -78,16 +77,14 @@ void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (node->type == TREE_TYPE_AND)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_safe_pipeline(exec->commands, in, out);
-		execution_sync(exec);
+		execution_sync(exec, in, out);
 		if (exec->env->last_status == 0)
 			tree_executor(exec, node->right, in, out);
 	}
 	else if (node->type == TREE_TYPE_OR)
 	{
 		tree_executor(exec, node->left, in, out);
-		close_safe_pipeline(exec->commands, in, out);
-		execution_sync(exec);
+		execution_sync(exec, in, out);
 		if (exec->env->last_status != 0)
 			tree_executor(exec, node->right, in, out);
 	}
@@ -95,19 +92,23 @@ void	tree_list_executor(t_exec *exec, t_tree *node, int in, int out)
 
 void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 {
-	t_cmd	*cmd;
+	t_cmd	*group_cmd;
 
 	if (!node || !node->left)
 		return ;
-	cmd = node->content;
-	redirect_command_list(exec, node->left, cmd->redirect);
-	cmd->pid = fork();
-	if (cmd->pid == 0)
+	group_cmd = node->content;
+	command_expansion_to_redirects(group_cmd, exec->env);
+	command_redirect(group_cmd);
+	group_cmd->pid = fork();
+	if (group_cmd->pid == 0)
 	{
+		if (in == STDIN)
+			in = group_cmd->redir[0];
+		if (out == STDOUT)
+			out = group_cmd->redir[1];
 		tree_executor(exec, node->left, in, out);
-		close_pipeline(exec->commands);
-		execution_sync(exec);
+		execution_sync(exec, STDIN, STDOUT);
 		builtin_exit(exec, exec->env->last_status);
 	}
-	enqueue(exec->queue, cmd);
+	enqueue(exec->queue, group_cmd);
 }
