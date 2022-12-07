@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parameter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 11:08:48 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:20:22 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:26:43 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ static int	parameter_size(char *str)
 		if (str[i++] != '}')
 			return (i);
 	}
-	else if (!ft_isalnum(str[i]) && str[i] != ' ')
+	else if (str[i] == '?')
 		++i;
 	else
-		while (str[i] && ft_isalnum(str[i]) && str[i] != ' ')
+		while (str[i] && ft_isalnum(str[i]))
 			++i;
 	return (i);
 }
@@ -129,11 +129,10 @@ static char	*get_parameter_name(char *parameter)
 		++parameter;
 	}
 	i = 0;
-	if (ft_isalnum(parameter[i]))
-		while (parameter[i] && ft_isalnum(parameter[i]))
-			++i;
-	else if (parameter[0] != ' ' || (braces && parameter[0] != '}'))
-		i = 1;
+	while (parameter[i]
+		&& ((!braces && ft_isalnum(parameter[i]))
+			|| (braces && parameter[i] != '}')))
+		++i;
 	name = malloc(sizeof(char) * (i + 1));
 	ft_strlcpy(name, parameter, i + 1);
 	return (name);
