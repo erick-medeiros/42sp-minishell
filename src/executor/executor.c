@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 22:55:56 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:02:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	executor(t_ms *ms)
 	queue.rear = NULL;
 	exec->queue = &queue;
 	exec->env = &ms->env_list;
-	free_minishell(ms);
+	clear_minishell(ms);
 	tree_executor(exec, exec->commands, STDIN, STDOUT);
 	execution_sync(exec, STDIN, STDOUT);
 	destroy_exec(exec);

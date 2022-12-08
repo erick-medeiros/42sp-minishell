@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 19:23:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:02:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void		del_token_node(void *content);
 void		del_var_node(void *content);
 void		destroy_command(t_cmd *command);
 void		destroy_minishell(t_ms *ms);
-void		free_minishell(t_ms *ms);
+void		clear_minishell(t_ms *ms);
 void		free_string_list(char **str);
 void		free_token(void *content);
 void		destroy_queue(t_queue *queue, void (*del_node)(void *));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 19:05:35 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:02:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_minishell(t_ms *ms, char **envp)
 		envp_to_list(envp, &ms->env_list);
 }
 
-void	free_minishell(t_ms *ms)
+void	clear_minishell(t_ms *ms)
 {
 	if (ms->token_list)
 	{
@@ -46,7 +46,7 @@ void	free_minishell(t_ms *ms)
 
 void	destroy_minishell(t_ms *ms)
 {
-	free_minishell(ms);
+	clear_minishell(ms);
 	if (ms->env_list.list)
 		clear_list(ms->env_list.list, del_var_node);
 	rl_clear_history();
@@ -56,7 +56,7 @@ void	shell(t_ms *ms, char **line)
 {
 	ms->set_history = FALSE;
 	process_line(line, ms);
-	free_minishell(ms);
+	clear_minishell(ms);
 }
 
 void	shell_loop(t_ms *ms)
@@ -76,6 +76,6 @@ void	shell_loop(t_ms *ms)
 			break ;
 		}
 		process_line(&line, ms);
-		free_minishell(ms);
+		clear_minishell(ms);
 	}
 }
