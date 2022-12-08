@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 22:35:54 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/08 08:50:11 by gmachado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	tree_group_executor(t_exec *exec, t_tree *node, int in, int out)
 		if (group_cmd->output != STDOUT)
 			out = group_cmd->output;
 		tree_executor(exec, node->left, in, out);
-		execution_sync(exec, STDIN, STDOUT);
+		execution_sync(exec, in, out);
 		builtin_exit(exec, exec->env->last_status);
 	}
 	enqueue(exec->queue, group_cmd);
