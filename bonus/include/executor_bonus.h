@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:14:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 19:59:43 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:12:20 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ t_node	*append_list(t_node *node, t_node *append);
 
 // Redirect
 
-int		command_redirect(t_cmd *cmd);
-int		open_redir(char *pathname, int token_type);
-void	define_stds(t_cmd *cmd);
-void	close_command_redirects(t_cmd *cmd);
+int		command_redirect(t_cmd *cmd, t_vlst *env);
+void	update_stds(t_cmd *cmd);
 
 // Search
 

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:47:53 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 09:11:27 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:20:15 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int	command_expansion_to_words(t_cmd *cmd, t_vlst *env)
 		return (1);
 	if (shell_expansion_quote_removal(&cmd->word_tokens) != 0)
 		return (1);
+	cmd->status = convert_tokens_to_argv(cmd);
+	if (cmd->status != 0)
+		return (cmd->status);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 18:36:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 20:13:35 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:39:19 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,10 @@ t_cmd	*new_command(void)
 	cmd->envp = NULL;
 	cmd->input = STDIN;
 	cmd->output = STDOUT;
-	cmd->piping[0] = STDIN;
-	cmd->piping[1] = STDOUT;
-	cmd->redir[0] = STDIN;
-	cmd->redir[1] = STDOUT;
 	cmd->pid = 0;
 	cmd->status = 0;
 	cmd->isbuiltin = FALSE;
-	cmd->ispipeline = FALSE;
+	cmd->subshell = FALSE;
 	cmd->redirect = NULL;
 	cmd->word_tokens = NULL;
 	return (cmd);
@@ -51,6 +47,7 @@ void	destroy_command(t_cmd *cmd)
 	free(cmd->pathname);
 	free_string_list(cmd->envp);
 	clear_list(cmd->word_tokens, free_token);
-	close_command_redirects(cmd);
+	close_safe(cmd->input);
+	close_safe(cmd->output);
 	free(cmd);
 }

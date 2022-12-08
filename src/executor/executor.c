@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 20:06:09 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:55:56 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	tree_executor(t_exec *exec, t_tree *node, int in, int out)
 	if (node->type == TREE_TYPE_CMD)
 	{
 		cmd = node->content;
-		cmd->piping[0] = in;
-		cmd->piping[1] = out;
+		cmd->input = in;
+		cmd->output = out;
 		execute_command(exec, cmd);
 		enqueue(exec->queue, cmd);
 	}
@@ -61,9 +61,9 @@ void	tree_pipe_executor(t_exec *exec, t_tree *node, int in, int out)
 		error_message1(1, "pipe failed");
 	node->content = pfd;
 	if (node->left && node->left->type == TREE_TYPE_CMD)
-		((t_cmd *)node->left->content)->ispipeline = TRUE;
+		((t_cmd *)node->left->content)->subshell = TRUE;
 	tree_executor(exec, node->left, in, pfd[1]);
 	if (node->right && node->right->type == TREE_TYPE_CMD)
-		((t_cmd *)node->right->content)->ispipeline = TRUE;
+		((t_cmd *)node->right->content)->subshell = TRUE;
 	tree_executor(exec, node->right, pfd[0], out);
 }

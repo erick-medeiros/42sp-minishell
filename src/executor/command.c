@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 20:04:08 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 23:03:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,14 @@ int	execute_command(t_exec *exec, t_cmd *cmd)
 	cmd->status = command_expansion_to_words(cmd, exec->env);
 	if (cmd->status != OK)
 		return (cmd->status);
-	cmd->status = command_expansion_to_redirects(cmd, exec->env);
-	if (cmd->status != OK)
-		return (cmd->status);
-	cmd->status = convert_tokens_to_argv(cmd);
-	if (cmd->status != 0)
-		return (cmd->status);
 	cmd->status = command_search(cmd, exec->env);
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
 		return (cmd->status);
-	if (cmd->piping[1] == STDOUT)
+	if (cmd->output == STDOUT)
 		handle_signal(SIGPIPE, SIG_DFL);
 	else
 		handle_signal(SIGPIPE, SIG_IGN);
-	if (cmd->isbuiltin && !cmd->ispipeline)
+	if (cmd->isbuiltin && !cmd->subshell)
 		execute_in_shell(exec, cmd);
 	else
 		execute_in_subshell(exec, cmd);
@@ -42,10 +36,9 @@ int	execute_command(t_exec *exec, t_cmd *cmd)
 
 void	execute_in_shell(t_exec *exec, t_cmd *cmd)
 {
-	cmd->status = command_redirect(cmd);
+	cmd->status = command_redirect(cmd, exec->env);
 	if (cmd->status != OK)
 		return ;
-	define_stds(cmd);
 	if (cmd->argc > 0)
 		cmd->status = execute_builtin(exec, cmd);
 }
@@ -59,18 +52,12 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 		cmd->status = error_message2(1, "fork failed", strerror(errno));
 	else if (cmd->pid == 0)
 	{
-		close_tree_redirects(exec->commands, cmd->piping[0], cmd->piping[1]);
-		cmd->status = command_redirect(cmd);
+		cmd->status = command_redirect(cmd, exec->env);
 		if (cmd->status != OK)
 			builtin_exit(exec, cmd->status);
 		if (cmd->argc == 0)
 			builtin_exit(exec, cmd->status);
-		define_stds(cmd);
-		dup2(cmd->input, STDIN);
-		dup2(cmd->output, STDOUT);
-		cmd->input = STDIN;
-		cmd->output = STDOUT;
-		close_command_redirects(cmd);
+		update_stds(cmd);
 		if (cmd->isbuiltin)
 			exec->env->last_status = execute_builtin(exec, cmd);
 		else
@@ -111,6 +98,7 @@ int	execute_program(t_exec *exec, t_cmd *cmd)
 {
 	if (!cmd->pathname)
 		return (command_not_found_handle(cmd->argv[0]));
+	close_tree_redirects(exec->commands, STDIN, STDOUT);
 	cmd->envp = list_to_envp(exec->env, NULL, 0);
 	execve(cmd->pathname, cmd->argv, cmd->envp);
 	return (error_message2(1, cmd->argv[0], strerror(errno)));

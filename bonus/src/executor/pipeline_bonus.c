@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 13:33:32 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 19:59:28 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/07 22:09:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 void	close_tree_redirects(t_tree *root, int in, int out)
 {
-	int	*pfd;
+	int		*pfd;
+	t_cmd	*cmd;
 
 	if (root && root->left)
 		close_tree_redirects(root->left, in, out);
@@ -33,11 +34,11 @@ void	close_tree_redirects(t_tree *root, int in, int out)
 	}
 	else if (root && root->type == TREE_TYPE_GROUP && root->content)
 	{
-		pfd = ((t_cmd *)root->content)->redir;
-		if (pfd[0] != in && pfd[0] != out)
-			pfd[0] = close_safe(pfd[0]);
-		if (pfd[1] != in && pfd[1] != out)
-			pfd[1] = close_safe(pfd[1]);
+		cmd = (t_cmd *)root->content;
+		if (cmd->input != in && cmd->input != out)
+			cmd->input = close_safe(cmd->input);
+		if (cmd->output != in && cmd->output != out)
+			cmd->output = close_safe(cmd->output);
 	}
 }
 
