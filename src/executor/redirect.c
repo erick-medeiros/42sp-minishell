@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:41:39 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/08 08:56:43 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/08 19:43:34 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,4 @@ static int	open_redir(t_token *token, int close_fd)
 		fd = *p_int;
 	}
 	return (fd);
-}
-
-void	update_stds(t_cmd *cmd)
-{
-	dup2(cmd->input, STDIN);
-	dup2(cmd->output, STDOUT);
-	close_safe(cmd->input);
-	close_safe(cmd->output);
-	cmd->input = STDIN;
-	cmd->output = STDOUT;
 }

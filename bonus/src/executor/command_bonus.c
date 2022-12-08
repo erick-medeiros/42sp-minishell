@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/07 22:37:37 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/08 19:44:32 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ void	execute_in_subshell(t_exec *exec, t_cmd *cmd)
 			builtin_exit(exec, cmd->status);
 		if (cmd->argc == 0)
 			builtin_exit(exec, cmd->status);
-		update_stds(cmd);
+		dup2(cmd->input, STDIN);
+		dup2(cmd->output, STDOUT);
+		close_safe(cmd->input);
+		close_safe(cmd->output);
+		cmd->input = STDIN;
+		cmd->output = STDOUT;
 		if (cmd->isbuiltin)
 			exec->env->last_status = execute_builtin(exec, cmd);
 		else
