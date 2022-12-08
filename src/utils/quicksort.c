@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quicksort.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 03:11:10 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/06 19:07:27 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/08 09:40:33 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	quicksort(char **envp, size_t start_idx, size_t end_idx)
 	if (start_idx < end_idx)
 	{
 		pivot_idx = partition(envp, start_idx, end_idx);
+		if (pivot_idx == 0)
+			return ;
 		quicksort(envp, start_idx, pivot_idx - 1);
 		quicksort(envp, pivot_idx + 1, end_idx);
 	}
