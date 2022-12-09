@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 11:54:16 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:17:42 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/09 12:03:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	builtin_exit_arg(t_exec *exec, int argc, char *argv[])
 {
 	int	status;
 
-	status = get_status(argc, argv, exec->env->last_status);
+	if (isatty(STDIN) != 0)
+		write(STDERR, "exit\n", 5);
+	status = exec->env->last_status;
+	if (argc > 1)
+		status = get_status(argc, argv, status);
 	builtin_exit(exec, status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/08 19:44:32 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/09 11:49:48 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,7 @@ int	execute_builtin(t_exec *exec, t_cmd *cmd)
 	else if (ft_streq(cmd->argv[0], "env"))
 		cmd->status = builtin_env(cmd->output, exec->env);
 	else if (ft_streq(cmd->argv[0], "exit"))
-	{
-		if (cmd->argc > 1)
-			builtin_exit_arg(exec, cmd->argc, cmd->argv);
-		else
-			builtin_exit(exec, exec->env->last_status);
-	}
+		builtin_exit_arg(exec, cmd->argc, cmd->argv);
 	else if (ft_streq(cmd->argv[0], "true"))
 		cmd->status = 0;
 	else if (ft_streq(cmd->argv[0], "false"))
