@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 10:12:26 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/08 15:02:40 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/10 09:45:40 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	executor(t_ms *ms)
 	t_queue	queue;
 	t_tree	*root;
 
+	if (ms->cmd_list.front == NULL)
+		return ;
 	root = build_tree_postfix(ms);
 	exec = malloc(sizeof(t_exec));
 	exec->commands = root;
