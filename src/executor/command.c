@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 11:48:35 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/09 11:47:25 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/10 10:58:06 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ int	execute_command(t_exec *exec, t_cmd *cmd)
 	cmd->status = command_search(cmd, exec->env);
 	if (cmd->status != OK && cmd->status != ERR_CMD_NOT_FOUND)
 		return (cmd->status);
-	if (cmd->output == STDOUT)
-		handle_signal(SIGPIPE, SIG_DFL);
-	else
-		handle_signal(SIGPIPE, SIG_IGN);
 	if (cmd->isbuiltin && !cmd->subshell)
 		execute_in_shell(exec, cmd);
 	else

@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 17:19:38 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/10 10:33:17 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/10 11:26:29 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ void	shell_loop(t_ms *ms)
 	char	*line;
 	t_bool	*sigint;
 
+	handle_sigpipe();
 	while (1)
 	{
 		handle_signal(SIGQUIT, SIG_IGN);
-		handle_signal(SIGPIPE, SIG_IGN);
 		sigint = init_incomplete();
 		ms->set_history = TRUE;
 		line = readline(get_prompt(&ms->env_list));

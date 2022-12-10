@@ -22,7 +22,7 @@ FILES += $(addprefix lexer/, append.c brace.c continue.c double_quote.c heredoc.
 FILES += $(addprefix lexer/, lexer_utils.c output.c pipe.c single_quote.c skip.c word.c)
 FILES += $(addprefix parser/, build_tree.c handle_tokens.c heredoc.c incomplete.c)
 FILES += $(addprefix parser/, parser.c parser_utils.c postfix.c type.c validation.c)
-FILES += $(addprefix prompt/, minishell.c prompt.c prompt_utils.c signal.c)
+FILES += $(addprefix prompt/, minishell.c prompt.c prompt_utils.c signal.c sigpipe.c)
 FILES += $(addprefix utils/, cleanup.c command.c error.c list.c)
 FILES += $(addprefix utils/, queue.c quicksort.c stack.c tree.c utils.c vars.c)
 
@@ -51,7 +51,7 @@ FILES_BONUS += $(addprefix lexer/, lexer_bonus.c lexer_utils_bonus.c output_bonu
 FILES_BONUS += $(addprefix lexer/, single_quote_bonus.c skip_bonus.c word_bonus.c parenthesis_bonus.c)
 FILES_BONUS += $(addprefix parser/, build_tree_bonus.c handle_tokens_bonus.c heredoc_bonus.c incomplete_bonus.c)
 FILES_BONUS += $(addprefix parser/, parser_bonus.c parser_utils_bonus.c postfix_bonus.c type_bonus.c validation_bonus.c)
-FILES_BONUS += $(addprefix prompt/, minishell_bonus.c prompt_bonus.c prompt_utils_bonus.c signal_bonus.c)
+FILES_BONUS += $(addprefix prompt/, minishell_bonus.c prompt_bonus.c prompt_utils_bonus.c signal_bonus.c sigpipe_bonus.c)
 FILES_BONUS += $(addprefix utils/, cleanup_bonus.c command_bonus.c error_bonus.c list_bonus.c queue_bonus.c)
 FILES_BONUS += $(addprefix utils/, quicksort_bonus.c stack_bonus.c tree_bonus.c utils_bonus.c vars_bonus.c)
 

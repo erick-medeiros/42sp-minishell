@@ -6,7 +6,7 @@
 /*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 14:27:27 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/08 15:02:40 by eandre-f         ###   ########.fr       */
+/*   Updated: 2022/12/10 11:33:08 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
+# define TRAP_SIGPIPE 1
 
 // ANSI Colors
 # define ANSI_PROMPT 1
@@ -167,6 +169,7 @@ int			event(void);
 char		*get_prompt(t_vlst *env);
 void		shell(t_ms *ms, char **line);
 void		shell_loop(t_ms *ms);
+void		handle_sigpipe(void);
 
 // Quicksort string list
 
