@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:48:07 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 15:22:05 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/10 11:15:21 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	prompt_signal_handler(int sig)
 		write(STDERR, "\n", 1);
 		rl_replace_line("", TRUE);
 		rl_on_new_line();
-		rl_redisplay();
+		rl_done = TRUE;
+		incomplete_signal_receiver(TRUE);
 	}
 }
 

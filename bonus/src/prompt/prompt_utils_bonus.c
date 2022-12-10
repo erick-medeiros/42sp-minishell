@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 02:43:35 by gmachado          #+#    #+#             */
-/*   Updated: 2022/12/07 15:13:47 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/10 11:15:59 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ int	handle_parse_result(int err, char **line, char **history, t_ms *ms)
 	else if (err >= ERR_INCOMP_OP && err <= ERR_INCOMP_BRC_SQ)
 	{
 		if (get_line_continuation(line, err))
+		{
+			ms->env_list.last_status = 130;
 			return (ERR_SIGINT);
+		}
 		if (err == ERR_INCOMP_SQ || err == ERR_INCOMP_DQ
 			|| err == ERR_INCOMP_BRC_SQ || err == ERR_INCOMP_BRC_DQ)
 			ft_strappend(history, "\n");
@@ -103,9 +106,7 @@ static int	get_line_continuation(char **line, int err)
 	if (*interrupted)
 	{
 		rl_done = FALSE;
-		handle_signal(SIGINT, prompt_signal_handler);
 		return (ERR_SIGINT);
 	}
-	handle_signal(SIGINT, prompt_signal_handler);
 	return (OK);
 }

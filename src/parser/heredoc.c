@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 14:16:10 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 18:24:15 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/10 10:22:46 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	process_heredoc(t_token *token, char *delimiter, t_vlst *env)
 
 	interrupted = init_incomplete();
 	fd = heredoc(delimiter, env, interrupted);
-	handle_signal(SIGINT, prompt_signal_handler);
 	if (fd < 0)
 		return (fd);
 	p_int = malloc(sizeof(int));
