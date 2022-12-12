@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmachado <gmachado@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: eandre-f <eandre-f@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 19:19:42 by eandre-f          #+#    #+#             */
-/*   Updated: 2022/12/06 16:58:20 by gmachado         ###   ########.fr       */
+/*   Updated: 2022/12/12 09:53:53 by eandre-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int			print_token_error(int status, t_token *tok);
 t_tree_type	tok_to_tree_type(t_token *tok);
 int			validate_line_start(t_ms *ms);
 int			handle_next_token_error(t_ms *ms);
-// int			handle_close_parenthesis(t_ms *ms, t_tree_type tree_type,
-// 				t_tree **tree);
 
 // postfix list utils
 
@@ -49,7 +47,6 @@ int			handle_next_token(t_tree *cmd_node, t_ms *ms);
 int			handle_word_token(t_tree *cmd_node, t_ms *ms);
 int			handle_redirect_token(t_tree *cmd_node, t_ms *ms);
 int			enqueue_heredoc(t_tree *cmd_node, t_ms *ms);
-// int			handle_group_redirect_token(t_tree *group_node, t_ms *ms);
 
 // Validation
 int			validate_tokens(t_node	*cur_node);
